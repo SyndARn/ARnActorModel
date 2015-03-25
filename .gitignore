@@ -1,0 +1,16 @@
+﻿################################################################################
+# Ce fichier .gitignore a été créé automatiquement par Microsoft(R) Visual Studio.
+################################################################################
+
+/ARnActorSolution/Actor.Base/obj/Debug
+/ARnActorSolution/Actor.MonteCarlo/bin/Debug
+/ARnActorSolution/Actor.MonteCarlo/obj/Debug
+/ARnActorSolution/Actor.Plugin/obj/Debug
+/ARnActorSolution/Actor.RemoteLoading/obj/Debug
+/ARnActorSolution/Actor.Service/obj/Debug
+/ARnActorSolution/Actor.TestApplication/bin/Debug
+/ARnActorSolution/Actor.TestApplication/obj/Debug
+/ARnActorSolution/Actor.Util/obj/Debug
+/ARnActorSolution/TestActor/obj/Debug
+*.suo
+/ARnActorSolution/ActorGraph/obj/Debug
