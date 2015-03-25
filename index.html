@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="ARnActor Actor Model : ARnActor Actor Model for .NET">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>ARnActor Actor Model</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/SyndARn/ARnActorSolution">View on GitHub</a>
+
+          <h1 id="project_title">ARnActor Actor Model</h1>
+          <h2 id="project_tagline">ARnActor Actor Model for .NET</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/SyndARn/ARnActorSolution/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/SyndARn/ARnActorSolution/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="arnactor-actor-model-solution-for-net-c" class="anchor" href="#arnactor-actor-model-solution-for-net-c" aria-hidden="true"><span class="octicon octicon-link"></span></a>ARnActor Actor Model solution for .NET C</h1>
+
+<p>ARnActor is a small Actor Model Library for C#.</p>
+
+<p>This is a first draft, so be patient for anything else.</p>
+
+<p>To create your first actor :</p>
+
+<pre><code>var actor = new actActor() ;
+</code></pre>
+
+<p>To send a message to another actor :
+    var receiver = new actActor() ;</p>
+
+<pre><code>actor.SendMessageTo("Hello world",receiver) ;
+</code></pre>
+
+<p>Some samples are furnished around a small console application, try :</p>
+
+<ul>
+<li>disco =&gt; give you the well known public actors</li>
+<li>
+<p>Ring =&gt; a performance test (12 s expected)</p>
+
+<p>There is no required Library or anything else : what you need is a CLR NET 4.5, also it could run on CLR NET 4.0.</p>
+</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">ARnActor Actor Model maintained by <a href="https://github.com/SyndARn">SyndARn</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
