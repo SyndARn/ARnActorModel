@@ -1,0 +1,25 @@
+﻿
+
+
+send message to remoteactor, older of real tag
+register tag
+receive remoteactor with real tag
+find real actor from host with real tag
+
+first message
+send a disco message to none
+register tag
+this disco becomes a remote
+process disco message by finding dictory and processing it
+
+code dom
+
+(1) attribute and code generation
+
+(2) loading an assembly remotely ok
+
+(3) distributing shard
+ServerDirectory
+RegisterServer
+UnregisterServer
+PopulateServerDirectory
