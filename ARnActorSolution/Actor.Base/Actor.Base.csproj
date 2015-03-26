@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActorBase\actActor.cs" />
+    <Compile Include="ActorBase\ActorInjection.cs" />
     <Compile Include="Directory\actDiscovery.cs" />
     <Compile Include="Directory\actHostRelay.cs" />
     <Compile Include="ActorComposition.cs" />
@@ -78,8 +79,8 @@
     <Compile Include="Directory\actRemote.cs" />
     <Compile Include="Directory\actSendByName.cs" />
     <Compile Include="ActorServer\actShardDirectory.cs" />
+    <Compile Include="Supervision\bhvSupervisor.cs" />
     <Compile Include="Tag\actTag.cs" />
-    <Compile Include="actTagBinder.cs" />
     <Compile Include="actTcpServer.cs" />
     <Compile Include="Logger\actTrace.cs" />
     <Compile Include="ActionActor\bhvActionActor.cs" />

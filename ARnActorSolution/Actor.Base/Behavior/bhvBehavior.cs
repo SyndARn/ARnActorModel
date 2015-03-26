@@ -9,11 +9,14 @@ namespace Actor.Base
 
     public class Behaviors
     {
-        internal List<IBehavior> fList = new List<IBehavior>();
+        private List<IBehavior> fList = new List<IBehavior>();
+
         public actActor LinkedActor { get; private set; }
+
         public Behaviors()
         {
         }
+
         public void LinkToActor(actActor anActor)
         {
             LinkedActor = anActor;

@@ -99,6 +99,10 @@
       <Project>{7405dd75-d19c-4c80-8107-6492a9583802}</Project>
       <Name>Actor.MonteCarlo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Actor.Neurone\Actor.Neurone.csproj">
+      <Project>{6c69d34e-3468-4be0-a575-966a1696a47f}</Project>
+      <Name>Actor.Neurone</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Actor.RemoteLoading\Actor.RemoteLoading.csproj">
       <Project>{5e11368e-e121-45c2-87a2-03dac2de3073}</Project>
       <Name>Actor.RemoteLoading</Name>
