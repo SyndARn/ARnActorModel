@@ -13,7 +13,7 @@ With ARnActor, now you can :
    and in sender code ..
    SendMessageTo("something",receiver) ;
    
-#The library holds some useful feature :
+#The library holds some useful features :
 -  behavior can be affected or remove from actor, (an actor can change it's behavior ...)
 -  actor can send messages across servers, you just need to hold a reference to another actor on a server ...
 -  some actor can behave as public services, or be supervised
