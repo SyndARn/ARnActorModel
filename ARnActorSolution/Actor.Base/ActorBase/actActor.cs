@@ -39,8 +39,11 @@ namespace Actor.Base
         private int fInTask = 0; // 0 out of task, 1 in task
         private int fTaskReserved = 0; // queue pattern lock
         private int fReceiveMode = 0; // receive mode
+        private int fRunning = 0; // one active loop
         private IActor fRedirector = null;
+        private int fPatternChange = 0;
         private int messCount; // this should always be queue + postpone total
+        internal int? TaskId = null;
 
         public bool IsRemote()
         {
@@ -97,50 +100,10 @@ namespace Actor.Base
             }
         }
 
-        private void AddRunMissedMessages()
+        private void AddMissedMessages()
         {
             // add all missed messages ...
-            Interlocked.Add(ref messCount, fMailBox.RefreshFromRunMissed());
-        }
-
-        private void AddReceiveMissedMessages()
-        {
-            // add all missed messages ...
-            Interlocked.Add(ref messCount, fMailBox.RefreshFromReceiveMissed());
-        }
-
-        private PatternFuture TryReceive()
-        {
-            PatternFuture tcs = null;
-            Object ret = null;
-            SpinWait sw = new SpinWait();
-            while (Interlocked.CompareExchange(ref fTaskReserved, 1, 0) != 0)
-            {
-                sw.SpinOnce();
-            }
-            Queue<PatternFuture> list = new Queue<PatternFuture>();
-            while ((fTCSQueue != null) && (fTCSQueue.Count > 0))
-            {
-                tcs = fTCSQueue.Dequeue();
-                ret = DoReceive(tcs.Pattern);
-                Interlocked.Exchange(ref fTaskReserved, 0);
-                if (ret != null)
-                {
-                    tcs.Message = ret;
-                    break;
-                }
-                else
-                {
-                    // fTCSQueue.Enqueue(tcs);
-                    list.Enqueue(tcs);
-                }
-            }
-            while(list.Count > 0)
-            {
-                fTCSQueue.Enqueue(list.Dequeue());
-            }
-            Interlocked.Exchange(ref fTaskReserved, 0);
-            return ret == null ? (PatternFuture)null : tcs;
+            Interlocked.Add(ref messCount, fMailBox.RefreshFromMissed());
         }
 
         private static void DoSendMessageTo(Object msg, IActor aTargetActor)
@@ -196,10 +159,12 @@ namespace Actor.Base
                     fTCSQueue = new Queue<PatternFuture>();
                 }
                 fTCSQueue.Enqueue(lTCS);
+                Interlocked.Increment(ref fPatternChange);
                 Interlocked.Exchange(ref fTaskReserved, 0);
-                Interlocked.Exchange(ref fRunning, 0);
                 // always wake up actor                
                 ActorTask.AddActor(this);
+                if ((this.TaskId != null) && (this.TaskId == Task.CurrentId))
+                  Interlocked.Exchange(ref fRunning,0);
                 ret = await lTCS.TaskCompletion.Task;
                 //bool wait = false;
                 //while (! wait)
@@ -215,66 +180,66 @@ namespace Actor.Base
                 //    }
                 //} 
                 // always wake up actor
-                TrySetInTask(null);
+                ActorTask.AddActor(this);
             }
             Interlocked.Decrement(ref fReceiveMode);
             return ret;
         }
 
-        private Object DoReceive(Func<Object, bool> aPattern)
-        {
-            while (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
-            {
-                object msg = ReceiveMessage();
-                if (msg != null) // no more message ?
-                {
-                    if (aPattern(msg))
-                    {
-                        return msg;
-                    }
-                    // no pattern apply, this message is postpone in receive mode
-                    else
-                    {
-                        fMailBox.AddReceiveMiss(msg);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("receive no mess");
-                }
-            }
-
-            return null;
-        }
-
-        private int fRunning = 0 ;
 
         internal void Run()
         {
             if (Interlocked.CompareExchange(ref fRunning, 1, 0) == 0)
             {
-                AddReceiveMissedMessages();
-                // run part
-                Stopwatch sw = Stopwatch.StartNew();
+                Stopwatch watch = Stopwatch.StartNew();
                 int lPatternApplyer = 0;
                 PatternFuture tcs = null;
-                while (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
+                bool lContinue = true;
+                if (Interlocked.Exchange(ref fPatternChange,0) > 0)
                 {
-                    // receive  part
+                    AddMissedMessages();
+                }
+                while ((lContinue) && (Interlocked.CompareExchange(ref messCount, 0, 0) != 0))
+                {
+                    // message
+                    Object msg = ReceiveMessage();
+                    
+                    #region receivepart
                     if (Interlocked.CompareExchange(ref fReceiveMode, 0, 0) != 0)
                     {
-                        AddRunMissedMessages();
-                        tcs = TryReceive();
-                        AddReceiveMissedMessages();
-                        if (tcs != null)
+                        SpinWait spin = new SpinWait();
+                        while (Interlocked.CompareExchange(ref fTaskReserved, 1, 0) != 0)
                         {
-                            break;
+                            spin.SpinOnce();
                         }
+                        Queue<PatternFuture> list = new Queue<PatternFuture>();
+                        while (lContinue && (fTCSQueue != null) && (fTCSQueue.Count > 0))
+                        {
+                            tcs = fTCSQueue.Dequeue();
+                            if (tcs.Pattern(msg))
+                            {
+                                tcs.Message = msg;
+                                AddMissedMessages();
+                                lContinue = false;
+                            }
+                            else
+                            {
+                                list.Enqueue(tcs);
+                                tcs = null;
+                            }
+                        }
+                        while (list.Count > 0)
+                        {
+                            fTCSQueue.Enqueue(list.Dequeue());
+                        }
+                        Interlocked.Exchange(ref fTaskReserved, 0);
                     }
-                    Object msg = ReceiveMessage();
-                    if (msg != null) // no more message ?
+                    #endregion
+
+                    #region runpart
+                    bool lPatternApply = false;
+                    if (lContinue) 
                     {
-                        bool lPatternApply = false;
                         if (fBehaviors != null)
                         {
                             foreach (IBehavior Behavior in fBehaviors.GetBehaviors())
@@ -290,43 +255,39 @@ namespace Actor.Base
                                     }
                                 }
                             }
-                        }
-                        // no pattern apply, this message is missed
-                        if (lPatternApply == false)
-                        {
-                            fMailBox.AddRunMiss(msg);
-                            // break;
-                        }
-                        // at least one apply and we have hit the 20 ms barrier, better yielding
-                        if ((lPatternApplyer > 0) && (sw.ElapsedMilliseconds >= 20))
-                        {
-                            AddRunMissedMessages();
-                            break;
+                            // at least one apply and we have hit the 20 ms barrier, better yielding
+                            if ((lPatternApplyer > 0) && (watch.ElapsedMilliseconds >= 20))
+                            {
+                                // AddMissedMessages();
+                                lContinue = false;
+                            }
                         }
                     }
-                    else break;
+                    #endregion
+
+                    // no pattern apply, this message is missed
+                    if (lContinue && (lPatternApply == false))
+                    {
+                        fMailBox.AddMiss(msg);
+                    }
                 }
-                sw.Stop();
+                watch.Stop();
 
-                // receive  part
-                if ((tcs ==null) && (Interlocked.CompareExchange(ref fReceiveMode, 0, 0) != 0))
-                {
-                    AddRunMissedMessages();
-                    tcs = TryReceive();
-                } 
-
-                Interlocked.Exchange(ref fInTask, 0);
-                Interlocked.Exchange(ref fRunning, 0);
                 if (tcs != null)
                 {
                     tcs.TaskCompletion.SetResult(tcs.Message);
                 }
+
+                Interlocked.Exchange(ref fInTask, 0);
+                Interlocked.Exchange(ref fRunning, 0);
+                
                 // there may be some message that arrives before the set out task but after the while condition
                 if (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
                 {
                     TrySetInTask(null);
                 }
             }
+
         }
 
         private void IncMess()
@@ -357,7 +318,7 @@ namespace Actor.Base
         {
             fBehaviors = someBehavior;
             fBehaviors.LinkToActor(this);
-            AddRunMissedMessages();
+            AddMissedMessages();
             TrySetInTask(null);
         }
 
@@ -366,20 +327,20 @@ namespace Actor.Base
             fBehaviors = new Behaviors();
             fBehaviors.AddBehavior(aBehavior);
             fBehaviors.LinkToActor(this);
-            AddRunMissedMessages();
+            AddMissedMessages();
             TrySetInTask(null);
         }
 
         protected void AddBehavior(IBehavior aBehavior)
         {
             fBehaviors.AddBehavior(aBehavior);
-            AddRunMissedMessages();
+            AddMissedMessages();
             TrySetInTask(null);
         }
 
         protected void RemoveBehavior(IBehavior aBehavior)
         {
-            AddRunMissedMessages();
+            AddMissedMessages();
             fBehaviors.RemoveBehavior(aBehavior);
         }
 

@@ -125,15 +125,11 @@ namespace Actor.Base
                 Debug.Print("receive " + req);
             }
 
-            ms.Seek(0, SeekOrigin.Begin);
-            NetDataContractSerializer dcs = new NetDataContractSerializer();
-            dcs.SurrogateSelector = new ActorSurrogatorSelector();
-            dcs.Binder = new ActorBinder();
-            Object obj = dcs.ReadObject(ms);
-            SerialObject so = (SerialObject)obj;
+            SerialObject so = NetDataActorSerializer.DeSerialize(ms);
 
             // prepare an answer
             HttpListenerResponse Response = aContext.Response;
+            
             // write something to response ...
             Response.Close();
             

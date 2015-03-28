@@ -8,7 +8,6 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-
     public class actBroadCast<T> : actActor
     {
         public actBroadCast()

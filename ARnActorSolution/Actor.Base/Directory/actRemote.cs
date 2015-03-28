@@ -67,15 +67,14 @@ namespace Actor.Base
             so.Data = aMsg;
             so.Tag = fRemoteTag;
 
-            NetDataContractSerializer dcs = new NetDataContractSerializer();
-            dcs.SurrogateSelector = new ActorSurrogatorSelector();
-            dcs.Binder = new ActorBinder();
             MemoryStream ms = new MemoryStream();
-            dcs.Serialize(ms, so);
+            NetDataActorSerializer.Serialize(so, ms);
+
             ms.Seek(0, SeekOrigin.Begin);
             StreamReader sr = new StreamReader(ms);
             while (!sr.EndOfStream)
                 Debug.Print(sr.ReadLine());
+
             ms.Seek(0, SeekOrigin.Begin);
             // No response expected
             using (var client = new HttpClient())

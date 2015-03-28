@@ -1,4 +1,26 @@
-﻿using System;
+﻿/*****************************************************************************
+		               ARnActor Actor Model Library .Net
+     
+	 Copyright (C) {2015}  {ARn/SyndARn} 
+ 
+ 
+     This program is free software; you can redistribute it and/or modify 
+     it under the terms of the GNU General Public License as published by 
+     the Free Software Foundation; either version 2 of the License, or 
+     (at your option) any later version. 
+ 
+ 
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU General Public License for more details. 
+ 
+ 
+     You should have received a copy of the GNU General Public License along 
+     with this program; if not, write to the Free Software Foundation, Inc., 
+     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+*****************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,41 +49,24 @@ namespace Actor.Base
     {
         private ConcurrentQueue<T> fQueue = new ConcurrentQueue<T>(); // all actors may push here, only this one may dequeue
         private Queue<T> fPostpone = new Queue<T>(); // only this one use it, buffer from other queues.
-        private Queue<T> fRunMissed = new Queue<T>(); // only this one use it in run mode
-        private Queue<T> fReceiveMissed = new Queue<T>(); // only this one use it, in receivemode
-
+        private Queue<T> fMissed = new Queue<T>(); // only this one use it in run mode
+        
         public ActorMailBox()
         {
         }
 
-        public void AddReceiveMiss(T aMessage)
+        public void AddMiss(T aMessage)
         {
-            fReceiveMissed.Enqueue(aMessage);
+            fMissed.Enqueue(aMessage);
         }
 
-        public void AddRunMiss(T aMessage)
-        {
-            fRunMissed.Enqueue(aMessage);
-        }
-
-        public int RefreshFromRunMissed()
+        public int RefreshFromMissed()
         {
             int i = 0;
-            while (fRunMissed.Count >0)
+            while (fMissed.Count >0)
             {
-                fPostpone.Enqueue(fRunMissed.Dequeue()) ;
+                fPostpone.Enqueue(fMissed.Dequeue()) ;
                 i++ ;
-            }
-            return i;
-        }
-
-        public int RefreshFromReceiveMissed()
-        {
-            int i = 0;
-            while (fReceiveMissed.Count >0)
-            {
-                fPostpone.Enqueue(fReceiveMissed.Dequeue());
-                i++;
             }
             return i;
         }
