@@ -53,14 +53,13 @@ namespace Actor.Base
         public static void AddActor(actActor anActor)
         {
             if (anActor == null) throw new Exception("bad, no actor should be null at this point");
+
             Task.Factory.StartNew(() =>
             {
                 Interlocked.Increment(ref numAddTask);
-                anActor.TaskId = Task.CurrentId;
                 anActor.Run();
-                anActor.TaskId = null;
                 Interlocked.Increment(ref numCloseTask);
-            })
+            },TaskCreationOptions.None)
             .ContinueWith((t) =>
             {
                 Debug.WriteLine("task fault on {0}", t.Exception.InnerExceptions.ToString());

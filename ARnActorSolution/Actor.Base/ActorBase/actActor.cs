@@ -28,6 +28,7 @@ namespace Actor.Base
         public Func<Object, bool> Pattern;
         public TaskCompletionSource<Object> TaskCompletion;
         public Object Message;
+        public Action<Object> Behavior;
     }
 
     public class actActor : IActor//, IDisposable
@@ -43,7 +44,6 @@ namespace Actor.Base
         private IActor fRedirector = null;
         private int fPatternChange = 0;
         private int messCount; // this should always be queue + postpone total
-        internal int? TaskId = null;
 
         public bool IsRemote()
         {
@@ -59,7 +59,8 @@ namespace Actor.Base
             }
         }
 
-        protected actActor(actTag previousTag) : base()
+        protected actActor(actTag previousTag)
+            : base()
         {
             Tag = previousTag;
         }
@@ -161,26 +162,10 @@ namespace Actor.Base
                 fTCSQueue.Enqueue(lTCS);
                 Interlocked.Increment(ref fPatternChange);
                 Interlocked.Exchange(ref fTaskReserved, 0);
-                // always wake up actor                
-                ActorTask.AddActor(this);
-                if ((this.TaskId != null) && (this.TaskId == Task.CurrentId))
-                  Interlocked.Exchange(ref fRunning,0);
+                Interlocked.Exchange(ref fRunning, 0);
+                TrySetInTask(null);
                 ret = await lTCS.TaskCompletion.Task;
-                //bool wait = false;
-                //while (! wait)
-                //{
-                //    wait = await lTCS.TaskCompletion.Task.Wait(1000) ;
-                //    if (wait)
-                //    {
-                //        ret = lTCS.TaskCompletion.Task;
-                //    }
-                //    else
-                //    {
-                //        Debug.WriteLine("false wait");
-                //    }
-                //} 
-                // always wake up actor
-                ActorTask.AddActor(this);
+                Interlocked.Exchange(ref fRunning, 1);
             }
             Interlocked.Decrement(ref fReceiveMode);
             return ret;
@@ -189,103 +174,119 @@ namespace Actor.Base
 
         internal void Run()
         {
-            if (Interlocked.CompareExchange(ref fRunning, 1, 0) == 0)
+            while 
+            // if
+                (Interlocked.CompareExchange(ref fRunning, 1, 0) == 0)
             {
-                Stopwatch watch = Stopwatch.StartNew();
-                int lPatternApplyer = 0;
                 PatternFuture tcs = null;
-                bool lContinue = true;
-                if (Interlocked.Exchange(ref fPatternChange,0) > 0)
+                if (Interlocked.Exchange(ref fPatternChange, 0) > 0)
                 {
                     AddMissedMessages();
                 }
-                while ((lContinue) && (Interlocked.CompareExchange(ref messCount, 0, 0) != 0))
+                while ((tcs == null) && (Interlocked.CompareExchange(ref messCount, 0, 0) != 0))
                 {
                     // message
                     Object msg = ReceiveMessage();
-                    
-                    #region receivepart
-                    if (Interlocked.CompareExchange(ref fReceiveMode, 0, 0) != 0)
+                    if (msg == null)
+                        Debug.WriteLine("null message received");
+                    else
                     {
-                        SpinWait spin = new SpinWait();
-                        while (Interlocked.CompareExchange(ref fTaskReserved, 1, 0) != 0)
-                        {
-                            spin.SpinOnce();
-                        }
-                        Queue<PatternFuture> list = new Queue<PatternFuture>();
-                        while (lContinue && (fTCSQueue != null) && (fTCSQueue.Count > 0))
-                        {
-                            tcs = fTCSQueue.Dequeue();
-                            if (tcs.Pattern(msg))
-                            {
-                                tcs.Message = msg;
-                                AddMissedMessages();
-                                lContinue = false;
-                            }
-                            else
-                            {
-                                list.Enqueue(tcs);
-                                tcs = null;
-                            }
-                        }
-                        while (list.Count > 0)
-                        {
-                            fTCSQueue.Enqueue(list.Dequeue());
-                        }
-                        Interlocked.Exchange(ref fTaskReserved, 0);
-                    }
-                    #endregion
 
-                    #region runpart
-                    bool lPatternApply = false;
-                    if (lContinue) 
-                    {
-                        if (fBehaviors != null)
+                        #region runpart
+                        if (tcs == null)
                         {
-                            foreach (IBehavior Behavior in fBehaviors.GetBehaviors())
+                            if (fBehaviors != null)
                             {
-                                if (Behavior != null)
+                                foreach (IBehavior Behavior in fBehaviors.GetBehaviors())
                                 {
-                                    if (Behavior.StandardPattern(msg))
+                                    if (Behavior != null)
                                     {
-                                        lPatternApplyer++;
-                                        lPatternApply = true;
-                                        Behavior.StandardApply(msg);
-                                        break; // at least one pattern apply
+                                        if (Behavior.StandardPattern(msg))
+                                        {
+                                            tcs = new PatternFuture();
+                                            tcs.Message = msg;
+                                            tcs.Behavior = Behavior.StandardApply;
+                                            break; // at least one pattern apply
+                                        }
                                     }
                                 }
                             }
-                            // at least one apply and we have hit the 20 ms barrier, better yielding
-                            if ((lPatternApplyer > 0) && (watch.ElapsedMilliseconds >= 20))
+                        }
+                        #endregion
+
+                        #region receivepart
+                        if (tcs == null)
+                        {
+                            if (Interlocked.CompareExchange(ref fReceiveMode, 0, 0) != 0)
                             {
-                                // AddMissedMessages();
-                                lContinue = false;
+                                SpinWait spin = new SpinWait();
+                                while (Interlocked.CompareExchange(ref fTaskReserved, 1, 0) != 0)
+                                {
+                                    spin.SpinOnce();
+                                }
+                                Queue<PatternFuture> list = new Queue<PatternFuture>();
+                                while ((tcs == null) && (fTCSQueue != null) && (fTCSQueue.Count > 0))
+                                {
+                                    tcs = fTCSQueue.Dequeue();
+                                    if (tcs.Pattern(msg))
+                                    {
+                                        tcs.Message = msg;
+                                        AddMissedMessages();
+                                    }
+                                    else
+                                    {
+                                        list.Enqueue(tcs);
+                                        tcs = null;
+                                    }
+                                }
+                                while (list.Count > 0)
+                                {
+                                    fTCSQueue.Enqueue(list.Dequeue());
+                                }
+                                Interlocked.Exchange(ref fTaskReserved, 0);
                             }
                         }
-                    }
-                    #endregion
+                        #endregion
 
-                    // no pattern apply, this message is missed
-                    if (lContinue && (lPatternApply == false))
-                    {
-                        fMailBox.AddMiss(msg);
+
+                        // no pattern apply, this message is missed
+                        if (tcs == null)
+                        {
+                            fMailBox.AddMiss(msg);
+                        }
                     }
                 }
-                watch.Stop();
 
                 if (tcs != null)
                 {
-                    tcs.TaskCompletion.SetResult(tcs.Message);
+                    if (tcs.TaskCompletion == null)
+                    {
+                        tcs.Behavior(tcs.Message);
+                    }
+                    else
+                    {
+                        AddMissedMessages();
+                        tcs.TaskCompletion.SetResult(tcs.Message);
+                    }
+                    if (Interlocked.Exchange(ref fPatternChange, 0) > 0)
+                    {
+                        AddMissedMessages();
+                    }
                 }
 
-                Interlocked.Exchange(ref fInTask, 0);
                 Interlocked.Exchange(ref fRunning, 0);
-                
-                // there may be some message that arrives before the set out task but after the while condition
-                if (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
+                if (Interlocked.CompareExchange(ref messCount, 0, 0) == 0)
                 {
-                    TrySetInTask(null);
+                    break;
                 }
+            }
+
+            Interlocked.Exchange(ref fInTask, 0);
+
+            // there may be some message that arrives before the set out task but after the while condition
+            if (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
+            {
+                TrySetInTask(null);
             }
 
         }

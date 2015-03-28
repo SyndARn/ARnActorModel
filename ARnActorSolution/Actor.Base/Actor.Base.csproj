@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="ActorBase\actActor.cs" />
     <Compile Include="ActorBase\ActorInjection.cs" />
+    <Compile Include="Directory\actConnect.cs" />
     <Compile Include="Directory\actDiscovery.cs" />
     <Compile Include="Directory\actHostRelay.cs" />
     <Compile Include="ActorComposition.cs" />
