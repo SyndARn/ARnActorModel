@@ -80,7 +80,6 @@
   <ItemGroup>
     <Compile Include="ActMillion.cs" />
     <Compile Include="ActorMain.cs" />
-    <Compile Include="actRing.cs" />
     <Compile Include="actTestlauncher.cs" />
     <Compile Include="ParserTest.cs" />
     <Compile Include="Program.cs" />

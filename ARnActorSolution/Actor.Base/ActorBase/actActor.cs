@@ -26,7 +26,8 @@ namespace Actor.Base
     internal class PatternFuture
     {
         public Func<Object, bool> Pattern;
-        public TaskCompletionSource<Object> Message;
+        public TaskCompletionSource<Object> TaskCompletion;
+        public Object Message;
     }
 
     public class actActor : IActor//, IDisposable
@@ -83,7 +84,8 @@ namespace Actor.Base
             if (Interlocked.CompareExchange(ref fInTask, 1, 0) == 0)
             {
                 ActorTask.AddActor(this);
-            } else
+            }
+            else
             {
                 if (Interlocked.CompareExchange(ref fReceiveMode, fReceiveMode, fReceiveMode) > 0)
                 {
@@ -107,29 +109,38 @@ namespace Actor.Base
             Interlocked.Add(ref messCount, fMailBox.RefreshFromReceiveMissed());
         }
 
-        private bool TryReceive()
+        private PatternFuture TryReceive()
         {
+            PatternFuture tcs = null;
             Object ret = null;
             SpinWait sw = new SpinWait();
             while (Interlocked.CompareExchange(ref fTaskReserved, 1, 0) != 0)
             {
                 sw.SpinOnce();
             }
-            if ((fTCSQueue != null) && (fTCSQueue.Count > 0))
+            Queue<PatternFuture> list = new Queue<PatternFuture>();
+            while ((fTCSQueue != null) && (fTCSQueue.Count > 0))
             {
-                PatternFuture tcs = fTCSQueue.Dequeue();
+                tcs = fTCSQueue.Dequeue();
                 ret = DoReceive(tcs.Pattern);
+                Interlocked.Exchange(ref fTaskReserved, 0);
                 if (ret != null)
                 {
-                    tcs.Message.SetResult(ret);
+                    tcs.Message = ret;
+                    break;
                 }
                 else
                 {
-                    fTCSQueue.Enqueue(tcs);
+                    // fTCSQueue.Enqueue(tcs);
+                    list.Enqueue(tcs);
                 }
             }
+            while(list.Count > 0)
+            {
+                fTCSQueue.Enqueue(list.Dequeue());
+            }
             Interlocked.Exchange(ref fTaskReserved, 0);
-            return ret != null;
+            return ret == null ? (PatternFuture)null : tcs;
         }
 
         private static void DoSendMessageTo(Object msg, IActor aTargetActor)
@@ -179,18 +190,32 @@ namespace Actor.Base
                 }
                 var lTCS = new PatternFuture();
                 lTCS.Pattern = aPattern;
-                lTCS.Message = new TaskCompletionSource<Object>();
+                lTCS.TaskCompletion = new TaskCompletionSource<Object>();
                 if (fTCSQueue == null)
                 {
                     fTCSQueue = new Queue<PatternFuture>();
                 }
                 fTCSQueue.Enqueue(lTCS);
                 Interlocked.Exchange(ref fTaskReserved, 0);
-                // always wake up actor
                 Interlocked.Exchange(ref fRunning, 0);
+                // always wake up actor                
                 ActorTask.AddActor(this);
-                ret = await lTCS.Message.Task;
-                Interlocked.Exchange(ref fRunning, 1);
+                ret = await lTCS.TaskCompletion.Task;
+                //bool wait = false;
+                //while (! wait)
+                //{
+                //    wait = await lTCS.TaskCompletion.Task.Wait(1000) ;
+                //    if (wait)
+                //    {
+                //        ret = lTCS.TaskCompletion.Task;
+                //    }
+                //    else
+                //    {
+                //        Debug.WriteLine("false wait");
+                //    }
+                //} 
+                // always wake up actor
+                TrySetInTask(null);
             }
             Interlocked.Decrement(ref fReceiveMode);
             return ret;
@@ -229,22 +254,22 @@ namespace Actor.Base
             if (Interlocked.CompareExchange(ref fRunning, 1, 0) == 0)
             {
                 AddReceiveMissedMessages();
-                if (Interlocked.CompareExchange(ref fReceiveMode, 0, 0) != 0)
-                {
-                    AddRunMissedMessages();
-                }
+                // run part
                 Stopwatch sw = Stopwatch.StartNew();
                 int lPatternApplyer = 0;
+                PatternFuture tcs = null;
                 while (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
                 {
+                    // receive  part
                     if (Interlocked.CompareExchange(ref fReceiveMode, 0, 0) != 0)
                     {
                         AddRunMissedMessages();
-                        if (TryReceive())
+                        tcs = TryReceive();
+                        AddReceiveMissedMessages();
+                        if (tcs != null)
                         {
                             break;
                         }
-                        AddReceiveMissedMessages();
                     }
                     Object msg = ReceiveMessage();
                     if (msg != null) // no more message ?
@@ -283,15 +308,25 @@ namespace Actor.Base
                 }
                 sw.Stop();
 
+                // receive  part
+                if ((tcs ==null) && (Interlocked.CompareExchange(ref fReceiveMode, 0, 0) != 0))
+                {
+                    AddRunMissedMessages();
+                    tcs = TryReceive();
+                } 
+
                 Interlocked.Exchange(ref fInTask, 0);
                 Interlocked.Exchange(ref fRunning, 0);
+                if (tcs != null)
+                {
+                    tcs.TaskCompletion.SetResult(tcs.Message);
+                }
                 // there may be some message that arrives before the set out task but after the while condition
                 if (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
                 {
                     TrySetInTask(null);
                 }
             }
-
         }
 
         private void IncMess()

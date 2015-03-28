@@ -67,10 +67,10 @@ namespace ActorGraph.Actors
             : base()
         {
             Pattern = t => { return t is Tuple<T, T>; };
-            Apply = Do;
+            Apply = DoIt;
         }
 
-        protected override void Do(Tuple<T, T> at)
+        protected void DoIt(Tuple<T, T> at)
         {
             // get behavior state
             // Unlink the two node
@@ -82,10 +82,10 @@ namespace ActorGraph.Actors
         public bhvLinkNode() : base()
         {
             Pattern = t => { return t is Tuple<T, T>; };
-            Apply = Do;
+            Apply = DoIt;
         }
 
-        protected override void Do(Tuple<T,T> at)
+        protected void DoIt(Tuple<T, T> at)
         {
             // get behavior state
             // link the two node

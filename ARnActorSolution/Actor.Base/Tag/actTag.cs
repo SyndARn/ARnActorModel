@@ -1,4 +1,26 @@
-﻿using System;
+﻿/*****************************************************************************
+		               ARnActor Actor Model Library .Net
+     
+	 Copyright (C) {2015}  {ARn/SyndARn} 
+ 
+ 
+     This program is free software; you can redistribute it and/or modify 
+     it under the terms of the GNU General Public License as published by 
+     the Free Software Foundation; either version 2 of the License, or 
+     (at your option) any later version. 
+ 
+ 
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU General Public License for more details. 
+ 
+ 
+     You should have received a copy of the GNU General Public License along 
+     with this program; if not, write to the Free Software Foundation, Inc., 
+     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+*****************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,14 +32,14 @@ namespace Actor.Base
 {
 
     internal static class actTagHelper
-{
-    
+    {
+
         private static long fBaseId = 0;
 
         internal static long CastNewTagId() { return Interlocked.Increment(ref fBaseId); }
 
-        private static string fFullHost = ""; 
-        
+        private static string fFullHost = "";
+
         internal static string FullHost()
         {
             if (fFullHost == "")
@@ -28,14 +50,14 @@ namespace Actor.Base
                 var suffix = ":" + ActorServer.GetInstance().Port.ToString();
                 fFullHost = prefix + localhost + suffix + "/" + servername + "/";
             }
-            return fFullHost ;
+            return fFullHost;
         }
-}
+    }
 
     [Serializable]
     public class actTag
     {
-        private string fUri ;
+        private string fUri;
         private bool fIsRemote;
         private long fId;
 
@@ -43,12 +65,14 @@ namespace Actor.Base
 
         public string Uri
         {
-            get {
+            get
+            {
                 if (String.IsNullOrEmpty(fUri))
                 {
                     fUri = actTagHelper.FullHost();
                 }
-                return fUri; }
+                return fUri;
+            }
         }
 
         public bool IsRemote { get { return fIsRemote; } }
@@ -76,7 +100,7 @@ namespace Actor.Base
             {
                 return Uri;
             }
-            else 
+            else
             {
                 return Uri + Id.ToString();
             }

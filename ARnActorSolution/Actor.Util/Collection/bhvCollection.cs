@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Actor.Util
 {
-    public enum CollectionRequest { Add, Remove, Ok } ;
+    public enum CollectionRequest { Add, Remove, OkAdd, OkRemove } ;
 
     public class bhvCollection<T> : Behaviors
     {
@@ -39,11 +39,11 @@ namespace Actor.Util
             {
                 case CollectionRequest.Add:
                     linkedBehavior.List.Add(Data.Item2);
-                    SendMessageTo(CollectionRequest.Ok, linkedBehavior.LinkedActor);
+                    SendMessageTo(CollectionRequest.OkAdd, linkedBehavior.LinkedActor);
                     break;
                 case CollectionRequest.Remove:
                     linkedBehavior.List.Remove(Data.Item2);
-                    SendMessageTo(CollectionRequest.Ok, linkedBehavior.LinkedActor);
+                    SendMessageTo(CollectionRequest.OkRemove, linkedBehavior.LinkedActor);
                     break;
             }
         }
@@ -180,7 +180,7 @@ namespace Actor.Util
             var retval = Receive(t =>
             {
                 var val = t is CollectionRequest;
-                return val && (CollectionRequest)t == CollectionRequest.Ok;
+                return val && (CollectionRequest)t == CollectionRequest.OkAdd;
             }).Result;
         }
 
@@ -190,7 +190,7 @@ namespace Actor.Util
             var retval = Receive(t =>
             {
                 var val = t is CollectionRequest;
-                return val && (CollectionRequest)t == CollectionRequest.Ok;
+                return val && (CollectionRequest)t == CollectionRequest.OkRemove;
             }).Result;
         }
     }
