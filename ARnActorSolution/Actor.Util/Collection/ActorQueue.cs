@@ -40,12 +40,8 @@ namespace Actor.Util
         public async Task<Tuple<bool, T>> TryDequeue()
         {
             SendMessageTo(new Tuple<Action, IActor>(DoDequeue,this),new actBehalf()) ;
-            var ret = Receive(t => { return t is Tuple<bool, T>; }).ContinueWith(
-            t =>
-            {
-                return t.Result as Tuple<bool, T>;
-            });
-            return await ret;
+            var retVal = await Receive(t => { return t is Tuple<bool, T>; }) ;
+            return retVal as Tuple<bool,T> ;
         }
 
         internal void DoQueue(T at)

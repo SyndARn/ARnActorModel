@@ -99,11 +99,7 @@ namespace Actor.Base
         public async Task<IEnumerable<string>> GetAll()
         {
             SendAction(DoGetAll);
-            return await Receive(t => { return t is IEnumerable<string>; }).ContinueWith(
-            t =>
-            {
-                return t.Result as IEnumerable<string>;
-            });
+            return await Receive(t => { return t is IEnumerable<string>; }) as IEnumerable<string> ;
         }
         private void DoGetAll()
         {

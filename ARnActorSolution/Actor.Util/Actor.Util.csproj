@@ -69,6 +69,7 @@
     <Compile Include="Admin\actEchoServer.cs" />
     <Compile Include="Admin\ActorAdminServer.cs" />
     <Compile Include="Admin\ActorEcho.cs" />
+    <Compile Include="Behavior\bhvJSonState.cs" />
     <Compile Include="Behavior\bhvStateBehavior.cs" />
     <Compile Include="Collection\actObservable.cs" />
     <Compile Include="Collection\ActorQueue.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="ClientServer\bhvServer.cs" />
     <Compile Include="ClientServer\bhvWebClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rest\actRestReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Actor.Base\Actor.Base.csproj">

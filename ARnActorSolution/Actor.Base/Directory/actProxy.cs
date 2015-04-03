@@ -60,7 +60,8 @@ namespace Actor.Base
         private void LocalBehavior(Tuple<IActor, Object> msg)
         {
             // find host relay directory
-            var lTask = Receive(t => { return t is Tuple<actDirectory.DirectoryRequest, IActor>; }).ContinueWith(
+            var lTask = Receive(t => { return t is Tuple<actDirectory.DirectoryRequest, IActor>; })
+                .ContinueWith(
                 t =>
                 {
                     var ask = t.Result as Tuple<actDirectory.DirectoryRequest, IActor>;

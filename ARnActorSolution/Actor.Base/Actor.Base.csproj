@@ -81,6 +81,7 @@
     <Compile Include="Directory\actSendByName.cs" />
     <Compile Include="ActorServer\actShardDirectory.cs" />
     <Compile Include="Serializer\ActorSurrogator.cs" />
+    <Compile Include="Serializer\JSON.cs" />
     <Compile Include="Serializer\JSonActorSerializer.cs" />
     <Compile Include="Serializer\NetDataActorSerializer.cs" />
     <Compile Include="Supervision\bhvSupervisor.cs" />

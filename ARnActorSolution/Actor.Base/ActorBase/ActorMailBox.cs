@@ -60,6 +60,18 @@ namespace Actor.Base
             fMissed.Enqueue(aMessage);
         }
 
+        public int RefreshFromNew()
+        {
+            int i = 0;
+            T val = default(T);
+            while (fQueue.TryDequeue(out val))
+            {
+                fPostpone.Enqueue(val);
+                i++;
+            }
+            return i;
+        }
+
         public int RefreshFromMissed()
         {
             int i = 0;
@@ -82,17 +94,7 @@ namespace Actor.Base
             {
                 return fPostpone.Dequeue();
             }
-            else
-            {
-                T val = default(T);
-                while (fQueue.TryDequeue(out val))
-                    fPostpone.Enqueue(val);
-
-                if (fPostpone.Count>0)
-                {
-                    return fPostpone.Dequeue();
-                }
-            }
+            else 
             return default(T);
         }
 

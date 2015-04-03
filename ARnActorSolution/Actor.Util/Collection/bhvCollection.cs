@@ -114,25 +114,25 @@ namespace Actor.Util
     }
 
     // (Some prefer this class nested in the collection class.)
-    public class actCollectionEnumerator<T> : actAction<T>, IEnumerator<T>, IEnumerator
+    public class actCollectionEnumerator<T> : actAction<T>, IEnumerator<T>, IEnumerator, IDisposable
     {
         private actCollection<T> fCollection;
 
         private int fIndex = -1;
 
-        public actCollectionEnumerator(actCollection<T> aCollection)
+        public actCollectionEnumerator(actCollection<T> aCollection) : base()
         {
             fCollection = aCollection;
         }
+
 
         public bool MoveNext()
         {
             fIndex++;
             SendMessageTo(Tuple.Create(IteratorMethod.MoveNext, fIndex, (IActor)this), fCollection);
-            Tuple<IteratorMethod, bool> retval = Receive(t =>
+            return (Receive(t =>
             { return (t is Tuple<IteratorMethod, bool>) && ((Tuple<IteratorMethod, bool>)t).Item1 == IteratorMethod.OkMoveNext; }
-                ).Result as Tuple<IteratorMethod, bool>;
-            return retval.Item2;
+                ).Result as Tuple<IteratorMethod, bool>).Item2;
         }
 
         // better than this ?
@@ -147,12 +147,11 @@ namespace Actor.Util
             get
             {
                 SendMessageTo(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this), fCollection);
-                Tuple<IteratorMethod, T> retval = Receive(t =>
+                var task = Receive(t =>
                 {
                     return (t is Tuple<IteratorMethod, T>) && ((Tuple<IteratorMethod, T>)t).Item1 == IteratorMethod.OkCurrent;
-                }
-                    ).Result as Tuple<IteratorMethod, T>;
-                return retval.Item2;
+                });
+                return (task.Result as Tuple<IteratorMethod, T>).Item2 ;
             }
         }
 
@@ -162,12 +161,11 @@ namespace Actor.Util
             get
             {
                 SendMessageTo(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this), fCollection);
-                Tuple<IteratorMethod, T> retval = Receive(t =>
+                var task = Receive(t =>
                 {
                     return (t is Tuple<IteratorMethod, T>) && ((Tuple<IteratorMethod, T>)t).Item1 == IteratorMethod.OkCurrent;
-                }
-                ).Result as Tuple<IteratorMethod, T>;
-                return retval.Item2;
+                });
+                return (task.Result as Tuple<IteratorMethod, T>).Item2;
                 ;
             }
         }

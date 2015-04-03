@@ -14,6 +14,12 @@ namespace Actor.Util
         public string Url { get; set; }
     }
 
+    public class WebAnswer
+    {
+        public string Url { get; set; }
+        public string Answer { get; set; }
+    }
+
     public class bhvWebClient : bhvBehavior<WebRequest>
     {
         public bhvWebClient()
@@ -29,7 +35,10 @@ namespace Actor.Util
             {
                 HttpClient client = new HttpClient();
                 string s = client.GetStringAsync(aWebRequest.Url).Result;
-                SendMessageTo(s, aWebRequest.Sender);
+                var ans = new WebAnswer();
+                ans.Url = aWebRequest.Url;
+                ans.Answer = s;
+                SendMessageTo(ans, aWebRequest.Sender);
             }
         }
 

@@ -64,14 +64,9 @@ namespace Actor.Base
         {
             actHostDirectory.GetInstance().SendMessageTo(new Tuple<Action<IActor>, IActor>(actHostDirectory.GetInstance().DoStat, sender));
 
-            var task = await actHostDirectory.GetInstance().Receive(ans => { return (ans is IActor) && (sender.Equals(((IActor)ans))); }).ContinueWith
-                (
-                            t =>
-            {
-                return t.Result as string;
-            });
-
-            return task;
+            var task = await actHostDirectory.GetInstance()
+                .Receive(ans => { return (ans is IActor) && (sender.Equals(((IActor)ans))); }) ;
+            return task as string ;
         }
 
         public static void Register(IActor anActor)

@@ -1,4 +1,26 @@
-﻿using System;
+﻿/*****************************************************************************
+		               ARnActor Actor Model Library .Net
+     
+	 Copyright (C) {2015}  {ARn/SyndARn} 
+ 
+ 
+     This program is free software; you can redistribute it and/or modify 
+     it under the terms of the GNU General Public License as published by 
+     the Free Software Foundation; either version 2 of the License, or 
+     (at your option) any later version. 
+ 
+ 
+     This program is distributed in the hope that it will be useful, 
+     but WITHOUT ANY WARRANTY; without even the implied warranty of 
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+     GNU General Public License for more details. 
+ 
+ 
+     You should have received a copy of the GNU General Public License along 
+     with this program; if not, write to the Free Software Foundation, Inc., 
+     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+*****************************************************************************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +32,17 @@ using System.Diagnostics;
 
 namespace Actor.Base
 {
+
+    class actResender : actActor
+    {
+        public actResender() { }
+        public void Resend(Object Message, IActor Target)
+        {
+            Become(new bhvBehavior<Tuple<Object, IActor>>(
+                t => { return true; },
+                t => SendMessageTo(Message, Target)));
+        }
+    }
 
     // composing actor ...
     /// <summary>
@@ -39,11 +72,10 @@ namespace Actor.Base
         private Queue<PatternFuture> fTCSQueue; // only allocate if needed in receive mode, protected by fTaskReserved
         private int fInTask = 0; // 0 out of task, 1 in task
         private int fTaskReserved = 0; // queue pattern lock
-        private int fReceiveMode = 0; // receive mode
-        private int fRunning = 0; // one active loop
+        private int fRunning = 0; // 0 not run, 1 run mode, 2 receivemode
         private IActor fRedirector = null;
-        private int fPatternChange = 0;
         private int messCount; // this should always be queue + postpone total
+        private int fReceiveMode = 0;
 
         public bool IsRemote()
         {
@@ -89,22 +121,18 @@ namespace Actor.Base
             {
                 ActorTask.AddActor(this);
             }
-            else
-            {
-                if (Interlocked.CompareExchange(ref fReceiveMode, fReceiveMode, fReceiveMode) > 0)
-                {
-                    if (msg != null)
-                    {
-                        ActorTask.AddActor(this);
-                    }
-                }
-            }
         }
 
         private void AddMissedMessages()
         {
             // add all missed messages ...
             Interlocked.Add(ref messCount, fMailBox.RefreshFromMissed());
+        }
+
+        private void PumpMessages()
+        {
+            // add all new messages ...
+            fMailBox.RefreshFromNew();
         }
 
         private static void DoSendMessageTo(Object msg, IActor aTargetActor)
@@ -144,7 +172,7 @@ namespace Actor.Base
         protected async Task<Object> Receive(Func<Object, bool> aPattern)
         {
             Interlocked.Increment(ref fReceiveMode);
-            object ret = null;
+            Object ret = null;
             while (ret == null)
             {
                 SpinWait sw = new SpinWait();
@@ -160,126 +188,108 @@ namespace Actor.Base
                     fTCSQueue = new Queue<PatternFuture>();
                 }
                 fTCSQueue.Enqueue(lTCS);
-                Interlocked.Increment(ref fPatternChange);
+                AddMissedMessages(); // changing pattern
                 Interlocked.Exchange(ref fTaskReserved, 0);
-                Interlocked.Exchange(ref fRunning, 0);
-                TrySetInTask(null);
+                var oldRunning = Interlocked.CompareExchange(ref fRunning, 0, fRunning);
+                ActorTask.AddActor(this);
                 ret = await lTCS.TaskCompletion.Task;
-                Interlocked.Exchange(ref fRunning, 1);
+                Interlocked.Exchange(ref fRunning, oldRunning);
             }
             Interlocked.Decrement(ref fReceiveMode);
             return ret;
         }
 
 
+
         internal void Run()
         {
-            while 
-            // if
-                (Interlocked.CompareExchange(ref fRunning, 1, 0) == 0)
+            if (Interlocked.CompareExchange(ref fRunning, 1, 0) == 1)
+                return;
+
+            while (Interlocked.CompareExchange(ref fRunning, 1, 1) == 1)
             {
                 PatternFuture tcs = null;
-                if (Interlocked.Exchange(ref fPatternChange, 0) > 0)
-                {
-                    AddMissedMessages();
-                }
                 while ((tcs == null) && (Interlocked.CompareExchange(ref messCount, 0, 0) != 0))
                 {
-                    // message
+                    // message             
                     Object msg = ReceiveMessage();
                     if (msg == null)
                         Debug.WriteLine("null message received");
                     else
                     {
-
-                        #region runpart
-                        if (tcs == null)
+                        if (fBehaviors != null)
                         {
-                            if (fBehaviors != null)
+                            foreach (IBehavior Behavior in fBehaviors.GetBehaviors())
                             {
-                                foreach (IBehavior Behavior in fBehaviors.GetBehaviors())
+                                if (Behavior != null)
                                 {
-                                    if (Behavior != null)
+                                    if (Behavior.StandardPattern(msg))
                                     {
-                                        if (Behavior.StandardPattern(msg))
-                                        {
-                                            tcs = new PatternFuture();
-                                            tcs.Message = msg;
-                                            tcs.Behavior = Behavior.StandardApply;
-                                            break; // at least one pattern apply
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        #endregion
-
-                        #region receivepart
-                        if (tcs == null)
-                        {
-                            if (Interlocked.CompareExchange(ref fReceiveMode, 0, 0) != 0)
-                            {
-                                SpinWait spin = new SpinWait();
-                                while (Interlocked.CompareExchange(ref fTaskReserved, 1, 0) != 0)
-                                {
-                                    spin.SpinOnce();
-                                }
-                                Queue<PatternFuture> list = new Queue<PatternFuture>();
-                                while ((tcs == null) && (fTCSQueue != null) && (fTCSQueue.Count > 0))
-                                {
-                                    tcs = fTCSQueue.Dequeue();
-                                    if (tcs.Pattern(msg))
-                                    {
+                                        tcs = new PatternFuture();
                                         tcs.Message = msg;
-                                        AddMissedMessages();
-                                    }
-                                    else
-                                    {
-                                        list.Enqueue(tcs);
-                                        tcs = null;
+                                        tcs.Behavior = Behavior.StandardApply;
+                                        break; // at least one pattern apply
                                     }
                                 }
-                                while (list.Count > 0)
-                                {
-                                    fTCSQueue.Enqueue(list.Dequeue());
-                                }
-                                Interlocked.Exchange(ref fTaskReserved, 0);
                             }
                         }
-                        #endregion
 
+                    }
 
-                        // no pattern apply, this message is missed
-                        if (tcs == null)
+                    if ((tcs == null) && (Interlocked.CompareExchange(ref fReceiveMode, fReceiveMode, fReceiveMode) > 0))
+                    {
+                        SpinWait spin = new SpinWait();
+                        while (Interlocked.CompareExchange(ref fTaskReserved, 1, 0) != 0)
                         {
-                            fMailBox.AddMiss(msg);
+                            spin.SpinOnce();
                         }
+                        Queue<PatternFuture> list = new Queue<PatternFuture>();
+                        while ((tcs == null) && (fTCSQueue != null) && (fTCSQueue.Count > 0))
+                        {
+                            tcs = fTCSQueue.Dequeue();
+                            if (tcs.Pattern(msg))
+                            {
+                                tcs.Message = msg;
+                                break;
+                            }
+                            else
+                            {
+                                list.Enqueue(tcs);
+                                tcs = null;
+                            }
+                        }
+                        while (list.Any())
+                        {
+                            fTCSQueue.Enqueue(list.Dequeue());
+                        }
+                        Interlocked.Exchange(ref fTaskReserved, 0);
+                    }
+                    if (tcs == null)
+                    {
+                        fMailBox.AddMiss(msg);
                     }
                 }
 
                 if (tcs != null)
                 {
-                    if (tcs.TaskCompletion == null)
-                    {
-                        tcs.Behavior(tcs.Message);
-                    }
-                    else
+                    if (tcs.TaskCompletion != null)
                     {
                         AddMissedMessages();
                         tcs.TaskCompletion.SetResult(tcs.Message);
+                        break;
                     }
-                    if (Interlocked.Exchange(ref fPatternChange, 0) > 0)
+                    else
                     {
-                        AddMissedMessages();
+                        tcs.Behavior(tcs.Message);
                     }
                 }
 
-                Interlocked.Exchange(ref fRunning, 0);
                 if (Interlocked.CompareExchange(ref messCount, 0, 0) == 0)
-                {
                     break;
-                }
             }
+
+
+            Interlocked.Exchange(ref fRunning, 0);
 
             Interlocked.Exchange(ref fInTask, 0);
 
@@ -310,7 +320,14 @@ namespace Actor.Base
             }
             else
             {
-                Debug.WriteLine("null message");
+                PumpMessages();
+                msg = fMailBox.GetMessage();
+                if (msg != null)
+                {
+                    DecMess();
+                }
+                else
+                    Debug.WriteLine("null message");
             }
             return msg;
         }

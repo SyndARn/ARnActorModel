@@ -31,6 +31,7 @@ namespace Actor.TestApplication
             {
                 fQueue.Queue(new actActor());
             }
+            Console.WriteLine("end start million");
         }
 
         private void DoSend(string msg)
