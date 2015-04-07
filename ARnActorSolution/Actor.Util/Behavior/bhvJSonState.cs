@@ -11,6 +11,15 @@ namespace Actor.Util
     public abstract class JSonValue
     {
         public abstract bool Parse(string aData) ;
+
+        public static JSonValue Cast(string aData)
+        {
+            int i = 0;
+            var json = JSonValue.CastFromToken(aData, ref i) ;
+            json.Parse(aData);
+            return json;
+        }
+
         public static JSonValue CastFromToken(string aData,ref int pos)
         {
             // remove space
@@ -30,6 +39,7 @@ namespace Actor.Util
                     }
             }
         }
+
         public int FindToken(string aData,char aDelimiter, int start)
         {
             int pos = start ;

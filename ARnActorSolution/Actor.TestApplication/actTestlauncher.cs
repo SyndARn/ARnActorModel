@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestActor
+namespace Actor.TestApplication
 {
     public class actTestLauncher : actActionActor
     {

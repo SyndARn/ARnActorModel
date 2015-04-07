@@ -35,7 +35,7 @@ namespace ActorWeather
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             tbText.DataContext = fCatcher.value;
-            fReader.SendRest(new Uri("http://5DayWeather.org/api.php?city=Paris"),fCatcher); // 5 day weather forecast for Paris
+            fReader.SendRest(new Uri("http://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400"), fCatcher); // 5 day weather forecast for Paris
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

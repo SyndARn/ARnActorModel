@@ -22,5 +22,13 @@ namespace TestActor
             //jd.Parse(TestData);
             //Assert.IsNotNull(jd);
         }
+
+        [TestMethod]
+        public void TestJSonDataParser()
+        {
+            var json = JSonValue.Cast(TestData);
+            Assert.IsTrue(json != null);
+        }
+
     }
 }

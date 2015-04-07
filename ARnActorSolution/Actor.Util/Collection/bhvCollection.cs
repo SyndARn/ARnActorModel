@@ -114,7 +114,7 @@ namespace Actor.Util
     }
 
     // (Some prefer this class nested in the collection class.)
-    public class actCollectionEnumerator<T> : actAction<T>, IEnumerator<T>, IEnumerator, IDisposable
+    public class actCollectionEnumerator<T> : actAction<T>, IEnumerator<T>//, IEnumerator, IDisposable
     {
         private actCollection<T> fCollection;
 
@@ -176,7 +176,6 @@ namespace Actor.Util
 
     public class actCollection<T> : actActor, IEnumerable<T>
     {
-        private static int fCount = 0;
         public actCollection()
             : base()
         {
@@ -193,25 +192,24 @@ namespace Actor.Util
             return new actCollectionEnumerator<T>(this);
         }
 
-        public void Add(T aData)
+        public async Task Add(T aData)
         {
-            fCount++;
             SendMessageTo(Tuple.Create(CollectionRequest.Add, aData));
-            var retval = Receive(t =>
+            await Receive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkAdd;
-            }).Result;
+            });
         }
 
-        public void Remove(T aData)
+        public async Task Remove(T aData)
         {
             SendMessageTo(Tuple.Create(CollectionRequest.Remove, aData));
-            var retval = Receive(t =>
+            await Receive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkRemove;
-            }).Result;
+            }) ;
         }
     }
 

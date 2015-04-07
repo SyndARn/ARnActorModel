@@ -55,6 +55,31 @@ namespace Actor.TestApplication
                     case "Many": { fMillion = new actMillion(); break; }
                     case "SendMany": { fMillion.Send(); break; }
                     case "quit": break;
+                    case "Col":
+                        {
+                            var fLauncher = new actTestLauncher();
+                            fLauncher.SendAction(() =>
+                            {
+                                var collect = new actCollection<string>();
+                                for (int i = 0; i < 100; i++)
+                                    collect.Add(string.Format("Test {0}", i));
+                                if (collect.Count() != 100)
+                                    throw new Exception("failed");
+                                // try to enum
+                                var enumerable = collect.ToList();
+                                if (enumerable.Count != 100)
+                                    throw new Exception("failed");
+                                // try a query
+                                var query = from col in collect
+                                            where col.Contains('1')
+                                            select col;
+                                if (query.Count() != 19)
+                                    throw new Exception("failed");
+                                fLauncher.Finish();
+                            });
+                            fLauncher.Wait();
+                            break;
+                        }
                     case "Ring":
                         {
                             new actRing(10000, 10000); // 30 sec
