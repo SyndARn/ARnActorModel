@@ -87,7 +87,7 @@ namespace Actor.Neurone
             if (Decay > 2)
             foreach (var neu in Axone)
             {
-                SendMessageTo(Tuple.Create(this,Decay-1),neu);
+                neu.SendMessage(Tuple.Create(this, Decay - 1));
             }
         }
     }

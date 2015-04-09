@@ -29,7 +29,7 @@ namespace Actor.MonteCarlo
             shardList = new ShardList();
             Become(new bhvBehavior<String>(DoScheduling));
             AddBehavior(new bhvBehavior<double>(DoCollectData));
-            SendMessageTo("Start");
+            SendMessage("Start");
         }
 
         private void DoCollectData(double data)
@@ -78,7 +78,7 @@ namespace Actor.MonteCarlo
                 accumulator = Math.Sin(dbl);
             }
             // Console.WriteLine("action receiver " + accumulator);
-            SendMessageTo(accumulator, someDoubles.Item1);
+            someDoubles.Item1.SendMessage(accumulator);
         }
     }
 }

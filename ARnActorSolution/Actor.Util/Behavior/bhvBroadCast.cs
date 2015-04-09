@@ -18,7 +18,7 @@ namespace Actor.Util
 
         public void BroadCast(T at, IEnumerable<IActor> list)
         {
-            SendMessageTo(Tuple.Create(at, list));
+            SendMessage(Tuple.Create(at, list));
         }
 
     }
@@ -38,7 +38,7 @@ namespace Actor.Util
             
             {
                 T brd = msg.Item1 ;
-                SendMessageTo(brd,t);
+                t.SendMessage(brd);
             }             
         }
     }

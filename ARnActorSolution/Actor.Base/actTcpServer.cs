@@ -22,15 +22,15 @@ namespace Actor.Base
             fTcpListener = new TcpListener(fEndPoint);
             Become(new bhvBehavior<string>(DoStartListen));
             fTcpListener.Start();
-            SendMessageTo("Start Listen");
+            SendMessage("Start Listen");
         }
 
         private void DoStartListen(string msg)
         {
             Task<TcpClient> client = fTcpListener.AcceptTcpClientAsync();
             IActor entryConnection = new actEntryConnection();
-            SendMessageTo(client.Result, entryConnection);
-            SendMessageTo("Continue Listen");
+            entryConnection.SendMessage(client.Result);
+            SendMessage("Continue Listen");
         }
 
         public class actEntryConnection : actAction<TcpClient>
@@ -58,7 +58,7 @@ namespace Actor.Base
 
                 // find hosted actor directory
                 // forward msg to hostedactordirectory
-                SendMessageTo(so);
+                SendMessage(so);
             }
 
             private void DoProcessMessage(SerialObject aSerial)
@@ -73,7 +73,7 @@ namespace Actor.Base
                 else
                 {
                     // or send to host directory
-                    SendMessageTo(aSerial, actHostDirectory.GetInstance());
+                    actHostDirectory.GetInstance().SendMessage(aSerial);
                 }
             }
 

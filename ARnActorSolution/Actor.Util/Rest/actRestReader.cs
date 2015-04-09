@@ -17,7 +17,7 @@ namespace Actor.Util
 
         public void SendRest(Uri anUri, IActor answer) 
         {
-            SendMessageTo(Tuple.Create(anUri, answer));
+            SendMessage(Tuple.Create(anUri, answer));
         }
     }
 
@@ -35,14 +35,14 @@ namespace Actor.Util
     {
         public bhvRestReceive() : base()
         {
-            Pattern = t => t is WebAnswer ;
+            Pattern = DefaultPattern();
             Apply = DoRestReceive;
         }
         private void DoRestReceive(WebAnswer webAnswer)
         {
             Debug.WriteLine("Receive {0}",webAnswer.Answer) ;
-            var reader = this.LinkedTo() as bhvRestReader;
-            SendMessageTo(webAnswer.Answer, reader.fAnswer);
+            var reader = this.LinkedTo as bhvRestReader;
+            reader.fAnswer.SendMessage(webAnswer.Answer);
         }
     }
 
@@ -56,10 +56,10 @@ namespace Actor.Util
         }
         private void DoRestPost(Tuple<Uri,IActor> anUri)
         {
-            (this.LinkedTo() as bhvRestReader).fAnswer = anUri.Item2;
+            (LinkedTo as bhvRestReader).fAnswer = anUri.Item2;
             var actWeb = new actActorWeb();
-            var wr = actActorWeb.Cast(this.LinkedTo().LinkedActor, anUri.Item1.AbsoluteUri);
-            SendMessageTo(wr, actWeb);
+            var wr = actActorWeb.Cast(LinkedActor, anUri.Item1.AbsoluteUri);
+            actWeb.SendMessage(wr);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Actor.Util
         {
             Pattern = t => { return t is Tuple<IActor,T,IActor>; };
             Apply = DoReceiveReplyBehavior;
-            SendMessageTo(Tuple.Create(this,data,target),target);
+            target.SendMessage(Tuple.Create(this, data, target));
         }
 
         private void DoReceiveReplyBehavior(Tuple<IActor,T,IActor> msg)
@@ -36,7 +36,7 @@ namespace Actor.Util
             Pattern = t => { return t is Tuple<IActor, T, IActor>; };
             Apply = t => 
                 {
-                    SendMessageTo(Tuple.Create(this,t.Item2,t.Item1),t.Item1) ;
+                    t.Item1.SendMessage(Tuple.Create(this,t.Item2,t.Item1)) ;
                 } ;
         }
     }

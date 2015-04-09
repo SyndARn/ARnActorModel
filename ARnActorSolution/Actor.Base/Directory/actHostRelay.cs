@@ -15,16 +15,6 @@ using System.Security.Permissions;
 namespace Actor.Base
 {
 
-    public class DiscoCommand
-    {
-        public IActor Sender { get; set; }
-        public DiscoCommand() { }
-        public DiscoCommand(IActor anActor)
-        {
-            Sender = anActor;
-        }
-    }
-
     [Serializable]
     public class SerialObject
     {
@@ -55,7 +45,7 @@ namespace Actor.Base
                 Debug.WriteLine("Can't start http "+e );
             }
             Become(new bhvBehavior<String>(t => { return "Listen".Equals(t); }, DoListen));
-            SendMessageTo("Listen");
+            SendMessage("Listen");
         }
 
         private void DoListen(Object aMsg)
@@ -63,8 +53,8 @@ namespace Actor.Base
             try
             {
                 HttpListenerContext Context = Listener.GetContext();
-                new actProcessRequest(Context);
-                SendMessageTo("Listen");
+                new actProcessRelayRequest(Context);
+                SendMessage("Listen");
             }
             catch(Exception e)
             {
@@ -103,12 +93,12 @@ namespace Actor.Base
 
     }
 
-    class actProcessRequest : actActor
+    class actProcessRelayRequest : actActor
     {
-        public actProcessRequest(HttpListenerContext aContext)
+        public actProcessRelayRequest(HttpListenerContext aContext)
         {
             Become(new bhvBehavior<HttpListenerContext>(t => { return true; }, DoContext));
-            SendMessageTo(aContext);
+            SendMessage(aContext);
         }
 
         private void DoContext(HttpListenerContext aContext)
@@ -136,7 +126,7 @@ namespace Actor.Base
             // find hosted actor directory
             // forward msg to hostedactordirectory
             Become(new bhvBehavior<SerialObject>(t => { return true; }, ProcessMessage));
-            SendMessageTo(so);
+            SendMessage(so);
 
         }
 
@@ -152,7 +142,7 @@ namespace Actor.Base
             else
             {
                 // or send to host directory
-                SendMessageTo(aSerial,actHostDirectory.GetInstance()) ; 
+                actHostDirectory.GetInstance().SendMessage(aSerial) ; 
             }
         }
     }

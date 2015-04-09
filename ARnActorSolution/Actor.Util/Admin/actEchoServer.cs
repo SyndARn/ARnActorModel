@@ -52,7 +52,7 @@ namespace Actor.Util
         public void Connect(string ServerName)
         {
             Become(new bhvBehavior<Tuple<string, string>>(t => { return t.Item1 == "Connect"; }, DoConnect));
-            this.SendMessageTo(Tuple.Create("Connect", ServerName));
+            SendMessage(Tuple.Create("Connect", ServerName));
         }
 
         protected void DoConnect(Tuple<string, string> msgcon)
@@ -66,7 +66,7 @@ namespace Actor.Util
                     if (ans.Item2 != null)
                     {
                         actSendByName<string>.SendByName("Server found", "Console");
-                        SendMessageTo(new ServerMessage<string>(this, ServerRequest.Connect, default(string)), ans.Item2);
+                        ans.Item2.SendMessage(new ServerMessage<string>(this, ServerRequest.Connect, default(string)));
                         Receive(m => (m is ServerMessage<string>) && (((ServerMessage<string>)m).Request.Equals(ServerRequest.Accept))).ContinueWith(
                             (c) =>
                             {
@@ -78,7 +78,7 @@ namespace Actor.Util
                     else
                     {
                         Console.WriteLine("Retry");
-                        SendMessageTo(msgcon);
+                        SendMessage(msgcon);
                         // Become(null);
                     }
                 });
@@ -87,7 +87,7 @@ namespace Actor.Util
 
         public void SendMessage(string s)
         {
-            SendMessageTo(new ServerMessage<string>(this, ServerRequest.Request, s));
+            SendMessage(new ServerMessage<string>(this, ServerRequest.Request, s));
         }
         //public void Disconnect()
         //{

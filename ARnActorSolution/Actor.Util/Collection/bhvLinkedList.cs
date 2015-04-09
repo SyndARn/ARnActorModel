@@ -52,7 +52,7 @@ namespace Actor.Util
 
         private void Behavior(Tuple<bhvLinkedListOperation, T> data)
         {
-                ((bhvLinkedList<T>)LinkedTo()).fList.AddLast(data.Item2);
+                ((bhvLinkedList<T>)LinkedTo).fList.AddLast(data.Item2);
         }
     }
 
@@ -65,8 +65,8 @@ namespace Actor.Util
         }
         private void Behavior(Tuple<bhvLinkedListOperation, IActor> Sender)
         {
-            var first = ((bhvLinkedList<T>)LinkedTo()).fList.First.Value;
-            SendMessageTo(Tuple.Create(bhvLinkedListOperation.Answer,first),Sender.Item2);
+            var first = ((bhvLinkedList<T>)LinkedTo).fList.First.Value;
+            Sender.Item2.SendMessage(Tuple.Create(bhvLinkedListOperation.Answer, first));
         }
     }
 
@@ -80,11 +80,11 @@ namespace Actor.Util
         }
         private void Behavior(Tuple<bhvLinkedListOperation, IActor, T> data)
         {
-            var find = ((bhvLinkedList<T>)LinkedTo()).fList.Find(data.Item3);
+            var find = ((bhvLinkedList<T>)LinkedTo).fList.Find(data.Item3);
             if (find != null)
             {
-                var next = find.Next; 
-                SendMessageTo(Tuple.Create(bhvLinkedListOperation.Answer,next.Value),data.Item2);
+                var next = find.Next;
+                data.Item2.SendMessage(Tuple.Create(bhvLinkedListOperation.Answer, next.Value));
             }
         }
     }

@@ -79,7 +79,7 @@ namespace Actor.Base
         }
         public void SendAction(Action anAction)
         {
-            SendMessageTo(anAction);
+            SendMessage(anAction);
         }
     }
 
@@ -101,12 +101,12 @@ namespace Actor.Base
 
         public void SendAction(Action anAction)
         {
-            SendMessageTo(anAction);
+            SendMessage(anAction);
         }
 
         public void SendAction(Action<T> anAction, T aT)
         {
-            SendMessageTo(Tuple.Create(anAction, aT));
+            SendMessage(Tuple.Create(anAction, aT));
         }
 
     }

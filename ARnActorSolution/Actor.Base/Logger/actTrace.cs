@@ -33,7 +33,7 @@ namespace Actor.Base
         public void Stop(string aMsg)
         {
             fWatch.Stop();
-            SendMessageTo("[Trace] " + fWatch.ElapsedTicks.ToString() + " " + aMsg,fLogger.Value);
+            fLogger.Value.SendMessage("[Trace] " + fWatch.ElapsedTicks.ToString() + " " + aMsg);
         }
     }
 }

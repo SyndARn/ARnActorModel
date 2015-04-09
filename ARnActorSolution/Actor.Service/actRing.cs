@@ -33,7 +33,7 @@ namespace Actor.Service
             fNextNode = msg.Item2;
             Become(
                 new bhvBehavior<actTag>(t =>
-                { return (t is actTag); }, Running));
+                { return (actTag)t != null; }, Running));
         }
 
         private void Running(actTag msg)
@@ -45,13 +45,11 @@ namespace Actor.Service
                 {
                     //var tr = new actTrace();
                     //tr.Start();
-                    SendMessageTo(
-                        msg, fNextNode);
+                    fNextNode.SendMessage(msg);
                     //tr.Stop("End Node Ring");
                 }
                 else
-                    SendMessageTo(
-                        msg, fNextNode);
+                    fNextNode.SendMessage(msg);                
             }
             else
             {
@@ -65,7 +63,7 @@ namespace Actor.Service
                     Console.WriteLine(sb.ToString());
                     if (actTest.answer != null)
                     {
-                        SendMessageTo(sb.ToString(), actTest.answer);
+                        actTest.answer.SendMessage(sb.ToString());
                     }
                 }
             }
@@ -97,15 +95,15 @@ namespace Actor.Service
                 if (firstNode == null)
                     firstNode = act;
                 else
-                    SendMessageTo(
-                        Tuple.Create(State.Start, act),prevNode);
+                    prevNode.SendMessage(
+                        Tuple.Create(State.Start, act));
                 prevNode = act;
             }
-            SendMessageTo(
-                Tuple.Create(State.Start, (IActor)null),prevNode);
+            prevNode.SendMessage(
+                Tuple.Create(State.Start, (IActor)null));
             lastNode = prevNode;
             Become(new bhvBehavior<Boolean>(msg => { return msg; }, Test));
-            SendMessageTo(true,this);
+            SendMessage(true);
         }
 
         protected void Test(Boolean msg)
@@ -113,8 +111,8 @@ namespace Actor.Service
             testResult.start = DateTimeOffset.UtcNow ;
             Console.WriteLine("Start at " + testResult.start.ToString());
             for (int i = 0; i < actTest.fTest; i++)
-                SendMessageTo(
-                    new actTag(/*i*/),firstNode);
+                firstNode.SendMessage(
+                    new actTag(/*i*/));
         }
     }
 }

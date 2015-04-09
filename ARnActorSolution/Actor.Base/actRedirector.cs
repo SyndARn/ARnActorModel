@@ -32,7 +32,7 @@ namespace Actor.Base
 
         private void DoRedirect(RedirectMessage aRedirection)
         {
-            SendMessageTo(aRedirection.Data, aRedirection.Target);
+            aRedirection.Target.SendMessage(aRedirection.Data);
         }
     }
 }

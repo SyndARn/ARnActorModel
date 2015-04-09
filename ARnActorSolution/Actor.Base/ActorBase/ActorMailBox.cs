@@ -75,7 +75,7 @@ namespace Actor.Base
         public int RefreshFromMissed()
         {
             int i = 0;
-            while (fMissed.Count >0)
+            while (fMissed.Count > 0)
             {
                 fPostpone.Enqueue(fMissed.Dequeue()) ;
                 i++ ;
@@ -90,7 +90,7 @@ namespace Actor.Base
 
         public T GetMessage()
         {
-            if (fPostpone.Count>0)
+            if (fPostpone.Count > 0)
             {
                 return fPostpone.Dequeue();
             }

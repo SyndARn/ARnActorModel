@@ -38,7 +38,7 @@ namespace Actor.Util
                 var ans = new WebAnswer();
                 ans.Url = aWebRequest.Url;
                 ans.Answer = s;
-                SendMessageTo(ans, aWebRequest.Sender);
+                aWebRequest.Sender.SendMessage(ans);
             }
         }
 

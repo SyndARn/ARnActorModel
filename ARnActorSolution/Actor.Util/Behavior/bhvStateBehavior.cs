@@ -40,12 +40,12 @@ namespace Actor.Util
 
         public void Set(T aT)
         {
-            SendMessageTo(Tuple.Create(StateAction.Set, aT));
+            SendMessage(Tuple.Create(StateAction.Set, aT));
         }
 
         public T Get()
         {
-            SendMessageTo(Tuple.Create(StateAction.Get, default(T)));
+            SendMessage(Tuple.Create(StateAction.Get, default(T)));
             var retVal = Receive(t => { return true; }).Result;
             return retVal == null ? default(T) : (T)retVal;
         }
@@ -70,7 +70,7 @@ namespace Actor.Util
 
         public void GetValue()
         {
-            SendMessageTo(fValue, this.LinkedTo().LinkedActor);
+            LinkedActor.SendMessage(fValue);
         }
     }
 

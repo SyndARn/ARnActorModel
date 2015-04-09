@@ -30,7 +30,7 @@ namespace Actor.Util
                         {
                             ShardRequest req = ShardRequest.CastRequest(this, Data.Item1);
                             var byName = new actSendByName<ShardRequest>();
-                            SendMessageTo(Tuple.Create("KnownShards", req), byName);
+                            byName.SendMessage(Tuple.Create("KnownShards", req));
                         }
                         else
                         {
@@ -40,7 +40,7 @@ namespace Actor.Util
                                 {
                                     var res = ans.Result as Tuple<string, actTag, IActor>;
                                     ShardRequest req = ShardRequest.CastRequest(this, Data.Item1);
-                                    SendMessageTo(req, res.Item3);
+                                    res.Item3.SendMessage(req);
                                 });
                         }
                         break;
@@ -48,8 +48,7 @@ namespace Actor.Util
                 case "Stat":
                     {
                         ActorStatServer sa = new ActorStatServer();
-                        SendMessageTo(
-                            Data.Item1, sa);
+                        sa.SendMessage(Data.Item1);
                         break;
                     }
                 case "GC":
@@ -109,7 +108,7 @@ namespace Actor.Util
                         actConnect connect = new actConnect(this, lHost, "RPrint");
                         var data = Receive(ans => { return ans is Tuple<string, actTag, IActor>; });
                         var res = data.Result as Tuple<string, actTag, IActor>;
-                        SendMessageTo("call  from " + this.Tag.Id, res.Item3);
+                        res.Item3.SendMessage("call  from " + this.Tag.Id);
                         // SendMessageTo("call from " + this.Tag.Id,res.Item3);
                         break;
                     }

@@ -34,7 +34,11 @@ namespace Actor.Base
     /// </summary>
     public interface IActor 
     {
-        actTag Tag {get ;} 
+        actTag Tag {get ;}
+        
+        void SendMessage(Object msg) ;
     }
+
+
 
 }

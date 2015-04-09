@@ -37,22 +37,22 @@ namespace Actor.Base
 
         public void Disco(IActor anActor)
         {
-            SendMessageTo(new Tuple<Action<IActor>,IActor>(DoDisco, anActor));
+            SendMessage(new Tuple<Action<IActor>,IActor>(DoDisco, anActor));
         }
 
         public void Register(IActor anActor, string aKey)
         {
-            SendMessageTo(new Tuple<Action<IActor, string>, IActor, string>(DoRegister, anActor, aKey));
+            SendMessage(new Tuple<Action<IActor, string>, IActor, string>(DoRegister, anActor, aKey));
         }
 
         public void Find(IActor anActor, string aKey)
         {
-            SendMessageTo(new Tuple<Action<IActor, string>, IActor, string>(DoFind, anActor, aKey));
+            SendMessage(new Tuple<Action<IActor, string>, IActor, string>(DoFind, anActor, aKey));
         }
 
         private void DoDisco(IActor anActor)
         {
-            List<string> directoryList = new List<string>();
+            Dictionary<string, string> directory = new Dictionary<string, string>();
             var localhost = Dns.GetHostName();
             var servername = ActorServer.GetInstance().Name;
             var prefix = "http://";
@@ -61,9 +61,9 @@ namespace Actor.Base
             foreach (string key in fDictionary.Keys)
             {
                 var value = fDictionary[key];
-                directoryList.Add(key + "=" + fullhost + value.Tag.Id);
+                directory.Add(key,fullhost + value.Tag.Id);
             }
-            SendMessageTo(directoryList, anActor);
+            anActor.SendMessage(directory);
         }
 
         private void DoRegister(IActor anActor,string msg)
@@ -78,11 +78,11 @@ namespace Actor.Base
             IActor Relative = null;
             if (fDictionary.TryGetValue(msg, out Relative))
             {
-                SendMessageTo(Tuple.Create(DirectoryRequest.reqFind,Relative), anActor);
+                anActor.SendMessage(Tuple.Create(DirectoryRequest.reqFind,Relative));
             }
             else
             {
-                SendMessageTo(new Tuple<DirectoryRequest,IActor>(DirectoryRequest.reqFind, null), anActor);
+                anActor.SendMessage(new Tuple<DirectoryRequest,IActor>(DirectoryRequest.reqFind, null));
             }
         }
 

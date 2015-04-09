@@ -17,7 +17,7 @@ namespace Actor.Util
 
         private void DoIt(Tuple<Action, IActor> msg)
         {
-            SendMessageTo(msg.Item1, msg.Item2);
+            msg.Item2.SendMessage(msg.Item1);
             Become(null);
         }
 
@@ -39,7 +39,7 @@ namespace Actor.Util
 
         public async Task<Tuple<bool, T>> TryDequeue()
         {
-            SendMessageTo(new Tuple<Action, IActor>(DoDequeue,this),new actBehalf()) ;
+            new actBehalf().SendMessage(new Tuple<Action, IActor>(DoDequeue,this)) ;
             var retVal = await Receive(t => { return t is Tuple<bool, T>; }) ;
             return retVal as Tuple<bool,T> ;
         }
@@ -53,11 +53,11 @@ namespace Actor.Util
         {
             if (fQueue.Count > 0)
             {
-                SendMessageTo(new Tuple<bool, T>(true, fQueue.Dequeue()));
+                SendMessage(new Tuple<bool, T>(true, fQueue.Dequeue()));
             }
             else
             {
-                SendMessageTo(new Tuple<bool, T>(false, default(T))) ;
+                SendMessage(new Tuple<bool, T>(false, default(T))) ;
             }
         }
 

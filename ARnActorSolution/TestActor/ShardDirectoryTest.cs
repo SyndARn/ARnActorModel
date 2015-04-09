@@ -22,7 +22,7 @@ namespace TestActor
             public actShardDirectoryClientTest() : base()
             {
                 Become(new bhvBehavior<string>(DoStart)) ;
-                SendMessageTo("Start", this);
+                SendMessage("Start");
             }
 
             private void DoStart(string msg)
@@ -34,7 +34,7 @@ namespace TestActor
                 var shardDir = res.Item3 ;
                 Assert.IsNotNull(shardDir) ;
                 ShardRequest req = ShardRequest.CastRequest(this,this) ;
-                SendMessageTo(req, shardDir) ;
+                shardDir.SendMessage(req) ;
                 Become(new bhvBehavior<ShardRequest>(WaitAns));
             }
 

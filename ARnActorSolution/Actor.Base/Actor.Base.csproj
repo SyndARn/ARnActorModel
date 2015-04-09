@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="ActorBase\actActor.cs" />
     <Compile Include="ActorBase\ActorInjection.cs" />
+    <Compile Include="ActorBase\PatternFuture.cs" />
     <Compile Include="Directory\actConnect.cs" />
     <Compile Include="Directory\actDiscovery.cs" />
     <Compile Include="Directory\actHostRelay.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Directory\actRemote.cs" />
     <Compile Include="Directory\actSendByName.cs" />
     <Compile Include="ActorServer\actShardDirectory.cs" />
+    <Compile Include="Directory\DiscoCommand.cs" />
     <Compile Include="Serializer\ActorSurrogator.cs" />
     <Compile Include="Serializer\JSON.cs" />
     <Compile Include="Serializer\JSonActorSerializer.cs" />
@@ -116,7 +118,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="RemoteServer\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

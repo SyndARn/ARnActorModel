@@ -12,7 +12,7 @@ namespace Actor.Base
         public actLogger(string aFilename) : base()
         {
             Become(bhvLogger.CastLogger(aFilename));
-            SendMessageTo("Logging start");
+            SendMessage("Logging start");
         }
     }
 
@@ -23,7 +23,7 @@ namespace Actor.Base
 
         public bhvLogger()
         {
-            this.DoInit(ActorServer.GetInstance().Name);
+            DoInit(ActorServer.GetInstance().Name);
         }
 
         public static bhvLogger CastLogger(string aFilename)

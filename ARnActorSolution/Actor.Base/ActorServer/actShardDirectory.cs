@@ -62,7 +62,7 @@ namespace Actor.Base
                 case "Ask":
                     {
                         var ans = msg.CastAnswer(fShardList.Values.AsEnumerable<string>());
-                        SendMessageTo(ans, msg.Target);
+                        msg.Target.SendMessage(ans);
                         break;
                     }
                 case "Answer" :
@@ -103,7 +103,7 @@ namespace Actor.Base
         }
         private void DoGetAll()
         {
-            SendMessageTo(fShardList.AsEnumerable<string>());
+            SendMessage(fShardList.AsEnumerable<string>());
         }
     }
 

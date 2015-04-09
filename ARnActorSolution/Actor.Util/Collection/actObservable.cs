@@ -39,12 +39,12 @@ namespace Actor.Util
         {
             fCollection = new actCollection<IActor>();
             Become(new bhvBehavior<string>(DoStart));
-            SendMessageTo("Start Observe");
+            SendMessage("Start Observe");
         }
 
         public void PublishData(T aT)
         {
-            SendMessageTo(aT);
+            SendMessage(aT);
         }
 
         private void DoStart(string msg)
@@ -60,7 +60,7 @@ namespace Actor.Util
                 fCollection.Add(msg.Item2);
             } else
             {
-                fCollection.Remove(msg.Item2);
+                fCollection.Remove(msg.Item2).RunSynchronously();
             }
         }
 

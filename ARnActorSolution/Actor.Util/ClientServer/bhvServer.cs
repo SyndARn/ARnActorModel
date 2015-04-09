@@ -54,7 +54,7 @@ namespace Actor.Util
             {
                 fActorList.Add(aMessage.Client);
             }
-            SendMessageTo(new ServerMessage<T>(aMessage.Client, ServerRequest.Accept, default(T)),aMessage.Client);
+            aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Accept, default(T)));
         }
 
         protected void DoDisconnect(ServerMessage<T> aMessage)
@@ -69,7 +69,7 @@ namespace Actor.Util
 
         public void SendAnswer(ServerMessage<T> aMessage, T data)
         {
-            SendMessageTo(new ServerMessage<T>(aMessage.Client, ServerRequest.Answer, data),aMessage.Client);
+            aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Answer, data));
         }
     }
 
@@ -101,7 +101,7 @@ namespace Actor.Util
 
         protected void SendRequest(ServerMessage<T> aMessage)
         {
-            SendMessageTo(new ServerMessage<T>(LinkedTo().LinkedActor, ServerRequest.Request, aMessage.Data),fServer);
+            fServer.SendMessage(new ServerMessage<T>(LinkedTo.LinkedActor, ServerRequest.Request, aMessage.Data));
         }
 
     }

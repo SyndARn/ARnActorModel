@@ -43,14 +43,14 @@ namespace Actor.Base
             fServiceName = name;
             fSender = lSender;
             Become(new bhvBehavior<string>(DoDisco));
-            SendMessageTo("DoConnect");
+            SendMessage("DoConnect");
         }
 
         private void DoDisco(string msg)
         {
             Become(new bhvBehavior<List<String>>(Found));
-            IActor rem = new actRemoteActor(new actTag(fUri));
-            SendMessageTo(new DiscoCommand(this), rem);
+            actActor rem = new actRemoteActor(new actTag(fUri));
+            rem += new DiscoCommand(this); // send message
         }
 
         private void Found(List<String> someServices)
@@ -64,7 +64,7 @@ namespace Actor.Base
             {
                 actTag tag = new actTag(service);
                 Become(new bhvBehavior<actTag>(DoConnect));
-                SendMessageTo(tag);
+                SendMessage(tag);
             }
             else
             // not found
@@ -76,7 +76,7 @@ namespace Actor.Base
         private void DoConnect(actTag tag)
         {
             IActor remoteSend = new actRemoteActor(tag);
-            SendMessageTo(new Tuple<string, actTag, IActor>(fServiceName, tag, remoteSend), fSender);
+            fSender.SendMessage(new Tuple<string, actTag, IActor>(fServiceName, tag, remoteSend));
         }
 
     }

@@ -13,8 +13,7 @@ namespace Actor.Util
         public actEchoActor(IActor Dest, T aT)
         {
             Become(new bhvConsole<string>());
-            SendMessageTo(
-                new Tuple<IActor,T>(this, aT), Dest);
+            Dest.SendMessage(new Tuple<IActor,T>(this, aT));
         }
     }
 
@@ -24,8 +23,7 @@ namespace Actor.Util
             public ActorEchoActor(IActor Dest, String aString)
             {
                 BecomeMany(new bhvConsole());
-                SendMessageTo(
-                    new Tuple<IActor,String>(this, aString),Dest);
+                Dest.SendMessage(new Tuple<IActor,String>(this, aString));
             }
         }
 }

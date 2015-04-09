@@ -17,7 +17,7 @@ namespace Actor.Service
             Apply = t =>
                 {
                     IActor parser = new actStringParser();
-                    SendMessageTo(t, parser);
+                    parser.SendMessage(t);
                 };
         }
     }
@@ -34,7 +34,7 @@ namespace Actor.Service
                         var stringtoparse = t.Item2.Trim().Split(chr) ;
                         foreach (string s in stringtoparse)
                         {
-                            SendMessageTo(new Tuple<IActor,string>(this,s), t.Item1);
+                            t.Item1.SendMessage(new Tuple<IActor,string>(this,s));
                         }
                     } 
                 )) ;
@@ -81,7 +81,7 @@ namespace Actor.Service
                     }
                     foreach (string s in t)
                     {
-                        SendMessageTo(new Tuple<IActor,string>(this,s), aServer);
+                        aServer.SendMessage(new Tuple<IActor, string>(this, s));
                     }
                 }
             );

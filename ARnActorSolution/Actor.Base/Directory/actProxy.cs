@@ -53,7 +53,7 @@ namespace Actor.Base
         // we receive from URI, we send to actor
         private void RemoteBehavior(Tuple<Uri, Object> msg)
         {
-            SendMessageTo(msg.Item2,fLocalActor);
+            fLocalActor.SendMessage(msg.Item2);
         }
 
         // we receive from actor, we send to URI
@@ -68,7 +68,7 @@ namespace Actor.Base
                     if (ask.Item2 != null)
                     {
                         // find host relay 
-                        SendMessageTo(Tuple.Create(fConnectedUri, "Find"),ask.Item2);
+                        ask.Item2.SendMessage(Tuple.Create(fConnectedUri, "Find"));
                         var lTaskFindHost =
                             Receive(t2 => { return t2 is Tuple<Uri, IActor>; }).ContinueWith(
                             t2 =>
@@ -77,7 +77,7 @@ namespace Actor.Base
                                 if (ask2.Item2 != null)
                                 {
                                     // send to host relay
-                                    SendMessageTo(Tuple.Create(msg.Item2, fConnectedUri,ask2.Item2));
+                                    SendMessage(Tuple.Create(msg.Item2, fConnectedUri,ask2.Item2));
                                 }
                             });
                     }

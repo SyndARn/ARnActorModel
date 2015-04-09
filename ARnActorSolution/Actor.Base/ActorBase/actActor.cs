@@ -39,7 +39,7 @@ namespace Actor.Base
         {
             Become(new bhvBehavior<Tuple<Object, IActor>>(
                 t => { return true; },
-                t => SendMessageTo(Message, Target)));
+                t => Target.SendMessage(Message)));
         }
     }
 
@@ -53,15 +53,7 @@ namespace Actor.Base
     /// with relaysender and relaytarget, you could have a composition
     /// </summary>
 
-    // hold the pattern to be used in receive mode
-    // protected by fReceiveMode
-    internal class PatternFuture
-    {
-        public Func<Object, bool> Pattern;
-        public TaskCompletionSource<Object> TaskCompletion;
-        public Object Message;
-        public Action<Object> Behavior;
-    }
+
 
     public class actActor : IActor//, IDisposable
     {
@@ -111,7 +103,6 @@ namespace Actor.Base
 
         private void TrySetInTask(Object msg)
         {
-
             if (msg != null)
             {
                 AddMessage(msg);
@@ -139,16 +130,22 @@ namespace Actor.Base
             ((actActor)aTargetActor).TrySetInTask(msg);
         }
 
-        protected internal void SendMessageTo(Object msg, IActor aTargetActor = null)
+        public void SendMessage(Object msg)
         {
             if (fRedirector != null)
             {
-                DoSendMessageTo(new RedirectMessage(msg, aTargetActor == null ? this : aTargetActor), fRedirector);
+                DoSendMessageTo(new RedirectMessage(msg, this), fRedirector);
             }
             else
             {
-                DoSendMessageTo(msg, aTargetActor == null ? this : aTargetActor);
+                DoSendMessageTo(msg, this);
             }
+        }
+
+        public static actActor operator +(actActor anActor, Object aMessage)
+        {
+            anActor.SendMessage(aMessage);
+            return anActor;
         }
 
         public actActor(Behaviors someBehaviors)
@@ -218,18 +215,13 @@ namespace Actor.Base
                     {
                         if (fBehaviors != null)
                         {
-                            foreach (IBehavior Behavior in fBehaviors.GetBehaviors())
+                            IBehavior lBehavior = fBehaviors.PatternMatching(msg);
+                            if (lBehavior != null)
                             {
-                                if (Behavior != null)
-                                {
-                                    if (Behavior.StandardPattern(msg))
-                                    {
-                                        tcs = new PatternFuture();
-                                        tcs.Message = msg;
-                                        tcs.Behavior = Behavior.StandardApply;
-                                        break; // at least one pattern apply
-                                    }
-                                }
+                                tcs = new PatternFuture();
+                                tcs.Message = msg;
+                                tcs.Behavior = lBehavior.StandardApply;
+                                break;
                             }
                         }
 

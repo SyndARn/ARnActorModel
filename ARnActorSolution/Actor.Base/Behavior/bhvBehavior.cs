@@ -61,14 +61,13 @@ namespace Actor.Base
             aBehavior.LinkBehaviors(null);
             fList.Remove(aBehavior);
         }
-        public IEnumerable<IBehavior> GetBehaviors()
+
+        // todo : speed up this one
+        public IBehavior PatternMatching(Object msg)
         {
-            return fList ;
+            return fList.FirstOrDefault(t => (t != null) && t.StandardPattern(msg)) ;
         }
-        public bool NotEmpty
-        {
-            get { return fList.Count > 0; }
-        }
+
     }
 
     /// <summary>
@@ -80,15 +79,26 @@ namespace Actor.Base
     /// Type is the acq of the message to be send to this behavior
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class bhvBehavior<T> : IBehavior<T>, IBehavior 
+    public class bhvBehavior<T> : IBehavior<T>, IBehavior
     {
-        public Func<T,Boolean> Pattern { get; protected set; }
+        public Func<T, Boolean> Pattern { get; protected set; }
         public Action<T> Apply { get; protected set; }
         private Behaviors fLinkedBehaviors;
 
-        public Behaviors LinkedTo()
+        public actActor LinkedActor
         {
-            return fLinkedBehaviors;
+            get
+            {
+                return fLinkedBehaviors.LinkedActor;
+            }
+        }
+
+        public Behaviors LinkedTo
+        {
+            get
+            {
+                return fLinkedBehaviors;
+            }
         }
 
         public void LinkBehaviors(Behaviors someBehaviors)
@@ -101,16 +111,16 @@ namespace Actor.Base
             Pattern = aPattern;
             Apply = anApply;
         }
-        
+
         public bhvBehavior()
         {
         }
-        
-        public void SendMessageTo(Object aData,IActor Target)
+
+        public Func<T, Boolean> DefaultPattern()
         {
-            this.LinkedTo().LinkedActor.SendMessageTo(aData,Target);
+            return t => { return t is T; };
         }
-    
+
         public bhvBehavior(Action<T> anApply)
         {
             Pattern = t => t is T;
@@ -131,9 +141,9 @@ namespace Actor.Base
         {
             if (Apply != null)
             {
-                Apply((T)aT) ;
+                Apply((T)aT);
             }
         }
     }
 }
-    
+

@@ -17,7 +17,7 @@ namespace Actor.TestApplication
         {
             Become(new bhvBehavior<string>(t => { return true; }, DoBehavior));
             new ActorService();
-            SendMessageTo("Start", this);
+            SendMessage("Start");
         }
 
         private void DoBehavior(string msg)
@@ -32,8 +32,8 @@ namespace Actor.TestApplication
                 list.Add(i.ToString());
             }
             var actForeach = new actActor(new bhvForEach<string>());
-            SendMessageTo(new Tuple<IEnumerable<string>, Action<String>>(list,
-                t => Console.WriteLine("list " + t)),actForeach);
+            actForeach.SendMessage(new Tuple<IEnumerable<string>, Action<String>>(list,
+                t => Console.WriteLine("list " + t)));
 
             foreach (var item in collect)
             {
@@ -45,14 +45,12 @@ namespace Actor.TestApplication
             var linkedlist = new actLinkedList<string>();
             for (int i = 0; i < 100; i++)
             {
-                SendMessageTo(Tuple.Create(bhvLinkedListOperation.Add, i.ToString()),linkedlist);
+                linkedlist.SendMessage(Tuple.Create(bhvLinkedListOperation.Add, i.ToString()));
             }
 
             new actEchoActor<Tuple<bhvLinkedListOperation, string>>(linkedlist, Tuple.Create(bhvLinkedListOperation.First, "5"));
 
-            new actRing(1000,1000); // 30 sec
-
-            // new actRing(100, 100);
+            new actRing(1000,1000); // 10 sec
 
             new actLinkedList<string>();
 
@@ -72,7 +70,7 @@ namespace Actor.TestApplication
             IActor target = new actActor(new bhvBehavior<string>(t => { Console.WriteLine(t); }));
             IActor middle = new actActor(new bhvBehavior<string>(t => { t = t + " augmenté"; }));
             ((actActor)middle).RedirectTo(target);
-            SendMessageTo("Bonjour", middle);
+            middle.SendMessage("Bonjour");
 
 
         }

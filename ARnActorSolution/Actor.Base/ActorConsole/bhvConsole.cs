@@ -14,6 +14,7 @@ namespace Actor.Base
         {
             AddBehavior(new bhvConsole<string>());
             AddBehavior(new bhvConsoleStringList());
+            AddBehavior(new bhvConsoleDictionary());
             AddBehavior(new bhvConsole<int>());
             AddBehavior(new bhvConsole<double>());
             AddBehavior(new bhvConsole<object>());
@@ -26,12 +27,29 @@ namespace Actor.Base
         public bhvConsole()
             : base()
         {
-            this.Pattern = t => { return t is T; };
-            this.Apply = DoConsole;
+            Pattern = t => { return t is T; };
+            Apply = DoConsole;
         }
         private void DoConsole(T msg)
         {
             Console.WriteLine(msg.ToString());
+        }
+    }
+
+    public class bhvConsoleDictionary : bhvBehavior<Dictionary<string,string>>
+    {
+        public bhvConsoleDictionary()
+            : base()
+        {
+            Pattern = t => t is Dictionary<string,string> ;
+            Apply = DoConsole;
+        }
+        private void DoConsole(Dictionary<string,string> dico)
+        {
+            foreach (var item in dico)
+            {
+                Console.WriteLine(item.Key+" - "+item.Value);
+            }
         }
     }
 
@@ -40,13 +58,15 @@ namespace Actor.Base
         public bhvConsoleStringList()
             : base()
         {
-            this.Pattern = t => t is IEnumerable<String>; ;
-            this.Apply = DoConsole;
+            Pattern = t => t is IEnumerable<String>; ;
+            Apply = DoConsole;
         }
         private void DoConsole(IEnumerable<String> msg)
         {
-            foreach(String s in msg)
-              Console.WriteLine(s);
+            foreach (String s in msg)
+            {
+                Console.WriteLine(s);
+            }
         }
     }
 

@@ -32,7 +32,6 @@ namespace Actor.Base
     public interface IBehavior 
     {
         void LinkBehaviors(Behaviors someBehavior);
-        Behaviors LinkedTo();
         void StandardApply(Object aT);
         bool StandardPattern(Object aT);
     }

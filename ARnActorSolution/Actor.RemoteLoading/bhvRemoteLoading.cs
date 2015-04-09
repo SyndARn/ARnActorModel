@@ -95,7 +95,7 @@ namespace Actor.RemoteLoading
             FileStream str = new FileStream(fileName,FileMode.Open, FileAccess.Read);
             MemoryStream mem = new MemoryStream();
             str.CopyTo(mem);
-            SendMessageTo(new Tuple<IActor,MemoryStream>(down,mem), up);
+            up.SendMessage(new Tuple<IActor,MemoryStream>(down,mem));
         }
     }
 
@@ -131,7 +131,7 @@ namespace Actor.RemoteLoading
 
             foreach (var item in chunkList)
             {
-                SendMessageTo(item, msg.Item1);
+                msg.Item1.SendMessage(item);
             }
 
         }
@@ -157,7 +157,7 @@ namespace Actor.RemoteLoading
             {
                 fComplete = true;
                 // send complete to sender
-                this.SendMessageTo("Download complete", msg.sender);
+                 msg.sender.SendMessage("Download complete");
                 // try to do something with this assembly
                 MemoryStream ms = new MemoryStream();
                 foreach (var item in fChunkList.OrderBy(t => t.chunkPart))
@@ -178,7 +178,7 @@ namespace Actor.RemoteLoading
 
                 actDirectory.GetDirectory().Register((IActor)asmobj, "plugin");
 
-                SendMessageTo("Hello", (IActor)asmobj);
+                ((IActor)asmobj).SendMessage("Hello");
                 actSendByName<string>.SendByName("by name", "plugin");
             }
         }

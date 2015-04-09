@@ -16,7 +16,7 @@ namespace TestActor
 
         public void Finish()
         {
-            SendMessageTo(true);
+            SendMessage(true);
         }
 
         public bool Wait()

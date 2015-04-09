@@ -32,7 +32,7 @@ namespace Actor.Base
 
         public void DoStat(IActor sender)
         {
-            SendMessageTo("Host entries " + fUri2Actor.Count.ToString(), sender);
+            sender.SendMessage("Host entries " + fUri2Actor.Count.ToString());
         }
 
         public actHostDirectory()
@@ -56,13 +56,13 @@ namespace Actor.Base
             {
                 IActor lActor = null;
                 if (lWeakActor.TryGetTarget(out lActor))
-                  SendMessageTo(aMsg.Data,lActor);
+                  lActor.SendMessage(aMsg.Data);
             }
         }
 
         public static async Task<string> Stat(IActor sender)
         {
-            actHostDirectory.GetInstance().SendMessageTo(new Tuple<Action<IActor>, IActor>(actHostDirectory.GetInstance().DoStat, sender));
+            actHostDirectory.GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(actHostDirectory.GetInstance().DoStat, sender));
 
             var task = await actHostDirectory.GetInstance()
                 .Receive(ans => { return (ans is IActor) && (sender.Equals(((IActor)ans))); }) ;
@@ -71,12 +71,12 @@ namespace Actor.Base
 
         public static void Register(IActor anActor)
         {
-            actHostDirectory.GetInstance().SendMessageTo(new Tuple<Action<IActor>, IActor>(actHostDirectory.GetInstance().DoRegister, anActor)); 
+            actHostDirectory.GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(actHostDirectory.GetInstance().DoRegister, anActor)); 
         }
 
         public static void Unregister(IActor anActor)
         {
-            actHostDirectory.GetInstance().SendMessageTo(new Tuple<Action<IActor>, IActor>(actHostDirectory.GetInstance().DoUnregister, anActor));
+            actHostDirectory.GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(actHostDirectory.GetInstance().DoUnregister, anActor));
         }
 
         public void DoRegister(IActor anActor)

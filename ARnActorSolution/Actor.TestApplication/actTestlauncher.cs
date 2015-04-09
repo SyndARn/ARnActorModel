@@ -16,7 +16,7 @@ namespace Actor.TestApplication
 
         public void Finish()
         {
-            SendMessageTo(true);
+            SendMessage(true);
         }
 
         public bool Wait()

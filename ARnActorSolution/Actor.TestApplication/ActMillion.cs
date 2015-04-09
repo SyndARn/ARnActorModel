@@ -16,13 +16,13 @@ namespace Actor.TestApplication
         {
             fQueue = new actQueue<IActor>();
             Become(new bhvBehavior<string>(DoStart));
-            SendMessageTo("DoStart");
+            SendMessage("DoStart");
         }
 
         public void Send()
         {
             Become(new bhvBehavior<string>(DoSend));
-            SendMessageTo("DoSend");
+            SendMessage("DoSend");
         }
 
         private void DoStart(string msg)
@@ -40,7 +40,7 @@ namespace Actor.TestApplication
             Tuple<bool, IActor> item = fQueue.TryDequeue().Result;
             while(item.Item1 && (i<KSize))
             {
-                SendMessageTo("Bop", item.Item2);
+                item.Item2.SendMessage("Bop");
                 item = fQueue.TryDequeue().Result;
                 Console.WriteLine("receive " + i.ToString());
                 i++;

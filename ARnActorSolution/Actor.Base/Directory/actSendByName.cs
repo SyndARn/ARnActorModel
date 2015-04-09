@@ -63,7 +63,7 @@ namespace Actor.Base
         {
             if (ans.Item2 != null)
             {
-                SendMessageTo(origMessage,ans.Item2);
+                ans.Item2.SendMessage(origMessage);
             }
             Become(
                 new bhvBehavior<Tuple<String, T>>(msg => { return msg is Tuple<string, T>; },
@@ -78,8 +78,7 @@ namespace Actor.Base
         public static void SendByName(T aData, string anActor)
         {
             actSendByName<T> act = new actSendByName<T>();
-            act.SendMessageTo(Tuple.Create(anActor,
-                aData), act);
+            act.SendMessage(Tuple.Create(anActor,aData));
         }
     }
 

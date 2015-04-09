@@ -21,9 +21,7 @@ namespace Actor.Util
         {
             foreach(T act in msg.Item1)
             {
-                SendMessageTo(Tuple.Create(act,msg.Item2),
-                    new actActor(
-                    new bhvDoForEach<T>())) ;
+                new actActor(new bhvDoForEach<T>()).SendMessage(Tuple.Create(act,msg.Item2)) ;
             }
         }
     }

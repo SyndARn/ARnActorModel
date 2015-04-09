@@ -38,7 +38,7 @@ namespace Actor.Base
         {
             Become(new bhvBehavior<string>(t => {return true ;},
                 Disco)) ;
-            SendMessageTo(lUrl) ;
+            SendMessage(lUrl) ;
         }
 
         private void Disco(string lUrl)
@@ -46,7 +46,7 @@ namespace Actor.Base
             Become(new bhvBehavior<List<String>>(t => {return true ;}, 
                 Found)) ;
             var rem = new actRemoteActor(new actTag(lUrl));
-            SendMessageTo(new DiscoCommand(this),rem);
+            rem.SendMessage(new DiscoCommand(this));
         }
 
         private void Found(List<String> aList)

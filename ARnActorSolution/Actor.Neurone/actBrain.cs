@@ -32,12 +32,12 @@ namespace Actor.Neurone
 
         public void Start(string s)
         {
-            SendMessageTo(s, this);
+            SendMessage(s);
         }
 
         public void Result()
         {
-            SendMessageTo(this);
+            SendMessage(this);
         }
 
 
@@ -70,7 +70,7 @@ namespace Actor.Neurone
             {
                 int v = (int)c - (int)'a' ;
                 var neu = fInput.fLayer[v,i] ;
-                SendMessageTo(true,neu) ;
+                neu.SendMessage(true) ;
                     if (i++ >= 7)
                         break ;
             }

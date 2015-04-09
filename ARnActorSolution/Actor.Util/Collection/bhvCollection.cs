@@ -56,16 +56,16 @@ namespace Actor.Util
 
         private void DoApply(Tuple<CollectionRequest, T> Data)
         {
-            bhvCollection<T> linkedBehavior = LinkedTo() as bhvCollection<T>;
+            bhvCollection<T> linkedBehavior = LinkedTo as bhvCollection<T>;
             switch (Data.Item1)
             {
                 case CollectionRequest.Add:
                     linkedBehavior.List.Add(Data.Item2);
-                    SendMessageTo(CollectionRequest.OkAdd, linkedBehavior.LinkedActor);
+                    linkedBehavior.LinkedActor.SendMessage(CollectionRequest.OkAdd);
                     break;
                 case CollectionRequest.Remove:
                     linkedBehavior.List.Remove(Data.Item2);
-                    SendMessageTo(CollectionRequest.OkRemove, linkedBehavior.LinkedActor);
+                    linkedBehavior.LinkedActor.SendMessage(CollectionRequest.OkRemove);
                     break;
             }
         }
@@ -84,7 +84,7 @@ namespace Actor.Util
 
         private void DoApply(Tuple<IteratorMethod, int, IActor> msg)
         {
-            bhvCollection<T> linkedBehavior = LinkedTo() as bhvCollection<T>;
+            bhvCollection<T> linkedBehavior = LinkedTo as bhvCollection<T>;
             switch (msg.Item1)
             {
                 case IteratorMethod.MoveNext:
@@ -92,18 +92,18 @@ namespace Actor.Util
 
                         if ((msg.Item2 < linkedBehavior.List.Count) && (msg.Item2 >= 0))
                         {
-                            SendMessageTo(Tuple.Create(IteratorMethod.OkMoveNext, true), msg.Item3);
+                            msg.Item3.SendMessage(Tuple.Create(IteratorMethod.OkMoveNext, true));
                         }
                         else
                         {
-                            SendMessageTo(Tuple.Create(IteratorMethod.OkMoveNext, false), msg.Item3);
+                            msg.Item3.SendMessage(Tuple.Create(IteratorMethod.OkMoveNext, false));
                         }
                         break;
                     }
                 case IteratorMethod.Current:
                     {
                         if ((msg.Item2 >= 0) && (msg.Item2 < linkedBehavior.List.Count))
-                            SendMessageTo(Tuple.Create(IteratorMethod.OkCurrent, linkedBehavior.List[msg.Item2]), msg.Item3);
+                            msg.Item3.SendMessage(Tuple.Create(IteratorMethod.OkCurrent, linkedBehavior.List[msg.Item2]));
                         else
                             Debug.WriteLine("Bad current");
                         break;
@@ -129,7 +129,7 @@ namespace Actor.Util
         public bool MoveNext()
         {
             fIndex++;
-            SendMessageTo(Tuple.Create(IteratorMethod.MoveNext, fIndex, (IActor)this), fCollection);
+            fCollection.SendMessage(Tuple.Create(IteratorMethod.MoveNext, fIndex, (IActor)this));
             return (Receive(t =>
             { return (t is Tuple<IteratorMethod, bool>) && ((Tuple<IteratorMethod, bool>)t).Item1 == IteratorMethod.OkMoveNext; }
                 ).Result as Tuple<IteratorMethod, bool>).Item2;
@@ -146,7 +146,7 @@ namespace Actor.Util
         {
             get
             {
-                SendMessageTo(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this), fCollection);
+                fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
                 var task = Receive(t =>
                 {
                     return (t is Tuple<IteratorMethod, T>) && ((Tuple<IteratorMethod, T>)t).Item1 == IteratorMethod.OkCurrent;
@@ -160,7 +160,7 @@ namespace Actor.Util
         {
             get
             {
-                SendMessageTo(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this), fCollection);
+                fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
                 var task = Receive(t =>
                 {
                     return (t is Tuple<IteratorMethod, T>) && ((Tuple<IteratorMethod, T>)t).Item1 == IteratorMethod.OkCurrent;
@@ -194,17 +194,17 @@ namespace Actor.Util
 
         public async Task Add(T aData)
         {
-            SendMessageTo(Tuple.Create(CollectionRequest.Add, aData));
+            SendMessage(Tuple.Create(CollectionRequest.Add, aData));
             await Receive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkAdd;
-            });
+            }) ;
         }
 
         public async Task Remove(T aData)
         {
-            SendMessageTo(Tuple.Create(CollectionRequest.Remove, aData));
+            SendMessage(Tuple.Create(CollectionRequest.Remove, aData));
             await Receive(t =>
             {
                 var val = t is CollectionRequest;
