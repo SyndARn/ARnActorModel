@@ -3,7 +3,12 @@ ARnActor Actor Model for C#
 
 I was looking for an actor model things with some requirements :
  - no dependancy from another library
- - coding in plain C#, with such things like SendMessage, new Actor(), ...
+ - coding in plain C#, with such things like SendMessage, new Actor(), Become(behavior)
+ - actor can change behaviors
+ - actor can send message
+ - actor can create other actors
+ - behaviors are dynamic
+ - actor can send message across servers
  
 With ARnActor, now you can :
 
