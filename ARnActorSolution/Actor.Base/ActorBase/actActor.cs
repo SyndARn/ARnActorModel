@@ -205,10 +205,12 @@ namespace Actor.Base
             while (Interlocked.CompareExchange(ref fRunning, 1, 1) == 1)
             {
                 PatternFuture tcs = null;
-                while ((tcs == null) && (Interlocked.CompareExchange(ref messCount, 0, 0) != 0))
+                Object msg = null;
+                Action<Object> apply = null;
+                while ((apply == null) && (tcs == null) && (Interlocked.CompareExchange(ref messCount, 0, 0) != 0))
                 {
                     // message             
-                    Object msg = ReceiveMessage();
+                   msg = ReceiveMessage();
                     if (msg == null)
                         Debug.WriteLine("null message received");
                     else
@@ -218,16 +220,13 @@ namespace Actor.Base
                             IBehavior lBehavior = fBehaviors.PatternMatching(msg);
                             if (lBehavior != null)
                             {
-                                tcs = new PatternFuture();
-                                tcs.Message = msg;
-                                tcs.Behavior = lBehavior.StandardApply;
+                                apply = lBehavior.StandardApply;
                                 break;
                             }
                         }
-
                     }
 
-                    if ((tcs == null) && (Interlocked.CompareExchange(ref fReceiveMode, fReceiveMode, fReceiveMode) > 0))
+                    if ((apply == null) && (Interlocked.CompareExchange(ref fReceiveMode, fReceiveMode, fReceiveMode) > 0))
                     {
                         SpinWait spin = new SpinWait();
                         while (Interlocked.CompareExchange(ref fTaskReserved, 1, 0) != 0)
@@ -240,7 +239,6 @@ namespace Actor.Base
                             tcs = fTCSQueue.Dequeue();
                             if (tcs.Pattern(msg))
                             {
-                                tcs.Message = msg;
                                 break;
                             }
                             else
@@ -255,7 +253,7 @@ namespace Actor.Base
                         }
                         Interlocked.Exchange(ref fTaskReserved, 0);
                     }
-                    if (tcs == null)
+                    if ((apply == null) && (tcs == null))
                     {
                         fMailBox.AddMiss(msg);
                     }
@@ -263,22 +261,17 @@ namespace Actor.Base
 
                 if (tcs != null)
                 {
-                    if (tcs.TaskCompletion != null)
-                    {
                         AddMissedMessages();
-                        tcs.TaskCompletion.SetResult(tcs.Message);
+                        tcs.TaskCompletion.SetResult(msg);
                         break;
-                    }
-                    else
+                } else
+                if (apply != null)
                     {
-                        tcs.Behavior(tcs.Message);
+                        apply(msg);
                     }
-                }
-
                 if (Interlocked.CompareExchange(ref messCount, 0, 0) == 0)
                     break;
             }
-
 
             Interlocked.Exchange(ref fRunning, 0);
 

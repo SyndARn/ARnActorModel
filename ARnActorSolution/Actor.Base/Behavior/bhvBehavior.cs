@@ -65,7 +65,16 @@ namespace Actor.Base
         // todo : speed up this one
         public IBehavior PatternMatching(Object msg)
         {
-            return fList.FirstOrDefault(t => (t != null) && t.StandardPattern(msg)) ;
+            // linq here ?
+            // return fList.FirstOrDefault(t => (t != null) && t.StandardPattern(msg)) ;
+            for (int i = 0; i < fList.Count; i++)
+            {
+                if ((fList[i] != null) && (fList[i].StandardPattern(msg)))
+                    {
+                        return fList[i];
+                    }
+            }
+            return null;
         }
 
     }
@@ -123,7 +132,7 @@ namespace Actor.Base
 
         public bhvBehavior(Action<T> anApply)
         {
-            Pattern = t => t is T;
+            Pattern = t => { return t is T; };
             Apply = anApply;
         }
 
@@ -133,8 +142,7 @@ namespace Actor.Base
                 return false;
             if (aT is T)
                 return Pattern((T)aT);
-            else
-                return false;
+            else return false;
         }
 
         public void StandardApply(Object aT)
