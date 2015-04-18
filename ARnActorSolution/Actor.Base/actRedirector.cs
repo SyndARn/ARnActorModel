@@ -21,18 +21,18 @@ namespace Actor.Base
     public class actRedirector : actActor
     {
         //
-        private IActor fSource = null;
+        private IActor fTarget = null;
 
         public actRedirector(IActor anActor)
             : base()
         {
-            fSource = anActor;
+            fTarget = anActor;
             Become(new bhvBehavior<RedirectMessage>(DoRedirect));
         }
 
         private void DoRedirect(RedirectMessage aRedirection)
         {
-            aRedirection.Target.SendMessage(aRedirection.Data);
+            fTarget.SendMessage(aRedirection.Data);
         }
     }
 }

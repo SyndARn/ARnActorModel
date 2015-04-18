@@ -57,7 +57,7 @@ namespace Actor.Base
             Task.Factory.StartNew(() =>
             {
                 Interlocked.Increment(ref numAddTask);
-                anActor.Run();
+                anActor.currentLoop.Loop(anActor);
                 Interlocked.Increment(ref numCloseTask);
             },TaskCreationOptions.None)
             .ContinueWith((t) =>

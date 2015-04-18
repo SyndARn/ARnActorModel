@@ -88,6 +88,7 @@
     <Compile Include="ShardDirectoryTest.cs" />
     <Compile Include="StateBehaviorTest.cs" />
     <Compile Include="JSonDataTest.cs" />
+    <Compile Include="SupervisorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Actor.Base\Actor.Base.csproj">

@@ -31,7 +31,7 @@ namespace Actor.Base.ActorBase
             return inject;
         }
 
-        actActor IRunningActor.Actor
+        public actActor Actor
         {
             get { return realActor ; }
         }

@@ -48,8 +48,7 @@ namespace Actor.Base
     class ActorMailBox<T> // : IDisposable
     {
         private ConcurrentQueue<T> fQueue = new ConcurrentQueue<T>(); // all actors may push here, only this one may dequeue
-        private Queue<T> fPostpone = new Queue<T>(); // only this one use it, buffer from other queues.
-        private Queue<T> fMissed = new Queue<T>(); // only this one use it in run mode
+        private ConcurrentQueue<T> fMissed = new ConcurrentQueue<T>(); // only this one use it in run mode
         
         public ActorMailBox()
         {
@@ -60,24 +59,13 @@ namespace Actor.Base
             fMissed.Enqueue(aMessage);
         }
 
-        public int RefreshFromNew()
-        {
-            int i = 0;
-            T val = default(T);
-            while (fQueue.TryDequeue(out val))
-            {
-                fPostpone.Enqueue(val);
-                i++;
-            }
-            return i;
-        }
-
         public int RefreshFromMissed()
         {
             int i = 0;
-            while (fMissed.Count > 0)
+            T val = default(T);
+            while (fMissed.TryDequeue(out val))
             {
-                fPostpone.Enqueue(fMissed.Dequeue()) ;
+                fQueue.Enqueue(val) ;
                 i++ ;
             }
             return i;
@@ -90,9 +78,10 @@ namespace Actor.Base
 
         public T GetMessage()
         {
-            if (fPostpone.Count > 0)
+            T val = default(T);
+            if (fQueue.TryDequeue(out val))
             {
-                return fPostpone.Dequeue();
+                return val;
             }
             else 
             return default(T);

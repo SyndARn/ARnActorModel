@@ -98,6 +98,22 @@ namespace Actor.TestApplication
                             new actRing(y, r); // 30 sec
                             break;
                         }
+                    case "Clients":
+                        {
+                            var start = DateTime.UtcNow.Ticks;
+                            IActor aServer = new actEchoServer();
+                            for (int i = 0; i < 1000; i++)
+                            {
+                                actEchoClient aClient = new actEchoClient();// new actEchoClient(aServer);
+                                // DirectoryRequest.SendRegister("client + " + i.ToString(), aClient);
+                                aClient.Connect("EchoServer");
+                                aClient.SendMessage("client-" + i.ToString());
+                                // aClient.Disconnect();
+                            }
+                            var end = DateTime.UtcNow.Ticks;
+                            Console.WriteLine("All client allocated {0}", (double)(end - start) / 10000.0);
+                            break;
+                        } 
 
                     case "Download":
                         {

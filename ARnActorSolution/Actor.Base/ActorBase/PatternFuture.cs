@@ -12,5 +12,6 @@ namespace Actor.Base
     {
         public Func<Object, bool> Pattern;
         public TaskCompletionSource<Object> TaskCompletion;
+        public Object Message;
     }
 }

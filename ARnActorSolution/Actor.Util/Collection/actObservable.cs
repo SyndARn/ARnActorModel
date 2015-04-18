@@ -60,7 +60,7 @@ namespace Actor.Util
                 fCollection.Add(msg.Item2);
             } else
             {
-                fCollection.Remove(msg.Item2).RunSynchronously();
+                fCollection.Remove(msg.Item2);
             }
         }
 

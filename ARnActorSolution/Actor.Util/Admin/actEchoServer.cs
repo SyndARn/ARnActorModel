@@ -102,7 +102,11 @@ namespace Actor.Util
             // echo to console
             actSendByName<string>.SendByName(
                 "server receive " + aMessage.Data, "Console");
-            // back to client
+            // back to client but we need client
+            if (aMessage.Client == null)
+            {
+                Console.WriteLine("receive null client");
+            }
             SendAnswer(aMessage, aMessage.Data);
         }
     }

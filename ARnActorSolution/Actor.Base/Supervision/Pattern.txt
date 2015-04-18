@@ -1,0 +1,3 @@
+﻿Have one service monitor the other
+The supervisor receive message and wait for stat issue
+the monitored send stat issue if needed, supervisor can double allocated ressource if needed

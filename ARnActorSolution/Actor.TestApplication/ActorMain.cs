@@ -20,6 +20,8 @@ namespace Actor.TestApplication
             SendMessage("Start");
         }
 
+        private List<IActor> clientList;
+
         private void DoBehavior(string msg)
         {
             Console.WriteLine("Serv Start");
@@ -31,14 +33,16 @@ namespace Actor.TestApplication
                 collect.Add(i.ToString());
                 list.Add(i.ToString());
             }
+
+            foreach (var item in collect)
+            {
+                Console.WriteLine("Collect " + item);
+            }
+
             var actForeach = new actActor(new bhvForEach<string>());
             actForeach.SendMessage(new Tuple<IEnumerable<string>, Action<String>>(list,
                 t => Console.WriteLine("list " + t)));
 
-            foreach (var item in collect)
-            {
-                Console.WriteLine("Collect " + item) ;
-            }
 
             Console.WriteLine("Should have work");
 
@@ -55,12 +59,14 @@ namespace Actor.TestApplication
             new actLinkedList<string>();
 
             IActor aServer = new actEchoServer();
+            clientList = new List<IActor>();
             for (int i = 0; i < 100; i++)
             {
                 actEchoClient aClient = new actEchoClient();// new actEchoClient(aServer);
                 // DirectoryRequest.SendRegister("client + " + i.ToString(), aClient);
                 aClient.Connect("EchoServer");
                 aClient.SendMessage("client-" + i.ToString());
+                clientList.Add(aClient);
                 // aClient.Disconnect();
             }
             var end = DateTime.UtcNow.Ticks;

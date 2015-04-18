@@ -111,9 +111,10 @@ namespace Actor.Util
             {
                 pos = FindToken(aData,',',start) ;
                 string kv = aData.Substring(start, pos - 1) ;
+                int sep = FindToken(kv, ':', 0);
+                string Name = kv.Substring(0, sep - 1);
                 start = pos++;
                 pos = FindToken(aData, ':', start);
-                string Name = aData.Substring(start, pos - 1);
                 start = pos++;
                 JSonValue jv = JSonValue.CastFromToken(aData,ref pos) ;
                 Members.Add(aData.Substring(start,pos-1),jv) ;

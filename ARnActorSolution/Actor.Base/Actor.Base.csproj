@@ -67,11 +67,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActorBase\actActor.cs" />
+    <Compile Include="ActorBase\actMessageLoop.cs" />
     <Compile Include="ActorBase\ActorInjection.cs" />
     <Compile Include="ActorBase\PatternFuture.cs" />
     <Compile Include="Directory\actConnect.cs" />
     <Compile Include="Directory\actDiscovery.cs" />
-    <Compile Include="Directory\actHostRelay.cs" />
+    <Compile Include="RemoteServer\actHostRelay.cs" />
     <Compile Include="ActorComposition.cs" />
     <Compile Include="ActorConsole\ActorConsole.cs" />
     <Compile Include="ActorBase\ActorMailBox.cs" />
@@ -88,7 +89,7 @@
     <Compile Include="Serializer\NetDataActorSerializer.cs" />
     <Compile Include="Supervision\bhvSupervisor.cs" />
     <Compile Include="Tag\actTag.cs" />
-    <Compile Include="actTcpServer.cs" />
+    <Compile Include="RemoteServer\actTcpServer.cs" />
     <Compile Include="Logger\actTrace.cs" />
     <Compile Include="ActionActor\bhvActionActor.cs" />
     <Compile Include="Behavior\bhvBehavior.cs" />
@@ -110,6 +111,7 @@
   <ItemGroup>
     <Content Include="Doc\ARnActorDoc.html" />
     <Compile Include="Doc\Licence.cs" />
+    <Content Include="Supervision\Pattern.txt" />
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -118,9 +120,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="RemoteServer\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -114,7 +114,7 @@ namespace Actor.Util
     }
 
     // (Some prefer this class nested in the collection class.)
-    public class actCollectionEnumerator<T> : actAction<T>, IEnumerator<T>//, IEnumerator, IDisposable
+    public class actCollectionEnumerator<T> : actAction<T>, IEnumerator<T>, IEnumerator, IDisposable
     {
         private actCollection<T> fCollection;
 
@@ -138,7 +138,7 @@ namespace Actor.Util
         // better than this ?
         public void Reset() { fIndex = -1; }
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
         }
 
@@ -174,7 +174,7 @@ namespace Actor.Util
     }
 
 
-    public class actCollection<T> : actActor, IEnumerable<T>
+    public class actCollection<T> : actActor, IEnumerable<T>, IEnumerable
     {
         public actCollection()
             : base()
@@ -182,34 +182,34 @@ namespace Actor.Util
             BecomeMany(new bhvCollection<T>());
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return new actCollectionEnumerator<T>(this);
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        System.Collections.IEnumerator IEnumerable.GetEnumerator()
         {
             return new actCollectionEnumerator<T>(this);
         }
 
-        public async Task Add(T aData)
+        public void Add(T aData)
         {
             SendMessage(Tuple.Create(CollectionRequest.Add, aData));
-            await Receive(t =>
+            Receive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkAdd;
             }) ;
         }
 
-        public async Task Remove(T aData)
+        public void Remove(T aData)
         {
             SendMessage(Tuple.Create(CollectionRequest.Remove, aData));
-            await Receive(t =>
+            Receive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkRemove;
-            }) ;
+            });
         }
     }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
+using System.Diagnostics;
 
 namespace Actor.Util
 {
@@ -85,11 +86,12 @@ namespace Actor.Util
 
         protected void DispatchAnswer(ServerMessage<T> aMessage)
         {
-            if (aMessage.Request.Equals(ServerRequest.Answer))
-                ReceiveAnswer(aMessage);
-            else
-                if (aMessage.Request.Equals(ServerRequest.Request))
-                    SendRequest(aMessage);
+            switch(aMessage.Request)
+            {
+                case ServerRequest.Answer: { ReceiveAnswer(aMessage); break; };
+                case ServerRequest.Request: { SendRequest(aMessage); break; };
+                default: { Debug.WriteLine("bad request receive"); break; };
+            }
         }
 
         protected abstract void ReceiveAnswer(ServerMessage<T> aMessage) ;
