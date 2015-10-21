@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
+using Actor.Server;
 
 namespace Actor.Util
 {
@@ -99,15 +100,22 @@ namespace Actor.Util
     {
         protected override void DoRequest(ServerMessage<string> aMessage)
         {
-            // echo to console
-            actSendByName<string>.SendByName(
-                "server receive " + aMessage.Data, "Console");
-            // back to client but we need client
-            if (aMessage.Client == null)
+            if (aMessage != null)
             {
-                Console.WriteLine("receive null client");
+                // echo to console
+                actSendByName<string>.SendByName(
+                    "server receive " + aMessage.Data, "Console");
+                // back to client but we need client
+                if (aMessage.Client == null)
+                {
+                    Console.WriteLine("receive null client");
+                }
+                SendAnswer(aMessage, aMessage.Data);
             }
-            SendAnswer(aMessage, aMessage.Data);
+            else
+            {
+                throw new ActorException("bhvEchoServer : null message received") ;
+            }
         }
     }
 

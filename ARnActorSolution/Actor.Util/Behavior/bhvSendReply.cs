@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Actor.Util
 {
 
-    class bhvSendReply<T> : bhvBehavior<Tuple<IActor,T,IActor>>
+    public class bhvSendReply<T> : bhvBehavior<Tuple<IActor,T,IActor>>
     {
         public bhvSendReply(T data, IActor target)
             : base()
@@ -28,7 +28,7 @@ namespace Actor.Util
         }
     }
 
-    class bhvReplySend<T> : bhvBehavior<Tuple<IActor, T, IActor>>
+    public class bhvReplySend<T> : bhvBehavior<Tuple<IActor, T, IActor>>
     {
         public bhvReplySend()
             : base()

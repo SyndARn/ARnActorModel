@@ -21,6 +21,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,13 +56,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'x64|x64'">
     <OutputPath>bin\x64\x64\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Doc\ARnActorKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -70,51 +75,33 @@
     <Compile Include="ActorBase\actMessageLoop.cs" />
     <Compile Include="ActorBase\ActorInjection.cs" />
     <Compile Include="ActorBase\PatternFuture.cs" />
-    <Compile Include="Directory\actConnect.cs" />
-    <Compile Include="Directory\actDiscovery.cs" />
-    <Compile Include="RemoteServer\actHostRelay.cs" />
-    <Compile Include="ActorComposition.cs" />
-    <Compile Include="ActorConsole\ActorConsole.cs" />
+    <Compile Include="Exception\ActorException.cs" />
+    <Compile Include="Composition\ActorComposition.cs" />
     <Compile Include="ActorBase\ActorMailBox.cs" />
-    <Compile Include="ActorServer\ActorServer.cs" />
     <Compile Include="ActorBase\ActorTask.cs" />
-    <Compile Include="actRedirector.cs" />
-    <Compile Include="Directory\actRemote.cs" />
-    <Compile Include="Directory\actSendByName.cs" />
-    <Compile Include="ActorServer\actShardDirectory.cs" />
-    <Compile Include="Directory\DiscoCommand.cs" />
-    <Compile Include="Serializer\ActorSurrogator.cs" />
-    <Compile Include="Serializer\JSON.cs" />
-    <Compile Include="Serializer\JSonActorSerializer.cs" />
-    <Compile Include="Serializer\NetDataActorSerializer.cs" />
+    <Compile Include="Composition\actRedirector.cs" />
     <Compile Include="Supervision\bhvSupervisor.cs" />
     <Compile Include="Tag\actTag.cs" />
-    <Compile Include="RemoteServer\actTcpServer.cs" />
-    <Compile Include="Logger\actTrace.cs" />
     <Compile Include="ActionActor\bhvActionActor.cs" />
     <Compile Include="Behavior\bhvBehavior.cs" />
-    <Compile Include="ActorConsole\bhvConsole.cs" />
-    <Compile Include="Directory\actDirectory.cs" />
-    <Compile Include="Directory\actHostDirectory.cs" />
-    <Compile Include="Logger\bhvLogger.cs" />
     <Compile Include="ActorBase\IActor.cs" />
     <Compile Include="Behavior\IBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Directory\actProxy.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Serializer\SerializationHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Doc\ARnActorDoc.html" />
     <Compile Include="Doc\Licence.cs" />
     <Content Include="Supervision\Pattern.txt" />
-    <Content Include="TextFile1.txt" />
+    <Content Include="Doc\TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Doc\ARnActorKey.snk" />
+    <None Include="Doc\ClassDiagram1.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

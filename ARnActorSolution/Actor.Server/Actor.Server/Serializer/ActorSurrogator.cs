@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Actor.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -23,12 +24,12 @@ namespace Actor.Base
         {
             // Reset the property value using the GetValue method.
 
-
+            actRemoteActor remoteActor = obj as actRemoteActor;
             // force misc init
-            if (obj is actRemoteActor)
+            if (remoteActor != null)
             {
-                actActor.CompleteInitialize((actActor)obj);
-                actRemoteActor.CompleteInitialize((actRemoteActor)obj);
+                actActor.CompleteInitialize(remoteActor);
+                actRemoteActor.CompleteInitialize(remoteActor);
                 actTag getTag = (actTag)info.GetValue("RemoteTag", typeof(actTag));
                 typeof(actRemoteActor).GetField("fRemoteTag").SetValue(obj, getTag);
             }

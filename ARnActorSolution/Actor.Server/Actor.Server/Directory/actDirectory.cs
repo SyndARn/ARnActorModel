@@ -22,6 +22,7 @@
 *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -38,7 +39,7 @@ namespace Actor.Base
         public actDirectory()
             : base()
         {
-            Console.WriteLine("Dictionary Start and autoRegister");
+            Console.WriteLine("Dictionary starts and autoregisters");
             fDictionary.Add("Directory", this);
 
             Behaviors bhvs = new Behaviors();
@@ -78,7 +79,7 @@ namespace Actor.Base
             var localhost = Dns.GetHostName();
             var servername = ActorServer.GetInstance().Name;
             var prefix = "http://";
-            var suffix = ":" + ActorServer.GetInstance().Port.ToString();
+            var suffix = ":" + ActorServer.GetInstance().Port.ToString(CultureInfo.InvariantCulture);
             var fullhost = prefix + localhost + suffix + "/" + servername + "/";
             foreach (string key in fDictionary.Keys)
             {

@@ -99,6 +99,10 @@
       <Project>{7405dd75-d19c-4c80-8107-6492a9583802}</Project>
       <Name>Actor.MonteCarlo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Actor.Server\Actor.Server\Actor.Server.csproj">
+      <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
+      <Name>Actor.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Actor.Util\Actor.Util.csproj">
       <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
       <Name>Actor.Util</Name>

@@ -108,7 +108,7 @@ namespace Actor.Util
                             Debug.WriteLine("Bad current");
                         break;
                     }
-                default: throw new Exception(string.Format("Bad IteratorMethod call {0}", msg.Item1));
+                default: throw new ActorException(string.Format("Bad IteratorMethod call {0}", msg.Item1));
             }
         }
     }
@@ -140,6 +140,16 @@ namespace Actor.Util
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposable)
+        {
+            if (disposable)
+            {
+
+            }
         }
 
         public T Current

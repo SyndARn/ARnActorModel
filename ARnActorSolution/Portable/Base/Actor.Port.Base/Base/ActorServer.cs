@@ -14,7 +14,7 @@ namespace Actor.Base
         private string fFullHost = "" ;
         public string FullHost { get 
         {
-            if (fFullHost == "")
+            if (string.IsNullOrEmpty(fFullHost))
             {
                 fFullHost = Fullhost();
             }

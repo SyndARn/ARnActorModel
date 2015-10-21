@@ -31,7 +31,7 @@ namespace Actor.Util
 
         private void DoWebRequestApply(WebRequest aWebRequest)
         {
-            if (aWebRequest.Url != "")
+            if (string.IsNullOrEmpty(aWebRequest.Url)==false)
             {
                 HttpClient client = new HttpClient();
                 string s = client.GetStringAsync(aWebRequest.Url).Result;

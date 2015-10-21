@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -14,7 +15,7 @@ namespace Actor.Base
         public override Type BindToType(string assemblyName, string typeName)
         {
             Type outtype = null;
-            Type typefound = Type.GetType(String.Format("{0}, {1}", typeName, assemblyName));
+            Type typefound = Type.GetType(String.Format(CultureInfo.InvariantCulture,"{0}, {1}", typeName, assemblyName));
             if (typefound != null)
             {
                 if (typefound.IsSubclassOf(typeof(actActor)))

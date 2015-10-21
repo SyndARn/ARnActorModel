@@ -20,7 +20,6 @@ namespace Actor.Util
             msg.Item2.SendMessage(msg.Item1);
             Become(null);
         }
-
     }
 
     public class actQueue<T> : actAction<T>

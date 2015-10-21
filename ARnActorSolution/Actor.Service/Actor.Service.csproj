@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -66,6 +67,8 @@
     <Compile Include="actParser.cs" />
     <Compile Include="ActorService.cs" />
     <Compile Include="actRing.cs" />
+    <Compile Include="Logger\actTrace.cs" />
+    <Compile Include="Logger\bhvLogger.cs" />
     <Compile Include="RPrint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -77,6 +80,10 @@
     <ProjectReference Include="..\Actor.RemoteLoading\Actor.RemoteLoading.csproj">
       <Project>{5e11368e-e121-45c2-87a2-03dac2de3073}</Project>
       <Name>Actor.RemoteLoading</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Actor.Server\Actor.Server\Actor.Server.csproj">
+      <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
+      <Name>Actor.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\Actor.Util\Actor.Util.csproj">
       <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>

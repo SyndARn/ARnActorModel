@@ -43,7 +43,7 @@ namespace Actor.Base
         }
     }
 
-    public enum SystemMessage { nullbehavior } ;
+    public enum SystemMessage { NullBehavior } ;
     // composing actor ...
     /// <summary>
     /// actor have a default target
@@ -182,7 +182,7 @@ namespace Actor.Base
             fTCSQueue.Enqueue(lTCS);
             Interlocked.Exchange(ref fTaskReserved, 0);
             AddMissedMessages();
-            currentLoop.fCancel = 1;
+            currentLoop.fCancel = true;
             Interlocked.Exchange(ref fInTask, 0);
             TrySetInTask(null);
             ret = await lTCS.TaskCompletion.Task;

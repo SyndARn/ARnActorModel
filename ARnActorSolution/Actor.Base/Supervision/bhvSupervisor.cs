@@ -41,7 +41,7 @@ namespace Actor.Base
              {
                  if (t.Equals(SupervisorAction.Kill))
                  {
-                     LinkedActor.SendMessage(SystemMessage.nullbehavior);
+                     LinkedActor.SendMessage(SystemMessage.NullBehavior);
                  }
              };
         }

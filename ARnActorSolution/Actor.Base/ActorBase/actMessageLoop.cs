@@ -10,7 +10,7 @@ namespace Actor.Base
     internal class actMessageLoop
     {
 
-        internal int fCancel = 0;
+        internal bool fCancel = false;
 
         public actMessageLoop()
         {
@@ -25,7 +25,7 @@ namespace Actor.Base
         public void Loop(actActor actActor)
         {
             PatternFuture tcs = null;
-            while ((fCancel ==0) && (Interlocked.CompareExchange(ref actActor.messCount, 0, 0) != 0))
+            while ((!fCancel) && (Interlocked.CompareExchange(ref actActor.messCount, 0, 0) != 0))
             {
                 Object msg = null;
                 Action<Object> apply = null;
@@ -88,7 +88,7 @@ namespace Actor.Base
                     }
             }
 
-            fCancel = 1;
+            fCancel = true;
             Interlocked.Exchange(ref actActor.fInTask, 0);
             if (tcs != null)
             {

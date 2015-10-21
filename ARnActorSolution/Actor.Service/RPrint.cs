@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
 using Actor.Util;
+using Actor.Server;
 
 namespace Actor.Service
 {

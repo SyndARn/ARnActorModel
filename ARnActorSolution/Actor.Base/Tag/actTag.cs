@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 
-    internal static class actTagHelper
+    public static class actTagHelper
     {
 
         private static long fBaseId = 0;
@@ -40,18 +40,13 @@ namespace Actor.Base
 
         private static string fFullHost = "";
 
-        internal static string FullHost()
+        public static string GetFullHost() { return fFullHost;  }
+
+        public static void SetFullHost(string aValue)
         {
-            if (fFullHost == "")
-            {
-                var localhost = Dns.GetHostName();
-                var servername = ActorServer.GetInstance().Name;
-                var prefix = "http://";
-                var suffix = ":" + ActorServer.GetInstance().Port.ToString();
-                fFullHost = prefix + localhost + suffix + "/" + servername + "/";
-            }
-            return fFullHost;
+            fFullHost = aValue;
         }
+
     }
 
     [Serializable]
@@ -69,7 +64,7 @@ namespace Actor.Base
             {
                 if (String.IsNullOrEmpty(fUri))
                 {
-                    fUri = actTagHelper.FullHost();
+                    fUri = actTagHelper.GetFullHost();
                 }
                 return fUri;
             }
@@ -92,9 +87,9 @@ namespace Actor.Base
 
         public string Key()
         {
-            if (fUri == "")
+            if (string.IsNullOrEmpty(fUri))
             {
-                fUri = actTagHelper.FullHost();
+                fUri = actTagHelper.GetFullHost();
             }
             if (IsRemote)
             {

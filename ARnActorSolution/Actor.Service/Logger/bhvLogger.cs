@@ -48,10 +48,18 @@ namespace Actor.Base
                 fStream.WriteLine(DateTimeOffset.Now.ToString()+"-"+msg.ToString());
         }
 
+        protected virtual void Dispose(bool aDispose)
+        {
+            if (aDispose)
+            {
+                fStream.Dispose();
+            }
+        }
 
         public void Dispose()
         {
-            fStream.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

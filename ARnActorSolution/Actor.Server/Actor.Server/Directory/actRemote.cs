@@ -41,7 +41,7 @@ namespace Actor.Base
     public class actRemoteActor : actActor
     {
 
-        public actTag fRemoteTag;
+        private actTag fRemoteTag;
 
         public static void CompleteInitialize(actRemoteActor anActor)
         {
