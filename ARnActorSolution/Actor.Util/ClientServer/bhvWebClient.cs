@@ -34,11 +34,18 @@ namespace Actor.Util
             if (string.IsNullOrEmpty(aWebRequest.Url)==false)
             {
                 HttpClient client = new HttpClient();
-                string s = client.GetStringAsync(aWebRequest.Url).Result;
-                var ans = new WebAnswer();
-                ans.Url = aWebRequest.Url;
-                ans.Answer = s;
-                aWebRequest.Sender.SendMessage(ans);
+                try
+                {
+                    string s = client.GetStringAsync(aWebRequest.Url).Result;
+                    var ans = new WebAnswer();
+                    ans.Url = aWebRequest.Url;
+                    ans.Answer = s;
+                    aWebRequest.Sender.SendMessage(ans);
+                }
+                finally
+                {
+                    client.Dispose();
+                }
             }
         }
 

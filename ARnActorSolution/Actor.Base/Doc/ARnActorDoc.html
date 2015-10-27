@@ -2,6 +2,7 @@
 <html><head>
   ARnActorDoc
   ARn 2015/03/24
+    <title>ARn Actor doc</title>
 </head>
 <body>
   <p>
@@ -113,5 +114,42 @@
     un behavior avec un pattern toujours VRAI prendra tous les messages.
     Si un message ne peut être utilisé par un pattern, il est mis dans une file d'attente des non traités.
   </P>
+    <p>
+        et ...
+        Actor as Agent
+        Un agent est un actor sensible à son environnement.
+        Il dispose en général au moins des behavior suivants :
+        - InitialState
+        - React() dit à l'acteur de réagir en fonction du message d'environnement éventuellement vide
+        - Observe() à réception renvoie à l'appelant les données le composant
+        - Kill() this agent is dead
+
+        AgentDirectory : les agents actifs
+
+        AgentObserver() : collecte les données des agents
+
+        Trader : cash + portfolio
+            achète ou vend
+            sensible à Ticker + period
+
+        Market : portfolio + price
+        exécute les ordres (et les confirme)
+        diffuse ensuite un prix vers Ticker
+
+        Ticker envoie un prix par period à tous les agents abonnés
+
+        Pour gérer ces agents, un service AgentDirectory est fourni : il contient l'ensemble des agents recensés, et c'est lui-même un agent réagissant sur React().
+        A la réception du behavior React(), l'agentdirectory broadcast ce react à l'ensemble des agents qu'il connait par broacast.
+        Pour un exemple un peu plus solide : 
+        Agent : trader : il vend ou achète totalement au hasard 1 unité d'un bien,
+        Market : reçoit et traite les ordres des agents et tient à disposition le prix des biens proposés
+        External : publie à destination des agents des informations diverses, éventuellement aucune.
+        Pour le fonctionnement : 
+        Market => open
+            Un message react est envoyé à tous les actors (ou timer si vous préférez)
+            Le marché enregistre ensuite les ordres des traders et met à disposition un prix.
+            Le ticker auquel on peut s'abonner en tant qu'agent diffuse ce prix.
+        -   Les agents traders sont libres de passer autant d'ordres qu'ils veulent, ils ne sont activés fois
+    </p>
 </body>
 </html>

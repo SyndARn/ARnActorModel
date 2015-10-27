@@ -91,11 +91,17 @@ namespace Actor.RemoteLoading
             // start download
             string fileName = 
                 @"..\..\..\..\Actor.Plugin\bin\x64\Debug\"+ 
-                @"Actor.Plugin.dll"; 
-            FileStream str = new FileStream(fileName,FileMode.Open, FileAccess.Read);
+                @"Actor.Plugin.dll";
             MemoryStream mem = new MemoryStream();
-            str.CopyTo(mem);
-            up.SendMessage(new Tuple<IActor,MemoryStream>(down,mem));
+            FileStream str = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            try
+            {
+                str.CopyTo(mem);
+                up.SendMessage(new Tuple<IActor, MemoryStream>(down, mem));
+            } finally
+            {
+                str.Dispose();
+            }
         }
     }
 
@@ -160,25 +166,33 @@ namespace Actor.RemoteLoading
                  msg.sender.SendMessage("Download complete");
                 // try to do something with this assembly
                 MemoryStream ms = new MemoryStream();
-                foreach (var item in fChunkList.OrderBy(t => t.chunkPart))
+                Assembly asm2 = null;
+                try
                 {
-                    ms.Write(item.data, 0, item.data.Length);
-                }
+                    foreach (var item in fChunkList.OrderBy(t => t.chunkPart))
+                    {
+                        ms.Write(item.data, 0, item.data.Length);
+                    }
 
-                Assembly asm2 = Assembly.Load(ms.ToArray());
+                    asm2 = Assembly.Load(ms.ToArray());
+                }
+                finally
+                {
+                    ms.Dispose();
+                }
                 Debug.Assert(Assembly.GetExecutingAssembly() != asm2) ;
                 Console.WriteLine(asm2.GetName());
                 Console.WriteLine("Location"+asm2.Location);
 
-                var asmobj = asm2.CreateInstance("Actor.Plugin.actPlugin");
+                IActor asmobj = asm2.CreateInstance("Actor.Plugin.actPlugin") as IActor;
                 
                 Debug.Assert(asmobj != null);
                 
                 // register in directory
 
-                actDirectory.GetDirectory().Register((IActor)asmobj, "plugin");
+                actDirectory.GetDirectory().Register(asmobj, "plugin");
 
-                ((IActor)asmobj).SendMessage("Hello");
+                asmobj.SendMessage("Hello");
                 actSendByName<string>.SendByName("by name", "plugin");
             }
         }
