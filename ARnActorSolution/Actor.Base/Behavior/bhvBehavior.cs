@@ -22,6 +22,7 @@
 *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Actor.Base
 {
@@ -62,8 +63,6 @@ namespace Actor.Base
         // todo : speed up this one
         public IBehavior PatternMatching(Object msg)
         {
-            // linq here ?
-            // return fList.FirstOrDefault(t => (t != null) && t.StandardPattern(msg)) ;
             for (int i = 0; i < fList.Count; i++)
             {
                 if ((fList[i] != null) && (fList[i].StandardPattern(msg)))
@@ -96,6 +95,16 @@ namespace Actor.Base
     {
         public Func<T, Boolean> Pattern { get; protected set; }
         public Action<T> Apply { get; protected set; }
+        public TaskCompletionSource<T> Completion { get; protected set; }
+
+        public TaskCompletionSource<Object> StandardCompletion
+        {
+            get
+            {
+                return Completion as TaskCompletionSource<Object>;
+            }
+        }
+
         private Behaviors fLinkedBehaviors;
 
         public actActor LinkedActor
@@ -123,6 +132,14 @@ namespace Actor.Base
         {
             Pattern = aPattern;
             Apply = anApply;
+            Completion = null;
+        }
+
+        public bhvBehavior(Func<T, Boolean> aPattern, TaskCompletionSource<T> aCompletion)
+        {
+            Pattern = aPattern;
+            Apply = null;
+            Completion = aCompletion;
         }
 
         public bhvBehavior()
@@ -138,6 +155,7 @@ namespace Actor.Base
         {
             Pattern = t => { return t is T; };
             Apply = anApply;
+            Completion = null;
         }
 
         public Boolean StandardPattern(Object aT)

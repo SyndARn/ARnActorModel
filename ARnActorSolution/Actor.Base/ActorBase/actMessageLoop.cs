@@ -24,75 +24,62 @@ namespace Actor.Base
 
         public void Loop(actActor actActor)
         {
-            PatternFuture tcs = null;
+            IBehavior tcs = null;
+            Object msg = null;
             while ((!fCancel) && (Interlocked.CompareExchange(ref actActor.messCount, 0, 0) != 0))
             {
-                Object msg = null;
-                Action<Object> apply = null;
-
                 // message             
                 msg = actActor.ReceiveMessage();
+                tcs = null;
 
                 if (actActor.fBehaviors != null)
                 {
-                    IBehavior lBehavior = actActor.fBehaviors.PatternMatching(msg);
-                    if (lBehavior != null)
+                    tcs = actActor.fBehaviors.PatternMatching(msg);
+                    if (tcs == null)
                     {
-                        apply = lBehavior.StandardApply;
-                    }
-                }
-
-                if ((apply == null) && (Interlocked.CompareExchange(ref actActor.fReceiveMode, actActor.fReceiveMode, actActor.fReceiveMode) > 0))
-                {
-                    SpinWait spin = new SpinWait();
-                    while (Interlocked.CompareExchange(ref actActor.fTaskReserved, 1, 0) != 0)
-                    {
-                        spin.SpinOnce();
-                    }
-                    Queue<PatternFuture> list = new Queue<PatternFuture>();
-                    while ((tcs == null) && (actActor.fTCSQueue != null) && (actActor.fTCSQueue.Count > 0))
-                    {
-                        tcs = actActor.fTCSQueue.Dequeue();
-                        if (tcs.Pattern(msg))
+                        Queue<IBehavior> lQueue = new Queue<IBehavior>();
+                        while (actActor.fCompletions.TryDequeue(out tcs))
                         {
-                            tcs.Message = msg;
-                            break;
+                            if (!tcs.StandardPattern(msg))
+                            {
+                                lQueue.Enqueue(tcs);
+                                tcs = null;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
-                        else
+                        while (lQueue.Count > 0)
                         {
-                            list.Enqueue(tcs);
-                            tcs = null;
+                            actActor.fCompletions.Enqueue(lQueue.Dequeue());
                         }
                     }
-                    while (list.Any())
-                    {
-                        actActor.fTCSQueue.Enqueue(list.Dequeue());
-                    }
-                    Interlocked.Exchange(ref actActor.fTaskReserved, 0);
                 }
 
                 if (tcs != null)
                 {
-                    tcs.Message = msg;
-                    break;
-                }
-                else
-                    if (apply != null)
+                    if (tcs.StandardCompletion == null)
                     {
-                        apply(msg);
-                        apply = null;
-                    }
+                        tcs.StandardApply(msg);
+                        tcs = null;
+                    } 
                     else
                     {
-                        actActor.fMailBox.AddMiss(msg);
+                        break ;
                     }
+                }
+                else
+                {
+                    if (msg != null)
+                      actActor.fMailBox.AddMiss(msg);
+                }
             }
-
             fCancel = true;
             Interlocked.Exchange(ref actActor.fInTask, 0);
-            if (tcs != null)
+            if ((tcs != null) && (tcs.StandardCompletion != null))
             {
-                tcs.TaskCompletion.SetResult(tcs.Message);
+                tcs.StandardCompletion.SetResult(msg);
             }
             else
             {

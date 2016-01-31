@@ -125,7 +125,6 @@ namespace Actor.Util
             fCollection = aCollection;
         }
 
-
         public bool MoveNext()
         {
             fIndex++;
@@ -165,7 +164,6 @@ namespace Actor.Util
             }
         }
 
-
         object IEnumerator.Current
         {
             get
@@ -173,16 +171,15 @@ namespace Actor.Util
                 fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
                 var task = Receive(t =>
                 {
-                    return (t is Tuple<IteratorMethod, T>) && ((Tuple<IteratorMethod, T>)t).Item1 == IteratorMethod.OkCurrent;
+                    var tu = (Tuple<IteratorMethod, T>)t;
+                    return (tu != null) && (tu.Item1 == IteratorMethod.OkCurrent) ;
                 });
                 return (task.Result as Tuple<IteratorMethod, T>).Item2;
                 ;
             }
         }
 
-
     }
-
 
     public class actCollection<T> : actActor, IEnumerable<T>, IEnumerable
     {

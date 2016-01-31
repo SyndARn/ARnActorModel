@@ -60,10 +60,8 @@ namespace Actor.Base
     {
         public actTag Tag { get; private set; } // unique identifier, and host
         internal Behaviors fBehaviors; // our behavior
+        internal ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>();
         internal ActorMailBox fMailBox = new ActorMailBox(); // our mailbox
-        internal Queue<PatternFuture> fTCSQueue; // only allocate if needed in receive mode, protected by fTaskReserved
-        internal int fTaskReserved = 0; // queue pattern lock
-        internal int fReceiveMode = 0;
         internal actMessageLoop currentLoop;
         internal int fInTask = 0; // 0 out of task, 1 in task
 
@@ -77,6 +75,7 @@ namespace Actor.Base
 
         public static void CompleteInitialize(actActor anActor)
         {
+            anActor.fCompletions = new ConcurrentQueue<IBehavior>();
             anActor.fMailBox = new ActorMailBox();
             if (anActor.Tag == null)
             {
@@ -164,29 +163,14 @@ namespace Actor.Base
 
         protected async Task<Object> Receive(Func<Object, bool> aPattern)
         {
-            Interlocked.Increment(ref fReceiveMode);
             Object ret = null;
-
-            SpinWait sw = new SpinWait();
-            while (Interlocked.CompareExchange(ref fTaskReserved, 1, 0) != 0)
-            {
-                sw.SpinOnce();
-            }
-            var lTCS = new PatternFuture();
-            lTCS.Pattern = aPattern;
-            lTCS.TaskCompletion = new TaskCompletionSource<Object>();
-            if (fTCSQueue == null)
-            {
-                fTCSQueue = new Queue<PatternFuture>();
-            }
-            fTCSQueue.Enqueue(lTCS);
-            Interlocked.Exchange(ref fTaskReserved, 0);
+            var lTCS = new bhvBehavior<Object>(aPattern,new TaskCompletionSource<Object>()) ;
+            fCompletions.Enqueue(lTCS) ;
             AddMissedMessages();
             currentLoop.fCancel = true;
             Interlocked.Exchange(ref fInTask, 0);
             TrySetInTask(null);
-            ret = await lTCS.TaskCompletion.Task;
-            Interlocked.Decrement(ref fReceiveMode);
+            ret = await lTCS.Completion.Task;
             AddMissedMessages();
             TrySetInTask(null);
             return ret;

@@ -34,12 +34,14 @@ namespace Actor.Base
         void LinkBehaviors(Behaviors someBehaviors);
         void StandardApply(Object aT);
         bool StandardPattern(Object aT);
+        TaskCompletionSource<Object> StandardCompletion {get;}
     }
 
     public interface IBehavior<T> : IBehavior 
     {
         Func<T,Boolean> Pattern { get; }
         Action<T> Apply { get; }
+        TaskCompletionSource<T> Completion { get; }
     }
 
 

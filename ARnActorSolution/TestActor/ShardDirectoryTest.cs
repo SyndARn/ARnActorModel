@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
 using System.Linq;
 using Actor.Util;
+using Actor.Server;
 
 namespace TestActor
 {

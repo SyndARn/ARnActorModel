@@ -8,6 +8,7 @@ using Actor.Util;
 using Actor.RemoteLoading;
 using Actor.MonteCarlo;
 using Actor.Service;
+using Actor.Server;
 
 namespace Actor.TestApplication
 {

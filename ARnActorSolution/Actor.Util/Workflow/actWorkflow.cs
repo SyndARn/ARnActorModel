@@ -17,7 +17,7 @@ namespace Actor.Util
      * the apply change the status and anything else needed
      * pattern : accept workflow message
      * 
-     *  find a sutable transition
+     *  find a suitable transition
      * apply the elected transition
      * 
      * from the calling actor pov 
@@ -26,40 +26,66 @@ namespace Actor.Util
      * Workflow on a wfwMessage pattern election get a new status
      * GetStatus answer with the current status
     */
-    public class actWorkflow : actActor
+    public class actWorkflow<T> : actActor
     {
-        private wfwStatus fStart;
-        public actWorkflow() : base()
+        private IwfwStatus<T> fCurrent ;
+        public actWorkflow(IwfwStatus<T> startWith)
+            : base()
         {
-            BecomeMany(new wfwStatus());
+            fCurrent = startWith;
+            Become(new bhvBehavior<IwfwStatus<T>>(DoProcess));
+        }
+        private void DoProcess(IwfwStatus<T> aStatus)
+        {
+            // find transition
+            foreach(var tr in aStatus.TransitionList)
+            {
+                if (tr.Action.Pattern(aStatus))
+                {
+                    tr.Action.Apply(aStatus);
+                    // change status
+                    fCurrent = tr.Destination;
+                    break ;
+                }
+            }
         }
     }
 
-    public class wfwTransition : bhvBehavior<wfwMessage>
+    public class wfwTransition<T> : IwfwTransition<T>
     {
-    }
 
-    public class wfwStatusStart : wfwTransition
-    {
-        public wfwStatusStart() : base()
+        public IwfwStatus<T> Destination {get; set;}
+
+        public bhvBehavior<IwfwStatus<T>> Action
         {
-            Pattern = t => false ;
-            Apply = null ;
+            get;
+            set;
         }
     }
 
-    public class wfwStatus : Behaviors
+    public class wfwStatus<T> : IwfwStatus<T>
     {
+        public List<IwfwTransition<T>> TransitionList { get; private set; }
+        public string Current { get; protected set; }
         public wfwStatus()
         {
-
+            TransitionList = new List<IwfwTransition<T>>() ;
+            Current = string.Empty;
         }
+        public T Data { get; protected set; }
     }
 
-    public interface wfwMessage
+    public interface IwfwTransition<T>
     {
-        string FromStatus {get ;} 
-        string ToStatus {get ;}
+        IwfwStatus<T> Destination { get; }
+        bhvBehavior<IwfwStatus<T>> Action { get; }
+    }
+
+    public interface IwfwStatus<T>
+    {
+        string Current {get ;}
+        List<IwfwTransition<T>> TransitionList { get; }
+        T Data { get; }
     }
 
 }
