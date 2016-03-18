@@ -110,7 +110,10 @@ namespace Actor.Base
             }
             if (Interlocked.CompareExchange(ref fInTask, 1, 0) == 0)
             {
-                currentLoop = new actMessageLoop();
+                if ((currentLoop == null) || currentLoop.fCancel)
+                {
+                    currentLoop = new actMessageLoop();
+                }                
                 ActorTask.AddActor(this);
             }
         }

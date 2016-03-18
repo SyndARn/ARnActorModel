@@ -37,15 +37,8 @@ namespace Actor.Base
 
     /// <summary>
     /// ActorMailBox
-    ///   This mailbox works with the following guiding principles :
-    ///     ConcurrentQueue are threadsafe, but somehow slow, 
-    ///     Local queue are fast but unsafe.
-    ///     When we need a message (GetMessage ...)
-    ///     we first look on local queue (postpone)
-    ///     if nothing available, we fill out the concurrent queue into the postpone queue
-    ///     this way, access to ConcurrentQueue by this actor is reduced to only when needed
     /// </summary>
-    class ActorMailBox<T> // : IDisposable
+    class ActorMailBox<T> 
     {
         private ConcurrentQueue<T> fQueue = new ConcurrentQueue<T>(); // all actors may push here, only this one may dequeue
         private ConcurrentQueue<T> fMissed = new ConcurrentQueue<T>(); // only this one use it in run mode
@@ -79,12 +72,8 @@ namespace Actor.Base
         public T GetMessage()
         {
             T val = default(T);
-            if (fQueue.TryDequeue(out val))
-            {
-                return val;
-            }
-            else 
-            return default(T);
+            fQueue.TryDequeue(out val) ;
+            return val;
         }
 
     }

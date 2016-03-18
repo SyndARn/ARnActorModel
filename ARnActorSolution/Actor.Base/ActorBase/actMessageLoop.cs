@@ -10,72 +10,76 @@ namespace Actor.Base
     internal class actMessageLoop
     {
 
-        internal bool fCancel = false;
+        internal bool fCancel;
 
         public actMessageLoop()
         {
+            fCancel = false;
         }
 
         public void Loop(actActor actActor)
         {
-            IBehavior tcs = null;
             Object msg = null;
+            IBehavior receivetcs = null;
+
             while ((!fCancel) && (Interlocked.CompareExchange(ref actActor.messCount, 0, 0) != 0))
             {
-                // message             
+                bool patternmatch = false;
+                // get message             
                 msg = actActor.ReceiveMessage();
-                tcs = null;
 
+                // pattern matching
                 if (actActor.fBehaviors != null)
                 {
-                    tcs = actActor.fBehaviors.PatternMatching(msg);
-                    if (tcs == null)
+                    IBehavior tcs = actActor.fBehaviors.PatternMatching(msg);
+                    if (tcs != null)
                     {
-                        Queue<IBehavior> lQueue = new Queue<IBehavior>();
-                        while (actActor.fCompletions.TryDequeue(out tcs))
-                        {
-                            if (!tcs.StandardPattern(msg))
-                            {
-                                lQueue.Enqueue(tcs);
-                                tcs = null;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        while (lQueue.Count > 0)
-                        {
-                            actActor.fCompletions.Enqueue(lQueue.Dequeue());
-                        }
+                        tcs.StandardApply(msg);
+                        patternmatch = true;
                     }
                 }
 
-                if (tcs != null)
+                bool receivematch = false;
+                // receive pattern
+                if (! patternmatch)
                 {
-                    if (tcs.StandardCompletion == null)
+                    Queue<IBehavior> lQueue = new Queue<IBehavior>();
+                    while (actActor.fCompletions.TryDequeue(out receivetcs))
                     {
-                        tcs.StandardApply(msg);
-                        tcs = null;
-                    } 
-                    else
+                        if (!receivetcs.StandardPattern(msg))
+                        {
+                            lQueue.Enqueue(receivetcs);
+                            receivetcs = null;
+                        }
+                        else
+                        {
+                            if (receivetcs.StandardCompletion != null)
+                            {
+                                receivematch = true;
+                                fCancel = true;
+                                break;
+                            }
+                            else
+                                receivetcs = null;
+                        }
+                    }
+                    while (lQueue.Count > 0)
                     {
-                        break ;
+                        actActor.fCompletions.Enqueue(lQueue.Dequeue());
                     }
                 }
-                else
+
+                // miss
+                if (!patternmatch && !receivematch && msg != null)
                 {
-                    if (msg != null)
-                    {
-                        actActor.fMailBox.AddMiss(msg);
-                    }
+                    actActor.fMailBox.AddMiss(msg);
                 }
             }
-            fCancel = true;
+
             Interlocked.Exchange(ref actActor.fInTask, 0);
-            if ((tcs != null) && (tcs.StandardCompletion != null))
+            if (receivetcs != null)
             {
-                tcs.StandardCompletion.SetResult(msg);
+                receivetcs.StandardCompletion.SetResult(msg);
             }
             else
             {
@@ -84,7 +88,6 @@ namespace Actor.Base
                     actActor.TrySetInTask(null);
                 }
             }
-
         }
 
     }
