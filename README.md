@@ -1,5 +1,5 @@
-# ARnActorSolution
-ARnActor Actor Model for C#
+# ARnActorModel
+A C# Actor Model library.
 
 I was looking for an actor model things with some requirements :
  - no dependancy from another library
