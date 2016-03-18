@@ -68,7 +68,11 @@ namespace Actor.Util
                     {
                         actSendByName<string>.SendByName("Server found", "Console");
                         ans.Item2.SendMessage(new ServerMessage<string>(this, ServerRequest.Connect, default(string)));
-                        Receive(m => (m is ServerMessage<string>) && (((ServerMessage<string>)m).Request.Equals(ServerRequest.Accept))).ContinueWith(
+                        Receive(m => 
+                            {
+                                ServerMessage<string> sm = m as ServerMessage<string> ;
+                                return m != null && (sm.Request.Equals(ServerRequest.Accept));
+                            }).ContinueWith(
                             (c) =>
                             {
                                 actSendByName<string>.SendByName("Client connected", "Console");
@@ -125,8 +129,11 @@ namespace Actor.Util
         protected override void ReceiveAnswer(ServerMessage<string> aMessage)
         {
             // echo to console
-            actSendByName<string>.SendByName(
-                "client receive " + aMessage.Data, "Console");
+            if (aMessage != null)
+            {
+                actSendByName<string>.SendByName(
+                    "client receive " + aMessage.Data, "Console");
+            }
         }
     }
 }

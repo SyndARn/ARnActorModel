@@ -107,28 +107,29 @@ namespace Actor.Base
         {
             // get the request stream
             Stream str = aContext.Request.InputStream;
-            MemoryStream ms = new MemoryStream();
-            str.CopyTo(ms);
-            ms.Seek(0, SeekOrigin.Begin);
-            StreamReader sr = new StreamReader(ms);
-            while (!sr.EndOfStream)
+            using (MemoryStream ms = new MemoryStream())
             {
-                var req = sr.ReadLine();
-                Debug.Print("receive " + req);
+                str.CopyTo(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                StreamReader sr = new StreamReader(ms);
+                while (!sr.EndOfStream)
+                {
+                    var req = sr.ReadLine();
+                    Debug.Print("receive " + req);
+                }
+
+                SerialObject so = NetDataActorSerializer.DeSerialize(ms);
+                // prepare an answer
+                HttpListenerResponse Response = aContext.Response;
+
+                // write something to response ...
+                Response.Close();
+
+                // find hosted actor directory
+                // forward msg to hostedactordirectory
+                Become(new bhvBehavior<SerialObject>(t => { return true; }, ProcessMessage));
+                SendMessage(so);
             }
-
-            SerialObject so = NetDataActorSerializer.DeSerialize(ms);
-
-            // prepare an answer
-            HttpListenerResponse Response = aContext.Response;
-            
-            // write something to response ...
-            Response.Close();
-            
-            // find hosted actor directory
-            // forward msg to hostedactordirectory
-            Become(new bhvBehavior<SerialObject>(t => { return true; }, ProcessMessage));
-            SendMessage(so);
 
         }
 

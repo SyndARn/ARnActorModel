@@ -138,10 +138,15 @@ namespace Actor.Base
             }
         }
 
-        public static actActor operator +(actActor anActor, Object aMessage)
+        public static actActor Add(actActor anActor, Object aMessage)
         {
             anActor.SendMessage(aMessage);
             return anActor;
+        }
+
+        public static actActor operator +(actActor anActor, Object aMessage)
+        {
+            return Add(anActor, aMessage);
         }
 
         public actActor(Behaviors someBehaviors)
@@ -154,6 +159,12 @@ namespace Actor.Base
         {
             Tag = new actTag();
             Become(aBehavior);
+        }
+
+        public actActor(IBehavior[] someBehaviors)
+        {
+            Tag = new actTag();
+            Becomes(someBehaviors);
         }
 
         public actActor()
@@ -208,6 +219,18 @@ namespace Actor.Base
         {
             fBehaviors = new Behaviors();
             fBehaviors.AddBehavior(aBehavior);
+            fBehaviors.LinkToActor(this);
+            AddMissedMessages();
+            TrySetInTask(null);
+        }
+
+        protected void Becomes(IBehavior[] manyBehaviors)
+        {
+            fBehaviors = new Behaviors();
+            foreach (var item in manyBehaviors)
+            {
+                fBehaviors.AddBehavior(item);
+            }
             fBehaviors.LinkToActor(this);
             AddMissedMessages();
             TrySetInTask(null);

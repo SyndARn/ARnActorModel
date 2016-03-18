@@ -14,7 +14,6 @@ namespace Actor.TestApplication
 {
     class Program
     {
-        static IActor fMain;
         static actMillion fMillion;
         static void Main(string[] args)
         {
@@ -25,13 +24,13 @@ namespace Actor.TestApplication
                 lName = args.Where(t => t.StartsWith("-n:")).FirstOrDefault();
                 lPort = args.Where(t => t.StartsWith("-p:")).FirstOrDefault();
             }
-            if (lName != "")
+            if (! string.IsNullOrEmpty(lName))
             {
                 lName = lName.Replace("-n:", "");
             }
             else
                 lName = "ARnActorServer";
-            if (lPort != "")
+            if (! String.IsNullOrEmpty(lPort))
             {
                 lPort = lPort.Replace("-p:", "");
             }
@@ -39,7 +38,7 @@ namespace Actor.TestApplication
                 lPort = "80";
 
             ActorServer.Start(lName, int.Parse(lPort));
-            fMain = new ActorMain();
+            IActor fMain = new ActorMain();
 
             // new actActionReceiver().ConsoleWrite("Welcome in an action world");
 

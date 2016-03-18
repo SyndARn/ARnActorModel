@@ -62,27 +62,29 @@ namespace Actor.Base
         private void DoListen(TcpClient client)
         {
             NetworkStream stream = client.GetStream();
-            MemoryStream memStream = new MemoryStream();
-            stream.CopyTo(memStream);
-            StreamReader sr = new StreamReader(memStream);
-            while (!sr.EndOfStream)
+            using (MemoryStream memStream = new MemoryStream())
             {
-                var req = sr.ReadLine();
-                Debug.Print("receive " + req);
+                stream.CopyTo(memStream);
+                StreamReader sr = new StreamReader(memStream);
+                while (!sr.EndOfStream)
+                {
+                    var req = sr.ReadLine();
+                    Debug.Print("receive " + req);
+                }
+                memStream.Seek(0, SeekOrigin.Begin);
+                NetDataContractSerializer dcs = new NetDataContractSerializer();
+                dcs.SurrogateSelector = new ActorSurrogatorSelector();
+                dcs.Binder = new ActorBinder();
+                Object obj = dcs.ReadObject(memStream);
+                SerialObject so = (SerialObject)obj;
+
+                // no answer expected
+                client.Close();
+
+                // find hosted actor directory
+                // forward msg to hostedactordirectory
+                SendMessage(so);
             }
-            memStream.Seek(0, SeekOrigin.Begin);
-            NetDataContractSerializer dcs = new NetDataContractSerializer();
-            dcs.SurrogateSelector = new ActorSurrogatorSelector();
-            dcs.Binder = new ActorBinder();
-            Object obj = dcs.ReadObject(memStream);
-            SerialObject so = (SerialObject)obj;
-
-            // no answer expected
-            client.Close();
-
-            // find hosted actor directory
-            // forward msg to hostedactordirectory
-            SendMessage(so);
         }
 
         private void DoProcessMessage(SerialObject aSerial)

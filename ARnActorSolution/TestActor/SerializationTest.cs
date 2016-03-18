@@ -106,31 +106,33 @@ namespace TestActor
             dcs.SurrogateSelector = new ActorSurrogatorSelector();
             dcs.Binder = new ActorBinder();
 
-            MemoryStream ms = new MemoryStream();
-            dcs.Serialize(ms, so);
+            using (MemoryStream ms = new MemoryStream())
+            {
+                dcs.Serialize(ms, so);
 
-            // display
-            ms.Seek(0, SeekOrigin.Begin);
-            StreamReader sr = new StreamReader(ms);
-            while (!sr.EndOfStream)
-                Debug.Print(sr.ReadLine());
+                // display
+                ms.Seek(0, SeekOrigin.Begin);
+                StreamReader sr = new StreamReader(ms);
+                while (!sr.EndOfStream)
+                    Debug.Print(sr.ReadLine());
 
-            // deserialize
-            ms.Seek(0, SeekOrigin.Begin);
-            Object obj = dcs.ReadObject(ms);
-            SerialObject soread = (SerialObject)obj;
-            
-            // test
-            var lst2 = (List<IActor>)soread.Data;
+                // deserialize
+                ms.Seek(0, SeekOrigin.Begin);
+                Object obj = dcs.ReadObject(ms);
+                SerialObject soread = (SerialObject)obj;
 
-            Assert.AreEqual(2, lst2.Count);
-            var l1 = (actRemoteActor)(lst2.First());
-            var l2 = (actRemoteActor)(lst2.Last());
+                // test
+                var lst2 = (List<IActor>)soread.Data;
 
-            Assert.AreEqual(so.Tag.Id,soread.Tag.Id) ;
+                Assert.AreEqual(2, lst2.Count);
+                var l1 = (actRemoteActor)(lst2.First());
+                var l2 = (actRemoteActor)(lst2.Last());
 
-            Assert.AreEqual(tst1.Tag.Id, l1.remoteTag.Id);
-            Assert.AreEqual(tst2.Tag.Id, l2.remoteTag.Id);
+                Assert.AreEqual(so.Tag.Id, soread.Tag.Id);
+
+                Assert.AreEqual(tst1.Tag.Id, l1.remoteTag.Id);
+                Assert.AreEqual(tst2.Tag.Id, l2.remoteTag.Id);
+            }
         }
     }
 }

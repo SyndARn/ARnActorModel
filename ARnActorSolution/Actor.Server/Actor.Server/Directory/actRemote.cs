@@ -67,22 +67,24 @@ namespace Actor.Base
             so.Data = aMsg;
             so.Tag = fRemoteTag;
 
-            MemoryStream ms = new MemoryStream();
-            NetDataActorSerializer.Serialize(so, ms);
-
-            ms.Seek(0, SeekOrigin.Begin);
-            StreamReader sr = new StreamReader(ms);
-            while (!sr.EndOfStream)
-                Debug.Print(sr.ReadLine());
-
-            ms.Seek(0, SeekOrigin.Begin);
-            // No response expected
-            using (var client = new HttpClient())
+            using (MemoryStream ms = new MemoryStream())
             {
-                using (var hc = new StreamContent(ms))
+                NetDataActorSerializer.Serialize(so, ms);
+
+                ms.Seek(0, SeekOrigin.Begin);
+                StreamReader sr = new StreamReader(ms);
+                while (!sr.EndOfStream)
+                    Debug.Print(sr.ReadLine());
+
+                ms.Seek(0, SeekOrigin.Begin);
+                // No response expected
+                using (var client = new HttpClient())
                 {
-                    Uri uri = new Uri(so.Tag.Uri);
-                    client.PostAsync(uri, hc).Wait();
+                    using (var hc = new StreamContent(ms))
+                    {
+                        Uri uri = new Uri(so.Tag.Uri);
+                        client.PostAsync(uri, hc).Wait();
+                    }
                 }
             }
         }

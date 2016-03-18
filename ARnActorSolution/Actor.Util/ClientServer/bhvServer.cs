@@ -68,7 +68,7 @@ namespace Actor.Util
 
         protected abstract void DoRequest(ServerMessage<T> aMessage);
 
-        public void SendAnswer(ServerMessage<T> aMessage, T data)
+        public static void SendAnswer(ServerMessage<T> aMessage, T data)
         {
             aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Answer, data));
         }

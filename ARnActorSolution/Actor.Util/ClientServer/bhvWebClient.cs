@@ -11,13 +11,25 @@ namespace Actor.Util
     public class WebRequest
     {
         public IActor Sender { get; set; }
-        public string Url { get; set; }
+        public Uri Url { get; set; }
+        public WebAnswer CastAnswer(string s)
+        {
+            return WebAnswer.Cast(Url,s) ;
+        }
     }
 
     public class WebAnswer
     {
-        public string Url { get; set; }
-        public string Answer { get; set; }
+        public Uri Url { get; private set; }
+        public string Answer { get; private set; }
+        public static WebAnswer Cast(Uri anUri, string anAnswer)
+        {
+            return new WebAnswer()
+            {
+                Url = anUri,
+                Answer = anAnswer
+            };
+        }
     }
 
     public class bhvWebClient : bhvBehavior<WebRequest>
@@ -31,20 +43,12 @@ namespace Actor.Util
 
         private void DoWebRequestApply(WebRequest aWebRequest)
         {
-            if (string.IsNullOrEmpty(aWebRequest.Url)==false)
+            if (aWebRequest.Url != null)
             {
-                HttpClient client = new HttpClient();
-                try
+                using (HttpClient client = new HttpClient())
                 {
                     string s = client.GetStringAsync(aWebRequest.Url).Result;
-                    var ans = new WebAnswer();
-                    ans.Url = aWebRequest.Url;
-                    ans.Answer = s;
-                    aWebRequest.Sender.SendMessage(ans);
-                }
-                finally
-                {
-                    client.Dispose();
+                    aWebRequest.Sender.SendMessage(aWebRequest.CastAnswer(s));
                 }
             }
         }
@@ -57,7 +61,7 @@ namespace Actor.Util
         {
             Become(new bhvWebClient());
         }
-        public static WebRequest Cast(IActor aSender, string anUrl)
+        public static WebRequest Cast(IActor aSender, Uri anUrl)
         {
             return new WebRequest() { Sender = aSender, Url = anUrl };
         }

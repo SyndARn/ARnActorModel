@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Actor.RemoteLoading
 {
 
-    public class bhvDynActor :actActor
+    public class bhvDynActor : actActor
     {
         public bhvDynActor()
             : base()
@@ -38,12 +38,12 @@ namespace Actor.RemoteLoading
         private string ActorClass;
     }
 
-    public class bhvRemoteLoading : bhvBehavior<bhvRemoteActor> 
+    public class bhvRemoteLoading : bhvBehavior<bhvRemoteActor>
     {
         public bhvRemoteLoading()
         {
-            this.Apply = Behavior ;
-            this.Pattern = t => true ;
+            this.Apply = Behavior;
+            this.Pattern = t => true;
         }
 
         private void Behavior(bhvRemoteActor msg)
@@ -53,7 +53,7 @@ namespace Actor.RemoteLoading
             // start actor
             // send back actor name
         }
-     }
+    }
 
     public class chunk
     {
@@ -65,8 +65,9 @@ namespace Actor.RemoteLoading
 
     public class actActorUpload : actActor
     {
-        public actActorUpload() : base(new bhvUpload()) 
-        { 
+        public actActorUpload()
+            : base(new bhvUpload())
+        {
         }
     }
 
@@ -89,18 +90,16 @@ namespace Actor.RemoteLoading
             // start upload
             IActor up = new actActorUpload();
             // start download
-            string fileName = 
-                @"..\..\..\..\Actor.Plugin\bin\x64\Debug\"+ 
+            string fileName =
+                @"..\..\..\..\Actor.Plugin\bin\x64\Debug\" +
                 @"Actor.Plugin.dll";
-            MemoryStream mem = new MemoryStream();
-            FileStream str = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            try
+            using (MemoryStream mem = new MemoryStream())
             {
-                str.CopyTo(mem);
-                up.SendMessage(new Tuple<IActor, MemoryStream>(down, mem));
-            } finally
-            {
-                str.Dispose();
+                using (FileStream str = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                {
+                    str.CopyTo(mem);
+                    up.SendMessage(new Tuple<IActor, MemoryStream>(down, mem));
+                }
             }
         }
     }
@@ -118,10 +117,10 @@ namespace Actor.RemoteLoading
 
             // divide object in chunk
             int chunkSize = 2048;
-            int memSize = msg.Item2.Capacity ;
+            int memSize = msg.Item2.Capacity;
             int pos = 0;
-            int chunknumber = 0 ;
-            List<chunk> chunkList = new List<chunk>() ;
+            int chunknumber = 0;
+            List<chunk> chunkList = new List<chunk>();
             msg.Item2.Seek(0, SeekOrigin.Begin);
             while (pos < memSize)
             {
@@ -131,7 +130,7 @@ namespace Actor.RemoteLoading
                 chk.data = new byte[currChunkSize];
                 msg.Item2.Read(chk.data, 0, currChunkSize);
                 pos += currChunkSize;
-                chunkList.Add(chk) ;
+                chunkList.Add(chk);
             }
             chunkList.OrderBy(t => t.chunkPart).Last().last = true;
 
@@ -144,26 +143,26 @@ namespace Actor.RemoteLoading
     }
 
     public class bhvDownload : bhvBehavior<chunk>
-{
-        private List<chunk> fChunkList = new List<chunk>() ;
+    {
+        private List<chunk> fChunkList = new List<chunk>();
 
         private bool fComplete = false;
 
         public bhvDownload()
         {
-            this.Apply = Behavior ;
-            this.Pattern = t => true ;
+            this.Apply = Behavior;
+            this.Pattern = t => true;
         }
 
         private void Behavior(chunk msg)
         {
             fChunkList.Add(msg);
-            var lastMsg = fChunkList.Where(t => t.last).FirstOrDefault() ;
-            if ((lastMsg != null) && (fChunkList.Count - 1 == lastMsg.chunkPart)) 
+            var lastMsg = fChunkList.Where(t => t.last).FirstOrDefault();
+            if ((lastMsg != null) && (fChunkList.Count - 1 == lastMsg.chunkPart))
             {
                 fComplete = true;
                 // send complete to sender
-                 msg.sender.SendMessage("Download complete");
+                msg.sender.SendMessage("Download complete");
                 // try to do something with this assembly
                 MemoryStream ms = new MemoryStream();
                 Assembly asm2 = null;
@@ -180,14 +179,14 @@ namespace Actor.RemoteLoading
                 {
                     ms.Dispose();
                 }
-                Debug.Assert(Assembly.GetExecutingAssembly() != asm2) ;
+                Debug.Assert(Assembly.GetExecutingAssembly() != asm2);
                 Console.WriteLine(asm2.GetName());
-                Console.WriteLine("Location"+asm2.Location);
+                Console.WriteLine("Location" + asm2.Location);
 
                 IActor asmobj = asm2.CreateInstance("Actor.Plugin.actPlugin") as IActor;
-                
+
                 Debug.Assert(asmobj != null);
-                
+
                 // register in directory
 
                 actDirectory.GetDirectory().Register(asmobj, "plugin");
@@ -196,6 +195,6 @@ namespace Actor.RemoteLoading
                 actSendByName<string>.SendByName("by name", "plugin");
             }
         }
-}
+    }
 
 }

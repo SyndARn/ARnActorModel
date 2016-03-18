@@ -28,6 +28,7 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Actor.Base
 {
@@ -43,10 +44,10 @@ namespace Actor.Base
             int ioThread;
             ThreadPool.GetAvailableThreads(out workerThread, out ioThread);
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Max Active Threads " + workerThread.ToString() + " " + ioThread.ToString());
-            sb.AppendLine("Task processed " + numAddTask.ToString());
+            sb.AppendLine("Max Active Threads " + workerThread.ToString(CultureInfo.InvariantCulture) + " " + ioThread.ToString(CultureInfo.InvariantCulture));
+            sb.AppendLine("Task processed " + numAddTask.ToString(CultureInfo.InvariantCulture));
             long total = numAddTask - numCloseTask; // 2 at rest, the actorserver AND the current task
-            sb.AppendLine("Task running " + total.ToString());
+            sb.AppendLine("Task running " + total.ToString(CultureInfo.InvariantCulture));
             return sb.ToString();
         }
 

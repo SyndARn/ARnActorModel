@@ -13,6 +13,7 @@ namespace Actor.Server
         public string Name { get; private set; }
         public int Port { get; private set; }
         private string fFullHost = "" ;
+        private actHostRelay fActHostRelay;
         public string FullHost { get 
         {
             if (string.IsNullOrEmpty(fFullHost))
@@ -61,7 +62,7 @@ namespace Actor.Server
             if (withRelay)
             {
                 new actShardDirectory(); // start shard directory
-                new actHostRelay();
+                fActHostRelay = new actHostRelay();
             }
             // new actTcpServer();
         }

@@ -76,6 +76,10 @@
       <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
       <Name>Actor.Server</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Actor.Util\Actor.Util.csproj">
+      <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
+      <Name>Actor.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

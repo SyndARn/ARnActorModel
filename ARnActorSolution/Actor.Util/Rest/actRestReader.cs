@@ -80,7 +80,7 @@ namespace Actor.Util
         {
             (LinkedTo as bhvRestReader).fAnswer = anUri.Item2;
             var actWeb = new actActorWeb();
-            var wr = actActorWeb.Cast(LinkedActor, anUri.Item1.AbsoluteUri);
+            var wr = actActorWeb.Cast(LinkedActor, anUri.Item1);
             actWeb.SendMessage(wr);
         }
     }

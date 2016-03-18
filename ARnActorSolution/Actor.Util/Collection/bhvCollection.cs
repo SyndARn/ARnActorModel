@@ -130,7 +130,10 @@ namespace Actor.Util
             fIndex++;
             fCollection.SendMessage(Tuple.Create(IteratorMethod.MoveNext, fIndex, (IActor)this));
             return (Receive(t =>
-            { return (t is Tuple<IteratorMethod, bool>) && ((Tuple<IteratorMethod, bool>)t).Item1 == IteratorMethod.OkMoveNext; }
+            {
+                var tuple = t as Tuple<IteratorMethod, bool>;
+                return tuple != null && tuple.Item1 == IteratorMethod.OkMoveNext; 
+            }
                 ).Result as Tuple<IteratorMethod, bool>).Item2;
         }
 
@@ -158,7 +161,8 @@ namespace Actor.Util
                 fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
                 var task = Receive(t =>
                 {
-                    return (t is Tuple<IteratorMethod, T>) && ((Tuple<IteratorMethod, T>)t).Item1 == IteratorMethod.OkCurrent;
+                    var tuple = t as Tuple<IteratorMethod, T>;
+                    return tuple != null &&  tuple.Item1 == IteratorMethod.OkCurrent;
                 });
                 return (task.Result as Tuple<IteratorMethod, T>).Item2 ;
             }

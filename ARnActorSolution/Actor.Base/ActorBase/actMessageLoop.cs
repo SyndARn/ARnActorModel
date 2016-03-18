@@ -16,12 +16,6 @@ namespace Actor.Base
         {
         }
 
-        public static void Start(actActor actor)
-        {
-            actMessageLoop loop = new actMessageLoop();
-            loop.Loop(actor);
-        }
-
         public void Loop(actActor actActor)
         {
             IBehavior tcs = null;
@@ -72,7 +66,9 @@ namespace Actor.Base
                 else
                 {
                     if (msg != null)
-                      actActor.fMailBox.AddMiss(msg);
+                    {
+                        actActor.fMailBox.AddMiss(msg);
+                    }
                 }
             }
             fCancel = true;
