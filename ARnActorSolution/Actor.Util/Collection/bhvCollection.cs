@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Actor.Util
@@ -118,27 +119,31 @@ namespace Actor.Util
     {
         private actCollection<T> fCollection;
 
-        private int fIndex = -1;
+        private int fIndex ;
 
         public actCollectionEnumerator(actCollection<T> aCollection) : base()
         {
             fCollection = aCollection;
+            fIndex = -1;
         }
 
         public bool MoveNext()
         {
-            fIndex++;
-            fCollection.SendMessage(Tuple.Create(IteratorMethod.MoveNext, fIndex, (IActor)this));
-            return (Receive(t =>
+            Interlocked.Increment(ref fIndex);
+            var task = Receive(t =>
             {
                 var tuple = t as Tuple<IteratorMethod, bool>;
                 return tuple != null && tuple.Item1 == IteratorMethod.OkMoveNext; 
             }
-                ).Result as Tuple<IteratorMethod, bool>).Item2;
+                ) ;
+            fCollection.SendMessage(Tuple.Create(IteratorMethod.MoveNext, fIndex, (IActor)this));
+            
+           return (task.Result as Tuple<IteratorMethod, bool>).Item2;
         }
 
         // better than this ?
-        public void Reset() { fIndex = -1; }
+        public void Reset() { 
+            Interlocked.Exchange(ref fIndex,-1) ; }
 
         public void Dispose()
         {
@@ -158,13 +163,13 @@ namespace Actor.Util
         {
             get
             {
-                fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
                 var task = Receive(t =>
                 {
                     var tuple = t as Tuple<IteratorMethod, T>;
                     return tuple != null &&  tuple.Item1 == IteratorMethod.OkCurrent;
                 });
-                return (task.Result as Tuple<IteratorMethod, T>).Item2 ;
+                fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
+                return (task.Result as Tuple<IteratorMethod, T>).Item2;
             }
         }
 
@@ -172,12 +177,12 @@ namespace Actor.Util
         {
             get
             {
-                fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
                 var task = Receive(t =>
                 {
                     var tu = (Tuple<IteratorMethod, T>)t;
                     return (tu != null) && (tu.Item1 == IteratorMethod.OkCurrent) ;
                 });
+                fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
                 return (task.Result as Tuple<IteratorMethod, T>).Item2;
                 ;
             }
@@ -205,22 +210,22 @@ namespace Actor.Util
 
         public void Add(T aData)
         {
-            SendMessage(Tuple.Create(CollectionRequest.Add, aData));
             Receive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkAdd;
             }) ;
+            SendMessage(Tuple.Create(CollectionRequest.Add, aData));
         }
 
         public void Remove(T aData)
         {
-            SendMessage(Tuple.Create(CollectionRequest.Remove, aData));
             Receive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkRemove;
             });
+            SendMessage(Tuple.Create(CollectionRequest.Remove, aData));
         }
     }
 

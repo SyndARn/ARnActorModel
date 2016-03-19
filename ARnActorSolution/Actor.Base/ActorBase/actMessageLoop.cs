@@ -21,12 +21,15 @@ namespace Actor.Base
         {
             Object msg = null;
             IBehavior receivetcs = null;
+            bool patternmatch = false;
+            bool receivematch = false;
 
             while ((!fCancel) && (Interlocked.CompareExchange(ref actActor.messCount, 0, 0) != 0))
             {
-                bool patternmatch = false;
                 // get message             
                 msg = actActor.ReceiveMessage();
+                patternmatch = false;
+                receivematch = false;
 
                 // pattern matching
                 if (actActor.fBehaviors != null)
@@ -39,7 +42,6 @@ namespace Actor.Base
                     }
                 }
 
-                bool receivematch = false;
                 // receive pattern
                 if (! patternmatch)
                 {
@@ -77,7 +79,7 @@ namespace Actor.Base
             }
 
             Interlocked.Exchange(ref actActor.fInTask, 0);
-            if (receivetcs != null)
+            if (receivematch)
             {
                 receivetcs.StandardCompletion.SetResult(msg);
             }

@@ -55,7 +55,7 @@ namespace TestActor
                 var collect = new actCollection<string>();
                 for (int i = 0; i < 100; i++)
                     collect.Add(string.Format("Test {0}", i));
-                Assert.IsTrue(collect.Count() == 100);
+                Assert.AreEqual(100,collect.Count());
                 // try to enum
                 var enumerable = collect.ToList();
                 Assert.AreEqual(100, enumerable.Count);

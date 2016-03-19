@@ -16,7 +16,9 @@ namespace Actor.Base
         public ActorException(string message)
             : base(message)
         { }
+
+        public ActorException(String message, Exception inner) : base(message, inner) { }
+
     }
-    // CA1032	Implement standard exception constructors	Add the following constructor to 'ActorException': public ActorException(String, Exception).	Actor.Base	ActorException.cs	10
 
 }
