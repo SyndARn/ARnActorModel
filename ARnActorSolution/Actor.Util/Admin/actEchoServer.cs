@@ -30,6 +30,7 @@ using Actor.Server;
 
 namespace Actor.Util
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actEchoServer : actActor
     {
         public actEchoServer()
@@ -41,6 +42,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actEchoClient : actActor
     {
         private bhvEchoClient aClient;
@@ -50,10 +52,10 @@ namespace Actor.Util
             aClient = new bhvEchoClient();
         }
 
-        public void Connect(string ServerName)
+        public void Connect(string aServerName)
         {
             Become(new bhvBehavior<Tuple<string, string>>(t => { return t.Item1 == "Connect"; }, DoConnect));
-            SendMessage(Tuple.Create("Connect", ServerName));
+            SendMessage(Tuple.Create("Connect", aServerName));
         }
 
         protected void DoConnect(Tuple<string, string> msgcon)
@@ -90,9 +92,9 @@ namespace Actor.Util
             // repeat message
         }
 
-        public void SendMessage(string s)
+        public void SendMessage(string message)
         {
-            SendMessage(new ServerMessage<string>(this, ServerRequest.Request, s));
+            SendMessage(new ServerMessage<string>(this, ServerRequest.Request, message));
         }
         //public void Disconnect()
         //{

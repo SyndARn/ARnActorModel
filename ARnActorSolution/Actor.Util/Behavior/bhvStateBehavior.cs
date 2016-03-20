@@ -30,6 +30,7 @@ using Actor.Base;
 namespace Actor.Util
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actStatefullActor<T> : actActor
     {
         public actStatefullActor()
@@ -53,6 +54,7 @@ namespace Actor.Util
 
     public enum StateAction { Set, Get } ;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvStateBehavior<T> : bhvBehavior<Tuple<StateAction, T>>
     {
         private T fValue;

@@ -44,7 +44,7 @@ namespace TestActor
                     Assert.AreEqual(2, enumerable.Count);
                     fLauncher.Finish();
                 });
-            fLauncher.Wait();
+            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace TestActor
                 Assert.AreEqual(query.Count(), 19);
                 fLauncher.Finish();
             });
-            fLauncher.Wait();
+            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }

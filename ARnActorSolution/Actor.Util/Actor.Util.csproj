@@ -71,10 +71,9 @@
     <Compile Include="Admin\ActorAdminServer.cs" />
     <Compile Include="Admin\ActorEcho.cs" />
     <Compile Include="Behavior\bhvCrudBehavior.cs" />
-    <Compile Include="Behavior\bhvJSonState.cs" />
     <Compile Include="Behavior\bhvStateBehavior.cs" />
     <Compile Include="Collection\actObservable.cs" />
-    <Compile Include="Collection\ActorQueue.cs" />
+    <Compile Include="Collection\actQueue.cs" />
     <Compile Include="Admin\ActorStatServer.cs" />
     <Compile Include="actRemoteTest.cs" />
     <Compile Include="Behavior\bhvBroadCast.cs" />

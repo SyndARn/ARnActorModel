@@ -34,6 +34,7 @@ using Actor.Server;
 
 namespace Actor.Base
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actTcpServer : actActor
     {
         TcpListener fTcpListener;
@@ -57,6 +58,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actEntryConnection : actAction<TcpClient>
     {
         private void DoListen(TcpClient client)

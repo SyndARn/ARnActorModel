@@ -31,6 +31,7 @@ namespace Actor.Util
 {
     public enum CrudeAction { Select, Insert, Update, Delete } ;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actCrudeActor<T> : actActor
     {
         public actCrudeActor()
@@ -62,6 +63,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvCrudeBehavior<T> : bhvBehavior<Tuple<CrudeAction, T>>
     {
          private T fValue;

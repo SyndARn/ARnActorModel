@@ -29,6 +29,7 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvConsole : Behaviors
     {
         public bhvConsole()
@@ -44,6 +45,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvConsole<T> : bhvBehavior<T>
     {
         public bhvConsole()

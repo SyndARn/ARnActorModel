@@ -21,8 +21,14 @@ namespace TestActor
 
         public bool Wait()
         {
+            return Wait(10000);
+        }
+
+        public bool Wait(int ms)
+        {
             var val = Receive(t => t is bool);
-            return (bool)val.Result;
+            var inTime = val.Wait(ms);
+            return inTime && (bool)val.Result;
         }
     }
 }

@@ -52,7 +52,7 @@ namespace TestActor
         {
           ActorServer.Start(this.ToString(), 80);
           fLauncher.SendAction(() => {new actShardDirectoryClientTest(); }) ;
-          fLauncher.Wait();
+            Assert.IsTrue(fLauncher.Wait(10000));
         }
     }
 }

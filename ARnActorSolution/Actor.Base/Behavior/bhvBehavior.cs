@@ -75,6 +75,7 @@ namespace Actor.Base
 
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvBehavior : bhvBehavior<Object>
     {
         public bhvBehavior():base()

@@ -35,6 +35,7 @@ namespace Actor.Base
     ///   It allows to send message to an actor only knowing his alias name in Directory
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actSendByName<T> : actActor
     {
         // The message to be send

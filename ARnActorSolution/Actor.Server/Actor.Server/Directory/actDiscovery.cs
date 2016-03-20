@@ -31,6 +31,7 @@ namespace Actor.Base
     /// <summary>
     /// Return public services in a shard
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actDiscovery : actActor
     {
         public actDiscovery(string lUrl)

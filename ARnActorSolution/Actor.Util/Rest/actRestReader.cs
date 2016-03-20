@@ -30,6 +30,7 @@ using System.Diagnostics;
 
 namespace Actor.Util
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actRestReader : actActor
     {
         public actRestReader() : base()
@@ -43,6 +44,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvRestReader : Behaviors
     {
         public IActor fAnswer;
@@ -53,6 +55,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvRestReceive : bhvBehavior<WebAnswer>
     {
         public bhvRestReceive() : base()
@@ -68,6 +71,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvRestSend : bhvBehavior<Tuple<Uri,IActor>>
     {
         public bhvRestSend()

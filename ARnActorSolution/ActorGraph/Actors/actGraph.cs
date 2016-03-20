@@ -23,6 +23,7 @@ namespace ActorGraph.Actors
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvNode<T> : bhvStateBehavior<T>
     {
         private actCollection<bhvNode<T>> fLinkedNodes;
@@ -76,7 +77,8 @@ namespace ActorGraph.Actors
             // Unlink the two node
         }
     }
-    
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvLinkNode<T> : bhvBehavior<Tuple<T,T>>
     {
         public bhvLinkNode() : base()

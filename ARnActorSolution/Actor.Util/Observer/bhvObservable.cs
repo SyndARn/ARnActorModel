@@ -7,10 +7,12 @@ using Actor.Base;
 
 namespace Actor.Util
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvObservable : Behaviors
     {
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvObservable<T> : bhvBehavior<T>
     {
         // ObserverList => who observe

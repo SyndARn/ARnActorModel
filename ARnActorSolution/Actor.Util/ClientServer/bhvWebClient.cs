@@ -32,6 +32,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvWebClient : bhvBehavior<WebRequest>
     {
         public bhvWebClient()
@@ -55,6 +56,7 @@ namespace Actor.Util
 
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actActorWeb : actActor
     {
         public actActorWeb()

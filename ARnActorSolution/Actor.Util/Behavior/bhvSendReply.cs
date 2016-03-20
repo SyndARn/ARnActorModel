@@ -1,13 +1,11 @@
 ﻿using Actor.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+[assembly: CLSCompliant(true)]
 namespace Actor.Util
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvSendReply<T> : bhvBehavior<Tuple<IActor,T,IActor>>
     {
         public bhvSendReply(T data, IActor target)
@@ -28,6 +26,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvReplySend<T> : bhvBehavior<Tuple<IActor, T, IActor>>
     {
         public bhvReplySend()

@@ -34,6 +34,7 @@ namespace Actor.Util
 {
     public enum CollectionRequest { Add, Remove, OkAdd, OkRemove } ;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvCollection<T> : Behaviors
     {
         internal List<T> List = new List<T>();
@@ -45,6 +46,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvAddOrRemoveBehavior<T> : bhvBehavior<Tuple<CollectionRequest, T>>
     {
 
@@ -74,6 +76,7 @@ namespace Actor.Util
 
     public enum IteratorMethod { MoveNext, Current, OkCurrent, OkMoveNext } ;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvEnumeratorBehavior<T> : bhvBehavior<Tuple<IteratorMethod, int, IActor>>
     {
         public bhvEnumeratorBehavior()
@@ -115,6 +118,7 @@ namespace Actor.Util
     }
 
     // (Some prefer this class nested in the collection class.)
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actCollectionEnumerator<T> : actAction<T>, IEnumerator<T>, IEnumerator, IDisposable
     {
         private actCollection<T> fCollection;
@@ -190,6 +194,7 @@ namespace Actor.Util
 
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actCollection<T> : actActor, IEnumerable<T>, IEnumerable
     {
         public actCollection()

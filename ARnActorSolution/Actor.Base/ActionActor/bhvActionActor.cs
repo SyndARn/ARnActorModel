@@ -35,6 +35,7 @@ namespace Actor.Base
     ///     this behavior allows to pass an action as behavior to an actor
     ///     Most frequent use : public method to send an async action to the same actor
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvAction : bhvBehavior<Action>
     {
         public bhvAction()
@@ -45,6 +46,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvAction<T> : bhvBehavior<Tuple<Action<T>, T>>
     {
         public bhvAction()
@@ -54,7 +56,8 @@ namespace Actor.Base
             Apply = t => { t.Item1.Invoke(t.Item2); };
         }
     }
-    
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvAction<T1,T2> : bhvBehavior<Tuple<Action<T1,T2>, T1,T2>>
     {
         public bhvAction()
@@ -70,6 +73,7 @@ namespace Actor.Base
     ///     Action actor are a facility : they provide template to send method as message within an actor
     ///     e.g. SendMessageTo(() => {do something},anActor) ;
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actActionActor : actActor
     {
         public actActionActor()
@@ -88,6 +92,7 @@ namespace Actor.Base
     ///   Action actor with the added type parameter if needed
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actAction<T> : actActor
     {
         public actAction()

@@ -18,17 +18,9 @@ namespace TestActor
             Hashtable o = (Hashtable)Procurios.Public.JSON.JsonDecode(TestData);
             Assert.IsTrue(o != null);
             Assert.AreEqual(o["apiVersion"], "1.0");
-            //var jd = new JSonObject();
-            //jd.Parse(TestData);
-            //Assert.IsNotNull(jd);
         }
 
-        [TestMethod]
-        public void TestJSonDataParser()
-        {
-            var json = JSonValue.Cast(TestData);
-            Assert.IsTrue(json != null);
-        }
+
 
     }
 }

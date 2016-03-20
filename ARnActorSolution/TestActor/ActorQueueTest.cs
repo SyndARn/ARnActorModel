@@ -30,10 +30,10 @@ namespace TestActor
                     var a = actorqueue.TryDequeue();
                     var b = actorqueue.TryDequeue();
                     var c = actorqueue.TryDequeue();
-                    Assert.IsTrue(a.Result.Item1);
-                    Assert.IsTrue(b.Result.Item1);
-                    Assert.IsTrue(c.Result.Item1);
-                    string s = a.Result.Item2 + b.Result.Item2 + c.Result.Item2;
+                    Assert.IsTrue(a.Result.Result);
+                    Assert.IsTrue(b.Result.Result);
+                    Assert.IsTrue(c.Result.Result);
+                    string s = a.Result.Data + b.Result.Data + c.Result.Data;
                     Assert.AreEqual(3, s.Length);
                     Assert.IsTrue(s.Contains("a"));
                     Assert.IsTrue(s.Contains("b"));

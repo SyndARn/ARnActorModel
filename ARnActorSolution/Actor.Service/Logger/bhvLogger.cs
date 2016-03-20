@@ -8,6 +8,7 @@ using Actor.Server;
 
 namespace Actor.Base
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actLogger : actActor
     {
         public actLogger(string aFilename) : base()

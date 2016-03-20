@@ -22,6 +22,13 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "msg")]
+    public class msgQueue<T>
+    {
+        public bool Result;
+        public T Data;
+    }
+
     public class actQueue<T> : actAction<T>
     {
         private Queue<T> fQueue = new Queue<T>();
@@ -36,12 +43,13 @@ namespace Actor.Util
             SendAction(DoQueue, at);
         }
 
-        public async Task<Tuple<bool, T>> TryDequeue()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
+        public async Task<msgQueue<T>> TryDequeue()
         {
             // new actBehalf().
-            var retVal = Receive(t => { return t is Tuple<bool, T>; }) ;
+            var retVal = Receive(t => { return t is msgQueue<T>; }) ;
             SendAction(DoDequeue);
-            return await retVal as Tuple<bool,T> ;
+            return await retVal as msgQueue<T>;
         }
 
         private void DoQueue(T at)
@@ -53,11 +61,11 @@ namespace Actor.Util
         {
             if (fQueue.Count > 0)
             {
-                SendMessage(new Tuple<bool, T>(true, fQueue.Dequeue()));
+                SendMessage(new msgQueue<T>() { Result = true, Data = fQueue.Dequeue()});
             }
             else
             {
-                SendMessage(new Tuple<bool, T>(false, default(T))) ;
+                SendMessage(new msgQueue<T>() { Result = false, Data = default(T) });
             }
         }
 

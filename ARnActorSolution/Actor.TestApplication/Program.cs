@@ -147,12 +147,12 @@ namespace Actor.TestApplication
                         }
                     case "ParserTest":
                         {
-                            new ActorEchoActor(new ParserTest(), "");
+                            new actEchoActor(new ParserTest(), "");
                             break;
                         }
                     default:
                         {
-                            new ActorEchoActor(new ActorAdminServer(), s);
+                            new actEchoActor(new ActorAdminServer(), s);
                             break;
                         }
                 }

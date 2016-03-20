@@ -37,10 +37,10 @@ namespace Actor.TestApplication
         private void DoSend(string msg)
         {
             int i = 0;
-            Tuple<bool, IActor> item = fQueue.TryDequeue().Result;
-            while(item.Item1 && (i<KSize))
+            msgQueue<IActor> item = fQueue.TryDequeue().Result;
+            while(item.Result && (i<KSize))
             {
-                item.Item2.SendMessage("Bop");
+                item.Data.SendMessage("Bop");
                 item = fQueue.TryDequeue().Result;
                 Console.WriteLine("receive " + i.ToString());
                 i++;

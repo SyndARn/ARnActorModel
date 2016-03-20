@@ -83,7 +83,10 @@
     <Compile Include="ActionActorTest.cs" />
     <Compile Include="ActorCollectionTest.cs" />
     <Compile Include="ActorQueueTest.cs" />
+    <Compile Include="actRingTests.cs" />
     <Compile Include="actTestlauncher.cs" />
+    <Compile Include="Behavior\bhvForEachTests.cs" />
+    <Compile Include="Directory\actDirectoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="ShardDirectoryTest.cs" />
@@ -103,6 +106,10 @@
     <ProjectReference Include="..\Actor.Server\Actor.Server\Actor.Server.csproj">
       <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
       <Name>Actor.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Actor.Service\Actor.Service.csproj">
+      <Project>{7FED180B-B123-4668-9C2D-7F3F0C692E1E}</Project>
+      <Name>Actor.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\Actor.Util\Actor.Util.csproj">
       <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>

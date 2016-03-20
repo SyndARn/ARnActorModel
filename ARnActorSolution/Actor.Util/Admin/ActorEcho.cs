@@ -8,22 +8,23 @@ using System.Threading.Tasks;
 namespace Actor.Util
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actEchoActor<T> : actActor
     {
-        public actEchoActor(IActor Dest, T aT)
+        public actEchoActor(IActor dest, T aT)
         {
             Become(new bhvConsole<string>());
-            Dest.SendMessage(new Tuple<IActor,T>(this, aT));
+            dest.SendMessage(new Tuple<IActor, T>(this, aT));
         }
     }
 
-
-        public class ActorEchoActor : actActor
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
+    public class actEchoActor : actActor
+    {
+        public actEchoActor(IActor Dest, String value)
         {
-            public ActorEchoActor(IActor Dest, String aString)
-            {
-                BecomeMany(new bhvConsole());
-                Dest.SendMessage(new Tuple<IActor,String>(this, aString));
-            }
+            BecomeMany(new bhvConsole());
+            Dest.SendMessage(new Tuple<IActor, String>(this, value));
         }
+    }
 }

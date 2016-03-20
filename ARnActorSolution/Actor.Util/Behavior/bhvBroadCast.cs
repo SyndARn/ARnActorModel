@@ -8,6 +8,7 @@ using Actor.Base;
 namespace Actor.Util
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actBroadCast<T> : actActor
     {
         public actBroadCast()
@@ -23,6 +24,7 @@ namespace Actor.Util
 
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvBroadCast<T> : bhvBehavior<Tuple<T, IEnumerable<IActor>>>
     {
 

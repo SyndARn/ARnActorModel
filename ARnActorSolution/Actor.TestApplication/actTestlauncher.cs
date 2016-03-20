@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Actor.TestApplication
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actTestLauncher : actActionActor
     {
         public actTestLauncher()

@@ -21,14 +21,11 @@
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 
+[assembly: CLSCompliant(true)]
 namespace Actor.Base
 {
 
@@ -56,6 +53,7 @@ namespace Actor.Base
 
 
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actActor : IActor//, IDisposable
     {
         public actTag Tag { get; private set; } // unique identifier, and host
@@ -75,6 +73,7 @@ namespace Actor.Base
 
         public static void CompleteInitialize(actActor anActor)
         {
+            if (anActor == null) throw new ActorException("Null actor");
             anActor.fCompletions = new ConcurrentQueue<IBehavior>();
             anActor.fMailBox = new ActorMailBox();
             if (anActor.Tag == null)
@@ -143,6 +142,7 @@ namespace Actor.Base
 
         public static actActor Add(actActor anActor, Object aMessage)
         {
+            if (anActor == null) throw new ActorException("Null actor");
             anActor.SendMessage(aMessage);
             return anActor;
         }
@@ -212,6 +212,7 @@ namespace Actor.Base
 
         protected void BecomeMany(Behaviors someBehavior)
         {
+            if (someBehavior == null) throw new ActorException("Null someBehavior");
             fBehaviors = someBehavior;
             fBehaviors.LinkToActor(this);
             AddMissedMessages();
@@ -229,6 +230,7 @@ namespace Actor.Base
 
         protected void Becomes(IBehavior[] manyBehaviors)
         {
+            if (manyBehaviors == null) throw new ActorException("Null manyBehaviors");
             fBehaviors = new Behaviors();
             foreach (var item in manyBehaviors)
             {

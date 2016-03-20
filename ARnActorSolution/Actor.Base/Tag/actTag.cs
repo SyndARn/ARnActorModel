@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public static class actTagHelper
     {
 
@@ -49,6 +50,7 @@ namespace Actor.Base
 
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     [Serializable]
     public class actTag
     {

@@ -30,6 +30,7 @@ using Actor.Base;
 namespace Actor.Util
 {
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actLinkedList<T> : actActor
     {
         public actLinkedList()
@@ -39,8 +40,10 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public enum bhvLinkedListOperation { Add, First, Next, Answer } ;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvLinkedListAdd<T> : bhvBehavior<Tuple<bhvLinkedListOperation,T>>
     {
         public bhvLinkedListAdd()
@@ -56,6 +59,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvLinkedListFirst<T> : bhvBehavior<Tuple<bhvLinkedListOperation, IActor>>
     {
         public bhvLinkedListFirst() : base()
@@ -70,6 +74,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvLinkedListNext<T> : bhvBehavior<Tuple<bhvLinkedListOperation,IActor, T>>
     {
         public bhvLinkedListNext()
@@ -89,6 +94,7 @@ namespace Actor.Util
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvLinkedList<T> : Behaviors
     {
         internal LinkedList<T> fList = new LinkedList<T>();
