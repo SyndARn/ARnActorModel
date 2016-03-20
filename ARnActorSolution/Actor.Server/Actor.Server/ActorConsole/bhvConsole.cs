@@ -60,6 +60,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvConsoleDictionary : bhvBehavior<Dictionary<string,string>>
     {
         public bhvConsoleDictionary()
@@ -77,6 +78,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvConsoleStringList : bhvBehavior<IEnumerable<String>>
     {
         public bhvConsoleStringList()

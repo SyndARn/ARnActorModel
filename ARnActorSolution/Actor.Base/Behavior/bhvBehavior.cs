@@ -56,6 +56,7 @@ namespace Actor.Base
         }
         public void RemoveBehavior(IBehavior aBehavior)
         {
+            CheckArg.Behavior(aBehavior);
             aBehavior.LinkBehaviors(null);
             fList.Remove(aBehavior);
         }
@@ -92,6 +93,7 @@ namespace Actor.Base
     /// Type is the acq of the message to be send to this behavior
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvBehavior<T> : IBehavior<T>, IBehavior
     {
         public Func<T, Boolean> Pattern { get; protected set; }

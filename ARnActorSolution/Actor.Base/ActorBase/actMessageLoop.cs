@@ -83,13 +83,10 @@ namespace Actor.Base
             {
                 receivetcs.StandardCompletion.SetResult(msg);
             }
-            else
-            {
                 if (Interlocked.CompareExchange(ref actActor.messCount, 0, 0) != 0)
                 {
                     actActor.TrySetInTask(null);
                 }
-            }
         }
 
     }

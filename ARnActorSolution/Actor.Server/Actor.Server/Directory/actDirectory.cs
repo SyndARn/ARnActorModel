@@ -56,7 +56,7 @@ namespace Actor.Base
 
         public string Stat()
         {
-            return "Directory entries " + fDictionary.Count().ToString();
+            return "Directory entries " + fDictionary.Count().ToString(CultureInfo.InvariantCulture);
         }
 
         public void Disco(IActor anActor)

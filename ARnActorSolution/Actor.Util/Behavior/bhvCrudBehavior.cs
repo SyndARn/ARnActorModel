@@ -29,7 +29,7 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public enum CrudeAction { Select, Insert, Update, Delete } ;
+    public enum CrudeAction { Get, Set, Update, Delete } ;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actCrudeActor<T> : actActor
@@ -40,16 +40,16 @@ namespace Actor.Util
             Become(new bhvCrudeBehavior<T>());
         }
 
-        public void Select(T aT)
+        public T Get()
         {
-            SendMessage(Tuple.Create(CrudeAction.Select, aT));
-        }
-
-        public T Insert()
-        {
-            SendMessage(Tuple.Create(CrudeAction.Insert, default(T)));
+            SendMessage(Tuple.Create(CrudeAction.Get, default(T)));
             var retVal = Receive(t => { return true; }).Result;
             return retVal == null ? default(T) : (T)retVal;
+        }
+
+        public void Insert(T aT)
+        {
+            SendMessage(Tuple.Create(CrudeAction.Set, aT));
         }
 
         public void Delete()

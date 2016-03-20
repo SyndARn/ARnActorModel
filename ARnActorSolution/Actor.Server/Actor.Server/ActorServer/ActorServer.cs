@@ -8,7 +8,7 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    public class ActorServer : actActor
+    public class ActorServer : actActor, IDisposable
     {
         public string Name { get; private set; }
         public int Port { get; private set; }
@@ -65,6 +65,33 @@ namespace Actor.Server
                 fActHostRelay = new actHostRelay();
             }
             // new actTcpServer();
+        }
+
+        //Implement IDisposable.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // Free other state (managed objects).
+                // fEvent.Dispose();
+                fActHostRelay.Dispose();
+            }
+            // Free your own state (unmanaged objects).
+            // Set large fields to null.
+        }
+
+        // Use C# destructor syntax for finalization code.
+        ~ActorServer()
+        {
+            // Simply call Dispose(false).
+
+            Dispose(false);
         }
     }
 } 

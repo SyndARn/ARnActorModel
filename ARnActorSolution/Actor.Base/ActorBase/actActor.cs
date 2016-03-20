@@ -29,16 +29,6 @@ using System.Collections.Concurrent;
 namespace Actor.Base
 {
 
-    class actResender : actActor
-    {
-        public actResender() { }
-        public void Resend(Object Message, IActor Target)
-        {
-            Become(new bhvBehavior<Tuple<Object, IActor>>(
-                t => { return true; },
-                t => Target.SendMessage(Message)));
-        }
-    }
 
     public enum SystemMessage { NullBehavior } ;
     // composing actor ...
@@ -117,7 +107,7 @@ namespace Actor.Base
             }
         }
 
-        private void AddMissedMessages()
+        internal void AddMissedMessages()
         {
             // add all missed messages ...
             Interlocked.Add(ref messCount, fMailBox.RefreshFromMissed());
@@ -180,13 +170,19 @@ namespace Actor.Base
             Object ret = null;
             var lTCS = new bhvBehavior<Object>(aPattern,new TaskCompletionSource<Object>()) ;
             fCompletions.Enqueue(lTCS) ;
+
             AddMissedMessages();
             currentLoop.fCancel = true;
             Interlocked.Exchange(ref fInTask, 0);
             TrySetInTask(null);
+
             ret = await lTCS.Completion.Task;
+
             AddMissedMessages();
+            currentLoop.fCancel = true;
+            Interlocked.Exchange(ref fInTask, 0);
             TrySetInTask(null);
+
             return ret;
         }
 

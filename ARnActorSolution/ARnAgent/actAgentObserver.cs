@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace ARnAgent
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actAgentObserver : actActor
     {
         public actAgentObserver() : base()

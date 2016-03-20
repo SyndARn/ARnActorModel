@@ -80,6 +80,8 @@
     <Compile Include="ActorBase\ActorMailBox.cs" />
     <Compile Include="ActorBase\ActorTask.cs" />
     <Compile Include="Composition\actRedirector.cs" />
+    <Compile Include="Exception\CheckArg.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Supervision\bhvSupervisor.cs" />
     <Compile Include="Tag\actTag.cs" />
     <Compile Include="ActionActor\bhvActionActor.cs" />

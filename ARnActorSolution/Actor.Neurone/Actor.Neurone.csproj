@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="actBrain.cs" />
     <Compile Include="actNeurone.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

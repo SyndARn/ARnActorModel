@@ -13,6 +13,7 @@ namespace Actor.Base
     }
 
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actSupervisedActor : actActor, ISupervisedActor
     {
         public virtual ISupervisedActor Respawn()
@@ -32,6 +33,7 @@ namespace Actor.Base
 
     public enum SupervisorAction { Register, Unregister, Respawn, Kill} ;
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class bhvSupervised : bhvBehavior<SupervisorAction>
     {
         public bhvSupervised()
@@ -47,6 +49,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actSupervisor : actActor
     {
         public actSupervisor() : base (new bhvSupervisor())

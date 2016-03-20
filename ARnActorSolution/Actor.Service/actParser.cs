@@ -9,7 +9,7 @@ using Actor.Util ;
 namespace Actor.Service
 {
 
-    public class bhvReceiveLine : bhvBehavior<Tuple<IActor,String>>
+    public class bhvReceiveLine : bhvBehavior<Tuple<IActor, string>>
     {
         public bhvReceiveLine() : base()
         {

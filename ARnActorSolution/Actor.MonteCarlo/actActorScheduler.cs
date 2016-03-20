@@ -1,7 +1,8 @@
 ﻿using Actor.Base;
-using Actor.Util ;
+using Actor.Util;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Actor.MonteCarlo
         private void DoCollectData(double data)
         {
             // actSendByName<string>.SendByName(string.Format("receive {0}",data), "Console");
-            shardList.Add(data.ToString());
+            shardList.Add(data.ToString(CultureInfo.InvariantCulture));
             var ct = shardList.Count();
             Console.WriteLine("receive "+ct);
             if (ct >= 1000-1)

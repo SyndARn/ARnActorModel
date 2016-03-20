@@ -82,11 +82,13 @@ namespace Actor.Server
 
         public void DoRegister(IActor anActor)
         {
+            CheckArg.Actor(anActor);
             fUri2Actor[anActor.Tag.Key()] = new WeakReference<IActor>(anActor) ;
         }
 
         public void DoUnregister(IActor anActor)
         {
+            CheckArg.Actor(anActor, "anActor must exist");
             fUri2Actor.Remove(anActor.Tag.Key());
         }
 

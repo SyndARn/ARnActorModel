@@ -6,9 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestActor;
+using System.Globalization;
 
 namespace Actor.Base.Tests
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     [TestClass()]
     public class actDirectoryTests
     {
@@ -25,16 +27,16 @@ namespace Actor.Base.Tests
         {
             public actTestActor()
             {
-                Become(new bhvBehavior<IActor>(DoIt));
+                Become(new bhvBehavior<Tuple<IActor,IActor,string>>(DoIt));
             }
 
-            private void DoIt(IActor fLauncher)
+            private void DoIt(Tuple<IActor, IActor, string> message)
             {
-                actDirectory.GetDirectory().Find(this, "Directory");
+                actDirectory.GetDirectory().Find(this, message.Item3);
                 var task = Receive(ask => { return (ask is Tuple<actDirectory.DirectoryRequest, IActor>); });
-                if ((task.Result as Tuple<actDirectory.DirectoryRequest, IActor>).Item2 is actDirectory)
+                if ((task.Result as Tuple<actDirectory.DirectoryRequest, IActor>).Item2 == message.Item2)
                 {
-                    fLauncher.SendMessage(true);
+                    message.Item1.SendMessage(true);
                 }
             }
         }
@@ -42,9 +44,12 @@ namespace Actor.Base.Tests
         [TestMethod()]
         public void actDirectoryTest()
         {
-            var act = new actTestActor();
-            act.SendMessage(fLauncher);
-            fLauncher.Wait();
+            fLauncher.SendAction(() =>
+            {
+                var act = new actTestActor();
+                act.SendMessage(new Tuple<IActor,IActor,string>(fLauncher, actDirectory.GetDirectory(), "Directory"));
+            });
+            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
@@ -68,7 +73,14 @@ namespace Actor.Base.Tests
         [TestMethod()]
         public void RegisterTest()
         {
-            Assert.Fail();
+            fLauncher.SendAction(() =>
+            {
+                var act = new actActor();
+                actDirectory.GetDirectory().Register(act, act.Tag.Id.ToString(CultureInfo.InvariantCulture));
+                act.SendMessage(new Tuple<IActor, IActor, string>(fLauncher, act, act.Tag.Id.ToString(CultureInfo.InvariantCulture)));
+
+            });
+            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]

@@ -13,18 +13,19 @@ namespace Actor.Util
     {
         public actEchoActor(IActor dest, T aT)
         {
+            CheckArg.Actor(dest);
             Become(new bhvConsole<string>());
             dest.SendMessage(new Tuple<IActor, T>(this, aT));
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actEchoActor : actActor
     {
-        public actEchoActor(IActor Dest, String value)
+        public actEchoActor(IActor dest, String value)
         {
+            if (dest == null) throw new ActorException("Dest can't be null");
             BecomeMany(new bhvConsole());
-            Dest.SendMessage(new Tuple<IActor, String>(this, value));
+            dest.SendMessage(new Tuple<IActor, String>(this, value));
         }
     }
 }

@@ -46,6 +46,7 @@
     <Compile Include="AgentWorld.cs" />
     <Compile Include="bhvAgent.cs" />
     <Compile Include="DeltaTime.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IAgent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

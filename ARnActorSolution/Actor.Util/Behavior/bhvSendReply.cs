@@ -11,6 +11,7 @@ namespace Actor.Util
         public bhvSendReply(T data, IActor target)
             : base()
         {
+            CheckArg.Actor(target);
             Pattern = t => { return t is Tuple<IActor,T,IActor>; };
             Apply = DoReceiveReplyBehavior;
             target.SendMessage(Tuple.Create(this, data, target));

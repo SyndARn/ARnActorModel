@@ -43,8 +43,10 @@ namespace Actor.Base
 
         private actTag fRemoteTag;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void CompleteInitialize(actRemoteActor anActor)
         {
+            CheckArg.Actor(anActor);
             anActor.Become(new bhvBehavior<Object>(anActor.DoRouting));
         }
 
@@ -67,14 +69,17 @@ namespace Actor.Base
             so.Data = aMsg;
             so.Tag = fRemoteTag;
 
-            using (MemoryStream ms = new MemoryStream())
+            MemoryStream ms = new MemoryStream();
+            try
             {
                 NetDataActorSerializer.Serialize(so, ms);
 
                 ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                while (!sr.EndOfStream)
-                    Debug.Print(sr.ReadLine());
+                using (StreamReader sr = new StreamReader(ms))
+                {
+                    while (!sr.EndOfStream)
+                        Debug.Print(sr.ReadLine());
+                }
 
                 ms.Seek(0, SeekOrigin.Begin);
                 // No response expected
@@ -85,6 +90,13 @@ namespace Actor.Base
                         Uri uri = new Uri(so.Tag.Uri);
                         client.PostAsync(uri, hc).Wait();
                     }
+                }
+            }
+            finally
+            {
+                if (ms != null)
+                {
+                    ms.Dispose();
                 }
             }
         }

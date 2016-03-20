@@ -84,6 +84,7 @@
     <Compile Include="ClientServer\bhvServer.cs" />
     <Compile Include="ClientServer\bhvWebClient.cs" />
     <Compile Include="Continuation\Class1.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Monadic\actMonad.cs" />
     <Compile Include="Observer\bhvObservable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

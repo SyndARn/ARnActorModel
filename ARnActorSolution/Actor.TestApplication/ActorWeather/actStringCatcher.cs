@@ -8,7 +8,6 @@ using System.Windows;
 
 namespace ActorWheather
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actStringCatcher : actActor
     {
 

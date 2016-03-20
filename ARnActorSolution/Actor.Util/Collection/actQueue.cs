@@ -22,12 +22,16 @@ namespace Actor.Util
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "msg")]
     public class msgQueue<T>
     {
-        public bool Result;
-        public T Data;
-    }
+        public bool Result { get; }
+        public T Data{ get; }
+        public msgQueue(bool aResult, T aData)
+        {
+            Result = aResult;
+            Data = aData;
+        }
+}
 
     public class actQueue<T> : actAction<T>
     {
@@ -43,7 +47,6 @@ namespace Actor.Util
             SendAction(DoQueue, at);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<msgQueue<T>> TryDequeue()
         {
             // new actBehalf().
@@ -61,11 +64,11 @@ namespace Actor.Util
         {
             if (fQueue.Count > 0)
             {
-                SendMessage(new msgQueue<T>() { Result = true, Data = fQueue.Dequeue()});
+                SendMessage(new msgQueue<T>(true,fQueue.Dequeue()));
             }
             else
             {
-                SendMessage(new msgQueue<T>() { Result = false, Data = default(T) });
+                SendMessage(new msgQueue<T>(false,default(T)));
             }
         }
 
