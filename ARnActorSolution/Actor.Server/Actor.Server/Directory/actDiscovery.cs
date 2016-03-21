@@ -44,17 +44,17 @@ namespace Actor.Base
 
         private void Disco(string lUrl)
         {
-            Become(new bhvBehavior<List<String>>(t => {return true ;}, 
+            Become(new bhvBehavior<Dictionary<string,string>>(t => {return true ;}, 
                 Found)) ;
             var rem = new actRemoteActor(new actTag(lUrl));
             rem.SendMessage(new DiscoCommand(this));
         }
 
-        private void Found(List<String> aList)
+        private void Found(Dictionary<string,String> aList)
         {
             Console.WriteLine("Disco found:");
-            foreach(string s in aList)
-             Console.WriteLine(s);
+            foreach(string s in aList.Keys)
+             Console.WriteLine(s + ":"+aList[s]);
             Become(null);
         }
     }

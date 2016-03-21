@@ -41,9 +41,8 @@ namespace Actor.Base
     public class actRemoteActor : actActor
     {
 
-        private actTag fRemoteTag;
+        public actTag fRemoteTag;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
         public static void CompleteInitialize(actRemoteActor anActor)
         {
             CheckArg.Actor(anActor);
@@ -69,34 +68,32 @@ namespace Actor.Base
             so.Data = aMsg;
             so.Tag = fRemoteTag;
 
-            MemoryStream ms = new MemoryStream();
-            try
+            using (MemoryStream ms = new MemoryStream())
             {
                 NetDataActorSerializer.Serialize(so, ms);
 
                 ms.Seek(0, SeekOrigin.Begin);
-                using (StreamReader sr = new StreamReader(ms))
+                StreamReader sr = new StreamReader(ms);
+                try
+
                 {
                     while (!sr.EndOfStream)
                         Debug.Print(sr.ReadLine());
-                }
-
-                ms.Seek(0, SeekOrigin.Begin);
-                // No response expected
-                using (var client = new HttpClient())
-                {
-                    using (var hc = new StreamContent(ms))
+                    ms.Seek(0, SeekOrigin.Begin);
+                    // No response expected
+                    using (var client = new HttpClient())
                     {
-                        Uri uri = new Uri(so.Tag.Uri);
-                        client.PostAsync(uri, hc).Wait();
+                        using (var hc = new StreamContent(ms))
+                        {
+                            Uri uri = new Uri(so.Tag.Uri);
+                            client.PostAsync(uri, hc).Wait();
+                        }
                     }
                 }
-            }
-            finally
-            {
-                if (ms != null)
+                finally
                 {
-                    ms.Dispose();
+                    if (sr != null)
+                      sr.Dispose();
                 }
             }
         }

@@ -41,10 +41,7 @@ namespace Actor.Base
     /// with relaysender and relaytarget, you could have a composition
     /// </summary>
 
-
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actActor : IActor//, IDisposable
+    public class actActor : IActor
     {
         public actTag Tag { get; private set; } // unique identifier, and host
         internal Behaviors fBehaviors; // our behavior
@@ -97,6 +94,11 @@ namespace Actor.Base
             {
                 AddMessage(msg);
             }
+            TrySetInTask();
+        }
+
+        internal void TrySetInTask()
+        {
             if (Interlocked.CompareExchange(ref fInTask, 1, 0) == 0)
             {
                 if ((currentLoop == null) || currentLoop.fCancel)
@@ -132,7 +134,7 @@ namespace Actor.Base
 
         public static actActor Add(actActor anActor, Object aMessage)
         {
-            if (anActor == null) throw new ActorException("Null actor");
+            CheckArg.Actor(anActor);
             anActor.SendMessage(aMessage);
             return anActor;
         }
@@ -174,14 +176,14 @@ namespace Actor.Base
             AddMissedMessages();
             currentLoop.fCancel = true;
             Interlocked.Exchange(ref fInTask, 0);
-            TrySetInTask(null);
+            TrySetInTask();
 
             ret = await lTCS.Completion.Task;
 
             AddMissedMessages();
             currentLoop.fCancel = true;
             Interlocked.Exchange(ref fInTask, 0);
-            TrySetInTask(null);
+            TrySetInTask();
 
             return ret;
         }
@@ -206,13 +208,13 @@ namespace Actor.Base
             return msg;
         }
 
-        protected void BecomeMany(Behaviors someBehavior)
+        protected void BecomeMany(Behaviors someBehaviors)
         {
-            if (someBehavior == null) throw new ActorException("Null someBehavior");
-            fBehaviors = someBehavior;
+            CheckArg.Behaviors(someBehaviors);
+            fBehaviors = someBehaviors;
             fBehaviors.LinkToActor(this);
             AddMissedMessages();
-            TrySetInTask(null);
+            TrySetInTask();
         }
 
         protected void Become(IBehavior aBehavior)
@@ -221,7 +223,7 @@ namespace Actor.Base
             fBehaviors.AddBehavior(aBehavior);
             fBehaviors.LinkToActor(this);
             AddMissedMessages();
-            TrySetInTask(null);
+            TrySetInTask();
         }
 
         protected void Becomes(IBehavior[] manyBehaviors)
@@ -234,14 +236,14 @@ namespace Actor.Base
             }
             fBehaviors.LinkToActor(this);
             AddMissedMessages();
-            TrySetInTask(null);
+            TrySetInTask();
         }
 
         protected void AddBehavior(IBehavior aBehavior)
         {
             fBehaviors.AddBehavior(aBehavior);
             AddMissedMessages();
-            TrySetInTask(null);
+            TrySetInTask();
         }
 
         protected void RemoveBehavior(IBehavior aBehavior)

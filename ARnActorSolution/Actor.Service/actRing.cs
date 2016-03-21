@@ -7,7 +7,7 @@ using Actor.Base;
 
 namespace Actor.Service
 {
-    class testResult
+    public class testResult
     {
         internal static DateTimeOffset start;
         internal static DateTimeOffset end;

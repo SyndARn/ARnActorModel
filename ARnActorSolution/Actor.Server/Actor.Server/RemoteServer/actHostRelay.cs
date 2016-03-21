@@ -118,6 +118,7 @@ namespace Actor.Base
                     Debug.Print("receive " + req);
                 }
 
+                ms.Seek(0, SeekOrigin.Begin);
                 SerialObject so = NetDataActorSerializer.DeSerialize(ms);
                 // prepare an answer
                 HttpListenerResponse Response = aContext.Response;
