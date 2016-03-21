@@ -75,7 +75,7 @@
     <Compile Include="Collection\actObservable.cs" />
     <Compile Include="Collection\actQueue.cs" />
     <Compile Include="Admin\ActorStatServer.cs" />
-    <Compile Include="actRemoteTest.cs" />
+    <Compile Include="Admin\actRemoteTest.cs" />
     <Compile Include="Behavior\bhvBroadCast.cs" />
     <Compile Include="Collection\bhvCollection.cs" />
     <Compile Include="Behavior\bhvForEach.cs" />
