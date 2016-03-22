@@ -41,6 +41,7 @@ namespace Actor.Base
     /// with relaysender and relaytarget, you could have a composition
     /// </summary>
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actActor : IActor
     {
         public actTag Tag { get; private set; } // unique identifier, and host
@@ -132,6 +133,7 @@ namespace Actor.Base
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         public static actActor Add(actActor anActor, Object aMessage)
         {
             CheckArg.Actor(anActor);

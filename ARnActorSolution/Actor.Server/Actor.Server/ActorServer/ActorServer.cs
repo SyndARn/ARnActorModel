@@ -57,7 +57,7 @@ namespace Actor.Server
             actDirectory.GetDirectory(); // Start directory
             new ActorConsole(); // Start console
             // should work now
-            actSendByName<string>.SendByName("Actor Server Start", "Console");
+            SendByName<string>.Send("Actor Server Start", "Console");
             Become(null);
             if (withRelay)
             {

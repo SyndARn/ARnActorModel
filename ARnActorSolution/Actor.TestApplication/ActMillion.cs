@@ -38,7 +38,7 @@ namespace Actor.TestApplication
         private void DoSend(string msg)
         {
             int i = 0;
-            msgQueue<IActor> item = fQueue.TryDequeue().Result;
+            MsgQueue<IActor> item = fQueue.TryDequeue().Result;
             while(item.Result && (i<KSize))
             {
                 item.Data.SendMessage("Bop");

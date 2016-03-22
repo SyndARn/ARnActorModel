@@ -72,6 +72,7 @@
     <Compile Include="Admin\ActorEcho.cs" />
     <Compile Include="Behavior\bhvCrudBehavior.cs" />
     <Compile Include="Behavior\bhvStateBehavior.cs" />
+    <Compile Include="ClientServer\actBehalf.cs" />
     <Compile Include="Collection\actObservable.cs" />
     <Compile Include="Collection\actQueue.cs" />
     <Compile Include="Admin\ActorStatServer.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="Behavior\bhvSendReply.cs" />
     <Compile Include="ClientServer\bhvServer.cs" />
     <Compile Include="ClientServer\bhvWebClient.cs" />
-    <Compile Include="Continuation\Class1.cs" />
+    <Compile Include="Continuation\actGraphHedge.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Monadic\actMonad.cs" />
     <Compile Include="Observer\bhvObservable.cs" />

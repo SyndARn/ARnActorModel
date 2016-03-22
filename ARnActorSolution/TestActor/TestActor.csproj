@@ -88,7 +88,6 @@
     <Compile Include="Behavior\actCrudeActorTests.cs" />
     <Compile Include="Behavior\bhvForEachTests.cs" />
     <Compile Include="Directory\actDirectoryTests.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="ShardDirectoryTest.cs" />

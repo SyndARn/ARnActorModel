@@ -68,7 +68,7 @@ namespace Actor.Util
                     Tuple<actDirectory.DirectoryRequest, IActor> ans = (Tuple<actDirectory.DirectoryRequest, IActor>)(r.Result);
                     if (ans.Item2 != null)
                     {
-                        actSendByName<string>.SendByName("Server found", "Console");
+                        SendByName<string>.Send("Server found", "Console");
                         ans.Item2.SendMessage(new ServerMessage<string>(this, ServerRequest.Connect, default(string)));
                         Receive(m => 
                             {
@@ -77,7 +77,7 @@ namespace Actor.Util
                             }).ContinueWith(
                             (c) =>
                             {
-                                actSendByName<string>.SendByName("Client connected", "Console");
+                                SendByName<string>.Send("Client connected", "Console");
                                 aClient.Connect(ans.Item2);
                                 Become(aClient);
                             });
@@ -109,7 +109,7 @@ namespace Actor.Util
             if (aMessage != null)
             {
                 // echo to console
-                actSendByName<string>.SendByName(
+                SendByName<string>.Send(
                     "server receive " + aMessage.Data, "Console");
                 // back to client but we need client
                 if (aMessage.Client == null)
@@ -133,7 +133,7 @@ namespace Actor.Util
             // echo to console
             if (aMessage != null)
             {
-                actSendByName<string>.SendByName(
+                SendByName<string>.Send(
                     "client receive " + aMessage.Data, "Console");
             }
         }

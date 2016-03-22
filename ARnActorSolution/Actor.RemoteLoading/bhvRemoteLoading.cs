@@ -192,7 +192,7 @@ namespace Actor.RemoteLoading
                 actDirectory.GetDirectory().Register(asmobj, "plugin");
 
                 asmobj.SendMessage("Hello");
-                actSendByName<string>.SendByName("by name", "plugin");
+                SendByName<string>.Send("by name", "plugin");
             }
         }
     }

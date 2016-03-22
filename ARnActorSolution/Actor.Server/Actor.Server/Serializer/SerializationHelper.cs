@@ -6,8 +6,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Actor.Base;
 
-namespace Actor.Base
+namespace Actor.Server
 {
 
     class ActorBinder : SerializationBinder
@@ -42,6 +43,10 @@ namespace Actor.Base
             out ISurrogateSelector selector
             )
         {
+            if (type == null)
+            {
+                throw new ActorException("Null type found in GetSurrogate");
+            }
             if (type.IsSubclassOf(typeof(actActor)))
             {
                 Debug.WriteLine("push actor {0} to host directory", type);

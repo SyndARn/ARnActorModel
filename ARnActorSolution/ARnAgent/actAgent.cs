@@ -43,7 +43,7 @@ namespace ARnAgent
             bhvMany.AddBehavior(bhvReact) ;
             bhvMany.AddBehavior(bhvObserve) ;
             bhvMany.AddBehavior(bhvKill) ;
-            actSendByName<IAgent>.SendByName(this, "AgentDirectory");
+            SendByName<IAgent>.Send(this, "AgentDirectory");
             BecomeMany(bhvMany);
         }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Actor.Server;
 
 namespace Actor.Util
 {
@@ -29,12 +30,11 @@ namespace Actor.Util
                         if (string.IsNullOrEmpty(lData))
                         {
                             ShardRequest req = ShardRequest.CastRequest(this, Data.Item1);
-                            var byName = new actSendByName<ShardRequest>();
-                            byName.SendMessage(Tuple.Create("KnownShards", req));
+                            SendByName<ShardRequest>.Send(req, "KnownShards");
                         }
                         else
                         {
-                            actConnect connect = new actConnect(this, lData, "KnownShards");
+                            new actConnect(this, lData, "KnownShards");
                             Receive(ans => { return ans is Tuple<string, actTag, IActor>; }).ContinueWith(
                                 ans =>
                                 {

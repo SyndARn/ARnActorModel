@@ -29,6 +29,16 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 
+    public static class SendByName<T>
+    {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
+        public static void Send(T aData, string anActor)
+        {
+            var act = new actSendByName<T>();
+            act.SendMessage(Tuple.Create(anActor, aData));
+        }
+    }
+
     /// <summary>
     /// actSendByName
     ///   SendByName works together with Directory
@@ -43,10 +53,9 @@ namespace Actor.Base
         public actSendByName()
         {
             Become(
-                new bhvBehavior<Tuple<String, T>>(msg => { return msg is Tuple<string,T>; },
+                new bhvBehavior<Tuple<String, T>>(msg => { return msg is Tuple<string, T>; },
                     FindBehavior));
         }
-
 
         // FindBehavior to find the alias in directory
         private void FindBehavior(Tuple<String, T> msg)
@@ -70,16 +79,6 @@ namespace Actor.Base
                     FindBehavior));
         }
 
-        /// <summary>
-        /// Direct helper to cast the SendByName easily
-        /// </summary>
-        /// <param name="aData"></param>
-        /// <param name="anActor"></param>
-        public static void SendByName(T aData, string anActor)
-        {
-            actSendByName<T> act = new actSendByName<T>();
-            act.SendMessage(Tuple.Create(anActor,aData));
-        }
     }
 
 }

@@ -25,21 +25,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Actor.Base;
 
-namespace Actor.Base
+namespace Actor.Server
 {
     /// <summary>
     /// Connect to a shard Service
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actConnect : actActor
     {
         private string fServiceName;
         private string fUri;
         private IActor fSender;
-        public actConnect(IActor lSender, string lUrl, string name)
+        public actConnect(IActor lSender, string hostAddress, string name)
             : base()
         {
-            fUri = lUrl;
+            fUri = hostAddress;
             fServiceName = name;
             fSender = lSender;
             Become(new bhvBehavior<string>(DoDisco));
@@ -48,23 +50,27 @@ namespace Actor.Base
 
         private void DoDisco(string msg)
         {
-            Become(new bhvBehavior<List<String>>(Found));
+            Become(new bhvBehavior<Dictionary<string,string>>(Found));
             actActor rem = new actRemoteActor(new actTag(fUri));
             rem += new DiscoCommand(this); // send message
         }
 
-        private void Found(List<String> someServices)
+        private void Found(Dictionary<string,string> someServices)
         {
-            char[] separator = { '=' };
-            var keyserv = someServices.ToLookup(
-                s => s.Split(separator)[0],
-                s => s.Split(separator)[1]);
-            var service = keyserv[fServiceName].FirstOrDefault();
-            if (!string.IsNullOrEmpty(service))
+            string service;
+            if (someServices.TryGetValue(fServiceName, out service))
             {
-                actTag tag = new actTag(service);
-                Become(new bhvBehavior<actTag>(DoConnect));
-                SendMessage(tag);
+                if (!string.IsNullOrEmpty(service))
+                {
+                    actTag tag = new actTag(service);
+                    Become(new bhvBehavior<actTag>(DoConnect));
+                    SendMessage(tag);
+                }
+                else
+                // service with no end point
+                {
+                    Become(null);
+                }
             }
             else
             // not found

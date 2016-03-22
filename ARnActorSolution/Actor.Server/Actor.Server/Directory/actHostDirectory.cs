@@ -33,6 +33,7 @@ namespace Actor.Server
 
         public void DoStat(IActor sender)
         {
+            CheckArg.Actor(sender);
             sender.SendMessage("Host entries " + fUri2Actor.Count.ToString());
         }
 

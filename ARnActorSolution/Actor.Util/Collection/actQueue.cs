@@ -8,25 +8,11 @@ using System.Threading.Tasks;
 namespace Actor.Util
 {
 
-    public class actBehalf : actActor
-    {
-        public actBehalf() : base()
-        {
-            Become(new bhvBehavior<Tuple<Action,IActor>>(DoIt)) ;
-        }
-
-        private void DoIt(Tuple<Action, IActor> msg)
-        {
-            msg.Item2.SendMessage(msg.Item1);
-            Become(null);
-        }
-    }
-
-    public class msgQueue<T>
+    public class MsgQueue<T>
     {
         public bool Result { get; }
         public T Data{ get; }
-        public msgQueue(bool aResult, T aData)
+        public MsgQueue(bool aResult, T aData)
         {
             Result = aResult;
             Data = aData;
@@ -47,12 +33,11 @@ namespace Actor.Util
             SendAction(DoQueue, at);
         }
 
-        public async Task<msgQueue<T>> TryDequeue()
+        public async Task<MsgQueue<T>> TryDequeue()
         {
-            // new actBehalf().
-            var retVal = Receive(t => { return t is msgQueue<T>; }) ;
+            var retVal = Receive(t => { return t is MsgQueue<T>; }) ;
             SendAction(DoDequeue);
-            return await retVal as msgQueue<T>;
+            return await retVal as MsgQueue<T>;
         }
 
         private void DoQueue(T at)
@@ -64,11 +49,11 @@ namespace Actor.Util
         {
             if (fQueue.Count > 0)
             {
-                SendMessage(new msgQueue<T>(true,fQueue.Dequeue()));
+                SendMessage(new MsgQueue<T>(true,fQueue.Dequeue()));
             }
             else
             {
-                SendMessage(new msgQueue<T>(false,default(T)));
+                SendMessage(new MsgQueue<T>(false,default(T)));
             }
         }
 

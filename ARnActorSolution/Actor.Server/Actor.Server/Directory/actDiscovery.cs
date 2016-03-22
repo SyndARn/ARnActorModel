@@ -25,8 +25,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Actor.Base;
 
-namespace Actor.Base
+namespace Actor.Server
 {
     /// <summary>
     /// Return public services in a shard
@@ -34,19 +35,19 @@ namespace Actor.Base
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actDiscovery : actActor
     {
-        public actDiscovery(string lUrl)
+        public actDiscovery(string hostAddress)
             : base()
         {
             Become(new bhvBehavior<string>(t => {return true ;},
                 Disco)) ;
-            SendMessage(lUrl) ;
+            SendMessage(hostAddress) ;
         }
 
-        private void Disco(string lUrl)
+        private void Disco(string hostAddress)
         {
             Become(new bhvBehavior<Dictionary<string,string>>(t => {return true ;}, 
                 Found)) ;
-            var rem = new actRemoteActor(new actTag(lUrl));
+            var rem = new actRemoteActor(new actTag(hostAddress));
             rem.SendMessage(new DiscoCommand(this));
         }
 
@@ -54,7 +55,7 @@ namespace Actor.Base
         {
             Console.WriteLine("Disco found:");
             foreach(string s in aList.Keys)
-             Console.WriteLine(s + ":"+aList[s]);
+             Console.WriteLine(s + "-"+aList[s]);
             Become(null);
         }
     }

@@ -30,8 +30,9 @@ using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Actor.Base;
 
-namespace Actor.Base
+namespace Actor.Server
 {
 
     /// <summary>
