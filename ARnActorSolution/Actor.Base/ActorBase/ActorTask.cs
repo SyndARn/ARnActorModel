@@ -58,14 +58,14 @@ namespace Actor.Base
             Task.Factory.StartNew(() =>
             {
                 Interlocked.Increment(ref numAddTask);
-                anActor.currentLoop.Loop(anActor);
+                anActor.currentLoop.Loop();
                 Interlocked.Increment(ref numCloseTask);
-            },TaskCreationOptions.PreferFairness)
-            .ContinueWith((t) =>
-            {
-                Debug.WriteLine("task fault on {0}", t.Exception.InnerExceptions.ToString());
-            },
-            TaskContinuationOptions.OnlyOnFaulted);
+            }, TaskCreationOptions.None);
+            //.ContinueWith((t) =>
+            //{
+            //    Debug.WriteLine("task fault on {0}", t.Exception.InnerExceptions.ToString());
+            //},
+            //TaskContinuationOptions.OnlyOnFaulted);
         }
     }
 }

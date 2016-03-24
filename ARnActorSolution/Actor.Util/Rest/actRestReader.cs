@@ -35,7 +35,7 @@ namespace Actor.Util
     {
         public actRestReader() : base()
         {
-            BecomeMany(new bhvRestReader()) ;
+            BecomeMany(new BehaviorsRestReader()) ;
         }
 
         public void SendRest(Uri anUri, IActor answer) 
@@ -45,10 +45,10 @@ namespace Actor.Util
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvRestReader : Behaviors
+    public class BehaviorsRestReader : Behaviors
     {
         public IActor fAnswer;
-        public bhvRestReader() : base()
+        public BehaviorsRestReader() : base()
         {
             this.AddBehavior(new bhvRestSend()) ;
             this.AddBehavior(new bhvRestReceive()) ;
@@ -66,7 +66,7 @@ namespace Actor.Util
         private void DoRestReceive(WebAnswer webAnswer)
         {
             Debug.WriteLine("Receive {0}",webAnswer.Answer) ;
-            var reader = this.LinkedTo as bhvRestReader;
+            var reader = this.LinkedTo as BehaviorsRestReader;
             reader.fAnswer.SendMessage(webAnswer.Answer);
         }
     }
@@ -82,7 +82,7 @@ namespace Actor.Util
         }
         private void DoRestPost(Tuple<Uri,IActor> anUri)
         {
-            (LinkedTo as bhvRestReader).fAnswer = anUri.Item2;
+            (LinkedTo as BehaviorsRestReader).fAnswer = anUri.Item2;
             var actWeb = new actActorWeb();
             var wr = actActorWeb.Cast(LinkedActor, anUri.Item1);
             actWeb.SendMessage(wr);

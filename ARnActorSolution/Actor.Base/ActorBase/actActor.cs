@@ -25,7 +25,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 
-[assembly: CLSCompliant(true)]
 namespace Actor.Base
 {
 
@@ -104,7 +103,7 @@ namespace Actor.Base
             {
                 if ((currentLoop == null) || currentLoop.fCancel)
                 {
-                    currentLoop = new actMessageLoop();
+                    currentLoop = new actMessageLoop(this);
                 }                
                 ActorTask.AddActor(this);
             }

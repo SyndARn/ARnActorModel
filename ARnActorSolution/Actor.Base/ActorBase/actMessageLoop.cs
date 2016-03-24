@@ -11,82 +11,96 @@ namespace Actor.Base
     {
 
         internal bool fCancel;
+        actActor fActor;
 
-        public actMessageLoop()
+        public actMessageLoop(actActor anActor)
         {
+            fActor = anActor;
+            fActor.AddMissedMessages();
             fCancel = false;
         }
 
-        public void Loop(actActor actActor)
+        public void Loop()
         {
             Object msg = null;
             IBehavior receivetcs = null;
             bool patternmatch = false;
             bool receivematch = false;
 
-            while ((!fCancel) && (Interlocked.CompareExchange(ref actActor.messCount, 0, 0) != 0))
+            while ((!fCancel) && (Interlocked.CompareExchange(ref fActor.messCount, 0, 0) != 0))
             {
                 // get message             
-                msg = actActor.ReceiveMessage();
-                patternmatch = false;
-                receivematch = false;
-
-                // pattern matching
-                if (actActor.fBehaviors != null)
+                msg = fActor.ReceiveMessage();
+                if (msg != null)
                 {
-                    IBehavior tcs = actActor.fBehaviors.PatternMatching(msg);
-                    if (tcs != null)
-                    {
-                        tcs.StandardApply(msg);
-                        patternmatch = true;
-                    }
-                }
+                    patternmatch = false;
+                    receivematch = false;
 
-                // receive pattern
-                if (! patternmatch)
-                {
-                    Queue<IBehavior> lQueue = new Queue<IBehavior>();
-                    while (actActor.fCompletions.TryDequeue(out receivetcs))
+                    // pattern matching
+                    if (fActor.fBehaviors != null)
                     {
-                        if (!receivetcs.StandardPattern(msg))
+                        IBehavior tcs = fActor.fBehaviors.PatternMatching(msg);
+                        if (tcs != null)
                         {
-                            lQueue.Enqueue(receivetcs);
-                            receivetcs = null;
+                            tcs.StandardApply(msg);
+                            patternmatch = true;
                         }
-                        else
+                    }
+
+                    // receive pattern
+                    if (!patternmatch)
+                    {
+                        Queue<IBehavior> lQueue = new Queue<IBehavior>();
+                        while (fActor.fCompletions.TryDequeue(out receivetcs))
                         {
-                            if (receivetcs.StandardCompletion != null)
+                            if (!receivetcs.StandardPattern(msg))
                             {
-                                receivematch = true;
-                                fCancel = true;
-                                break;
+                                lQueue.Enqueue(receivetcs);
+                                receivetcs = null;
                             }
                             else
-                                receivetcs = null;
+                            {
+                                if (receivetcs.StandardCompletion != null)
+                                {
+                                    receivematch = true;
+                                    fCancel = true;
+                                    break;
+                                }
+                                else
+                                    receivetcs = null;
+                            }
+                        }
+                        while (lQueue.Count > 0)
+                        {
+                            fActor.fCompletions.Enqueue(lQueue.Dequeue());
                         }
                     }
-                    while (lQueue.Count > 0)
-                    {
-                        actActor.fCompletions.Enqueue(lQueue.Dequeue());
-                    }
                 }
-
                 // miss
                 if (!patternmatch && !receivematch && msg != null)
                 {
-                    actActor.fMailBox.AddMiss(msg);
+                    fActor.fMailBox.AddMiss(msg);
                 }
             }
 
-            Interlocked.Exchange(ref actActor.fInTask, 0);
+            Interlocked.Exchange(ref fActor.fInTask, 0);
             if (receivematch)
             {
                 receivetcs.StandardCompletion.SetResult(msg);
+                fCancel = true;
             }
-                if (Interlocked.CompareExchange(ref actActor.messCount, 0, 0) != 0)
+            if (fCancel)
+            {
+                fActor.AddMissedMessages();
+                fActor.TrySetInTask();
+            }
+            else
+            {
+                if (Interlocked.CompareExchange(ref fActor.messCount, 0, 0) != 0)
                 {
-                    actActor.TrySetInTask(null);
+                    fActor.TrySetInTask();
                 }
+            }
         }
 
     }

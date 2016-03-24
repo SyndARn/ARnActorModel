@@ -32,9 +32,14 @@ namespace WpfPrime
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            var prime = new actPrime(100);
-            IActor act = new actActor();
-            prime.SendMessage(new Tuple<int, IActor>(100, act));
+            var prime = new actPrime(987654321);
+            prime.SendMessage("start");
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            var echo = new actActor();
+            var floorrevenge = new Fkn(echo,7,100);
         }
     }
 }
