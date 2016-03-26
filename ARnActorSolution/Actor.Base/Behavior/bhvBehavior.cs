@@ -35,13 +35,13 @@ namespace Actor.Base
     {
         private List<IBehavior> fList = new List<IBehavior>();
 
-        public actActor LinkedActor { get; private set; }
+        public BaseActor LinkedActor { get; private set; }
 
         public Behaviors()
         {
         }
 
-        public void LinkToActor(actActor anActor)
+        public void LinkToActor(BaseActor anActor)
         {
             LinkedActor = anActor;
         }
@@ -110,7 +110,7 @@ namespace Actor.Base
 
         private Behaviors fLinkedBehaviors;
 
-        public actActor LinkedActor
+        public BaseActor LinkedActor
         {
             get
             {

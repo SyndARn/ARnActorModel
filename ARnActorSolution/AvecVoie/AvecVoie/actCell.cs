@@ -9,7 +9,7 @@ using Actor.Util ;
 namespace AvecVoie
 {
     
-    public class LifeBoard : actActor
+    public class LifeBoard : BaseActor
     {
         private long fSize;
         actCell[,] fBoard;
@@ -126,7 +126,7 @@ namespace AvecVoie
         }
     }
 
-    public class actCell : actActor
+    public class actCell : BaseActor
     {
         public actCell(long px, long py, int pstatus) : base()
         {

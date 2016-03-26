@@ -39,7 +39,7 @@ namespace Actor.Server
     /// actRemoteActor
     ///   A remote Actor is used (transparently) when sending messages across servers (ie across process)
     /// </summary>
-    public class actRemoteActor : actActor
+    public class actRemoteActor : BaseActor
     {
 
         public actTag fRemoteTag;

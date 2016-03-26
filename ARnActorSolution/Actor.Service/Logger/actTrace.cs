@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Actor.Base
 {
-    public class actTrace : actActor // dummmy actor
+    public class actTrace : BaseActor // dummmy actor
     {
         public actTrace()
         {

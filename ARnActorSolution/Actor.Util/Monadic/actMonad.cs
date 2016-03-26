@@ -13,11 +13,11 @@ namespace Actor.Util
      * unit
      * bind
      * */
-    public class actMonad : actActor
+    public class actMonad : BaseActor
     {
     }
 
-    public class monadIdentity<T> : actActor
+    public class monadIdentity<T> : BaseActor
     {
         public T Value {get; private set;}
         public monadIdentity(T aValue) {Value = aValue ;}

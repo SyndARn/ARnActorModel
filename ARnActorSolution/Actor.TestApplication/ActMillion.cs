@@ -9,7 +9,7 @@ using Actor.Util ;
 namespace Actor.TestApplication
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actMillion : actActor
+    public class actMillion : BaseActor
     {
         private actQueue<IActor> fQueue;
         const int KSize = 10000 ;
@@ -30,7 +30,7 @@ namespace Actor.TestApplication
         {
             for (int i = 0; i < KSize; i++)
             {
-                fQueue.Queue(new actActor());
+                fQueue.Queue(new BaseActor());
             }
             Console.WriteLine("end start million");
         }

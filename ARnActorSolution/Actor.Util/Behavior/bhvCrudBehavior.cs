@@ -32,7 +32,7 @@ namespace Actor.Util
     public enum CrudeAction { Get, Set, Update, Delete } ;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actCrudeActor<T> : actActor
+    public class actCrudeActor<T> : BaseActor
     {
         public actCrudeActor()
             : base()

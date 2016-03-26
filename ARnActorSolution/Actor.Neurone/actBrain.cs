@@ -23,7 +23,7 @@ namespace Actor.Neurone
         }
     }
 
-    public class actBrain : actActor
+    public class actBrain : BaseActor
     {
         actNeuroneLayer fInput;
         actNeuroneLayer fOutput;

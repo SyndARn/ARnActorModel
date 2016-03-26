@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Actor.Plugin
 {
-    public class actPlugin : actActor
+    public class actPlugin : BaseActor
     {
         public actPlugin()
             : base()

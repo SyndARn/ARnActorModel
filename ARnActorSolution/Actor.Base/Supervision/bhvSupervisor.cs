@@ -14,7 +14,7 @@ namespace Actor.Base
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actSupervisedActor : actActor, ISupervisedActor
+    public class actSupervisedActor : BaseActor, ISupervisedActor
     {
         public virtual ISupervisedActor Respawn()
         {
@@ -50,7 +50,7 @@ namespace Actor.Base
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actSupervisor : actActor
+    public class actSupervisor : BaseActor
     {
         public actSupervisor() : base (new bhvSupervisor())
         {

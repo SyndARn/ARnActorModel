@@ -8,7 +8,7 @@ using Actor.Server;
 
 namespace Actor.Base
 {
-    public class actLogger : actActor
+    public class actLogger : BaseActor
     {
         public actLogger(string aFilename) : base()
         {

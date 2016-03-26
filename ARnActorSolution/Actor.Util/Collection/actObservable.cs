@@ -32,7 +32,7 @@ namespace Actor.Util
     public enum ObservableAction { Register, Unregister} ;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actObservable<T> : actActor
+    public class actObservable<T> : BaseActor
     {
         private actCollection<IActor> fCollection;
 

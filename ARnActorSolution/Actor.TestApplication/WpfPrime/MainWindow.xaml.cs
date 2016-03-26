@@ -38,7 +38,7 @@ namespace WpfPrime
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            var echo = new actActor();
+            var echo = new BaseActor();
             var floorrevenge = new Fkn(echo,7,100);
         }
     }

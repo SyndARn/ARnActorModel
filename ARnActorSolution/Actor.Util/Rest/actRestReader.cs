@@ -31,7 +31,7 @@ using System.Diagnostics;
 namespace Actor.Util
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actRestReader : actActor
+    public class actRestReader : BaseActor
     {
         public actRestReader() : base()
         {

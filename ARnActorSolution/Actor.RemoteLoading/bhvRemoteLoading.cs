@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Actor.RemoteLoading
 {
 
-    public class bhvDynActor : actActor
+    public class bhvDynActor : BaseActor
     {
         public bhvDynActor()
             : base()
@@ -63,7 +63,7 @@ namespace Actor.RemoteLoading
         public IActor sender;
     }
 
-    public class actActorUpload : actActor
+    public class actActorUpload : BaseActor
     {
         public actActorUpload()
             : base(new bhvUpload())
@@ -71,7 +71,7 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class actActorDownload : actActor
+    public class actActorDownload : BaseActor
     {
         public actActorDownload()
             : base(new bhvDownload())
@@ -79,7 +79,7 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class actActorDownloadTest : actActor
+    public class actActorDownloadTest : BaseActor
     {
         public actActorDownloadTest()
             : base()

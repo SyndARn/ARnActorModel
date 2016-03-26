@@ -41,7 +41,7 @@ namespace Actor.Base
     /// with relaysender and relaytarget, you could have a composition
     /// </summary>
 
-    public class actActor : IActor
+    public class BaseActor : IActor
     {
         public actTag Tag { get; private set; } // unique identifier, and host
         internal Behaviors fBehaviors; // our behavior
@@ -58,7 +58,7 @@ namespace Actor.Base
             return Tag.IsRemote;
         }
 
-        public static void CompleteInitialize(actActor anActor)
+        public static void CompleteInitialize(BaseActor anActor)
         {
             if (anActor == null) throw new ActorException("Null actor");
             anActor.fCompletions = new ConcurrentQueue<IBehavior>();
@@ -69,7 +69,7 @@ namespace Actor.Base
             }
         }
 
-        protected actActor(actTag previousTag)
+        protected BaseActor(actTag previousTag)
             : base()
         {
             Tag = previousTag;
@@ -113,7 +113,7 @@ namespace Actor.Base
 
         private static void DoSendMessageTo(Object msg, IActor aTargetActor)
         {
-            ((actActor)aTargetActor).TrySetInTask(msg);
+            ((BaseActor)aTargetActor).TrySetInTask(msg);
         }
 
         public void SendMessage(Object msg)
@@ -128,37 +128,37 @@ namespace Actor.Base
             }
         }
 
-        public static actActor Add(actActor anActor, Object aMessage)
+        public static BaseActor Add(BaseActor anActor, Object aMessage)
         {
             CheckArg.Actor(anActor);
             anActor.SendMessage(aMessage);
             return anActor;
         }
 
-        public static actActor operator +(actActor anActor, Object aMessage)
+        public static BaseActor operator +(BaseActor anActor, Object aMessage)
         {
             return Add(anActor, aMessage);
         }
 
-        public actActor(Behaviors someBehaviors)
+        public BaseActor(Behaviors someBehaviors)
         {
             Tag = new actTag();
             BecomeMany(someBehaviors);
         }
 
-        public actActor(IBehavior aBehavior)
+        public BaseActor(IBehavior aBehavior)
         {
             Tag = new actTag();
             Become(aBehavior);
         }
 
-        public actActor(IBehavior[] someBehaviors)
+        public BaseActor(IBehavior[] someBehaviors)
         {
             Tag = new actTag();
             Becomes(someBehaviors);
         }
 
-        public actActor()
+        public BaseActor()
         {
             Tag = new actTag();
         }

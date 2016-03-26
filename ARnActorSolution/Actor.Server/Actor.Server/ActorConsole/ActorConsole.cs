@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
     // TODO make it a singleton ?
-    public class ActorConsole : actActor
+    public class ActorConsole : BaseActor
     {
         public ActorConsole()
         {

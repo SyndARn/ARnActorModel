@@ -8,7 +8,7 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    public class ActorServer : actActor, IDisposable
+    public class ActorServer : BaseActor, IDisposable
     {
         public string Name { get; private set; }
         public int Port { get; private set; }

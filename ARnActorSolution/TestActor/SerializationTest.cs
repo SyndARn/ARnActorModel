@@ -22,7 +22,7 @@ namespace TestActor
             public string Name { get; set; }
         }
 
-        private class actRemoteActor : actActor 
+        private class actRemoteActor : BaseActor 
         {
             public actTag remoteTag {get ;set ;}
         }
@@ -35,7 +35,7 @@ namespace TestActor
                 Type typefound = Type.GetType(String.Format("{0}, {1}", typeName, assemblyName));
                 if (typefound != null)
                 {
-                    if (typefound.IsSubclassOf(typeof(actActor)))
+                    if (typefound.IsSubclassOf(typeof(BaseActor)))
                     {
                         outtype = typeof(actRemoteActor);
                     }
@@ -77,7 +77,7 @@ namespace TestActor
             {
                 
 
-                if (type.IsSubclassOf(typeof(actActor)))
+                if (type.IsSubclassOf(typeof(BaseActor)))
                 {
                     Debug.WriteLine("push actor {0} to host directory", type);
                     selector = this;

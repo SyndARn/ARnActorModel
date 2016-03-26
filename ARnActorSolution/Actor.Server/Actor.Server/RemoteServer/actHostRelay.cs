@@ -27,7 +27,7 @@ namespace Actor.Server
 
     // http listener ...
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actHostRelay : actActor, IDisposable
+    public class actHostRelay : BaseActor, IDisposable
     {
         HttpListener Listener;
         public actHostRelay()

@@ -9,7 +9,7 @@ using Actor.Server;
 
 namespace WpfPrime.Prime
 {
-    public class actPrime : actActor
+    public class actPrime : BaseActor
     {
         int prime;
         public actPrime(int n)

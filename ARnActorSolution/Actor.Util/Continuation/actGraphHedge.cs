@@ -16,7 +16,7 @@ namespace Actor.Util
 
     public enum GNRequest { None, Diffuse }
 
-    public class actGraphNode<T> : actActor
+    public class actGraphNode<T> : BaseActor
     {
         public IEnumerable<actGraphHedge<T>> Hedges { get; private set; }
         private void DoDiffuse(Tuple<GNRequest,T> msg)

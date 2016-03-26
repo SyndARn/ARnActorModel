@@ -32,7 +32,7 @@ namespace Actor.Util.Tests
             ConcurrentBag<string> end = new ConcurrentBag<string>();
             for (int i = 0; i < 100; i++)
                 start.Add(i.ToString(CultureInfo.InvariantCulture)) ;
-            var actForeach = new actActor(new bhvForEach<string>());
+            var actForeach = new BaseActor(new bhvForEach<string>());
             actForeach.SendMessage(new Tuple<IEnumerable<string>, Action<String>>(start,
                 t => end.Add(t)));
             fLauncher.Wait(2000);

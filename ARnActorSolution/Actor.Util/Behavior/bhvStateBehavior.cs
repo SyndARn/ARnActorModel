@@ -31,7 +31,7 @@ namespace Actor.Util
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actStatefullActor<T> : actActor
+    public class actStatefullActor<T> : BaseActor
     {
         public actStatefullActor()
             : base()

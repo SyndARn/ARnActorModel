@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace Actor.Server
 {
-    class actProcessRelayRequest : actActor
+    class actProcessRelayRequest : BaseActor
     {
         public actProcessRelayRequest(HttpListenerContext aContext)
         {

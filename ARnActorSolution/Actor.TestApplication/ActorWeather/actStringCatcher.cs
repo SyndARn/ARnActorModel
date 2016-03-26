@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace ActorWheather
 {
-    public class actStringCatcher : actActor
+    public class actStringCatcher : BaseActor
     {
 
         private string fString;

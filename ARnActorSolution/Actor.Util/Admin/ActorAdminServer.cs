@@ -9,7 +9,7 @@ using Actor.Server;
 namespace Actor.Util
 {
 
-    public class ActorAdminServer : actActor
+    public class ActorAdminServer : BaseActor
     {
         public ActorAdminServer()
         {

@@ -22,7 +22,7 @@ namespace Actor.Util
         {
             foreach(T act in msg.Item1)
             {
-                new actActor(new bhvDoForEach<T>()).SendMessage(Tuple.Create(act,msg.Item2)) ;
+                new BaseActor(new bhvDoForEach<T>()).SendMessage(Tuple.Create(act,msg.Item2)) ;
             }
         }
     }

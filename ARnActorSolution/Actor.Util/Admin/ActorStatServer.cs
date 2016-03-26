@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Actor.Util
 {
-    public class ActorStatServer : actActor
+    public class ActorStatServer : BaseActor
     {
         public ActorStatServer()
         {

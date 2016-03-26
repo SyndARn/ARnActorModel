@@ -21,7 +21,7 @@ namespace Actor.Neurone
         }
     }
     
-    public class actNeurone : actActor 
+    public class actNeurone : BaseActor 
     {
         // dendrite receive from
         // Axone emit to

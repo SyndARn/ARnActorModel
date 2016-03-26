@@ -26,7 +26,7 @@ namespace Actor.Util
      * Workflow on a wfwMessage pattern election get a new status
      * GetStatus answer with the current status
     */
-    public class actWorkflow<T> : actActor
+    public class actWorkflow<T> : BaseActor
     {
         private IwfwStatus<T> fCurrent ;
         public actWorkflow(IwfwStatus<T> startWith)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ARnAgent
 {
-    public class actAgentObserver : actActor
+    public class actAgentObserver : BaseActor
     {
         public actAgentObserver() : base()
         {

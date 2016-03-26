@@ -31,7 +31,7 @@ namespace Actor.Util
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actLinkedList<T> : actActor
+    public class actLinkedList<T> : BaseActor
     {
         public actLinkedList()
             : base()

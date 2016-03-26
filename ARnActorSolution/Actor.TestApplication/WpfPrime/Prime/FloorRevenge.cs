@@ -527,7 +527,7 @@ namespace WpfPrime.Prime
         }
     }
 
-    public class actDico : actActor
+    public class actDico : BaseActor
     {
         private Dictionary<Int64, Int64> fDico = new Dictionary<Int64, Int64>();
 
@@ -558,7 +558,7 @@ namespace WpfPrime.Prime
 
     public enum FknOrder { compute, result }
 
-    public class Fkn : actActor
+    public class Fkn : BaseActor
     {
         private Int64 fN;
         private Int64 fK;

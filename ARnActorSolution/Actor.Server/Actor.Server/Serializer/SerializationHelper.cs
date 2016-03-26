@@ -19,7 +19,7 @@ namespace Actor.Server
             Type typefound = Type.GetType(String.Format(CultureInfo.InvariantCulture,"{0}, {1}", typeName, assemblyName));
             if (typefound != null)
             {
-                if (typefound.IsSubclassOf(typeof(actActor)))
+                if (typefound.IsSubclassOf(typeof(BaseActor)))
                 {
                     outtype = typeof(actRemoteActor);
                 }
@@ -47,7 +47,7 @@ namespace Actor.Server
             {
                 throw new ActorException("Null type found in GetSurrogate");
             }
-            if (type.IsSubclassOf(typeof(actActor)))
+            if (type.IsSubclassOf(typeof(BaseActor)))
             {
                 Debug.WriteLine("push actor {0} to host directory", type);
                 selector = this;

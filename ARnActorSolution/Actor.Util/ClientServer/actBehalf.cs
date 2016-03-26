@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Actor.Util
 {
-    public class actBehalf : actActor
+    public class actBehalf : BaseActor
     {
         public actBehalf() : base()
         {

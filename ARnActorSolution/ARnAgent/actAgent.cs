@@ -10,7 +10,7 @@ namespace ARnAgent
     public enum ActorAtom {Kill} ;
     public enum AgentAtom {Stop} ;
 
-    public class actAgent : actActor, IAgent
+    public class actAgent : BaseActor, IAgent
     {
         protected string AgentName;
         private bhvBehavior<DeltaTimeMessage> bhvReact;

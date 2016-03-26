@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 
-    public class actDirectory : actActor
+    public class actDirectory : BaseActor
     {
         public enum DirectoryRequest { reqFind } ;
         private Dictionary<string, IActor> fDictionary = new Dictionary<string, IActor>();

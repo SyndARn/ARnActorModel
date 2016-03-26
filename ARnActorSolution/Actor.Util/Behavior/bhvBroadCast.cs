@@ -9,7 +9,7 @@ namespace Actor.Util
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actBroadCast<T> : actActor
+    public class actBroadCast<T> : BaseActor
     {
         public actBroadCast()
             : base()

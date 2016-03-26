@@ -94,7 +94,7 @@ namespace ActorGraph.Actors
         }
     }
 
-    public class actGraph : actActor 
+    public class actGraph : BaseActor 
     {
     }
 }

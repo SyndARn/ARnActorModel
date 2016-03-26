@@ -9,7 +9,7 @@ namespace Actor.Util
 {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actEchoActor<T> : actActor
+    public class actEchoActor<T> : BaseActor
     {
         public actEchoActor(IActor dest, T aT)
         {
@@ -19,7 +19,7 @@ namespace Actor.Util
         }
     }
 
-    public class actEchoActor : actActor
+    public class actEchoActor : BaseActor
     {
         public actEchoActor(IActor dest, String value)
         {

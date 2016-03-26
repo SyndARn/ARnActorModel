@@ -7,7 +7,7 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    class actRemoteTest : actActor 
+    class actRemoteTest : BaseActor 
     {
         public static void SendString(string aMsg)
         {

@@ -18,7 +18,7 @@ namespace TestActor
             fLauncher = new actTestLauncher();
         }
 
-        class actShardDirectoryClientTest : actActor
+        class actShardDirectoryClientTest : BaseActor
         {
             public actShardDirectoryClientTest() : base()
             {

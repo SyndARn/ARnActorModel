@@ -31,7 +31,7 @@ using Actor.Server;
 namespace Actor.Util
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actEchoServer : actActor
+    public class actEchoServer : BaseActor
     {
         public actEchoServer()
             : base()
@@ -43,7 +43,7 @@ namespace Actor.Util
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actEchoClient : actActor
+    public class actEchoClient : BaseActor
     {
         private bhvEchoClient aClient;
         public actEchoClient()

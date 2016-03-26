@@ -9,7 +9,7 @@ using Actor.Server;
 
 namespace Actor.Service
 {
-    public class RPrint : actActor 
+    public class RPrint : BaseActor 
     {
         public RPrint()
             : base()

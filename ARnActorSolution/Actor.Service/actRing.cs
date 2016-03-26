@@ -16,7 +16,7 @@ namespace Actor.Service
 
     enum State { Start, Running }
 
-    class actNode : actActor
+    class actNode : BaseActor
     {
         IActor fNextNode;
         int fTestRun = 0;
@@ -76,7 +76,7 @@ namespace Actor.Service
         internal static IActor answer;
     }
 
-    public class actRing : actActor
+    public class actRing : BaseActor
     {
         int fNode ;
         IActor firstNode = null;

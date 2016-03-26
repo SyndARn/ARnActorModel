@@ -33,7 +33,7 @@ namespace Actor.Server
     /// Connect to a shard Service
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actConnect : actActor
+    public class actConnect : BaseActor
     {
         private string fServiceName;
         private string fUri;
@@ -51,7 +51,7 @@ namespace Actor.Server
         private void DoDisco(string msg)
         {
             Become(new bhvBehavior<Dictionary<string,string>>(Found));
-            actActor rem = new actRemoteActor(new actTag(fUri));
+            BaseActor rem = new actRemoteActor(new actTag(fUri));
             rem += new DiscoCommand(this); // send message
         }
 

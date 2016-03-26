@@ -16,7 +16,7 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    public class actHostDirectory : actActor 
+    public class actHostDirectory : BaseActor 
     {
         private Dictionary<String, WeakReference<IActor>> fUri2Actor = new Dictionary<String, WeakReference<IActor>>(); // actor hosted
         private static Lazy<actHostDirectory> fHostDirectory = new Lazy<actHostDirectory>();

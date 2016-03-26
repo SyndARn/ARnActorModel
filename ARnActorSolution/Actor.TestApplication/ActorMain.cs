@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace Actor.TestApplication
 {
-    class ActorMain : actActor
+    class ActorMain : BaseActor
     {
         private actCollection<string> collect;
         public ActorMain() : base()
@@ -39,7 +39,7 @@ namespace Actor.TestApplication
                 Console.WriteLine("Collect " + item);
             }
 
-            var actForeach = new actActor(new bhvForEach<string>());
+            var actForeach = new BaseActor(new bhvForEach<string>());
             actForeach.SendMessage(new Tuple<IEnumerable<string>, Action<String>>(list,
                 t => Console.WriteLine("list " + t)));
 
@@ -73,9 +73,9 @@ namespace Actor.TestApplication
             Console.WriteLine("All client allocated {0}", (double)(end - start) / 10000.0);
 
             // basic redirection
-            IActor target = new actActor(new bhvBehavior<string>(t => { Console.WriteLine(t); }));
-            IActor middle = new actActor(new bhvBehavior<string>(t => { t = t + " augmenté"; }));
-            ((actActor)middle).RedirectTo(target);
+            IActor target = new BaseActor(new bhvBehavior<string>(t => { Console.WriteLine(t); }));
+            IActor middle = new BaseActor(new bhvBehavior<string>(t => { t = t + " augmenté"; }));
+            ((BaseActor)middle).RedirectTo(target);
             middle.SendMessage("Bonjour");
 
 

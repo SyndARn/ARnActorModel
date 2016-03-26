@@ -22,7 +22,7 @@ namespace Actor.Service
         }
     }
 
-    public class actStringParser : actActor
+    public class actStringParser : BaseActor
     {
         public actStringParser()
             : base()
@@ -41,7 +41,7 @@ namespace Actor.Service
         }
     }
 
-    public class actParserServer : actActor
+    public class actParserServer : BaseActor
     {
         public actParserServer() : base()
         {
@@ -49,7 +49,7 @@ namespace Actor.Service
         }
     }
 
-    public class actParser : actActor
+    public class actParser : BaseActor
     {
         private List<String> fList = new List<String>();
         private actTag fParserServer ;

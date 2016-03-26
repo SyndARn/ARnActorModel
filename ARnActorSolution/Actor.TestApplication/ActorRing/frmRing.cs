@@ -57,7 +57,7 @@ namespace ActorRing
             if (qttMess > 0)
             {
                 catcher.SetEvent(lblDuration, new EventHandler<string>(this.EvHandler));
-                var actor = new actActor(new bhvBehavior<string>(t => { return true; }, t =>
+                var actor = new BaseActor(new bhvBehavior<string>(t => { return true; }, t =>
                 {
                     rcvmess++; if (rcvmess >= qttMess)
                     {

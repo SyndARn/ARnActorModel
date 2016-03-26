@@ -73,7 +73,7 @@ namespace Actor.Base
     ///     Action actor are a facility : they provide template to send method as message within an actor
     ///     e.g. SendMessageTo(() => {do something},anActor) ;
     /// </summary>
-    public class ActionActor : actActor
+    public class ActionActor : BaseActor
     {
         public ActionActor()
             : base()
@@ -92,7 +92,7 @@ namespace Actor.Base
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actAction<T> : actActor
+    public class actAction<T> : BaseActor
     {
         public actAction()
             : base()

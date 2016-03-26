@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ARnAgent
 {
-    public class actAgentDirectory : actActor
+    public class actAgentDirectory : BaseActor
     {
         private List<IAgent> agentList = new List<IAgent>();
 

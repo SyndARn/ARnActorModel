@@ -51,7 +51,7 @@ namespace Actor.Base
             return sb.ToString();
         }
 
-        public static void AddActor(actActor anActor)
+        public static void AddActor(BaseActor anActor)
         {
             if (anActor == null) throw new ActorException("bad, no actor should be null at this point");
 

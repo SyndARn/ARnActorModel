@@ -45,7 +45,7 @@ namespace Actor.Base
     ///   It allows to send message to an actor only knowing his alias name in Directory
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class actSendByName<T> : actActor
+    public class actSendByName<T> : BaseActor
     {
         // The message to be send
         private T origMessage;

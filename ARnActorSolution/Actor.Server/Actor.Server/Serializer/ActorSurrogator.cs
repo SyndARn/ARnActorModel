@@ -28,7 +28,7 @@ namespace Actor.Base
             // force misc init
             if (remoteActor != null)
             {
-                actActor.CompleteInitialize(remoteActor);
+                BaseActor.CompleteInitialize(remoteActor);
                 actRemoteActor.CompleteInitialize(remoteActor);
                 actTag getTag = (actTag)info.GetValue("RemoteTag", typeof(actTag));
                 typeof(actRemoteActor).GetField("fRemoteTag").SetValue(obj, getTag);

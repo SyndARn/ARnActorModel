@@ -24,7 +24,7 @@ namespace Actor.Base.Tests
             new actDirectory();
         }
 
-        class actTestActor : actActor
+        class actTestActor : BaseActor
         {
             public actTestActor()
             {
@@ -65,7 +65,7 @@ namespace Actor.Base.Tests
             Assert.IsTrue(actDirectory.GetDirectory().Stat().StartsWith("Directory entries "));
         }
 
-        class discoTestActor : actActor
+        class discoTestActor : BaseActor
         {
             private IActor fLauncher;
 

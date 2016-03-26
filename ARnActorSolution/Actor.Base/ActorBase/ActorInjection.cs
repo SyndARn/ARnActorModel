@@ -12,7 +12,7 @@ namespace Actor.Base
     /// </summary>
     public interface IRunningActor
     {
-        actActor Actor { get; }
+        BaseActor Actor { get; }
     }
 
     /// <summary>
@@ -22,16 +22,16 @@ namespace Actor.Base
 
     public class ActorInjection : IRunningActor
     {
-        actActor realActor = null;
+        BaseActor realActor = null;
 
         public static ActorInjection Cast(Behaviors bhvs)
         {
             ActorInjection inject = new ActorInjection();
-            inject.realActor = new actActor(bhvs);
+            inject.realActor = new BaseActor(bhvs);
             return inject;
         }
 
-        public actActor Actor
+        public BaseActor Actor
         {
             get { return realActor ; }
         }
