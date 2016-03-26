@@ -33,7 +33,7 @@ namespace Actor.Util
             : base()
         {
             fCurrent = startWith;
-            Become(new bhvBehavior<IwfwStatus<T>>(DoProcess));
+            Become(new Behavior<IwfwStatus<T>>(DoProcess));
         }
         private void DoProcess(IwfwStatus<T> aStatus)
         {
@@ -56,7 +56,7 @@ namespace Actor.Util
 
         public IwfwStatus<T> Destination {get; set;}
 
-        public bhvBehavior<IwfwStatus<T>> Action
+        public Behavior<IwfwStatus<T>> Action
         {
             get;
             set;
@@ -78,7 +78,7 @@ namespace Actor.Util
     public interface IwfwTransition<T>
     {
         IwfwStatus<T> Destination { get; }
-        bhvBehavior<IwfwStatus<T>> Action { get; }
+        Behavior<IwfwStatus<T>> Action { get; }
     }
 
     public interface IwfwStatus<T>

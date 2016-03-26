@@ -12,10 +12,10 @@ namespace Actor.TestApplication
 {
     class ActorMain : BaseActor
     {
-        private actCollection<string> collect;
+        private CollectionActor<string> collect;
         public ActorMain() : base()
         {
-            Become(new bhvBehavior<string>(t => { return true; }, DoBehavior));
+            Become(new Behavior<string>(t => { return true; }, DoBehavior));
             new ActorService();
             SendMessage("Start");
         }
@@ -26,7 +26,7 @@ namespace Actor.TestApplication
         {
             Console.WriteLine("Serv Start");
             var start = DateTime.UtcNow.Ticks;
-            collect = new actCollection<string>();
+            collect = new CollectionActor<string>();
             var list = new List<string>();
             for (int i = 0; i < 10; i++)
             {
@@ -39,30 +39,30 @@ namespace Actor.TestApplication
                 Console.WriteLine("Collect " + item);
             }
 
-            var actForeach = new BaseActor(new bhvForEach<string>());
+            var actForeach = new BaseActor(new ForEachBehavior<string>());
             actForeach.SendMessage(new Tuple<IEnumerable<string>, Action<String>>(list,
                 t => Console.WriteLine("list " + t)));
 
 
             Console.WriteLine("Should have work");
 
-            var linkedlist = new actLinkedList<string>();
+            var linkedlist = new LinkedListActor<string>();
             for (int i = 0; i < 100; i++)
             {
-                linkedlist.SendMessage(Tuple.Create(bhvLinkedListOperation.Add, i.ToString()));
+                linkedlist.SendMessage(Tuple.Create(LinkedListOperation.Add, i.ToString()));
             }
 
-            new actEchoActor<Tuple<bhvLinkedListOperation, string>>(linkedlist, Tuple.Create(bhvLinkedListOperation.First, "5"));
+            new actEchoActor<Tuple<LinkedListOperation, string>>(linkedlist, Tuple.Create(LinkedListOperation.First, "5"));
 
             new actRing(1000,1000); // 10 sec
 
-            new actLinkedList<string>();
+            new LinkedListActor<string>();
 
-            IActor aServer = new actEchoServer();
+            IActor aServer = new EchoServerActor();
             clientList = new List<IActor>();
             for (int i = 0; i < 100; i++)
             {
-                actEchoClient aClient = new actEchoClient();// new actEchoClient(aServer);
+                EchoClientActor aClient = new EchoClientActor();// new actEchoClient(aServer);
                 // DirectoryRequest.SendRegister("client + " + i.ToString(), aClient);
                 aClient.Connect("EchoServer");
                 aClient.SendMessage("client-" + i.ToString());
@@ -73,8 +73,8 @@ namespace Actor.TestApplication
             Console.WriteLine("All client allocated {0}", (double)(end - start) / 10000.0);
 
             // basic redirection
-            IActor target = new BaseActor(new bhvBehavior<string>(t => { Console.WriteLine(t); }));
-            IActor middle = new BaseActor(new bhvBehavior<string>(t => { t = t + " augmenté"; }));
+            IActor target = new BaseActor(new Behavior<string>(t => { Console.WriteLine(t); }));
+            IActor middle = new BaseActor(new Behavior<string>(t => { t = t + " augmenté"; }));
             ((BaseActor)middle).RedirectTo(target);
             middle.SendMessage("Bonjour");
 

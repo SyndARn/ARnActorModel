@@ -10,7 +10,7 @@ namespace Actor.Util
 {
     public enum ServerRequest{Connect,Disconnect,Request,Answer,Accept}
 
-    class ServerMessage<T>
+    public class ServerMessage<T>
     {
         public ServerMessage(IActor aClient, ServerRequest aRequest, T aData)
         {
@@ -23,11 +23,11 @@ namespace Actor.Util
         public T Data { get; set; }
     }
 
-    abstract class bhvServer<T> : bhvBehavior<ServerMessage<T>>
+    public abstract class ServerBehavior<T> : Behavior<ServerMessage<T>>
     {
         private List<IActor> fActorList = new List<IActor>() ;
 
-        public bhvServer() : base()
+        protected ServerBehavior() : base()
         {
             Pattern = ServerPattern;
             Apply = ServerApply;
@@ -38,6 +38,7 @@ namespace Actor.Util
             return true ;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         public void ServerApply(ServerMessage<T> aMessage)
         {
             switch (aMessage.Request)
@@ -51,6 +52,10 @@ namespace Actor.Util
 
         protected void DoConnect(ServerMessage<T> aMessage)
         {
+            if (aMessage == null)
+            {
+                throw new ActorException("Server Behavior, null message encounters");
+            }
             if (! fActorList.Contains(aMessage.Client))
             {
                 fActorList.Add(aMessage.Client);
@@ -60,6 +65,10 @@ namespace Actor.Util
 
         protected void DoDisconnect(ServerMessage<T> aMessage)
         {
+            if (aMessage == null)
+            {
+                throw new ActorException("Server Behavior, null message encounters");
+            }
             if (fActorList.Contains(aMessage.Client))
             {
                 fActorList.Remove(aMessage.Client);
@@ -70,15 +79,23 @@ namespace Actor.Util
 
         public static void SendAnswer(ServerMessage<T> aMessage, T data)
         {
+            if (aMessage == null)
+            {
+                throw new ActorException("Server Behavior, null message encounters");
+            }
+            if (aMessage == null)
+            {
+                throw new ActorException("Null client encountered");
+            }
             aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Answer, data));
         }
     }
 
 
-    abstract class bhvClient<T> : bhvBehavior<ServerMessage<T>>
+    public abstract class ClientBehavior<T> : Behavior<ServerMessage<T>>
     {
         private IActor fServer = null ;
-        public bhvClient() : base ()        
+        protected ClientBehavior() : base ()        
         {
             Pattern = t => {return true;};
             Apply = DispatchAnswer;
@@ -103,6 +120,10 @@ namespace Actor.Util
 
         protected void SendRequest(ServerMessage<T> aMessage)
         {
+            if (aMessage == null)
+            {
+                throw new ActorException("ClientBehavior, null message encounters");
+            }
             fServer.SendMessage(new ServerMessage<T>(LinkedTo.LinkedActor, ServerRequest.Request, aMessage.Data));
         }
 

@@ -44,7 +44,7 @@ namespace Actor.Base
         {
             fEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80);
             fTcpListener = new TcpListener(fEndPoint);
-            Become(new bhvBehavior<string>(DoStartListen));
+            Become(new Behavior<string>(DoStartListen));
             fTcpListener.Start();
             SendMessage("Start Listen");
         }
@@ -59,7 +59,7 @@ namespace Actor.Base
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actEntryConnection : actAction<TcpClient>
+    public class actEntryConnection : ActionActor<TcpClient>
     {
         private void DoListen(TcpClient client)
         {

@@ -21,7 +21,7 @@ namespace Actor.RemoteLoading
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             Console.WriteLine(asm.Location);
-            Become(new bhvBehavior<string>(Do));
+            Become(new Behavior<string>(Do));
         }
 
         public void Do(string msg)
@@ -38,7 +38,7 @@ namespace Actor.RemoteLoading
         private string ActorClass;
     }
 
-    public class bhvRemoteLoading : bhvBehavior<bhvRemoteActor>
+    public class bhvRemoteLoading : Behavior<bhvRemoteActor>
     {
         public bhvRemoteLoading()
         {
@@ -104,7 +104,7 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class bhvUpload : bhvBehavior<Tuple<IActor, MemoryStream>>
+    public class bhvUpload : Behavior<Tuple<IActor, MemoryStream>>
     {
         public bhvUpload()
         {
@@ -142,7 +142,7 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class bhvDownload : bhvBehavior<chunk>
+    public class bhvDownload : Behavior<chunk>
     {
         private List<chunk> fChunkList = new List<chunk>();
 

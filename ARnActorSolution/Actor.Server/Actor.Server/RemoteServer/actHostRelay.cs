@@ -21,7 +21,7 @@ namespace Actor.Server
     public class SerialObject
     {
         public Object Data { get; set; }
-        public actTag Tag { get; set; }
+        public ActorTag Tag { get; set; }
         public SerialObject() {  }
     }
 
@@ -47,7 +47,7 @@ namespace Actor.Server
             {
                 Debug.WriteLine("Can't start http "+e );
             }
-            Become(new bhvBehavior<String>(t => { return "Listen".Equals(t); }, DoListen));
+            Become(new Behavior<String>(t => { return "Listen".Equals(t); }, DoListen));
             SendMessage("Listen");
         }
 

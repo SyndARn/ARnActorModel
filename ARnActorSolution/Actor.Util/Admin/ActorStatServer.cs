@@ -12,7 +12,7 @@ namespace Actor.Util
     {
         public ActorStatServer()
         {
-            Become(new bhvBehavior<IActor>(
+            Become(new Behavior<IActor>(
                 msg => { return (msg is IActor) ;},
             Behavior)) ;
         }

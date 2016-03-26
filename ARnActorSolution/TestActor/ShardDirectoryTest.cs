@@ -22,21 +22,21 @@ namespace TestActor
         {
             public actShardDirectoryClientTest() : base()
             {
-                Become(new bhvBehavior<string>(DoStart)) ;
+                Become(new Behavior<string>(DoStart)) ;
                 SendMessage("Start");
             }
 
             private void DoStart(string msg)
             {
                 // find shard in directory
-                actConnect connect = new actConnect(this, ActorServer.GetInstance().FullHost, "KnownShards");
-                var data = Receive(ans => { return ans is Tuple<string, actTag, IActor>; }) ;
-                var res = data.Result as Tuple<string, actTag, IActor>;
+                ConnectActor connect = new ConnectActor(this, ActorServer.GetInstance().FullHost, "KnownShards");
+                var data = Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; }) ;
+                var res = data.Result as Tuple<string, ActorTag, IActor>;
                 var shardDir = res.Item3 ;
                 Assert.IsNotNull(shardDir) ;
                 ShardRequest req = ShardRequest.CastRequest(this,this) ;
                 shardDir.SendMessage(req) ;
-                Become(new bhvBehavior<ShardRequest>(WaitAns));
+                Become(new Behavior<ShardRequest>(WaitAns));
             }
 
             private void WaitAns(ShardRequest msg)

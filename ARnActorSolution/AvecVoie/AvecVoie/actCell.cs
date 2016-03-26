@@ -18,8 +18,8 @@ namespace AvecVoie
         {
             fSize = size;
             fBoard = new actCell[size, size];
-            Become(new bhvBehavior<CellRequest>(DoRequest));
-            AddBehavior(new bhvBehavior<string>(DoCycle));
+            Become(new Behavior<CellRequest>(DoRequest));
+            AddBehavior(new Behavior<string>(DoCycle));
         }
 
         private void DoRequest(CellRequest aRequest)
@@ -64,7 +64,7 @@ namespace AvecVoie
         public long Cycle;
     }
 
-    public class bhvCell : bhvBehavior<CellRequest>
+    public class bhvCell : Behavior<CellRequest>
     {
         private int CellStatus = 0; // 0 dead 1 alive
         private long x;

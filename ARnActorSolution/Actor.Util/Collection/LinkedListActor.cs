@@ -30,80 +30,76 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actLinkedList<T> : BaseActor
+    public class LinkedListActor<T> : BaseActor
     {
-        public actLinkedList()
+        public LinkedListActor()
             : base()
         {
-            BecomeMany(new bhvLinkedList<T>());
+            BecomeMany(new LinkedListBehaviors<T>());
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public enum bhvLinkedListOperation { Add, First, Next, Answer } ;
+    public enum LinkedListOperation { Add, First, Next, Answer } ;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvLinkedListAdd<T> : bhvBehavior<Tuple<bhvLinkedListOperation,T>>
+    public class LinkedListAddbehavior<T> : Behavior<Tuple<LinkedListOperation, T>>
     {
-        public bhvLinkedListAdd()
+        public LinkedListAddbehavior()
             : base()
         {
-            Pattern = t => { return bhvLinkedListOperation.Add.Equals(t.Item1) ; };
+            Pattern = t => { return LinkedListOperation.Add.Equals(t.Item1) ; };
             Apply = Behavior;
         }
 
-        private void Behavior(Tuple<bhvLinkedListOperation, T> data)
+        private void Behavior(Tuple<LinkedListOperation, T> data)
         {
-                ((bhvLinkedList<T>)LinkedTo).fList.AddLast(data.Item2);
+                ((LinkedListBehaviors<T>)LinkedTo).fList.AddLast(data.Item2);
         }
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvLinkedListFirst<T> : bhvBehavior<Tuple<bhvLinkedListOperation, IActor>>
+    public class bhvLinkedListFirst<T> : Behavior<Tuple<LinkedListOperation, IActor>>
     {
         public bhvLinkedListFirst() : base()
         {
-            Pattern = t => { return bhvLinkedListOperation.First.Equals(t.Item1); };
+            Pattern = t => { return LinkedListOperation.First.Equals(t.Item1); };
             Apply = Behavior;
         }
-        private void Behavior(Tuple<bhvLinkedListOperation, IActor> Sender)
+        private void Behavior(Tuple<LinkedListOperation, IActor> Sender)
         {
-            var first = ((bhvLinkedList<T>)LinkedTo).fList.First.Value;
-            Sender.Item2.SendMessage(Tuple.Create(bhvLinkedListOperation.Answer, first));
+            var first = ((LinkedListBehaviors<T>)LinkedTo).fList.First.Value;
+            Sender.Item2.SendMessage(Tuple.Create(LinkedListOperation.Answer, first));
         }
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvLinkedListNext<T> : bhvBehavior<Tuple<bhvLinkedListOperation,IActor, T>>
+    public class bhvLinkedListNext<T> : Behavior<Tuple<LinkedListOperation, IActor, T>>
     {
         public bhvLinkedListNext()
             : base()
         {
-            Pattern = t => { return bhvLinkedListOperation.Next.Equals(t.Item1); };
+            Pattern = t => { return LinkedListOperation.Next.Equals(t.Item1); };
             Apply = Behavior;
         }
-        private void Behavior(Tuple<bhvLinkedListOperation, IActor, T> data)
+        private void Behavior(Tuple<LinkedListOperation, IActor, T> data)
         {
-            var find = ((bhvLinkedList<T>)LinkedTo).fList.Find(data.Item3);
+            var find = ((LinkedListBehaviors<T>)LinkedTo).fList.Find(data.Item3);
             if (find != null)
             {
                 var next = find.Next;
-                data.Item2.SendMessage(Tuple.Create(bhvLinkedListOperation.Answer, next.Value));
+                data.Item2.SendMessage(Tuple.Create(LinkedListOperation.Answer, next.Value));
             }
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvLinkedList<T> : Behaviors
+    public class LinkedListBehaviors<T> : Behaviors
     {
         internal LinkedList<T> fList = new LinkedList<T>();
-        public bhvLinkedList()
+        public LinkedListBehaviors()
             : base()
         {
             this.AddBehavior(new bhvLinkedListFirst<T>());
             this.AddBehavior(new bhvLinkedListNext<T>());
-            this.AddBehavior(new bhvLinkedListAdd<T>());
+            this.AddBehavior(new LinkedListAddbehavior<T>());
         }
     }
 }

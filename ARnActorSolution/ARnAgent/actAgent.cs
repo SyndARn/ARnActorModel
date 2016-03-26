@@ -13,12 +13,12 @@ namespace ARnAgent
     public class actAgent : BaseActor, IAgent
     {
         protected string AgentName;
-        private bhvBehavior<DeltaTimeMessage> bhvReact;
+        private Behavior<DeltaTimeMessage> bhvReact;
 
         public actAgent()
             : base()
         {
-            Become(new bhvBehavior<string>(DoInitState));
+            Become(new Behavior<string>(DoInitState));
         }
 
         public void Start(string anAgentName)
@@ -35,10 +35,10 @@ namespace ARnAgent
         public virtual void InitState(string anAgentName)
         {
             AgentName = anAgentName;
-            bhvReact = new bhvBehavior<DeltaTimeMessage>(DoReact) ;
-            var bhvObserve = new bhvBehavior<Tuple<IActor,DeltaTime>>(DoObserve);
-            var bhvKill = new bhvBehavior<ActorAtom>(DoKill);
-            var bhvStop = new bhvBehavior<AgentAtom>(DoStop);
+            bhvReact = new Behavior<DeltaTimeMessage>(DoReact) ;
+            var bhvObserve = new Behavior<Tuple<IActor,DeltaTime>>(DoObserve);
+            var bhvKill = new Behavior<ActorAtom>(DoKill);
+            var bhvStop = new Behavior<AgentAtom>(DoStop);
             var bhvMany = new Behaviors() ;
             bhvMany.AddBehavior(bhvReact) ;
             bhvMany.AddBehavior(bhvObserve) ;

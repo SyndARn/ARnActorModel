@@ -21,7 +21,7 @@ namespace Actor.Base
             ISupervisedActor actor = new actSupervisedActor(this.Tag);
             return actor;
         }
-        public actSupervisedActor(actTag previousTag) : base(previousTag)
+        public actSupervisedActor(ActorTag previousTag) : base(previousTag)
         {
             Become(new bhvSupervised());
         }
@@ -34,7 +34,7 @@ namespace Actor.Base
     public enum SupervisorAction { Register, Unregister, Respawn, Kill} ;
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvSupervised : bhvBehavior<SupervisorAction>
+    public class bhvSupervised : Behavior<SupervisorAction>
     {
         public bhvSupervised()
         {
@@ -65,7 +65,7 @@ namespace Actor.Base
 
         public bhvSupervisor() : base()
         {
-            this.AddBehavior(new bhvBehavior<Tuple<SupervisorAction, ISupervisedActor>>(
+            this.AddBehavior(new Behavior<Tuple<SupervisorAction, ISupervisedActor>>(
                 DoSupervision
                 )) ;
         }

@@ -27,36 +27,50 @@ using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
 
-namespace Actor.Server
+namespace Actor.Util
 {
-    /// <summary>
-    /// Return public services in a shard
-    /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actDiscovery : BaseActor
+
+    public class StateFullActor<T> : BaseActor
     {
-        public actDiscovery(string hostAddress)
+        public StateFullActor()
             : base()
         {
-            Become(new bhvBehavior<string>(t => {return true ;},
-                Disco)) ;
-            SendMessage(hostAddress) ;
+            Become(new StateBehavior<T>());
         }
 
-        private void Disco(string hostAddress)
+        public void Set(T aT)
         {
-            Become(new bhvBehavior<Dictionary<string,string>>(t => {return true ;}, 
-                Found)) ;
-            var rem = new actRemoteActor(new actTag(hostAddress));
-            rem.SendMessage(new DiscoCommand(this));
+            SendMessage(Tuple.Create(StateAction.Set, aT));
         }
 
-        private void Found(Dictionary<string,String> aList)
+        public T Get()
         {
-            Console.WriteLine("Disco found:");
-            foreach(string s in aList.Keys)
-             Console.WriteLine(s + "-"+aList[s]);
-            Become(null);
+            SendMessage(Tuple.Create(StateAction.Get, default(T)));
+            var retVal = Receive(t => { return true; }).Result;
+            return retVal == null ? default(T) : (T)retVal;
+        }
+    }
+
+    public enum StateAction { Set, Get } ;
+
+    public class StateBehavior<T> : Behavior<Tuple<StateAction, T>>
+    {
+        private T fValue;
+
+        public StateBehavior()
+            : base()
+        {
+            fValue = default(T);
+        }
+
+        public void SetValue(T msg)
+        {
+            fValue = msg;
+        }
+
+        public void GetValue()
+        {
+            LinkedActor.SendMessage(fValue);
         }
     }
 

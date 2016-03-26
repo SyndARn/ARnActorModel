@@ -16,7 +16,7 @@ namespace Actor.Service
         {
             actDirectory.GetDirectory().Register(this, "RPrint");
             actHostDirectory.Register(this);
-            Become(new bhvBehavior<string>(DoRPrint));
+            Become(new Behavior<string>(DoRPrint));
         }
 
         private void DoRPrint(string aString)

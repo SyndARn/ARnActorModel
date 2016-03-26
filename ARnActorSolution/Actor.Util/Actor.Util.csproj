@@ -68,23 +68,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Admin\actEchoServer.cs" />
+    <Compile Include="Admin\EchoServerActor.cs" />
     <Compile Include="Admin\ActorAdminServer.cs" />
     <Compile Include="Admin\ActorEcho.cs" />
     <Compile Include="Behavior\bhvCrudBehavior.cs" />
-    <Compile Include="Behavior\bhvStateBehavior.cs" />
-    <Compile Include="ClientServer\actBehalf.cs" />
+    <Compile Include="Behavior\StateBehavior.cs" />
+    <Compile Include="ClientServer\OnBehalfActor.cs" />
     <Compile Include="Collection\actObservable.cs" />
-    <Compile Include="Collection\actQueue.cs" />
+    <Compile Include="Collection\QueueActor.cs" />
     <Compile Include="Admin\ActorStatServer.cs" />
     <Compile Include="Admin\actRemoteTest.cs" />
     <Compile Include="Behavior\bhvBroadCast.cs" />
     <Compile Include="Collection\bhvCollection.cs" />
-    <Compile Include="Behavior\bhvForEach.cs" />
-    <Compile Include="Collection\bhvLinkedList.cs" />
-    <Compile Include="Behavior\bhvSendReply.cs" />
-    <Compile Include="ClientServer\bhvServer.cs" />
-    <Compile Include="ClientServer\bhvWebClient.cs" />
+    <Compile Include="Behavior\ForEachBehavior.cs" />
+    <Compile Include="Collection\LinkedListActor.cs" />
+    <Compile Include="Behavior\SendReplyBehavior.cs" />
+    <Compile Include="ClientServer\ServerBehavior.cs" />
+    <Compile Include="ClientServer\WebActor.cs" />
     <Compile Include="Continuation\actGraphHedge.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Monadic\actMonad.cs" />

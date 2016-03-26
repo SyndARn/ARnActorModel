@@ -19,11 +19,11 @@ namespace Actor.Util
         }
 }
 
-    public class actQueue<T> : actAction<T>
+    public class QueueActor<T> : ActionActor<T>
     {
         private Queue<T> fQueue = new Queue<T>();
         
-        public actQueue()
+        public QueueActor()
             : base()
         {
         }

@@ -9,7 +9,7 @@ using Actor.Server ;
 namespace Actor.Service
 {
 
-    public class bhvReceiveLine : bhvBehavior<Tuple<IActor, string>>
+    public class bhvReceiveLine : Behavior<Tuple<IActor, string>>
     {
         public bhvReceiveLine() : base()
         {
@@ -27,7 +27,7 @@ namespace Actor.Service
         public actStringParser()
             : base()
         {
-            Become(new bhvBehavior<Tuple<IActor,string>>(
+            Become(new Behavior<Tuple<IActor,string>>(
                 t => 
                     {
                         char[] chr = {' '} ;
@@ -52,22 +52,22 @@ namespace Actor.Service
     public class actParser : BaseActor
     {
         private List<String> fList = new List<String>();
-        private actTag fParserServer ;
+        private ActorTag fParserServer ;
         public actParser()
             : base()
         {
-            var collect = new bhvBehavior<Tuple<IActor,string>>(t =>
+            var collect = new Behavior<Tuple<IActor,string>>(t =>
                 {
                     fList.Add(t.Item2) ;
                     Console.WriteLine("parsed "+t.Item2);
                 }
                 );
-            var connect = new bhvBehavior<actTag>(t =>
+            var connect = new Behavior<ActorTag>(t =>
                 {
                     fParserServer = t;
                 }
                 );
-            var parse = new bhvBehavior<IEnumerable<string>>(t =>
+            var parse = new Behavior<IEnumerable<string>>(t =>
                 {
                     IActor aServer = null;
                     if (fParserServer == null)
@@ -77,7 +77,7 @@ namespace Actor.Service
                     }
                     else
                     {
-                        aServer = new actConnect(this, fParserServer.Uri, "ParserServer");
+                        aServer = new ConnectActor(this, fParserServer.Uri, "ParserServer");
                     }
                     foreach (string s in t)
                     {

@@ -25,7 +25,7 @@ namespace Actor.Util
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvBroadCast<T> : bhvBehavior<Tuple<T, IEnumerable<IActor>>>
+    public class bhvBroadCast<T> : Behavior<Tuple<T, IEnumerable<IActor>>>
     {
 
         public bhvBroadCast()

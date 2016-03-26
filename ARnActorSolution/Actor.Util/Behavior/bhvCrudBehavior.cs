@@ -29,46 +29,44 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public enum CrudeAction { Get, Set, Update, Delete } ;
+    public enum CrudAction { Get, Set, Update, Delete } ;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actCrudeActor<T> : BaseActor
+    public class CrudActor<T> : BaseActor
     {
-        public actCrudeActor()
+        public CrudActor()
             : base()
         {
-            Become(new bhvCrudeBehavior<T>());
+            Become(new CrudBehavior<T>());
         }
 
         public T Get()
         {
-            SendMessage(Tuple.Create(CrudeAction.Get, default(T)));
+            SendMessage(Tuple.Create(CrudAction.Get, default(T)));
             var retVal = Receive(t => { return true; }).Result;
             return retVal == null ? default(T) : (T)retVal;
         }
 
         public void Insert(T aT)
         {
-            SendMessage(Tuple.Create(CrudeAction.Set, aT));
+            SendMessage(Tuple.Create(CrudAction.Set, aT));
         }
 
         public void Delete()
         {
-            SendMessage(Tuple.Create(CrudeAction.Delete,default(T))) ;
+            SendMessage(Tuple.Create(CrudAction.Delete,default(T))) ;
         }
 
         public void Update()
         {
-            SendMessage(Tuple.Create(CrudeAction.Update,default(T))) ;
+            SendMessage(Tuple.Create(CrudAction.Update,default(T))) ;
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvCrudeBehavior<T> : bhvBehavior<Tuple<CrudeAction, T>>
+    public class CrudBehavior<T> : Behavior<Tuple<CrudAction, T>>
     {
          private T fValue;
 
-         public bhvCrudeBehavior()
+         public CrudBehavior()
             : base()
         {
             fValue = default(T);

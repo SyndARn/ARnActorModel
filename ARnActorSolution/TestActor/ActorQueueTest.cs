@@ -23,7 +23,7 @@ namespace TestActor
         {
             fLauncher.SendAction(() =>
                 {
-                    var actorqueue = new actQueue<string>();
+                    var actorqueue = new QueueActor<string>();
                     actorqueue.Queue("a");
                     actorqueue.Queue("b");
                     actorqueue.Queue("c");

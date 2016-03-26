@@ -22,7 +22,7 @@ namespace TestActor
             fLauncher.SendAction(
                 () =>
                 {
-                    var stateActor = new actStatefullActor<string>();
+                    var stateActor = new StateFullActor<string>();
                     string strTest = "Test actStateFullActor" ;
                     stateActor.Set(strTest);
                     Assert.AreEqual(strTest, stateActor.Get());

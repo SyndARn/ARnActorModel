@@ -53,7 +53,7 @@ namespace Actor.Base
         public actSendByName()
         {
             Become(
-                new bhvBehavior<Tuple<String, T>>(msg => { return msg is Tuple<string, T>; },
+                new Behavior<Tuple<String, T>>(msg => { return msg is Tuple<string, T>; },
                     FindBehavior));
         }
 
@@ -62,7 +62,7 @@ namespace Actor.Base
         {
             // find in directory
             origMessage = msg.Item2;
-            Become(new bhvBehavior<Tuple<actDirectory.DirectoryRequest, IActor>>(ask => { return ask is Tuple<actDirectory.DirectoryRequest, IActor>; },
+            Become(new Behavior<Tuple<actDirectory.DirectoryRequest, IActor>>(ask => { return ask is Tuple<actDirectory.DirectoryRequest, IActor>; },
                 SendBehavior));
             actDirectory.GetDirectory().Find(this, msg.Item1);
         }
@@ -75,7 +75,7 @@ namespace Actor.Base
                 ans.Item2.SendMessage(origMessage);
             }
             Become(
-                new bhvBehavior<Tuple<String, T>>(msg => { return msg is Tuple<string, T>; },
+                new Behavior<Tuple<String, T>>(msg => { return msg is Tuple<string, T>; },
                     FindBehavior));
         }
 

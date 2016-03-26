@@ -11,18 +11,18 @@ namespace Actor.TestApplication
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actMillion : BaseActor
     {
-        private actQueue<IActor> fQueue;
+        private QueueActor<IActor> fQueue;
         const int KSize = 10000 ;
         public actMillion() : base()
         {
-            fQueue = new actQueue<IActor>();
-            Become(new bhvBehavior<string>(DoStart));
+            fQueue = new QueueActor<IActor>();
+            Become(new Behavior<string>(DoStart));
             SendMessage("DoStart");
         }
 
         public void Send()
         {
-            Become(new bhvBehavior<string>(DoSend));
+            Become(new Behavior<string>(DoSend));
             SendMessage("DoSend");
         }
 

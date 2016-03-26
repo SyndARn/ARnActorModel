@@ -34,7 +34,7 @@ namespace Actor.Base
 
     public class actDirectory : BaseActor
     {
-        public enum DirectoryRequest { reqFind } ;
+        public enum DirectoryRequest { Find } ;
         private Dictionary<string, IActor> fDictionary = new Dictionary<string, IActor>();
         private static Lazy<actDirectory> fDirectory = new Lazy<actDirectory>(() => new actDirectory(), true);
         public actDirectory()
@@ -102,11 +102,11 @@ namespace Actor.Base
             IActor Relative = null;
             if (fDictionary.TryGetValue(msg, out Relative))
             {
-                anActor.SendMessage(Tuple.Create(DirectoryRequest.reqFind,Relative));
+                anActor.SendMessage(Tuple.Create(DirectoryRequest.Find,Relative));
             }
             else
             {
-                anActor.SendMessage(new Tuple<DirectoryRequest,IActor>(DirectoryRequest.reqFind, null));
+                anActor.SendMessage(new Tuple<DirectoryRequest,IActor>(DirectoryRequest.Find, null));
             }
         }
 

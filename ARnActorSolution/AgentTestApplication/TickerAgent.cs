@@ -24,8 +24,8 @@ namespace AgentTestApplication
         {
             base.InitState(anAgentName);
             actDirectory.GetDirectory().Register(this, "TickerAgent");
-            AddBehavior(new bhvBehavior<Int64>(DoTick));
-            AddBehavior(new bhvBehavior<IActor>(DoPriceRequest));
+            AddBehavior(new Behavior<Int64>(DoTick));
+            AddBehavior(new Behavior<IActor>(DoPriceRequest));
         }
 
         public override void React(DeltaTimeMessage dtm)

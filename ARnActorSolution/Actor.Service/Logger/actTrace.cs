@@ -4,8 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Actor.Base;
 
-namespace Actor.Base
+namespace Actor.Service
 {
     public class actTrace : BaseActor // dummmy actor
     {
@@ -14,11 +15,11 @@ namespace Actor.Base
             Become(null);
         }
 
-        private static Lazy<actLogger> fLogger = new Lazy<actLogger>
+        private static Lazy<LoggerActor> fLogger = new Lazy<LoggerActor>
             (
             () =>
             {
-                return new actLogger("TraceLogger");
+                return new LoggerActor("TraceLogger");
             }
             , true);
 

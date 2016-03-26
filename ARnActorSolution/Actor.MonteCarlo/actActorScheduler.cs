@@ -29,8 +29,8 @@ namespace Actor.MonteCarlo
         {
             fActor = this;
             shardList = new ShardList();
-            Become(new bhvBehavior<String>(DoScheduling));
-            AddBehavior(new bhvBehavior<double>(DoCollectData));
+            Become(new Behavior<String>(DoScheduling));
+            AddBehavior(new Behavior<double>(DoCollectData));
             SendMessage("Start");
         }
 
@@ -59,13 +59,13 @@ namespace Actor.MonteCarlo
         }
     }
 
-    public class ShardList : actCollection<string>
+    public class ShardList : CollectionActor<string>
     {
     }
 
 
 
-    public class actPrice : actAction<Tuple<IActor,IEnumerable<double>>>
+    public class actPrice : ActionActor<Tuple<IActor,IEnumerable<double>>>
     {
         public void ConsoleWrite(Tuple<IActor,IEnumerable<double>> someDoubles)
         {

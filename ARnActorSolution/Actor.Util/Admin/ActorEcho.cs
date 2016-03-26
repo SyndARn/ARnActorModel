@@ -19,9 +19,9 @@ namespace Actor.Util
         }
     }
 
-    public class actEchoActor : BaseActor
+    public class EchoActor : BaseActor
     {
-        public actEchoActor(IActor dest, String value)
+        public EchoActor(IActor dest, String value)
         {
             if (dest == null) throw new ActorException("Dest can't be null");
             BecomeMany(new bhvConsole());

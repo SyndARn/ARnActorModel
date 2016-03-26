@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
 
+[assembly: CLSCompliant(true)]
 namespace Actor.Server
 {
     public class ActorServer : BaseActor, IDisposable
@@ -49,13 +50,13 @@ namespace Actor.Server
         {
             Name = lName;
             Port = lPort;
-            actTagHelper.SetFullHost(Fullhost());
+            ActorTagHelper.SetFullHost(Fullhost());
         }
 
         private void DoInit(bool withRelay) 
         {
             actDirectory.GetDirectory(); // Start directory
-            new ActorConsole(); // Start console
+            ActorConsole.Register(); // Start console
             // should work now
             SendByName<string>.Send("Actor Server Start", "Console");
             Become(null);

@@ -23,7 +23,7 @@ namespace Actor.Util.Tests
         [TestMethod()]
         public void actCrudeActorTest()
         {
-            var act = new actCrudeActor<string>();
+            var act = new CrudActor<string>();
             Assert.IsNotNull(act);
         }
 

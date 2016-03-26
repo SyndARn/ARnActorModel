@@ -22,7 +22,7 @@ namespace Actor.Service
         int fTestRun = 0;
         public actNode()
         {
-            Become(new bhvBehavior<Tuple<State,IActor>>(msg => 
+            Become(new Behavior<Tuple<State,IActor>>(msg => 
             {
               return msg.Item1 == State.Start ;
             }, Behavior)) ;
@@ -32,11 +32,11 @@ namespace Actor.Service
         {
             fNextNode = msg.Item2;
             Become(
-                new bhvBehavior<actTag>(t =>
-                { return (actTag)t != null; }, Running));
+                new Behavior<ActorTag>(t =>
+                { return (ActorTag)t != null; }, Running));
         }
 
-        private void Running(actTag msg)
+        private void Running(ActorTag msg)
         {
             fTestRun++;
             if (fNextNode != null)
@@ -102,7 +102,7 @@ namespace Actor.Service
             prevNode.SendMessage(
                 Tuple.Create(State.Start, (IActor)null));
             lastNode = prevNode;
-            Become(new bhvBehavior<Boolean>(msg => { return msg; }, Test));
+            Become(new Behavior<Boolean>(msg => { return msg; }, Test));
             SendMessage(true);
         }
 
@@ -112,7 +112,7 @@ namespace Actor.Service
             Console.WriteLine("Start at " + testResult.start.ToString());
             for (int i = 0; i < actTest.fTest; i++)
                 firstNode.SendMessage(
-                    new actTag(/*i*/));
+                    new ActorTag(/*i*/));
         }
     }
 }

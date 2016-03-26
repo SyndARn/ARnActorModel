@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Actor.TestApplication
 {
-    public class actTestLauncher : ActionActor
+    public class TestLauncherActor : ActionActor
     {
-        public actTestLauncher()
+        public TestLauncherActor()
             : base()
         {
         }

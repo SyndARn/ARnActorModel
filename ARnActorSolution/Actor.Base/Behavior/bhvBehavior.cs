@@ -76,10 +76,9 @@ namespace Actor.Base
 
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvBehavior : bhvBehavior<Object>
+    public class Behavior : Behavior<Object>
     {
-        public bhvBehavior():base()
+        public Behavior():base()
         {
         }
     }
@@ -93,8 +92,7 @@ namespace Actor.Base
     /// Type is the acq of the message to be send to this behavior
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvBehavior<T> : IBehavior<T>, IBehavior
+    public class Behavior<T> : IBehavior<T>, IBehavior
     {
         public Func<T, Boolean> Pattern { get; protected set; }
         public Action<T> Apply { get; protected set; }
@@ -131,21 +129,21 @@ namespace Actor.Base
             fLinkedBehaviors = someBehaviors;
         }
 
-        public bhvBehavior(Func<T, Boolean> aPattern, Action<T> anApply)
+        public Behavior(Func<T, Boolean> aPattern, Action<T> anApply)
         {
             Pattern = aPattern;
             Apply = anApply;
             Completion = null;
         }
 
-        public bhvBehavior(Func<T, Boolean> aPattern, TaskCompletionSource<T> aCompletion)
+        public Behavior(Func<T, Boolean> aPattern, TaskCompletionSource<T> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
             Completion = aCompletion;
         }
 
-        public bhvBehavior()
+        public Behavior()
         {
         }
 
@@ -154,7 +152,7 @@ namespace Actor.Base
             return t => { return t is T; };
         }
 
-        public bhvBehavior(Action<T> anApply)
+        public Behavior(Action<T> anApply)
         {
             Pattern = t => { return t is T; };
             Apply = anApply;

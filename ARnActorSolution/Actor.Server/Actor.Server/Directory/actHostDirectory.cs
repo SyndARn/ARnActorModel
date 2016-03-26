@@ -44,7 +44,7 @@ namespace Actor.Server
             behaviors.AddBehavior(new bhvAction<SerialObject>());
             behaviors.AddBehavior(new bhvAction<IActor>());
             behaviors.AddBehavior(new bhvAction());
-            behaviors.AddBehavior(new bhvBehavior<SerialObject>(DoRouting));
+            behaviors.AddBehavior(new Behavior<SerialObject>(DoRouting));
             BecomeMany(behaviors);
         }
 

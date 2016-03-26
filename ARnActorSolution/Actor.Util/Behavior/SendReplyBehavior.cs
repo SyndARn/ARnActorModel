@@ -5,9 +5,9 @@ using System;
 namespace Actor.Util
 {
 
-    public class bhvSendReply<T> : bhvBehavior<Tuple<IActor,T,IActor>>
+    public class SendReplyBehavior<T> : Behavior<Tuple<IActor,T,IActor>>
     {
-        public bhvSendReply(T data, IActor target)
+        public SendReplyBehavior(T data, IActor target)
             : base()
         {
             CheckArg.Actor(target);
@@ -26,9 +26,9 @@ namespace Actor.Util
         }
     }
 
-    public class bhvReplySend<T> : bhvBehavior<Tuple<IActor, T, IActor>>
+    public class ReplySendBehavior<T> : Behavior<Tuple<IActor, T, IActor>>
     {
-        public bhvReplySend()
+        public ReplySendBehavior()
             : base()
         {
             Pattern = t => { return t is Tuple<IActor, T, IActor>; };

@@ -34,12 +34,12 @@ namespace Actor.Util
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actObservable<T> : BaseActor
     {
-        private actCollection<IActor> fCollection;
+        private CollectionActor<IActor> fCollection;
 
         public actObservable() : base()
         {
-            fCollection = new actCollection<IActor>();
-            Become(new bhvBehavior<string>(DoStart));
+            fCollection = new CollectionActor<IActor>();
+            Become(new Behavior<string>(DoStart));
             SendMessage("Start Observe");
         }
 
@@ -50,8 +50,8 @@ namespace Actor.Util
 
         private void DoStart(string msg)
         {
-            Become(new bhvBehavior<Tuple<ObservableAction,IActor>>(DoRegister)) ;
-            AddBehavior(new bhvBehavior<T>(DoPublishData)) ;
+            Become(new Behavior<Tuple<ObservableAction,IActor>>(DoRegister)) ;
+            AddBehavior(new Behavior<T>(DoPublishData)) ;
         }
 
         private void DoRegister(Tuple<ObservableAction,IActor> msg)

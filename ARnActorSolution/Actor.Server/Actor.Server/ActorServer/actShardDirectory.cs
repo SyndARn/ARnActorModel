@@ -53,7 +53,7 @@ namespace Actor.Base
             fShardList.Add("LocalHost",ActorServer.GetInstance().FullHost);
             actDirectory.GetDirectory().Register(this, "KnownShards");
             actHostDirectory.Register(this);
-            Become(new bhvBehavior<ShardRequest>(
+            Become(new Behavior<ShardRequest>(
                 t => t is ShardRequest,
                 DoProcessShardRequest)) ;
         }
@@ -78,7 +78,7 @@ namespace Actor.Base
         }
     }
 
-    public class ShardList : actAction<string>
+    public class ShardList : ActionActor<string>
     {
         private HashSet<string> fShardList = new HashSet<string>();
         public ShardList() : base() { }

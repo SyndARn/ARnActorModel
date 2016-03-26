@@ -12,9 +12,9 @@ namespace Actor.Util
     {
         public IActor Sender { get; set; }
         public Uri Url { get; set; }
-        public WebAnswer CastAnswer(string s)
+        public WebAnswer CastAnswer(string message)
         {
-            return WebAnswer.Cast(Url,s) ;
+            return WebAnswer.Cast(Url, message) ;
         }
     }
 
@@ -32,10 +32,9 @@ namespace Actor.Util
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvWebClient : bhvBehavior<WebRequest>
+    public class WebClientBehavior : Behavior<WebRequest>
     {
-        public bhvWebClient()
+        public WebClientBehavior()
             : base()
         {
             Pattern = t => t is WebRequest;
@@ -56,12 +55,11 @@ namespace Actor.Util
 
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actActorWeb : BaseActor
+    public class WebActor : BaseActor
     {
-        public actActorWeb()
+        public WebActor()
         {
-            Become(new bhvWebClient());
+            Become(new WebClientBehavior());
         }
         public static WebRequest Cast(IActor aSender, Uri anUrl)
         {

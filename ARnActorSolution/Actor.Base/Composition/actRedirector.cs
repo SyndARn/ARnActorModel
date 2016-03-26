@@ -27,7 +27,7 @@ namespace Actor.Base
             : base()
         {
             fTarget = anActor;
-            Become(new bhvBehavior<RedirectMessage>(DoRedirect));
+            Become(new Behavior<RedirectMessage>(DoRedirect));
         }
 
         private void DoRedirect(RedirectMessage aRedirection)

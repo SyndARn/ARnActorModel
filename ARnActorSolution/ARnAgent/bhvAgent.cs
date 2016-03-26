@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ARnAgent
 {
-    public class bhvAgent : bhvBehavior<string>
+    public class bhvAgent : Behavior<string>
     {
          public bhvAgent(string anAgentName)
             : base()

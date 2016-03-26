@@ -154,8 +154,8 @@ namespace Actor.Neurone
 
             }
 
-            var bhv1 = new bhvBehavior<string>(t => {return t is string ; },DoProcess) ;
-            var bhv2 = new bhvBehavior<IActor>(t => {return t is IActor ; },DoOutput) ;
+            var bhv1 = new Behavior<string>(t => {return t is string ; },DoProcess) ;
+            var bhv2 = new Behavior<IActor>(t => {return t is IActor ; },DoOutput) ;
             var bhv = new Behaviors();
             bhv.AddBehavior(bhv1);
             bhv.AddBehavior(bhv2);

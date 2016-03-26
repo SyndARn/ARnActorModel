@@ -11,7 +11,7 @@ namespace ARnAgent
     {
         public actAgentObserver() : base()
         {
-            Become(new bhvBehavior<string>(OnObserve));
+            Become(new Behavior<string>(OnObserve));
         }
 
         private void OnObserve(string msg)

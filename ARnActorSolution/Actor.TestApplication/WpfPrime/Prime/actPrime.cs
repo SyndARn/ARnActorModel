@@ -15,9 +15,9 @@ namespace WpfPrime.Prime
         public actPrime(int n)
         {
             prime = n;
-            Become(new bhvBehavior<Tuple<int, IActor>>(DoPrime));
-            AddBehavior(new bhvBehavior<int>(FindPrime));
-            AddBehavior(new bhvBehavior<string>(Start));
+            Become(new Behavior<Tuple<int, IActor>>(DoPrime));
+            AddBehavior(new Behavior<int>(FindPrime));
+            AddBehavior(new Behavior<string>(Start));
         }
 
         const int slice = 20;

@@ -13,7 +13,7 @@ namespace Actor.Util
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvObservable<T> : bhvBehavior<T>
+    public class bhvObservable<T> : Behavior<T>
     {
         // ObserverList => who observe
         // ObservableList => who is observed

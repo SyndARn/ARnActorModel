@@ -9,12 +9,12 @@ namespace ARnAgent
 {
     public class AgentWorld
     {
-        private actAgentDirectory fAgentDirectory;
+        private AgentDirectoryActor fAgentDirectory;
         DeltaTime dt;
 
         public AgentWorld()
         {
-            fAgentDirectory = new actAgentDirectory();
+            fAgentDirectory = new AgentDirectoryActor();
             dt = new DeltaTime(0) ;
         }
 

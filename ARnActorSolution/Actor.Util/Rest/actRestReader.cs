@@ -44,10 +44,9 @@ namespace Actor.Util
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     public class BehaviorsRestReader : Behaviors
     {
-        public IActor fAnswer;
+        public IActor Answer { get; set; }
         public BehaviorsRestReader() : base()
         {
             this.AddBehavior(new bhvRestSend()) ;
@@ -56,7 +55,7 @@ namespace Actor.Util
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvRestReceive : bhvBehavior<WebAnswer>
+    public class bhvRestReceive : Behavior<WebAnswer>
     {
         public bhvRestReceive() : base()
         {
@@ -67,12 +66,12 @@ namespace Actor.Util
         {
             Debug.WriteLine("Receive {0}",webAnswer.Answer) ;
             var reader = this.LinkedTo as BehaviorsRestReader;
-            reader.fAnswer.SendMessage(webAnswer.Answer);
+            reader.Answer.SendMessage(webAnswer.Answer);
         }
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvRestSend : bhvBehavior<Tuple<Uri,IActor>>
+    public class bhvRestSend : Behavior<Tuple<Uri,IActor>>
     {
         public bhvRestSend()
             : base()
@@ -82,9 +81,9 @@ namespace Actor.Util
         }
         private void DoRestPost(Tuple<Uri,IActor> anUri)
         {
-            (LinkedTo as BehaviorsRestReader).fAnswer = anUri.Item2;
-            var actWeb = new actActorWeb();
-            var wr = actActorWeb.Cast(LinkedActor, anUri.Item1);
+            (LinkedTo as BehaviorsRestReader).Answer = anUri.Item2;
+            var actWeb = new WebActor();
+            var wr = WebActor.Cast(LinkedActor, anUri.Item1);
             actWeb.SendMessage(wr);
         }
     }

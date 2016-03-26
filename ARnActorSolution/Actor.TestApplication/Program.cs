@@ -57,10 +57,10 @@ namespace Actor.TestApplication
                     case "quit": break;
                     case "Col":
                         {
-                            var fLauncher = new actTestLauncher();
+                            var fLauncher = new TestLauncherActor();
                             fLauncher.SendAction(() =>
                             {
-                                var collect = new actCollection<string>();
+                                var collect = new CollectionActor<string>();
                                 for (int i = 0; i < 100; i++)
                                     collect.Add(string.Format("Test {0}", i));
                                 if (collect.Count() != 100)
@@ -101,10 +101,10 @@ namespace Actor.TestApplication
                     case "Clients":
                         {
                             var start = DateTime.UtcNow.Ticks;
-                            IActor aServer = new actEchoServer();
+                            IActor aServer = new EchoServerActor();
                             for (int i = 0; i < 1000; i++)
                             {
-                                actEchoClient aClient = new actEchoClient();// new actEchoClient(aServer);
+                                EchoClientActor aClient = new EchoClientActor();// new actEchoClient(aServer);
                                 // DirectoryRequest.SendRegister("client + " + i.ToString(), aClient);
                                 aClient.Connect("EchoServer");
                                 aClient.SendMessage("client-" + i.ToString());
@@ -147,12 +147,12 @@ namespace Actor.TestApplication
                         }
                     case "ParserTest":
                         {
-                            new actEchoActor(new ParserTest(), "");
+                            new EchoActor(new ParserTest(), "");
                             break;
                         }
                     default:
                         {
-                            new actEchoActor(new ActorAdminServer(), s);
+                            new EchoActor(new ActorAdminServer(), s);
                             break;
                         }
                 }

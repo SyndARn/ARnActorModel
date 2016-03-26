@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace ARnAgent
 {
-    public class actAgentDirectory : BaseActor
+    public class AgentDirectoryActor : BaseActor
     {
         private List<IAgent> agentList = new List<IAgent>();
 
-        public actAgentDirectory() : base()
+        public AgentDirectoryActor() : base()
         {
-            var bhv1 = new bhvBehavior<IAgent>(DoRegister);
-            var bhv2 = new bhvBehavior<DeltaTime>(DoSend);
-            var bhv3 = new bhvBehavior<Tuple<IActor,DeltaTime>>(DoObserve);
-            var bhv4 = new bhvBehavior<DeltaTimeAckMessage>(DoAck);
+            var bhv1 = new Behavior<IAgent>(DoRegister);
+            var bhv2 = new Behavior<DeltaTime>(DoSend);
+            var bhv3 = new Behavior<Tuple<IActor,DeltaTime>>(DoObserve);
+            var bhv4 = new Behavior<DeltaTimeAckMessage>(DoAck);
             var bhvall = new Behaviors();
             bhvall.AddBehavior(bhv1);
             bhvall.AddBehavior(bhv2);

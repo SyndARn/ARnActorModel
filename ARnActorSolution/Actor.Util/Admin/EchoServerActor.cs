@@ -30,31 +30,29 @@ using Actor.Server;
 
 namespace Actor.Util
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actEchoServer : BaseActor
+    public class EchoServerActor : BaseActor
     {
-        public actEchoServer()
+        public EchoServerActor()
             : base()
         {
             actHostDirectory.Register(this);
             actDirectory.GetDirectory().Register(this, "EchoServer");
-            Become(new bhvEchoServer());
+            Become(new EchoServerBehavior());
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actEchoClient : BaseActor
+    public class EchoClientActor : BaseActor
     {
-        private bhvEchoClient aClient;
-        public actEchoClient()
+        private EchoClientBehavior aClient;
+        public EchoClientActor()
             : base()
         {
-            aClient = new bhvEchoClient();
+            aClient = new EchoClientBehavior();
         }
 
         public void Connect(string aServerName)
         {
-            Become(new bhvBehavior<Tuple<string, string>>(t => { return t.Item1 == "Connect"; }, DoConnect));
+            Become(new Behavior<Tuple<string, string>>(t => { return t.Item1 == "Connect"; }, DoConnect));
             SendMessage(Tuple.Create("Connect", aServerName));
         }
 
@@ -102,7 +100,7 @@ namespace Actor.Util
         //}
     }
 
-    class bhvEchoServer : bhvServer<string>
+    public class EchoServerBehavior : ServerBehavior<string>
     {
         protected override void DoRequest(ServerMessage<string> aMessage)
         {
@@ -126,7 +124,7 @@ namespace Actor.Util
     }
 
 
-    class bhvEchoClient : bhvClient<string>
+    public class EchoClientBehavior : ClientBehavior<string>
     {
         protected override void ReceiveAnswer(ServerMessage<string> aMessage)
         {

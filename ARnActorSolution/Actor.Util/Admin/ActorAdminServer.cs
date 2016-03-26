@@ -13,7 +13,7 @@ namespace Actor.Util
     {
         public ActorAdminServer()
         {
-            Become(new bhvBehavior<Tuple<IActor, String>>(
+            Become(new Behavior<Tuple<IActor, String>>(
                 Behavior));
         }
 
@@ -34,11 +34,11 @@ namespace Actor.Util
                         }
                         else
                         {
-                            new actConnect(this, lData, "KnownShards");
-                            Receive(ans => { return ans is Tuple<string, actTag, IActor>; }).ContinueWith(
+                            new ConnectActor(this, lData, "KnownShards");
+                            Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; }).ContinueWith(
                                 ans =>
                                 {
-                                    var res = ans.Result as Tuple<string, actTag, IActor>;
+                                    var res = ans.Result as Tuple<string, ActorTag, IActor>;
                                     ShardRequest req = ShardRequest.CastRequest(this, Data.Item1);
                                     res.Item3.SendMessage(req);
                                 });
@@ -69,11 +69,11 @@ namespace Actor.Util
                         char[] separ2 = {' '} ;
                         string lHost = lData.Split(separ2)[0] ;
                         string lService = lData.Split(separ2)[1] ;
-                        actConnect connect = new actConnect(this, lHost, lService);
-                        var data = Receive(ans => { return ans is Tuple<string, actTag, IActor>; }) ;
-                        var res = data.Result as Tuple<string, actTag, IActor>;
+                        ConnectActor connect = new ConnectActor(this, lHost, lService);
+                        var data = Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; }) ;
+                        var res = data.Result as Tuple<string, ActorTag, IActor>;
                         // we got remote server adress
-                        actEchoClient aClient = new actEchoClient();
+                        EchoClientActor aClient = new EchoClientActor();
                         aClient.Connect(res.Item1);
                         aClient.SendMessage("KooKoo");
                         // res.Item3.SendMessage("call from " + this.Tag.Id);
@@ -88,7 +88,7 @@ namespace Actor.Util
                         }
                         else
                         {
-                            new actDiscovery(lData);
+                            new DiscoveryActor(lData);
                             // remote disco
                             //actRemoteSend rem = new actRemoteSend(Data.Item1,lData, "");
                             //rem.SendMessage(new DiscoCommand(rem));
@@ -105,9 +105,9 @@ namespace Actor.Util
                         char[] separ2 = { ' ' };
                         string lHost = lData.Split(separ2)[0];
                         string lMsg = lData.Split(separ2)[1];
-                        actConnect connect = new actConnect(this, lHost, "RPrint");
-                        var data = Receive(ans => { return ans is Tuple<string, actTag, IActor>; });
-                        var res = data.Result as Tuple<string, actTag, IActor>;
+                        ConnectActor connect = new ConnectActor(this, lHost, "RPrint");
+                        var data = Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; });
+                        var res = data.Result as Tuple<string, ActorTag, IActor>;
                         res.Item3.SendMessage("call  from " + this.Tag.Id);
                         // SendMessageTo("call from " + this.Tag.Id,res.Item3);
                         break;

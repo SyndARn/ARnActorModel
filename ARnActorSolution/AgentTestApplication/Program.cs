@@ -37,7 +37,7 @@ namespace AgentTestApplication
                             case "Q": cont = false; break;
                             default:
                                 {
-                                    new actEchoActor(new ActorAdminServer(), s);
+                                    new EchoActor(new ActorAdminServer(), s);
                                     break;
                                 }
                         }

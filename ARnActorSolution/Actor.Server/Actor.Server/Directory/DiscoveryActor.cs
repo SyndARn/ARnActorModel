@@ -27,52 +27,35 @@ using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
 
-namespace Actor.Util
+namespace Actor.Server
 {
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actStatefullActor<T> : BaseActor
+    /// <summary>
+    /// Return public services in a shard
+    /// </summary>
+    public class DiscoveryActor : BaseActor
     {
-        public actStatefullActor()
+        public DiscoveryActor(string hostAddress)
             : base()
         {
-            Become(new bhvStateBehavior<T>());
+            Become(new Behavior<string>(t => {return true ;},
+                Disco)) ;
+            SendMessage(hostAddress) ;
         }
 
-        public void Set(T aT)
+        private void Disco(string hostAddress)
         {
-            SendMessage(Tuple.Create(StateAction.Set, aT));
+            Become(new Behavior<Dictionary<string,string>>(t => {return true ;}, 
+                Found)) ;
+            var rem = new RemoteActor(new ActorTag(hostAddress));
+            rem.SendMessage(new DiscoCommand(this));
         }
 
-        public T Get()
+        private void Found(Dictionary<string,String> aList)
         {
-            SendMessage(Tuple.Create(StateAction.Get, default(T)));
-            var retVal = Receive(t => { return true; }).Result;
-            return retVal == null ? default(T) : (T)retVal;
-        }
-    }
-
-    public enum StateAction { Set, Get } ;
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvStateBehavior<T> : bhvBehavior<Tuple<StateAction, T>>
-    {
-        private T fValue;
-
-        public bhvStateBehavior()
-            : base()
-        {
-            fValue = default(T);
-        }
-
-        public void SetValue(T msg)
-        {
-            fValue = msg;
-        }
-
-        public void GetValue()
-        {
-            LinkedActor.SendMessage(fValue);
+            Console.WriteLine("Disco found:");
+            foreach(string s in aList.Keys)
+             Console.WriteLine(s + "-"+aList[s]);
+            Become(null);
         }
     }
 

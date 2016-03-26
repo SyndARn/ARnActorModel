@@ -59,7 +59,7 @@ namespace AgentTestApplication
         public wfwPriceReceived() : base()
         {
             Current = "PriceReceived" ;
-            var action = new bhvBehavior<IwfwStatus<MarketMessage>>
+            var action = new Behavior<IwfwStatus<MarketMessage>>
             (
                 (t) =>
                 {
@@ -84,7 +84,7 @@ namespace AgentTestApplication
         public wfwStatusInitial() : base()
         {
             Current = "Initial" ;
-            var action = new bhvBehavior<IwfwStatus<MarketMessage>>
+            var action = new Behavior<IwfwStatus<MarketMessage>>
             (
                 (t) => { return t.Current == "Initial" ;},
                 (t) => 

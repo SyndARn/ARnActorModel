@@ -43,7 +43,7 @@ namespace Actor.Base
 
     public class BaseActor : IActor
     {
-        public actTag Tag { get; private set; } // unique identifier, and host
+        public ActorTag Tag { get; private set; } // unique identifier, and host
         internal Behaviors fBehaviors; // our behavior
         internal ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>();
         internal ActorMailBox fMailBox = new ActorMailBox(); // our mailbox
@@ -65,11 +65,11 @@ namespace Actor.Base
             anActor.fMailBox = new ActorMailBox();
             if (anActor.Tag == null)
             {
-                anActor.Tag = new actTag();
+                anActor.Tag = new ActorTag();
             }
         }
 
-        protected BaseActor(actTag previousTag)
+        protected BaseActor(ActorTag previousTag)
             : base()
         {
             Tag = previousTag;
@@ -142,25 +142,25 @@ namespace Actor.Base
 
         public BaseActor(Behaviors someBehaviors)
         {
-            Tag = new actTag();
+            Tag = new ActorTag();
             BecomeMany(someBehaviors);
         }
 
         public BaseActor(IBehavior aBehavior)
         {
-            Tag = new actTag();
+            Tag = new ActorTag();
             Become(aBehavior);
         }
 
         public BaseActor(IBehavior[] someBehaviors)
         {
-            Tag = new actTag();
+            Tag = new ActorTag();
             Becomes(someBehaviors);
         }
 
         public BaseActor()
         {
-            Tag = new actTag();
+            Tag = new ActorTag();
         }
 
         protected async Task<Object> Receive(Func<Object, bool> aPattern)
@@ -168,7 +168,7 @@ namespace Actor.Base
             if (aPattern == null)
                 throw new ActorException("null pattern");
             Object ret = null;
-            var lTCS = new bhvBehavior<Object>(aPattern, new TaskCompletionSource<Object>());
+            var lTCS = new Behavior<Object>(aPattern, new TaskCompletionSource<Object>());
             fCancel = true;
             fCompletions.Enqueue(lTCS);
             AddMissedMessages();

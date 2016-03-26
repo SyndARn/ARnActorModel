@@ -21,7 +21,7 @@ namespace Actor.Server
             {
                 if (typefound.IsSubclassOf(typeof(BaseActor)))
                 {
-                    outtype = typeof(actRemoteActor);
+                    outtype = typeof(RemoteActor);
                 }
             }
             return outtype;

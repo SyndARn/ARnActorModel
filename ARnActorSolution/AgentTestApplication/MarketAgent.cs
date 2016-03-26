@@ -115,7 +115,7 @@ namespace AgentTestApplication
         {
             base.InitState(anAgentName);
             actDirectory.GetDirectory().Register(this, "MarketAgent");
-            AddBehavior(new bhvBehavior<BuySellOrder>(DoOrder));
+            AddBehavior(new Behavior<BuySellOrder>(DoOrder));
         }
 
         public override string GetObserveMessage(long dt)

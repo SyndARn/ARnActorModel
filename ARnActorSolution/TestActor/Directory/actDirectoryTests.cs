@@ -28,7 +28,7 @@ namespace Actor.Base.Tests
         {
             public actTestActor()
             {
-                Become(new bhvBehavior<Tuple<IActor,IActor,string>>(DoIt));
+                Become(new Behavior<Tuple<IActor,IActor,string>>(DoIt));
             }
 
             private void DoIt(Tuple<IActor, IActor, string> message)
@@ -72,7 +72,7 @@ namespace Actor.Base.Tests
             public discoTestActor(IActor aLauncher)
             {
                 fLauncher = aLauncher;
-                Become(new bhvBehavior<Dictionary<string, string>>(ReceiveDisco));
+                Become(new Behavior<Dictionary<string, string>>(ReceiveDisco));
             }
 
             private void ReceiveDisco(Dictionary<string, string> msg)

@@ -36,7 +36,7 @@ namespace Actor.Base
     ///     Most frequent use : public method to send an async action to the same actor
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvAction : bhvBehavior<Action>
+    public class bhvAction : Behavior<Action>
     {
         public bhvAction()
             : base()
@@ -47,7 +47,7 @@ namespace Actor.Base
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvAction<T> : bhvBehavior<Tuple<Action<T>, T>>
+    public class bhvAction<T> : Behavior<Tuple<Action<T>, T>>
     {
         public bhvAction()
             : base()
@@ -58,7 +58,7 @@ namespace Actor.Base
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvAction<T1,T2> : bhvBehavior<Tuple<Action<T1,T2>, T1,T2>>
+    public class bhvAction<T1,T2> : Behavior<Tuple<Action<T1,T2>, T1,T2>>
     {
         public bhvAction()
             : base()
@@ -91,10 +91,9 @@ namespace Actor.Base
     ///   Action actor with the added type parameter if needed
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actAction<T> : BaseActor
+    public class ActionActor<T> : BaseActor
     {
-        public actAction()
+        public ActionActor()
             : base()
         {
             Behaviors bhvs = new Behaviors();

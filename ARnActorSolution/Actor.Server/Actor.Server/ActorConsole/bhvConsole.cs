@@ -46,7 +46,7 @@ namespace Actor.Base
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvConsole<T> : bhvBehavior<T>
+    public class bhvConsole<T> : Behavior<T>
     {
         public bhvConsole()
             : base()
@@ -61,7 +61,7 @@ namespace Actor.Base
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvConsoleDictionary : bhvBehavior<Dictionary<string,string>>
+    public class bhvConsoleDictionary : Behavior<Dictionary<string,string>>
     {
         public bhvConsoleDictionary()
             : base()
@@ -79,7 +79,7 @@ namespace Actor.Base
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvConsoleStringList : bhvBehavior<IEnumerable<String>>
+    public class bhvConsoleStringList : Behavior<IEnumerable<String>>
     {
         public bhvConsoleStringList()
             : base()

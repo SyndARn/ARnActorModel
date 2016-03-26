@@ -67,11 +67,11 @@
     <Compile Include="ActorConsole\bhvConsole.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
     <Compile Include="ActorServer\actShardDirectory.cs" />
-    <Compile Include="Directory\actConnect.cs" />
+    <Compile Include="Directory\ConnectActor.cs" />
     <Compile Include="Directory\actDirectory.cs" />
-    <Compile Include="Directory\actDiscovery.cs" />
+    <Compile Include="Directory\DiscoveryActor.cs" />
     <Compile Include="Directory\actHostDirectory.cs" />
-    <Compile Include="Directory\actRemote.cs" />
+    <Compile Include="Directory\RemoteActor.cs" />
     <Compile Include="Directory\actSendByName.cs" />
     <Compile Include="Directory\DiscoCommand.cs" />
     <Compile Include="GlobalSuppressions.cs" />

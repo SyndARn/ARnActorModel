@@ -15,23 +15,23 @@ namespace Actor.Base
             IActor act = (IActor)obj;
             actHostDirectory.Register(act);
             // continue
-            info.SetType(typeof(actRemoteActor));
-            actTag remoteTag = act.Tag;
-            info.AddValue("RemoteTag", remoteTag, typeof(actTag));
+            info.SetType(typeof(RemoteActor));
+            ActorTag remoteTag = act.Tag;
+            info.AddValue("RemoteTag", remoteTag, typeof(ActorTag));
         }
 
         public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
         {
             // Reset the property value using the GetValue method.
 
-            actRemoteActor remoteActor = obj as actRemoteActor;
+            RemoteActor remoteActor = obj as RemoteActor;
             // force misc init
             if (remoteActor != null)
             {
                 BaseActor.CompleteInitialize(remoteActor);
-                actRemoteActor.CompleteInitialize(remoteActor);
-                actTag getTag = (actTag)info.GetValue("RemoteTag", typeof(actTag));
-                typeof(actRemoteActor).GetField("fRemoteTag").SetValue(obj, getTag);
+                RemoteActor.CompleteInitialize(remoteActor);
+                ActorTag getTag = (ActorTag)info.GetValue("RemoteTag", typeof(ActorTag));
+                typeof(RemoteActor).GetField("fRemoteTag").SetValue(obj, getTag);
             }
 
 

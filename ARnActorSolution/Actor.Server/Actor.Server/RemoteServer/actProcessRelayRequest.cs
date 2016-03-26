@@ -14,7 +14,7 @@ namespace Actor.Server
     {
         public actProcessRelayRequest(HttpListenerContext aContext)
         {
-            Become(new bhvBehavior<HttpListenerContext>(t => { return true; }, DoContext));
+            Become(new Behavior<HttpListenerContext>(t => { return true; }, DoContext));
             SendMessage(aContext);
         }
 
@@ -43,7 +43,7 @@ namespace Actor.Server
 
                 // find hosted actor directory
                 // forward msg to hostedactordirectory
-                Become(new bhvBehavior<SerialObject>(t => { return true; }, ProcessMessage));
+                Become(new Behavior<SerialObject>(t => { return true; }, ProcessMessage));
                 SendMessage(so);
             }
 

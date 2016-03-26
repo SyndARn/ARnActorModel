@@ -38,8 +38,8 @@ namespace Actor.Neurone
             Dendrite = new List<Synapse>();
             Axone = new List<actNeurone>();
             fSeuil = 100;
-            Become(new bhvBehavior<Tuple<actNeurone,int>>(ReceiveFromDendrite)) ;
-            AddBehavior(new bhvBehavior<bool>(ReceiveFromInput));
+            Become(new Behavior<Tuple<actNeurone,int>>(ReceiveFromDendrite)) ;
+            AddBehavior(new Behavior<bool>(ReceiveFromInput));
         }
 
         private void ReceiveFromInput(bool aValue)

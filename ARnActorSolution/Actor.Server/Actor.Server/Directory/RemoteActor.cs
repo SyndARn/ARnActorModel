@@ -39,22 +39,23 @@ namespace Actor.Server
     /// actRemoteActor
     ///   A remote Actor is used (transparently) when sending messages across servers (ie across process)
     /// </summary>
-    public class actRemoteActor : BaseActor
+    public class RemoteActor : BaseActor
     {
 
-        public actTag fRemoteTag;
+        public ActorTag fRemoteTag;
 
-        public static void CompleteInitialize(actRemoteActor anActor)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
+        public static void CompleteInitialize(RemoteActor anActor)
         {
             CheckArg.Actor(anActor);
-            anActor.Become(new bhvBehavior<Object>(anActor.DoRouting));
+            anActor.Become(new Behavior<Object>(anActor.DoRouting));
         }
 
-        public actRemoteActor(actTag aTag)
+        public RemoteActor(ActorTag aTag)
             : base()
         {
             fRemoteTag = aTag;
-            Become(new bhvBehavior<Object>(DoRouting));
+            Become(new Behavior<Object>(DoRouting));
         }
 
         private void DoRouting(Object aMsg)

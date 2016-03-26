@@ -31,8 +31,7 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public static class actTagHelper
+    public static class ActorTagHelper
     {
 
         private static long fBaseId = 0;
@@ -50,9 +49,8 @@ namespace Actor.Base
 
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     [Serializable]
-    public class actTag
+    public class ActorTag
     {
         private string fUri;
         private bool fIsRemote;
@@ -66,7 +64,7 @@ namespace Actor.Base
             {
                 if (String.IsNullOrEmpty(fUri))
                 {
-                    fUri = actTagHelper.GetFullHost();
+                    fUri = ActorTagHelper.GetFullHost();
                 }
                 return fUri;
             }
@@ -74,15 +72,15 @@ namespace Actor.Base
 
         public bool IsRemote { get { return fIsRemote; } }
 
-        public actTag()
+        public ActorTag()
         {
-            fId = actTagHelper.CastNewTagId();
+            fId = ActorTagHelper.CastNewTagId();
             fIsRemote = false;
         }
 
-        public actTag(string lHostUri)
+        public ActorTag(string lHostUri)
         {
-            fId = actTagHelper.CastNewTagId();
+            fId = ActorTagHelper.CastNewTagId();
             fUri = lHostUri;
             fIsRemote = true;
         }
@@ -91,7 +89,7 @@ namespace Actor.Base
         {
             if (string.IsNullOrEmpty(fUri))
             {
-                fUri = actTagHelper.GetFullHost();
+                fUri = ActorTagHelper.GetFullHost();
             }
             if (IsRemote)
             {

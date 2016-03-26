@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Actor.Util
 {
-    public class actBehalf : BaseActor
+    public class OnBehalfActor : BaseActor
     {
-        public actBehalf() : base()
+        public OnBehalfActor() : base()
         {
-            Become(new bhvBehavior<Tuple<Action, IActor>>(DoIt));
+            Become(new Behavior<Tuple<Action, IActor>>(DoIt));
         }
 
         private void DoIt(Tuple<Action, IActor> msg)

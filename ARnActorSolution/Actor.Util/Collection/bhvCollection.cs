@@ -34,23 +34,21 @@ namespace Actor.Util
 {
     public enum CollectionRequest { Add, Remove, OkAdd, OkRemove } ;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvCollection<T> : Behaviors
+    public class CollectionBehaviors<T> : Behaviors
     {
         internal List<T> List = new List<T>();
-        public bhvCollection()
+        public CollectionBehaviors()
             : base()
         {
-            AddBehavior(new bhvAddOrRemoveBehavior<T>());
-            AddBehavior(new bhvEnumeratorBehavior<T>());
+            AddBehavior(new AddOrRemoveBehavior<T>());
+            AddBehavior(new EnumeratorBehavior<T>());
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvAddOrRemoveBehavior<T> : bhvBehavior<Tuple<CollectionRequest, T>>
+    public class AddOrRemoveBehavior<T> : Behavior<Tuple<CollectionRequest, T>>
     {
 
-        public bhvAddOrRemoveBehavior()
+        public AddOrRemoveBehavior()
             : base()
         {
             this.Apply = DoApply;
@@ -59,7 +57,7 @@ namespace Actor.Util
 
         private void DoApply(Tuple<CollectionRequest, T> Data)
         {
-            bhvCollection<T> linkedBehavior = LinkedTo as bhvCollection<T>;
+            CollectionBehaviors<T> linkedBehavior = LinkedTo as CollectionBehaviors<T>;
             switch (Data.Item1)
             {
                 case CollectionRequest.Add:
@@ -76,10 +74,9 @@ namespace Actor.Util
 
     public enum IteratorMethod { MoveNext, Current, OkCurrent, OkMoveNext } ;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvEnumeratorBehavior<T> : bhvBehavior<Tuple<IteratorMethod, int, IActor>>
+    public class EnumeratorBehavior<T> : Behavior<Tuple<IteratorMethod, int, IActor>>
     {
-        public bhvEnumeratorBehavior()
+        public EnumeratorBehavior()
             : base()
         {
             this.Apply = DoApply;
@@ -88,7 +85,7 @@ namespace Actor.Util
 
         private void DoApply(Tuple<IteratorMethod, int, IActor> msg)
         {
-            bhvCollection<T> linkedBehavior = LinkedTo as bhvCollection<T>;
+            CollectionBehaviors<T> linkedBehavior = LinkedTo as CollectionBehaviors<T>;
             switch (msg.Item1)
             {
                 case IteratorMethod.MoveNext:
@@ -118,14 +115,13 @@ namespace Actor.Util
     }
 
     // (Some prefer this class nested in the collection class.)
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actCollectionEnumerator<T> : actAction<T>, IEnumerator<T>, IEnumerator, IDisposable
+    public class CollectionActorEnumerator<T> : ActionActor<T>, IEnumerator<T>, IEnumerator, IDisposable
     {
-        private actCollection<T> fCollection;
+        private CollectionActor<T> fCollection;
 
         private int fIndex ;
 
-        public actCollectionEnumerator(actCollection<T> aCollection) : base()
+        public CollectionActorEnumerator(CollectionActor<T> aCollection) : base()
         {
             fCollection = aCollection;
             fIndex = -1;
@@ -194,23 +190,22 @@ namespace Actor.Util
 
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actCollection<T> : BaseActor, IEnumerable<T>, IEnumerable
+    public class CollectionActor<T> : BaseActor, IEnumerable<T>, IEnumerable
     {
-        public actCollection()
+        public CollectionActor()
             : base()
         {
-            BecomeMany(new bhvCollection<T>());
+            BecomeMany(new CollectionBehaviors<T>());
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new actCollectionEnumerator<T>(this);
+            return new CollectionActorEnumerator<T>(this);
         }
 
         System.Collections.IEnumerator IEnumerable.GetEnumerator()
         {
-            return new actCollectionEnumerator<T>(this);
+            return new CollectionActorEnumerator<T>(this);
         }
 
         public void Add(T aData)

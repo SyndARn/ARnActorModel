@@ -33,9 +33,14 @@ namespace Actor.Base
     {
         public ActorConsole()
         {
-            actDirectory.GetDirectory().Register(this, "Console");
-            Console.WriteLine("Console starts and autoregisters");
             BecomeMany(new bhvConsole());
+        }
+
+        public static void Register()
+        {
+            var console = new ActorConsole();
+            actDirectory.GetDirectory().Register(console, "Console");
+            Console.WriteLine("Console starts and autoregisters");
         }
     }
 }

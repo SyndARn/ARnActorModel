@@ -533,8 +533,8 @@ namespace WpfPrime.Prime
 
         public actDico()
         {
-            Become(new bhvBehavior<Tuple<Int64, Int64>>(Add));
-            AddBehavior(new bhvBehavior<Tuple<IActor, Int64>>(Get));
+            Become(new Behavior<Tuple<Int64, Int64>>(Add));
+            AddBehavior(new Behavior<Tuple<IActor, Int64>>(Get));
         }
 
         private void Add(Tuple<Int64, Int64> msg)
@@ -588,7 +588,7 @@ namespace WpfPrime.Prime
             {
                 console = new ActorConsole();
             }
-            Become(new bhvBehavior<FknOrder>(CalcIt));
+            Become(new Behavior<FknOrder>(CalcIt));
             SendMessage(FknOrder.compute);
         }
 

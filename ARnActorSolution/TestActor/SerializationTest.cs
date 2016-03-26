@@ -24,7 +24,7 @@ namespace TestActor
 
         private class actRemoteActor : BaseActor 
         {
-            public actTag remoteTag {get ;set ;}
+            public ActorTag remoteTag {get ;set ;}
         }
 
         private class ActorBinder : SerializationBinder
@@ -51,13 +51,13 @@ namespace TestActor
                 actRemoteActor remote = new actRemoteActor();
                 remote.remoteTag = ((IActor)obj).Tag;
                 info.SetType(typeof(actRemoteActor));
-                info.AddValue("remoteTag", remote.remoteTag, typeof(actTag));
+                info.AddValue("remoteTag", remote.remoteTag, typeof(ActorTag));
             }
 
             public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
             {
                 // Reset the property value using the GetValue method.
-                typeof(actRemoteActor).GetProperty("remoteTag").SetValue(obj, info.GetValue("remoteTag", typeof(actTag)));
+                typeof(actRemoteActor).GetProperty("remoteTag").SetValue(obj, info.GetValue("remoteTag", typeof(ActorTag)));
                 return null; // ms bug here
             }
         }
@@ -102,7 +102,7 @@ namespace TestActor
             // serialize
             SerialObject so = new SerialObject();
             so.Data = lst;
-            so.Tag = new actTag("test uri") ;
+            so.Tag = new ActorTag("test uri") ;
             NetDataContractSerializer dcs = new NetDataContractSerializer();
             dcs.SurrogateSelector = new ActorSurrogatorSelector();
             dcs.Binder = new ActorBinder();

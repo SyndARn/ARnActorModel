@@ -32,26 +32,25 @@ namespace Actor.Server
     /// <summary>
     /// Connect to a shard Service
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actConnect : BaseActor
+    public class ConnectActor : BaseActor
     {
         private string fServiceName;
         private string fUri;
         private IActor fSender;
-        public actConnect(IActor lSender, string hostAddress, string name)
+        public ConnectActor(IActor lSender, string hostAddress, string name)
             : base()
         {
             fUri = hostAddress;
             fServiceName = name;
             fSender = lSender;
-            Become(new bhvBehavior<string>(DoDisco));
+            Become(new Behavior<string>(DoDisco));
             SendMessage("DoConnect");
         }
 
         private void DoDisco(string msg)
         {
-            Become(new bhvBehavior<Dictionary<string,string>>(Found));
-            BaseActor rem = new actRemoteActor(new actTag(fUri));
+            Become(new Behavior<Dictionary<string,string>>(Found));
+            BaseActor rem = new RemoteActor(new ActorTag(fUri));
             rem += new DiscoCommand(this); // send message
         }
 
@@ -62,8 +61,8 @@ namespace Actor.Server
             {
                 if (!string.IsNullOrEmpty(service))
                 {
-                    actTag tag = new actTag(service);
-                    Become(new bhvBehavior<actTag>(DoConnect));
+                    ActorTag tag = new ActorTag(service);
+                    Become(new Behavior<ActorTag>(DoConnect));
                     SendMessage(tag);
                 }
                 else
@@ -79,10 +78,10 @@ namespace Actor.Server
             }
         }
 
-        private void DoConnect(actTag tag)
+        private void DoConnect(ActorTag tag)
         {
-            IActor remoteSend = new actRemoteActor(tag);
-            fSender.SendMessage(new Tuple<string, actTag, IActor>(fServiceName, tag, remoteSend));
+            IActor remoteSend = new RemoteActor(tag);
+            fSender.SendMessage(new Tuple<string, ActorTag, IActor>(fServiceName, tag, remoteSend));
         }
 
     }

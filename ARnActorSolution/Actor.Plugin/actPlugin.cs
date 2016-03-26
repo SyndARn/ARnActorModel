@@ -15,7 +15,7 @@ namespace Actor.Plugin
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             Console.WriteLine(asm.Location);
-            Become(new bhvBehavior<string>(Do));
+            Become(new Behavior<string>(Do));
         }
 
         public void Do(string msg)

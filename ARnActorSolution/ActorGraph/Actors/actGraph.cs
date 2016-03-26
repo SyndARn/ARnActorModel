@@ -11,11 +11,11 @@ namespace ActorGraph.Actors
 
     internal class bhvGraph<T> : Behaviors
     {
-        private actCollection<bhvNode<T>> fCollection;
+        private CollectionActor<bhvNode<T>> fCollection;
 
         public bhvGraph() : base()
         {
-            fCollection = new actCollection<bhvNode<T>>();
+            fCollection = new CollectionActor<bhvNode<T>>();
             AddBehavior(new bhvUnLinkNode<bhvNode<T>>());
             AddBehavior(new bhvLinkNode<bhvNode<T>>());
             AddBehavior(new bhvSetNodeValue<Tuple<bhvNode<T>,T>>());
@@ -24,16 +24,16 @@ namespace ActorGraph.Actors
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvNode<T> : bhvStateBehavior<T>
+    public class bhvNode<T> : StateBehavior<T>
     {
-        private actCollection<bhvNode<T>> fLinkedNodes;
+        private CollectionActor<bhvNode<T>> fLinkedNodes;
         public bhvNode() : base() 
         {
-            fLinkedNodes = new actCollection<bhvNode<T>>();
+            fLinkedNodes = new CollectionActor<bhvNode<T>>();
         }
     } ;
     
-    public class bhvNodeAction<T> : bhvBehavior<Tuple<bhvNode<T>, T>>
+    public class bhvNodeAction<T> : Behavior<Tuple<bhvNode<T>, T>>
     {
         public bhvNodeAction()
             : base()
@@ -48,7 +48,7 @@ namespace ActorGraph.Actors
     }
 
     
-    public class bhvSetNodeValue<T> : bhvBehavior<Tuple<bhvNode<T>,T>>
+    public class bhvSetNodeValue<T> : Behavior<Tuple<bhvNode<T>,T>>
     {
         public bhvSetNodeValue()
             : base()
@@ -62,7 +62,7 @@ namespace ActorGraph.Actors
         }
     }
 
-    public class bhvUnLinkNode<T> : bhvBehavior<Tuple<T, T>>
+    public class bhvUnLinkNode<T> : Behavior<Tuple<T, T>>
     {
         public bhvUnLinkNode()
             : base()
@@ -79,7 +79,7 @@ namespace ActorGraph.Actors
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvLinkNode<T> : bhvBehavior<Tuple<T,T>>
+    public class bhvLinkNode<T> : Behavior<Tuple<T,T>>
     {
         public bhvLinkNode() : base()
         {

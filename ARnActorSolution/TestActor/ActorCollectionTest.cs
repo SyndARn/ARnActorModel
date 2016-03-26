@@ -25,7 +25,7 @@ namespace TestActor
         {
             fLauncher.SendAction(() =>
                 {
-                    var collect = new actCollection<string>();
+                    var collect = new CollectionActor<string>();
                     collect.Add("Test1");
                     collect.Add("Test2");
                     collect.Add("Test3");
@@ -52,7 +52,7 @@ namespace TestActor
         {
             fLauncher.SendAction(() =>
             {
-                var collect = new actCollection<string>();
+                var collect = new CollectionActor<string>();
                 for (int i = 0; i < 100; i++)
                     collect.Add(string.Format("Test {0}", i));
                 Assert.AreEqual(100,collect.Count());

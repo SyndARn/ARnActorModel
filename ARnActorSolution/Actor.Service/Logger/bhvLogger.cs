@@ -5,31 +5,32 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Actor.Server;
+using Actor.Base;
 
-namespace Actor.Base
+namespace Actor.Service
 {
-    public class actLogger : BaseActor
+    public class LoggerActor : BaseActor
     {
-        public actLogger(string aFilename) : base()
+        public LoggerActor(string aFilename) : base()
         {
-            Become(bhvLogger.CastLogger(aFilename));
+            Become(LoggerBehavior.CastLogger(aFilename));
             SendMessage("Logging start");
         }
     }
 
-    public class bhvLogger : bhvBehavior<Object>, IDisposable
+    public class LoggerBehavior : Behavior<Object>, IDisposable
     {
         private string fFilename;
         private StreamWriter fStream;
 
-        public bhvLogger()
+        public LoggerBehavior()
         {
             DoInit(ActorServer.GetInstance().Name);
         }
 
-        public static bhvLogger CastLogger(string aFilename)
+        public static LoggerBehavior CastLogger(string aFilename)
         {
-            bhvLogger lLogger = new bhvLogger();
+            LoggerBehavior lLogger = new LoggerBehavior();
             lLogger.DoInit(aFilename);
             return lLogger;
         }

@@ -34,7 +34,7 @@ namespace ActorWheather
         public actStringCatcher()
             : base()
         {
-            this.Become(new bhvBehavior<string>(
+            this.Become(new Behavior<string>(
             t => { return t is string; },
             DoCatched
             ));
