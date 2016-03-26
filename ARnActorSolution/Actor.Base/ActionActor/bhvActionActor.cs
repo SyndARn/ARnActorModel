@@ -73,10 +73,9 @@ namespace Actor.Base
     ///     Action actor are a facility : they provide template to send method as message within an actor
     ///     e.g. SendMessageTo(() => {do something},anActor) ;
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actActionActor : actActor
+    public class ActionActor : actActor
     {
-        public actActionActor()
+        public ActionActor()
             : base()
         {
             Become(new bhvAction());

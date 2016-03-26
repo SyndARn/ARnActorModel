@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace ActorRing
 {
     // cactch a C# event and publish it to a winform control
-    class actStringCatcher : actActionActor
+    class actStringCatcher : ActionActor
     {
 
         public actStringCatcher()

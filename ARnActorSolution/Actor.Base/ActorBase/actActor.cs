@@ -24,12 +24,13 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
+[assembly: CLSCompliant(true)]
 namespace Actor.Base
 {
 
-
-    public enum SystemMessage { NullBehavior } ;
+    public enum SystemMessage { NullBehavior };
     // composing actor ...
     /// <summary>
     /// actor have a default target
@@ -40,18 +41,17 @@ namespace Actor.Base
     /// with relaysender and relaytarget, you could have a composition
     /// </summary>
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actActor : IActor
     {
         public actTag Tag { get; private set; } // unique identifier, and host
         internal Behaviors fBehaviors; // our behavior
         internal ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>();
         internal ActorMailBox fMailBox = new ActorMailBox(); // our mailbox
-        internal actMessageLoop currentLoop;
         internal int fInTask = 0; // 0 out of task, 1 in task
 
         private IActor fRedirector = null;
         internal int messCount; // this should always be queue + postpone total
+        bool fCancel = false;
 
         public bool IsRemote()
         {
@@ -101,10 +101,6 @@ namespace Actor.Base
         {
             if (Interlocked.CompareExchange(ref fInTask, 1, 0) == 0)
             {
-                if ((currentLoop == null) || currentLoop.fCancel)
-                {
-                    currentLoop = new actMessageLoop(this);
-                }                
                 ActorTask.AddActor(this);
             }
         }
@@ -132,7 +128,6 @@ namespace Actor.Base
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         public static actActor Add(actActor anActor, Object aMessage)
         {
             CheckArg.Actor(anActor);
@@ -170,22 +165,16 @@ namespace Actor.Base
 
         protected async Task<Object> Receive(Func<Object, bool> aPattern)
         {
+            if (aPattern == null)
+                throw new ActorException("null pattern");
             Object ret = null;
-            var lTCS = new bhvBehavior<Object>(aPattern,new TaskCompletionSource<Object>()) ;
-            fCompletions.Enqueue(lTCS) ;
-
+            var lTCS = new bhvBehavior<Object>(aPattern, new TaskCompletionSource<Object>());
+            fCancel = true;
+            fCompletions.Enqueue(lTCS);
             AddMissedMessages();
-            currentLoop.fCancel = true;
             Interlocked.Exchange(ref fInTask, 0);
             TrySetInTask();
-
             ret = await lTCS.Completion.Task;
-
-            AddMissedMessages();
-            currentLoop.fCancel = true;
-            Interlocked.Exchange(ref fInTask, 0);
-            TrySetInTask();
-
             return ret;
         }
 
@@ -253,6 +242,96 @@ namespace Actor.Base
             fBehaviors.RemoveBehavior(aBehavior);
         }
 
+
+        internal void MessageLoop()
+        {
+            bool receivematch = false;
+            Object msg = null;
+            IBehavior tcs = null;            
+
+            while (!fCancel)
+            {
+                bool patternmatch = false;
+                while ((!patternmatch) && (!receivematch) && (Interlocked.CompareExchange(ref messCount, 0, 0) != 0))
+                {
+                    
+                    // get message             
+                    msg = ReceiveMessage();
+                    if (msg != null)
+                    {
+                        patternmatch = false;
+                        receivematch = false;
+
+                        // pattern matching
+                        if (fBehaviors != null)
+                        {
+                            tcs = fBehaviors.PatternMatching(msg);
+                            if (tcs != null)
+                            {
+                                patternmatch = true;
+                            }
+                        }
+
+                        // receive pattern
+                        if (!patternmatch)
+                        {
+                            Queue<IBehavior> lQueue = new Queue<IBehavior>();
+                            while ((!fCancel) && (fCompletions.TryDequeue(out tcs)))
+                            {
+                                if (!tcs.StandardPattern(msg))
+                                {
+                                    lQueue.Enqueue(tcs);
+                                    tcs = null;
+                                }
+                                else
+                                {
+                                    if (tcs.StandardCompletion != null)
+                                    {
+                                        receivematch = true;
+                                        fCancel = true;
+                                    }
+                                    else
+                                        tcs = null;
+                                }
+                            }
+                            while (lQueue.Count > 0)
+                            {
+                                fCompletions.Enqueue(lQueue.Dequeue());
+                            }
+                        }
+                    }
+
+                    // miss
+                    if (!patternmatch && !receivematch && msg != null )
+                    {
+                        fMailBox.AddMiss(msg);
+                    }
+                }
+                if (patternmatch)
+                {
+                    tcs.StandardApply(msg);
+                }
+                else
+                {
+                    fCancel = true;
+                }
+            }
+
+            Interlocked.Exchange(ref fInTask, 0);
+
+            if (receivematch)
+            {
+                AddMissedMessages();
+                tcs.StandardCompletion.SetResult(msg);
+            }
+
+            fCancel = false;
+
+            if (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
+            {
+                TrySetInTask();
+            }
+        }
     }
 
 }

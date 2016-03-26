@@ -30,7 +30,7 @@ namespace TestActor
         public void TestActionActor()
         {
             ActorServer.Start("test", 80);
-            var act = new actActionActor();
+            var act = new ActionActor();
             act.SendAction(() =>
             {
                 var tst = new actActionActorTest();

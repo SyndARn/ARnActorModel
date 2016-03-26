@@ -17,7 +17,7 @@ namespace TestActor
     public class SerializationTest
     {
 
-        public class Test1 : actActionActor
+        public class Test1 : ActionActor
         {
             public string Name { get; set; }
         }

@@ -74,7 +74,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActorBase\actActor.cs" />
-    <Compile Include="ActorBase\actMessageLoop.cs" />
     <Compile Include="ActorBase\ActorInjection.cs" />
     <Compile Include="Exception\ActorException.cs" />
     <Compile Include="Composition\ActorComposition.cs" />

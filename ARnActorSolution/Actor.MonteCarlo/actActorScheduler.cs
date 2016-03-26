@@ -18,7 +18,7 @@ namespace Actor.MonteCarlo
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actScheduler : actActionActor
+    public class actScheduler : ActionActor
     {
         static IActor fActor;
         ShardList shardList;

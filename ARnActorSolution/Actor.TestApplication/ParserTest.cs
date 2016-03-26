@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Actor.TestApplication
 {
-    public class ParserTest : actActionActor
+    public class ParserTest : ActionActor
     {
         public ParserTest()
             : base()
