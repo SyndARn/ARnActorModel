@@ -13,30 +13,28 @@ namespace Actor.Base
     }
 
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actSupervisedActor : BaseActor, ISupervisedActor
+    public class SupervisedActor : BaseActor, ISupervisedActor
     {
         public virtual ISupervisedActor Respawn()
         {
-            ISupervisedActor actor = new actSupervisedActor(this.Tag);
+            ISupervisedActor actor = new SupervisedActor(this.Tag);
             return actor;
         }
-        public actSupervisedActor(ActorTag previousTag) : base(previousTag)
+        public SupervisedActor(ActorTag previousTag) : base(previousTag)
         {
-            Become(new bhvSupervised());
+            Become(new bhvSupervisedBehavior());
         }
-        public actSupervisedActor() : base()
+        public SupervisedActor() : base()
         {
-            Become(new bhvSupervised());
+            Become(new bhvSupervisedBehavior());
         }
     }
 
     public enum SupervisorAction { Register, Unregister, Respawn, Kill} ;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvSupervised : Behavior<SupervisorAction>
+    public class bhvSupervisedBehavior : Behavior<SupervisorAction>
     {
-        public bhvSupervised()
+        public bhvSupervisedBehavior()
         {
             Pattern =  t =>{return true;} ;
             Apply = t =>
@@ -49,21 +47,20 @@ namespace Actor.Base
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actSupervisor : BaseActor
+    public class SupervisorActor : BaseActor
     {
-        public actSupervisor() : base (new bhvSupervisor())
+        public SupervisorActor() : base (new SupervisorBehavior())
         {
 
         }
     }
 
-    public class bhvSupervisor : Behaviors
+    public class SupervisorBehavior : Behaviors
     {
 
         private List<ISupervisedActor> fSupervised = new List<ISupervisedActor>();
 
-        public bhvSupervisor() : base()
+        public SupervisorBehavior() : base()
         {
             this.AddBehavior(new Behavior<Tuple<SupervisorAction, ISupervisedActor>>(
                 DoSupervision

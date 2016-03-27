@@ -114,7 +114,7 @@ namespace AgentTestApplication
         public override void InitState(string anAgentName)
         {
             base.InitState(anAgentName);
-            actDirectory.GetDirectory().Register(this, "MarketAgent");
+            DirectoryActor.GetDirectory().Register(this, "MarketAgent");
             AddBehavior(new Behavior<BuySellOrder>(DoOrder));
         }
 

@@ -67,7 +67,7 @@ namespace Actor.Util
 
         private void DoPublishData(T aT)
         {
-            var bct = new actBroadCast<T>();
+            var bct = new BroadCastActor<T>();
             bct.BroadCast(aT, fCollection);
         }
 

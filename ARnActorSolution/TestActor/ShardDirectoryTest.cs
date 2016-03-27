@@ -10,12 +10,12 @@ namespace TestActor
     [TestClass]
     public class ShardDirectoryTest
     {
-        private static actTestLauncher fLauncher;
+        private static TestLauncherActor fLauncher;
 
         [TestInitialize]
         public void Setup()
         {
-            fLauncher = new actTestLauncher();
+            fLauncher = new TestLauncherActor();
         }
 
         class actShardDirectoryClientTest : BaseActor

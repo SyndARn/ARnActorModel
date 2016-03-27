@@ -69,7 +69,7 @@
     <Compile Include="ActorService.cs" />
     <Compile Include="actRing.cs" />
     <Compile Include="Logger\actTrace.cs" />
-    <Compile Include="Logger\bhvLogger.cs" />
+    <Compile Include="Logger\LoggerBehavior.cs" />
     <Compile Include="RPrint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

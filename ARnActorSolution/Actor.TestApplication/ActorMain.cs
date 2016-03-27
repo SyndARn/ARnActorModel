@@ -52,7 +52,7 @@ namespace Actor.TestApplication
                 linkedlist.SendMessage(Tuple.Create(LinkedListOperation.Add, i.ToString()));
             }
 
-            new actEchoActor<Tuple<LinkedListOperation, string>>(linkedlist, Tuple.Create(LinkedListOperation.First, "5"));
+            new EchoActor<Tuple<LinkedListOperation, string>>(linkedlist, Tuple.Create(LinkedListOperation.First, "5"));
 
             new actRing(1000,1000); // 10 sec
 

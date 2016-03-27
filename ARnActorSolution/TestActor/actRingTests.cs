@@ -12,12 +12,12 @@ namespace Actor.Service.Tests
     [TestClass()]
     public class actRingTests
     {
-        actTestLauncher fLauncher;
+        TestLauncherActor fLauncher;
 
         [TestInitialize]
         public void Setup()
         {
-            fLauncher = new actTestLauncher();
+            fLauncher = new TestLauncherActor();
         }
 
         [TestMethod()]

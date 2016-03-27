@@ -49,6 +49,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>ARnActorKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -64,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActorConsole\ActorConsole.cs" />
-    <Compile Include="ActorConsole\bhvConsole.cs" />
+    <Compile Include="ActorConsole\ConsoleBehavior.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
     <Compile Include="ActorServer\actShardDirectory.cs" />
     <Compile Include="Directory\ConnectActor.cs" />
@@ -72,7 +78,7 @@
     <Compile Include="Directory\DiscoveryActor.cs" />
     <Compile Include="Directory\actHostDirectory.cs" />
     <Compile Include="Directory\RemoteActor.cs" />
-    <Compile Include="Directory\actSendByName.cs" />
+    <Compile Include="Directory\SendByNameActor.cs" />
     <Compile Include="Directory\DiscoCommand.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +98,9 @@
       <Project>{26a2eae7-170e-4248-b9e2-cf3f95e86f27}</Project>
       <Name>Actor.Base</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ARnActorKey.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -16,12 +16,12 @@ namespace Actor.Util.Tests
     [TestClass()]
     public class bhvForEachTests
     {
-        actTestLauncher fLauncher;
+        TestLauncherActor fLauncher;
 
         [TestInitialize]
         public void Setup()
         {
-            fLauncher = new actTestLauncher();
+            fLauncher = new TestLauncherActor();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]

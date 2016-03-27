@@ -35,8 +35,8 @@ namespace Actor.Util
         public EchoServerActor()
             : base()
         {
-            actHostDirectory.Register(this);
-            actDirectory.GetDirectory().Register(this, "EchoServer");
+            HostDirectoryActor.Register(this);
+            DirectoryActor.GetDirectory().Register(this, "EchoServer");
             Become(new EchoServerBehavior());
         }
     }
@@ -59,11 +59,11 @@ namespace Actor.Util
         protected void DoConnect(Tuple<string, string> msgcon)
         {
             // find in directory
-            actDirectory.GetDirectory().Find(this, msgcon.Item2);
-            Receive(ask => { return (ask is Tuple<actDirectory.DirectoryRequest, IActor>); }).ContinueWith(
+            DirectoryActor.GetDirectory().Find(this, msgcon.Item2);
+            Receive(ask => { return (ask is Tuple<DirectoryActor.DirectoryRequest, IActor>); }).ContinueWith(
                 r =>
                 {
-                    Tuple<actDirectory.DirectoryRequest, IActor> ans = (Tuple<actDirectory.DirectoryRequest, IActor>)(r.Result);
+                    Tuple<DirectoryActor.DirectoryRequest, IActor> ans = (Tuple<DirectoryActor.DirectoryRequest, IActor>)(r.Result);
                     if (ans.Item2 != null)
                     {
                         SendByName<string>.Send("Server found", "Console");

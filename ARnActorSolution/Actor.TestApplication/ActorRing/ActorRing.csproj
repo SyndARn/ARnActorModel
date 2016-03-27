@@ -66,7 +66,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="actStringCatcher.cs" />
     <Compile Include="frmRing.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +116,10 @@
     <ProjectReference Include="..\..\Actor.Util\Actor.Util.csproj">
       <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
       <Name>Actor.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Actor.Windows\Actor.Windows.csproj">
+      <Project>{746fad75-4a24-44ee-84a4-9b509cab4d30}</Project>
+      <Name>Actor.Windows</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

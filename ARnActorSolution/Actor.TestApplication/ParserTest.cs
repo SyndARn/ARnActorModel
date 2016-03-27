@@ -22,7 +22,7 @@ namespace Actor.TestApplication
             List<String> aList = new List<String>();
             aList.Add(ActorTask.Stat());
             var lParser = new actParser();
-            new actEchoActor<IEnumerable<string>>(lParser, aList);
+            new EchoActor<IEnumerable<string>>(lParser, aList);
             lParser.SendMessage(aList.AsEnumerable<String>());
         }
     }

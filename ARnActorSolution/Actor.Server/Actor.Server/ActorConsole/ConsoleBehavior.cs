@@ -22,6 +22,7 @@
 *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,26 +30,24 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvConsole : Behaviors
+    public class ConsoleBehavior : Behaviors
     {
-        public bhvConsole()
+        public ConsoleBehavior()
             : base()
         {
-            AddBehavior(new bhvConsole<string>());
-            AddBehavior(new bhvConsoleStringList());
-            AddBehavior(new bhvConsoleDictionary());
-            AddBehavior(new bhvConsole<int>());
-            AddBehavior(new bhvConsole<double>());
-            AddBehavior(new bhvConsole<object>());
+            AddBehavior(new ConsoleBehavior<string>());
+            AddBehavior(new ConsoleStringListbehavior());
+            AddBehavior(new ConsoleDictionaryBehavior());
+            AddBehavior(new ConsoleBehavior<int>());
+            AddBehavior(new ConsoleBehavior<double>());
+            AddBehavior(new ConsoleBehavior<object>());
             //TODO add anything else if needed
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvConsole<T> : Behavior<T>
+    public class ConsoleBehavior<T> : Behavior<T>
     {
-        public bhvConsole()
+        public ConsoleBehavior()
             : base()
         {
             Pattern = t => { return t is T; };
@@ -60,10 +59,9 @@ namespace Actor.Base
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvConsoleDictionary : Behavior<Dictionary<string,string>>
+    public class ConsoleDictionaryBehavior : Behavior<Dictionary<string,string>>
     {
-        public bhvConsoleDictionary()
+        public ConsoleDictionaryBehavior()
             : base()
         {
             Pattern = t => t is Dictionary<string,string> ;
@@ -73,15 +71,14 @@ namespace Actor.Base
         {
             foreach (var item in dico)
             {
-                Console.WriteLine(item.Key+" - "+item.Value);
+                Console.WriteLine(String.Format(CultureInfo.InvariantCulture,"{0} - {1}", item.Key,item.Value));
             }
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvConsoleStringList : Behavior<IEnumerable<String>>
+    public class ConsoleStringListbehavior : Behavior<IEnumerable<String>>
     {
-        public bhvConsoleStringList()
+        public ConsoleStringListbehavior()
             : base()
         {
             Pattern = t => t is IEnumerable<String>; ;

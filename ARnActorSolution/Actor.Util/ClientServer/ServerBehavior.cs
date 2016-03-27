@@ -38,9 +38,12 @@ namespace Actor.Util
             return true ;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         public void ServerApply(ServerMessage<T> aMessage)
         {
+            if (aMessage == null)
+            {
+                throw new ActorException("Null message receive in ServerApply");
+            }
             switch (aMessage.Request)
             {
                 case ServerRequest.Connect: DoConnect(aMessage);  break;
@@ -83,7 +86,7 @@ namespace Actor.Util
             {
                 throw new ActorException("Server Behavior, null message encounters");
             }
-            if (aMessage == null)
+            if (aMessage.Client == null)
             {
                 throw new ActorException("Null client encountered");
             }
@@ -103,6 +106,10 @@ namespace Actor.Util
 
         protected void DispatchAnswer(ServerMessage<T> aMessage)
         {
+            if (aMessage == null)
+            {
+                throw new ActorException("Null message receive in ServerBehavior");
+            }
             switch(aMessage.Request)
             {
                 case ServerRequest.Answer: { ReceiveAnswer(aMessage); break; };
@@ -122,7 +129,7 @@ namespace Actor.Util
         {
             if (aMessage == null)
             {
-                throw new ActorException("ClientBehavior, null message encounters");
+                throw new ActorException("Null message receive in SendRequest");
             }
             fServer.SendMessage(new ServerMessage<T>(LinkedTo.LinkedActor, ServerRequest.Request, aMessage.Data));
         }

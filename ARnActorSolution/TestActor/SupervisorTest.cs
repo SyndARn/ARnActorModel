@@ -8,12 +8,12 @@ namespace TestActor
     public class SupervisorTest
     {
 
-        actTestLauncher fLauncher;
+        TestLauncherActor fLauncher;
 
         [TestInitialize]
         public void Setup()
         {
-            fLauncher = new actTestLauncher();
+            fLauncher = new TestLauncherActor();
         }
 
         [TestMethod]
@@ -21,8 +21,8 @@ namespace TestActor
         {
             fLauncher.SendAction(() =>
                 {
-                    var supervisor = new actSupervisor();
-                    ISupervisedActor supervised = new actSupervisedActor();
+                    var supervisor = new SupervisorActor();
+                    ISupervisedActor supervised = new SupervisedActor();
                     supervisor.SendMessage(Tuple.Create(SupervisorAction.Register, supervised));
                     supervisor.SendMessage(Tuple.Create(SupervisorAction.Kill, supervised));
                     supervisor.SendMessage(Tuple.Create(SupervisorAction.Respawn, supervised));

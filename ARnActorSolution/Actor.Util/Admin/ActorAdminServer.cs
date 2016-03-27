@@ -34,7 +34,7 @@ namespace Actor.Util
                         }
                         else
                         {
-                            new ConnectActor(this, lData, "KnownShards");
+                            ConnectActor.Connect(this, lData, "KnownShards");
                             Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; }).ContinueWith(
                                 ans =>
                                 {
@@ -84,7 +84,7 @@ namespace Actor.Util
                         // local disco ?
                         if (String.IsNullOrEmpty(lData))
                         {
-                            actDirectory.GetDirectory().Disco(Data.Item1);
+                            DirectoryActor.GetDirectory().Disco(Data.Item1);
                         }
                         else
                         {
@@ -105,7 +105,7 @@ namespace Actor.Util
                         char[] separ2 = { ' ' };
                         string lHost = lData.Split(separ2)[0];
                         string lMsg = lData.Split(separ2)[1];
-                        ConnectActor connect = new ConnectActor(this, lHost, "RPrint");
+                        ConnectActor.Connect(this, lHost, "RPrint");
                         var data = Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; });
                         var res = data.Result as Tuple<string, ActorTag, IActor>;
                         res.Item3.SendMessage("call  from " + this.Tag.Id);

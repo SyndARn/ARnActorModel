@@ -20,11 +20,11 @@ namespace Actor.Util
         {
             // get number of actor in directory
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(actDirectory.GetDirectory().Stat());
+            sb.AppendLine(DirectoryActor.GetDirectory().Stat());
             // get number of actor in queue list
             sb.AppendLine(ActorTask.Stat()) ;
             // get number of actor in hostdirectory
-            sb.AppendLine(actHostDirectory.GetInstance().GetStat());
+            sb.AppendLine(HostDirectoryActor.GetInstance().GetStat());
             msg.SendMessage(sb.ToString()) ;
             Become(null);
         }

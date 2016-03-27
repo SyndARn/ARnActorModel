@@ -96,12 +96,12 @@ namespace Actor.Base
             {
                 // ask directory entries for server
                 //actHostDirectory.Register(this);
-                actDirectory.GetDirectory().Disco(((DiscoCommand)aSerial.Data).Sender);
+                DirectoryActor.GetDirectory().Disco(((DiscoCommand)aSerial.Data).Sender);
             }
             else
             {
                 // or send to host directory
-                actHostDirectory.GetInstance().SendMessage(aSerial);
+                HostDirectoryActor.GetInstance().SendMessage(aSerial);
             }
         }
     }

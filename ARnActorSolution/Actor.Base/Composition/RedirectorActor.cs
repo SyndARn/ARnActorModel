@@ -18,12 +18,12 @@ namespace Actor.Base
         public IActor Target { get; private set; }
     }
 
-    public class actRedirector : BaseActor
+    public class RedirectorActor : BaseActor
     {
         //
         private IActor fTarget = null;
 
-        public actRedirector(IActor anActor)
+        public RedirectorActor(IActor anActor)
             : base()
         {
             fTarget = anActor;

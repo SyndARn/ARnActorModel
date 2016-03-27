@@ -25,6 +25,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -109,7 +110,7 @@ namespace Actor.Util
                             Debug.WriteLine("Bad current");
                         break;
                     }
-                default: throw new ActorException(string.Format("Bad IteratorMethod call {0}", msg.Item1));
+                default: throw new ActorException(string.Format(CultureInfo.InvariantCulture,"Bad IteratorMethod call {0}", msg.Item1));
             }
         }
     }

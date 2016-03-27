@@ -11,31 +11,31 @@ using Actor.Server;
 
 namespace Actor.Base.Tests
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     [TestClass()]
-    public class actDirectoryTests
+    public class DirectoryActorTests
     {
-        actTestLauncher fLauncher;
+        TestLauncherActor fLauncher;
 
         [TestInitialize]
         public void Setup()
         {
-            fLauncher = new actTestLauncher();
-            new actDirectory();
+            fLauncher = new TestLauncherActor();
+            var act = new DirectoryActor();
+            Assert.IsNotNull(act, "Can't create Directory Actor");
         }
 
-        class actTestActor : BaseActor
+        internal class DirectoryTestActor : BaseActor
         {
-            public actTestActor()
+            public DirectoryTestActor()
             {
                 Become(new Behavior<Tuple<IActor,IActor,string>>(DoIt));
             }
 
             private void DoIt(Tuple<IActor, IActor, string> message)
             {
-                actDirectory.GetDirectory().Find(this, message.Item3);
-                var task = Receive(ask => { return (ask is Tuple<actDirectory.DirectoryRequest, IActor>); });
-                if ((task.Result as Tuple<actDirectory.DirectoryRequest, IActor>).Item2 == message.Item2)
+                DirectoryActor.GetDirectory().Find(this, message.Item3);
+                var task = Receive(ask => { return (ask is Tuple<DirectoryActor.DirectoryRequest, IActor>); });
+                if ((task.Result as Tuple<DirectoryActor.DirectoryRequest, IActor>).Item2 == message.Item2)
                 {
                     message.Item1.SendMessage(true);
                 }
@@ -43,12 +43,12 @@ namespace Actor.Base.Tests
         }
 
         [TestMethod()]
-        public void actDirectoryTest()
+        public void DirectoryActorTest()
         {
             fLauncher.SendAction(() =>
             {
-                var act = new actTestActor();
-                act.SendMessage(new Tuple<IActor,IActor,string>(fLauncher, actDirectory.GetDirectory(), "Directory"));
+                var act = new DirectoryTestActor();
+                act.SendMessage(new Tuple<IActor,IActor,string>(fLauncher, DirectoryActor.GetDirectory(), "Directory"));
             });
             Assert.IsTrue(fLauncher.Wait());
         }
@@ -56,20 +56,20 @@ namespace Actor.Base.Tests
         [TestMethod()]
         public void GetDirectoryTest()
         {
-            Assert.IsTrue(actDirectory.GetDirectory() is actDirectory);
+            Assert.IsTrue(DirectoryActor.GetDirectory() is DirectoryActor);
         }
 
         [TestMethod()]
         public void StatTest()
         {
-            Assert.IsTrue(actDirectory.GetDirectory().Stat().StartsWith("Directory entries "));
+            Assert.IsTrue(DirectoryActor.GetDirectory().Stat().StartsWith("Directory entries "));
         }
 
-        class discoTestActor : BaseActor
+        internal class DiscoTestActor : BaseActor
         {
             private IActor fLauncher;
 
-            public discoTestActor(IActor aLauncher)
+            public DiscoTestActor(IActor aLauncher)
             {
                 fLauncher = aLauncher;
                 Become(new Behavior<Dictionary<string, string>>(ReceiveDisco));
@@ -88,8 +88,8 @@ namespace Actor.Base.Tests
             ActorServer.Start("localhost", 80,false );
             fLauncher.SendAction(() =>
             {
-                var act = new discoTestActor(fLauncher);
-                actDirectory.GetDirectory().Disco(act);
+                var act = new DiscoTestActor(fLauncher);
+                DirectoryActor.GetDirectory().Disco(act);
             }
             );
             Assert.IsTrue(fLauncher.Wait());
@@ -100,8 +100,8 @@ namespace Actor.Base.Tests
         {
             fLauncher.SendAction(() =>
             {
-                var act = new actTestActor();
-                actDirectory.GetDirectory().Register(act, act.Tag.Id.ToString(CultureInfo.InvariantCulture));
+                var act = new DirectoryTestActor();
+                DirectoryActor.GetDirectory().Register(act, act.Tag.Id.ToString(CultureInfo.InvariantCulture));
                 act.SendMessage(new Tuple<IActor, IActor, string>(fLauncher, act, act.Tag.Id.ToString(CultureInfo.InvariantCulture)));
             });
             Assert.IsTrue(fLauncher.Wait());

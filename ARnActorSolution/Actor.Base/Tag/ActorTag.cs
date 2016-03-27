@@ -97,7 +97,7 @@ namespace Actor.Base
             }
             else
             {
-                return Uri + Id.ToString();
+                return Uri + Id.ToString(System.Globalization.CultureInfo.InvariantCulture);
             }
         }
     }

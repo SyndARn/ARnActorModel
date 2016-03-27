@@ -84,7 +84,7 @@ namespace Actor.RemoteLoading
         public actActorDownloadTest()
             : base()
         {
-            this.BecomeMany(new bhvConsole());
+            this.BecomeMany(new ConsoleBehavior());
             // start download
             IActor down = new actActorDownload();
             // start upload
@@ -189,7 +189,7 @@ namespace Actor.RemoteLoading
 
                 // register in directory
 
-                actDirectory.GetDirectory().Register(asmobj, "plugin");
+                DirectoryActor.GetDirectory().Register(asmobj, "plugin");
 
                 asmobj.SendMessage("Hello");
                 SendByName<string>.Send("by name", "plugin");

@@ -33,13 +33,13 @@ namespace Actor.Base
     {
         public ActorConsole()
         {
-            BecomeMany(new bhvConsole());
+            BecomeMany(new ConsoleBehavior());
         }
 
         public static void Register()
         {
             var console = new ActorConsole();
-            actDirectory.GetDirectory().Register(console, "Console");
+            DirectoryActor.GetDirectory().Register(console, "Console");
             Console.WriteLine("Console starts and autoregisters");
         }
     }

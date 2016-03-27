@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
+using System.Globalization;
 
 [assembly: CLSCompliant(true)]
 namespace Actor.Server
@@ -28,7 +29,7 @@ namespace Actor.Server
         {
             var localhost = Dns.GetHostName();
             var prefix = "http://";
-            var suffix = ":" + Port.ToString();
+            var suffix = ":" + Port.ToString(CultureInfo.InvariantCulture);
             var fullhost = prefix + localhost + suffix + "/" + Name + "/";
             return fullhost;
         }
@@ -55,7 +56,7 @@ namespace Actor.Server
 
         private void DoInit(bool withRelay) 
         {
-            actDirectory.GetDirectory(); // Start directory
+            DirectoryActor.GetDirectory(); // Start directory
             ActorConsole.Register(); // Start console
             // should work now
             SendByName<string>.Send("Actor Server Start", "Console");

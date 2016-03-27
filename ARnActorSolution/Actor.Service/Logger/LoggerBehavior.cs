@@ -28,10 +28,10 @@ namespace Actor.Service
             DoInit(ActorServer.GetInstance().Name);
         }
 
-        public static LoggerBehavior CastLogger(string aFilename)
+        public static LoggerBehavior CastLogger(string aFileName)
         {
             LoggerBehavior lLogger = new LoggerBehavior();
-            lLogger.DoInit(aFilename);
+            lLogger.DoInit(aFileName);
             return lLogger;
         }
 

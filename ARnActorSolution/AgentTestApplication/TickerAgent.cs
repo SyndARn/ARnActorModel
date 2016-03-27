@@ -23,7 +23,7 @@ namespace AgentTestApplication
         public override void InitState(string anAgentName)
         {
             base.InitState(anAgentName);
-            actDirectory.GetDirectory().Register(this, "TickerAgent");
+            DirectoryActor.GetDirectory().Register(this, "TickerAgent");
             AddBehavior(new Behavior<Int64>(DoTick));
             AddBehavior(new Behavior<IActor>(DoPriceRequest));
         }

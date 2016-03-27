@@ -32,24 +32,24 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 
-    public class actDirectory : BaseActor
+    public class DirectoryActor : BaseActor
     {
         public enum DirectoryRequest { Find } ;
         private Dictionary<string, IActor> fDictionary = new Dictionary<string, IActor>();
-        private static Lazy<actDirectory> fDirectory = new Lazy<actDirectory>(() => new actDirectory(), true);
-        public actDirectory()
+        private static Lazy<DirectoryActor> fDirectory = new Lazy<DirectoryActor>(() => new DirectoryActor(), true);
+        public DirectoryActor()
             : base()
         {
             Console.WriteLine("Dictionary starts and autoregisters");
             fDictionary.Add("Directory", this);
 
             Behaviors bhvs = new Behaviors();
-            bhvs.AddBehavior(new bhvAction<IActor>()) ;
-            bhvs.AddBehavior(new bhvAction<IActor,string>());
+            bhvs.AddBehavior(new ActionBehavior<IActor>()) ;
+            bhvs.AddBehavior(new ActionBehavior<IActor,string>());
             BecomeMany(bhvs);
         }
 
-        public static actDirectory GetDirectory()
+        public static DirectoryActor GetDirectory()
         {
             return fDirectory.Value;
         }

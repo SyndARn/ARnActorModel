@@ -29,13 +29,13 @@ namespace ActorWeather
             InitializeComponent();
         }
 
-        public actStringCatcher fCatcher = new actStringCatcher();
+        public StateFullStringCatcher fCatcher = new StateFullStringCatcher();
 
-        public actRestReader fReader = new actRestReader();
+        public RestReaderActor fReader = new RestReaderActor();
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            tbText.DataContext = fCatcher.value;
+            tbText.DataContext = fCatcher.Get();
             fReader.SendRest(new Uri("http://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400"), fCatcher); // 5 day weather forecast for Paris
         }
 

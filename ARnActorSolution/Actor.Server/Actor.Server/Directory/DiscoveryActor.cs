@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
+using System.Globalization;
 
 namespace Actor.Server
 {
@@ -53,8 +54,10 @@ namespace Actor.Server
         private void Found(Dictionary<string,String> aList)
         {
             Console.WriteLine("Disco found:");
-            foreach(string s in aList.Keys)
-             Console.WriteLine(s + "-"+aList[s]);
+            foreach (string s in aList.Keys)
+            {
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0} - {1}",s,aList[s]));
+            }
             Become(null);
         }
     }

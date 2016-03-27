@@ -8,13 +8,12 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actBroadCast<T> : BaseActor
+    public class BroadCastActor<T> : BaseActor
     {
-        public actBroadCast()
+        public BroadCastActor()
             : base()
         {
-            Become(new bhvBroadCast<T>()) ;
+            Become(new BroadCastBehavior<T>()) ;
         }
 
         public void BroadCast(T at, IEnumerable<IActor> list)
@@ -24,11 +23,10 @@ namespace Actor.Util
 
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvBroadCast<T> : Behavior<Tuple<T, IEnumerable<IActor>>>
+    public class BroadCastBehavior<T> : Behavior<Tuple<T, IEnumerable<IActor>>>
     {
 
-        public bhvBroadCast()
+        public BroadCastBehavior()
         {
             this.Apply = Behavior ;
             this.Pattern = t => true ;

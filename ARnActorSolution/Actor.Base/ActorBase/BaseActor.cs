@@ -77,7 +77,7 @@ namespace Actor.Base
 
         public void RedirectTo(IActor anActor)
         {
-            IActor aRedirector = new actRedirector(anActor);
+            IActor aRedirector = new RedirectorActor(anActor);
             // this could be threaded ...
             Interlocked.Exchange(ref fRedirector, aRedirector);
         }

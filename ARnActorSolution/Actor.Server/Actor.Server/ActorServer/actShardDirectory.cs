@@ -51,8 +51,8 @@ namespace Actor.Base
         {
             fShardList = new Dictionary<string,string>();
             fShardList.Add("LocalHost",ActorServer.GetInstance().FullHost);
-            actDirectory.GetDirectory().Register(this, "KnownShards");
-            actHostDirectory.Register(this);
+            DirectoryActor.GetDirectory().Register(this, "KnownShards");
+            HostDirectoryActor.Register(this);
             Become(new Behavior<ShardRequest>(
                 t => t is ShardRequest,
                 DoProcessShardRequest)) ;

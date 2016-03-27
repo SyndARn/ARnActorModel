@@ -31,26 +31,25 @@ namespace Actor.Base
 
     public static class SendByName<T>
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes")]
         public static void Send(T aData, string anActor)
         {
-            var act = new actSendByName<T>();
+            var act = new SendByNameActor<T>();
             act.SendMessage(Tuple.Create(anActor, aData));
         }
     }
 
     /// <summary>
-    /// actSendByName
+    /// SendByNameActor
     ///   SendByName works together with Directory
     ///   It allows to send message to an actor only knowing his alias name in Directory
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class actSendByName<T> : BaseActor
+    public class SendByNameActor<T> : BaseActor
     {
         // The message to be send
         private T origMessage;
 
-        public actSendByName()
+        public SendByNameActor()
         {
             Become(
                 new Behavior<Tuple<String, T>>(msg => { return msg is Tuple<string, T>; },
@@ -62,13 +61,13 @@ namespace Actor.Base
         {
             // find in directory
             origMessage = msg.Item2;
-            Become(new Behavior<Tuple<actDirectory.DirectoryRequest, IActor>>(ask => { return ask is Tuple<actDirectory.DirectoryRequest, IActor>; },
+            Become(new Behavior<Tuple<DirectoryActor.DirectoryRequest, IActor>>(ask => { return ask is Tuple<DirectoryActor.DirectoryRequest, IActor>; },
                 SendBehavior));
-            actDirectory.GetDirectory().Find(this, msg.Item1);
+            DirectoryActor.GetDirectory().Find(this, msg.Item1);
         }
 
         // SendBehavior to send message to actor found in directory
-        private void SendBehavior(Tuple<actDirectory.DirectoryRequest, IActor> ans)
+        private void SendBehavior(Tuple<DirectoryActor.DirectoryRequest, IActor> ans)
         {
             if (ans.Item2 != null)
             {

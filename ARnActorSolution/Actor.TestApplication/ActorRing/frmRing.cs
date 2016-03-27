@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Actor.Util;
 using Actor.Server;
+using Actor.Windows;
 
 namespace ActorRing
 {
@@ -25,10 +26,10 @@ namespace ActorRing
         private void Form1_Load(object sender, EventArgs e)
         {
             ActorServer.Start("localhost", 80, false);
-            catcher = new actStringCatcher();
+            catcher = new StringToEventCatcherActor();
         }
 
-        actStringCatcher catcher;
+        StringToEventCatcherActor catcher;
 
         protected void EvHandler(object sender, string e)
         {

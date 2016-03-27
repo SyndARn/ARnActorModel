@@ -8,12 +8,12 @@ namespace TestActor
     public class StateBehaviorTest
     {
 
-        private static actTestLauncher fLauncher;
+        private static TestLauncherActor fLauncher;
 
         [TestInitialize]
         public void Setup()
         {
-            fLauncher = new actTestLauncher();
+            fLauncher = new TestLauncherActor();
         }
 
         [TestMethod]

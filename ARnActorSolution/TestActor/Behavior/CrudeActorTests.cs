@@ -10,14 +10,14 @@ using TestActor;
 namespace Actor.Util.Tests
 {
     [TestClass()]
-    public class actCrudeActorTests
+    public class CrudeActorTests
     {
-        actTestLauncher fLauncher;
+        TestLauncherActor fLauncher;
 
         [TestInitialize]
         public void Setup()
         {
-            fLauncher = new actTestLauncher();
+            fLauncher = new TestLauncherActor();
         }
 
         [TestMethod()]

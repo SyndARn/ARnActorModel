@@ -1,18 +1,22 @@
-﻿using Actor.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Actor.Base;
 using System.Windows.Forms;
 
-namespace ActorRing
+namespace Actor.Windows
 {
-    // cactch a C# event and publish it to a winform control
-    class actStringCatcher : ActionActor
+
+    /// <summary>
+    /// catch a C# event and publish it to a winform control
+    /// </summary>
+    public class StringToEventCatcherActor : ActionActor
     {
 
-        public actStringCatcher()
+
+        public StringToEventCatcherActor()
             : base()
         {
         }
@@ -21,7 +25,7 @@ namespace ActorRing
         Control fControl = null;
 
 
-        public void SetEvent(Control control,EventHandler<string> anEvent)
+        public void SetEvent(Control control, EventHandler<string> anEvent)
         {
             fEvent = anEvent;
             fControl = control;
@@ -31,12 +35,11 @@ namespace ActorRing
         private void DoWait()
         {
             var retval = Receive(t => { return t is string; }).Result;
-            if ((fEvent !=null) && (fControl !=null))
+            if ((fEvent != null) && (fControl != null))
             {
-                fControl.Invoke(fEvent,this,retval.ToString()) ;
+                fControl.Invoke(fEvent, this, retval.ToString());
             }
         }
-
 
     }
 }

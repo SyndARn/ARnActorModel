@@ -24,7 +24,7 @@ namespace ARnAgent
             bhvall.AddBehavior(bhv3);
             bhvall.AddBehavior(bhv4);
             BecomeMany(bhvall);
-            actDirectory.GetDirectory().Register(this, "AgentDirectory");
+            DirectoryActor.GetDirectory().Register(this, "AgentDirectory");
         }
 
         private void DoRegister(IAgent anAgent)
@@ -34,7 +34,7 @@ namespace ARnAgent
 
         private void DoObserve(Tuple<IActor,DeltaTime> msg)
         {
-            new actBroadCast<Tuple<IActor, DeltaTime>>().BroadCast(msg, agentList);
+            new BroadCastActor<Tuple<IActor, DeltaTime>>().BroadCast(msg, agentList);
         }
 
         private void DoAck(DeltaTimeAckMessage dtm)
@@ -44,7 +44,7 @@ namespace ARnAgent
         private void DoSend(DeltaTime dt)
         {
                 DeltaTimeMessage dtm = DeltaTimeMessage.CastMessage(this, dt);
-                new actBroadCast<DeltaTimeMessage>().BroadCast(dtm, agentList);
+                new BroadCastActor<DeltaTimeMessage>().BroadCast(dtm, agentList);
         }
     }
 }

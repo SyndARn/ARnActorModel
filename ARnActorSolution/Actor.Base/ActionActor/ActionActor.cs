@@ -35,10 +35,9 @@ namespace Actor.Base
     ///     this behavior allows to pass an action as behavior to an actor
     ///     Most frequent use : public method to send an async action to the same actor
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvAction : Behavior<Action>
+    public class ActionBehavior : Behavior<Action>
     {
-        public bhvAction()
+        public ActionBehavior()
             : base()
         {
             Pattern = t => { return t is Action ;} ;
@@ -46,10 +45,9 @@ namespace Actor.Base
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvAction<T> : Behavior<Tuple<Action<T>, T>>
+    public class ActionBehavior<T> : Behavior<Tuple<Action<T>, T>>
     {
-        public bhvAction()
+        public ActionBehavior()
             : base()
         {
             Pattern = t => { return t is Tuple<Action<T>, T> ; };
@@ -57,10 +55,9 @@ namespace Actor.Base
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvAction<T1,T2> : Behavior<Tuple<Action<T1,T2>, T1,T2>>
+    public class ActionBehavior<T1,T2> : Behavior<Tuple<Action<T1,T2>, T1,T2>>
     {
-        public bhvAction()
+        public ActionBehavior()
             : base()
         {
             Pattern = t => { return t is Tuple<Action<T1,T2>, T1,T2>; };
@@ -78,7 +75,7 @@ namespace Actor.Base
         public ActionActor()
             : base()
         {
-            Become(new bhvAction());
+            Become(new ActionBehavior());
         }
         public void SendAction(Action anAction)
         {
@@ -97,8 +94,8 @@ namespace Actor.Base
             : base()
         {
             Behaviors bhvs = new Behaviors();
-            bhvs.AddBehavior(new bhvAction());
-            bhvs.AddBehavior(new bhvAction<T>());
+            bhvs.AddBehavior(new ActionBehavior());
+            bhvs.AddBehavior(new ActionBehavior<T>());
             BecomeMany(bhvs);
         }
 

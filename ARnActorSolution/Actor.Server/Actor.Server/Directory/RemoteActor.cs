@@ -44,7 +44,6 @@ namespace Actor.Server
 
         public ActorTag fRemoteTag;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         public static void CompleteInitialize(RemoteActor anActor)
         {
             CheckArg.Actor(anActor);
@@ -75,14 +74,15 @@ namespace Actor.Server
                 NetDataActorSerializer.Serialize(so, ms);
 
                 ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                try
-
+                using (StreamReader sr = new StreamReader(ms))
                 {
                     while (!sr.EndOfStream)
                         Debug.Print(sr.ReadLine());
-                    ms.Seek(0, SeekOrigin.Begin);
-                    // No response expected
+                }
+
+                ms.Seek(0, SeekOrigin.Begin);
+                using (StreamReader sr = new StreamReader(ms))
+                {
                     using (var client = new HttpClient())
                     {
                         using (var hc = new StreamContent(ms))
@@ -92,13 +92,8 @@ namespace Actor.Server
                         }
                     }
                 }
-                finally
-                {
-                    if (sr != null)
-                      sr.Dispose();
-                }
             }
         }
-    }
 
+    }
 }

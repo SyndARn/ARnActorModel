@@ -37,14 +37,20 @@ namespace Actor.Server
         private string fServiceName;
         private string fUri;
         private IActor fSender;
-        public ConnectActor(IActor lSender, string hostAddress, string name)
+        public ConnectActor(IActor lSender, string hostAddress, string serviceName)
             : base()
         {
             fUri = hostAddress;
-            fServiceName = name;
+            fServiceName = serviceName;
             fSender = lSender;
             Become(new Behavior<string>(DoDisco));
             SendMessage("DoConnect");
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "Actor.Server.ConnectActor")]
+        public static void Connect(IActor lSender, string hostAddress, string serviceName)
+        {
+            new ConnectActor(lSender, hostAddress, serviceName);
         }
 
         private void DoDisco(string msg)

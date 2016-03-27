@@ -11,12 +11,12 @@ namespace TestActor
     public class ActorCollectionTest
     {
 
-        actTestLauncher fLauncher;
+        TestLauncherActor fLauncher;
 
         [TestInitialize]
         public void Setup()
         {
-            fLauncher = new actTestLauncher();
+            fLauncher = new TestLauncherActor();
         }
 
 

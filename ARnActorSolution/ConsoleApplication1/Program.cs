@@ -15,7 +15,7 @@ namespace PrimeSumNumber_Euler543
             ActorServer.Start("localhost", 1123, false);
             var act = new Fibonacci();
             var res = act.Calc(10);
-            Console.WriteLine(res);
+            Console.WriteLine(res.Result);
             Console.ReadLine();
         }
     }

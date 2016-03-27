@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
+using System.Globalization;
 
 namespace Actor.Service
 {
-    public class actTrace : BaseActor // dummmy actor
+    public class TraceActor : BaseActor // dummmy actor
     {
-        public actTrace()
+        public TraceActor()
         {
             Become(null);
         }
@@ -34,7 +35,7 @@ namespace Actor.Service
         public void Stop(string aMsg)
         {
             fWatch.Stop();
-            fLogger.Value.SendMessage("[Trace] " + fWatch.ElapsedTicks.ToString() + " " + aMsg);
+            fLogger.Value.SendMessage(String.Format(CultureInfo.InvariantCulture,"[Trace] {0} {1}", fWatch.ElapsedTicks,aMsg));
         }
     }
 }

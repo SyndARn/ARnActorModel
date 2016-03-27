@@ -14,8 +14,8 @@ namespace Actor.Service
         public RPrint()
             : base()
         {
-            actDirectory.GetDirectory().Register(this, "RPrint");
-            actHostDirectory.Register(this);
+            DirectoryActor.GetDirectory().Register(this, "RPrint");
+            HostDirectoryActor.Register(this);
             Become(new Behavior<string>(DoRPrint));
         }
 

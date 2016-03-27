@@ -13,7 +13,7 @@ namespace Actor.Base
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
         {
             IActor act = (IActor)obj;
-            actHostDirectory.Register(act);
+            HostDirectoryActor.Register(act);
             // continue
             info.SetType(typeof(RemoteActor));
             ActorTag remoteTag = act.Tag;
@@ -28,6 +28,10 @@ namespace Actor.Base
             // force misc init
             if (remoteActor != null)
             {
+                if (info == null)
+                {
+                    throw new ActorException("Receiving null SerializationInfo");
+                }
                 BaseActor.CompleteInitialize(remoteActor);
                 RemoteActor.CompleteInitialize(remoteActor);
                 ActorTag getTag = (ActorTag)info.GetValue("RemoteTag", typeof(ActorTag));

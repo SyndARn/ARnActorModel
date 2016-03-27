@@ -30,10 +30,9 @@ using System.Diagnostics;
 
 namespace Actor.Util
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actRestReader : BaseActor
+    public class RestReaderActor : BaseActor
     {
-        public actRestReader() : base()
+        public RestReaderActor() : base()
         {
             BecomeMany(new BehaviorsRestReader()) ;
         }
@@ -49,15 +48,14 @@ namespace Actor.Util
         public IActor Answer { get; set; }
         public BehaviorsRestReader() : base()
         {
-            this.AddBehavior(new bhvRestSend()) ;
-            this.AddBehavior(new bhvRestReceive()) ;
+            this.AddBehavior(new RestSendBehavior()) ;
+            this.AddBehavior(new RestReceiveBehavior()) ;
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvRestReceive : Behavior<WebAnswer>
+    public class RestReceiveBehavior : Behavior<WebAnswer>
     {
-        public bhvRestReceive() : base()
+        public RestReceiveBehavior() : base()
         {
             Pattern = DefaultPattern();
             Apply = DoRestReceive;
@@ -70,10 +68,9 @@ namespace Actor.Util
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvRestSend : Behavior<Tuple<Uri,IActor>>
+    public class RestSendBehavior : Behavior<Tuple<Uri,IActor>>
     {
-        public bhvRestSend()
+        public RestSendBehavior()
             : base()
         {
             Pattern = t => t is Tuple<Uri,IActor>;
