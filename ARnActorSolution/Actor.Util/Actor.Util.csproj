@@ -84,7 +84,7 @@
     <Compile Include="Collection\QueueActor.cs" />
     <Compile Include="Admin\ActorStatServer.cs" />
     <Compile Include="Admin\actRemoteTest.cs" />
-    <Compile Include="Behavior\bhvBroadCast.cs" />
+    <Compile Include="Behavior\BroadCastBehavior.cs" />
     <Compile Include="Collection\CollectionBehavior.cs" />
     <Compile Include="Behavior\ForEachBehavior.cs" />
     <Compile Include="Collection\LinkedListActor.cs" />

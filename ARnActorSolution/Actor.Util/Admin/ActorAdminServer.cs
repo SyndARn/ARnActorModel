@@ -69,7 +69,7 @@ namespace Actor.Util
                         char[] separ2 = {' '} ;
                         string lHost = lData.Split(separ2)[0] ;
                         string lService = lData.Split(separ2)[1] ;
-                        ConnectActor connect = new ConnectActor(this, lHost, lService);
+                        ConnectActor.Connect(this, lHost, lService);
                         var data = Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; }) ;
                         var res = data.Result as Tuple<string, ActorTag, IActor>;
                         // we got remote server adress

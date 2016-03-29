@@ -74,7 +74,7 @@ namespace Actor.TestApplication
                                             where col.Contains('1')
                                             select col;
                                 if (query.Count() != 19)
-                                    throw new Exception("failed");
+                                    throw new ActorException("failed");
                                 fLauncher.Finish();
                             });
                             fLauncher.Wait();

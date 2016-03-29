@@ -10,6 +10,7 @@ namespace Actor.Util
 
     public class EchoActor<T> : BaseActor
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         public EchoActor(IActor dest, T aT)
         {
             CheckArg.Actor(dest);

@@ -26,11 +26,10 @@ namespace Actor.Server
     }
 
     // http listener ...
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actHostRelay : BaseActor, IDisposable
+    public class HostRelayActor : BaseActor, IDisposable
     {
         HttpListener Listener;
-        public actHostRelay()
+        public HostRelayActor()
         {
             Listener = new HttpListener();
             var localhost = Dns.GetHostName();
@@ -87,7 +86,7 @@ namespace Actor.Server
         }
 
         // Use C# destructor syntax for finalization code.
-        ~actHostRelay()
+        ~HostRelayActor()
         {
             // Simply call Dispose(false).
 

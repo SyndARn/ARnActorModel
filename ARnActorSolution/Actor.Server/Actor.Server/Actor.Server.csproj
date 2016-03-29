@@ -72,11 +72,11 @@
     <Compile Include="ActorConsole\ActorConsole.cs" />
     <Compile Include="ActorConsole\ConsoleBehavior.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
-    <Compile Include="ActorServer\actShardDirectory.cs" />
+    <Compile Include="ActorServer\ShardDirectoryActor.cs" />
     <Compile Include="Directory\ConnectActor.cs" />
-    <Compile Include="Directory\actDirectory.cs" />
+    <Compile Include="Directory\DirectoryActor.cs" />
     <Compile Include="Directory\DiscoveryActor.cs" />
-    <Compile Include="Directory\actHostDirectory.cs" />
+    <Compile Include="Directory\HostDirectoryActor.cs" />
     <Compile Include="Directory\RemoteActor.cs" />
     <Compile Include="Directory\SendByNameActor.cs" />
     <Compile Include="Directory\DiscoCommand.cs" />

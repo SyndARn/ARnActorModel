@@ -42,11 +42,10 @@ namespace Actor.Base
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actShardDirectory : BaseActor
+    public class ShardDirectoryActor : BaseActor
     {
         private Dictionary<string,string> fShardList;
-        public actShardDirectory()
+        public ShardDirectoryActor()
             : base()
         {
             fShardList = new Dictionary<string,string>();
@@ -78,10 +77,10 @@ namespace Actor.Base
         }
     }
 
-    public class ShardList : ActionActor<string>
+    public class ShardListActor : ActionActor<string>
     {
         private HashSet<string> fShardList = new HashSet<string>();
-        public ShardList() : base() { }
+        public ShardListActor() : base() { }
         public void Add(string aShardName)
         {
             SendAction(DoSend, aShardName);
