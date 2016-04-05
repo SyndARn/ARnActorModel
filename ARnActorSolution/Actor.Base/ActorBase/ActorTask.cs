@@ -60,7 +60,7 @@ namespace Actor.Base
                 Interlocked.Increment(ref numAddTask);
                 anActor.MessageLoop();
                 Interlocked.Increment(ref numCloseTask);
-            }, TaskCreationOptions.PreferFairness);
+            }, TaskCreationOptions.None);
             //.ContinueWith((t) =>
             //{
             //    Debug.WriteLine("task fault on {0}", t.Exception.InnerExceptions.ToString());

@@ -88,7 +88,9 @@
     <Compile Include="actTestlauncher.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />
     <Compile Include="Behavior\bhvForEachTests.cs" />
+    <Compile Include="Collection\ObservableActorTests.cs" />
     <Compile Include="Directory\DirectoryActorTests.cs" />
+    <Compile Include="ProducerConsumer\ChainTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="ShardDirectoryTest.cs" />

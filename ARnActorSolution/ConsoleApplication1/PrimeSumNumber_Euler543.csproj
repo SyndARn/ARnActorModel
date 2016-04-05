@@ -55,6 +55,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,8 +64,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fibonacci.cs" />
-    <Compile Include="Fibonacci2.cs" />
+    <Compile Include="Euler546_2.cs" />
+    <Compile Include="Euler546_3.cs" />
+    <Compile Include="Euler546_FloorRevenge.cs" />
+    <Compile Include="Euler_7.cs" />
+    <Compile Include="Eurler551.cs" />
+    <Compile Include="Fibonacci3.cs" />
+    <Compile Include="FindPrimeBelowActor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

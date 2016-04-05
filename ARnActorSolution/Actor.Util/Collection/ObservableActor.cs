@@ -29,18 +29,17 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public enum ObservableAction { Register, Unregister} ;
+    public enum ObservableAction { Register, UnRegister} ;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actObservable<T> : BaseActor
+    public class ObservableActor<T> : BaseActor
     {
         private CollectionActor<IActor> fCollection;
 
-        public actObservable() : base()
+        public ObservableActor() : base()
         {
             fCollection = new CollectionActor<IActor>();
-            Become(new Behavior<string>(DoStart));
-            SendMessage("Start Observe");
+            Become(new Behavior<Tuple<ObservableAction, IActor>>(DoRegister));
+            AddBehavior(new Behavior<T>(DoPublishData));
         }
 
         public void PublishData(T aT)
@@ -48,10 +47,14 @@ namespace Actor.Util
             SendMessage(aT);
         }
 
-        private void DoStart(string msg)
+        public void RegisterObserver(IActor anActor)
         {
-            Become(new Behavior<Tuple<ObservableAction,IActor>>(DoRegister)) ;
-            AddBehavior(new Behavior<T>(DoPublishData)) ;
+            SendMessage(new Tuple<ObservableAction, IActor>(ObservableAction.Register, anActor));
+        }
+
+        public void UnRegisterObserver(IActor anActor)
+        {
+            SendMessage(new Tuple<ObservableAction, IActor>(ObservableAction.UnRegister, anActor));
         }
 
         private void DoRegister(Tuple<ObservableAction,IActor> msg)

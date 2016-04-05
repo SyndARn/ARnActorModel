@@ -163,6 +163,41 @@ namespace Actor.Base
             Tag = new ActorTag();
         }
 
+        protected async Task<Object> Receive(Func<Object, bool> aPattern, int TimeOutMs)
+        {
+            if (aPattern == null)
+                throw new ActorException("null pattern");
+            var lTCS = new Behavior<Object>(aPattern, new TaskCompletionSource<Object>());
+            Interlocked.Increment(ref fReceive);
+            fCompletions.Enqueue(lTCS);
+            AddMissedMessages();
+            Interlocked.Exchange(ref fInTask, 0);
+            TrySetInTask();
+            bool noTimeOut = lTCS.Completion.Task.Wait(TimeOutMs);
+            if (noTimeOut)
+            {
+                return await lTCS.Completion.Task;
+            }
+            else
+            {
+                // remove this lTCS
+                Queue<IBehavior> lQueue = new Queue<IBehavior>();
+                IBehavior bhv ;
+                while (fCompletions.TryDequeue(out bhv))
+                {
+                    if (bhv != lTCS)
+                        lQueue.Enqueue(bhv);
+                }
+                while (lQueue.Count > 0)
+                {
+                    fCompletions.Enqueue(lQueue.Dequeue());
+                }
+
+                Interlocked.Decrement(ref fReceive);
+                return null ;
+            }
+        }
+
         protected async Task<Object> Receive(Func<Object, bool> aPattern)
         {
             if (aPattern == null)

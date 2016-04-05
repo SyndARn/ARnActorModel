@@ -79,8 +79,9 @@
     <Compile Include="Admin\ActorEcho.cs" />
     <Compile Include="Behavior\CrudBehavior.cs" />
     <Compile Include="Behavior\StateBehavior.cs" />
-    <Compile Include="ClientServer\OnBehalfActor.cs" />
-    <Compile Include="Collection\actObservable.cs" />
+    <Compile Include="Behavior\ClientServer\OnBehalfActor.cs" />
+    <Compile Include="Collection\ObservableActor.cs" />
+    <Compile Include="Collection\DictionaryActor.cs" />
     <Compile Include="Collection\QueueActor.cs" />
     <Compile Include="Admin\ActorStatServer.cs" />
     <Compile Include="Admin\actRemoteTest.cs" />
@@ -89,13 +90,15 @@
     <Compile Include="Behavior\ForEachBehavior.cs" />
     <Compile Include="Collection\LinkedListActor.cs" />
     <Compile Include="Behavior\SendReplyBehavior.cs" />
-    <Compile Include="ClientServer\ServerBehavior.cs" />
-    <Compile Include="ClientServer\WebActor.cs" />
+    <Compile Include="Behavior\ClientServer\ServerBehavior.cs" />
+    <Compile Include="Behavior\ClientServer\WebActor.cs" />
     <Compile Include="Continuation\actGraphHedge.cs" />
+    <Compile Include="Fsm\FsmActor.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Monadic\actMonad.cs" />
-    <Compile Include="Observer\bhvObservable.cs" />
+    <Compile Include="ProducerConsumer\Producer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReceiveActor.cs" />
     <Compile Include="Rest\RestReaderActor.cs" />
     <Compile Include="Workflow\actWorkflow.cs" />
   </ItemGroup>
@@ -115,6 +118,7 @@
   <ItemGroup>
     <None Include="ARnActorKey.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

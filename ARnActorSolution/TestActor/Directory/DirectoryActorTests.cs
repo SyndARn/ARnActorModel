@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TestActor;
 using System.Globalization;
 using Actor.Server;
+using Actor.Util;
 
 namespace Actor.Base.Tests
 {
@@ -110,7 +111,12 @@ namespace Actor.Base.Tests
         [TestMethod()]
         public void FindTest()
         {
-            Assert.Fail();
+            fLauncher.SendAction(() =>
+                {
+                var dirtest = new DirectoryTestActor();
+                DirectoryActor.GetDirectory().Register(dirtest, dirtest.Tag.Id.ToString(CultureInfo.InvariantCulture));
+                });
+            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }
