@@ -34,8 +34,7 @@ namespace Actor.Util
 
         private void Behavior(Tuple<T, IEnumerable<IActor>> msg)
         {
-            foreach(IActor t in msg.Item2)
-            
+            foreach(IActor t in msg.Item2)            
             {
                 T brd = msg.Item1 ;
                 t.SendMessage(brd);

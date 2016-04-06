@@ -33,11 +33,11 @@ namespace Actor.Util
 
     public class ObservableActor<T> : BaseActor
     {
-        private CollectionActor<IActor> fCollection;
+        private List<IActor> fCollection;
 
         public ObservableActor() : base()
         {
-            fCollection = new CollectionActor<IActor>();
+            fCollection = new List<IActor>();
             Become(new Behavior<Tuple<ObservableAction, IActor>>(DoRegister));
             AddBehavior(new Behavior<T>(DoPublishData));
         }
@@ -71,7 +71,8 @@ namespace Actor.Util
         private void DoPublishData(T aT)
         {
             var bct = new BroadCastActor<T>();
-            bct.BroadCast(aT, fCollection);
+            var currentObservers = fCollection.ToList(); // clone before sending 
+            bct.BroadCast(aT, currentObservers);
         }
 
     }

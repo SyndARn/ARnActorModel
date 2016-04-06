@@ -44,19 +44,15 @@ namespace Actor.Base
     public class BaseActor : IActor
     {
         public ActorTag Tag { get; private set; } // unique identifier, and host
-        internal Behaviors fBehaviors; // our behavior
-        internal ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>();
-        internal ActorMailBox fMailBox = new ActorMailBox(); // our mailbox
-        internal int fInTask = 0; // 0 out of task, 1 in task
-        internal int fReceive = 0;
+
+        private Behaviors fBehaviors; // our behavior
+        private ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>(); // receive behaviors
+        private ActorMailBox fMailBox = new ActorMailBox(); // our mailbox
+        private int fInTask = 0; // 0 out of task, 1 in task
+        private int fReceive = 0;
 
         private IActor fRedirector = null;
-        internal int messCount; // this should always be queue + postpone total
-
-        public bool IsRemote()
-        {
-            return Tag.IsRemote;
-        }
+        private int messCount; // this should always be queue + postpone total
 
         public static void CompleteInitialize(BaseActor anActor)
         {
@@ -88,7 +84,7 @@ namespace Actor.Base
             IncMess();
         }
 
-        internal void TrySetInTask(Object msg)
+        private void TrySetInTask(Object msg)
         {
             if (msg != null)
             {
@@ -97,7 +93,7 @@ namespace Actor.Base
             TrySetInTask();
         }
 
-        internal void TrySetInTask()
+        private void TrySetInTask()
         {
             if (Interlocked.CompareExchange(ref fInTask, 1, 0) == 0)
             {
@@ -105,7 +101,7 @@ namespace Actor.Base
             }
         }
 
-        internal void AddMissedMessages()
+        private void AddMissedMessages()
         {
             // add all missed messages ...
             Interlocked.Add(ref messCount, fMailBox.RefreshFromMissed());
@@ -223,7 +219,7 @@ namespace Actor.Base
             Interlocked.Decrement(ref messCount);
         }
 
-        internal Object ReceiveMessage()
+        private Object ReceiveMessage()
         {
             Object msg = fMailBox.GetMessage();
             if (msg != null)

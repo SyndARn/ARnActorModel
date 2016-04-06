@@ -26,7 +26,9 @@ namespace TestActor
                     string strTest = "Test actStateFullActor" ;
                     stateActor.Set(strTest);
                     Assert.AreEqual(strTest, stateActor.Get());
+                    fLauncher.Finish();
                 });
+            fLauncher.Wait();
         }
     }
 }

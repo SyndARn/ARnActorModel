@@ -98,7 +98,7 @@
     <Compile Include="Monadic\actMonad.cs" />
     <Compile Include="ProducerConsumer\Producer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReceiveActor.cs" />
+    <Compile Include="Behavior\ReceiveActor.cs" />
     <Compile Include="Rest\RestReaderActor.cs" />
     <Compile Include="Workflow\actWorkflow.cs" />
   </ItemGroup>

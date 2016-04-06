@@ -46,8 +46,8 @@ namespace Actor.Util
         public T Get()
         {
             SendMessage(Tuple.Create(StateAction.Get, default(T)));
-            var retVal = Receive(t => { return true; }).Result;
-            return retVal == null ? default(T) : (T)retVal;
+            var retVal = Receive(t => { return t is T ; }).Result;
+            return retVal == null ? default(T) : (T)retVal ;
         }
     }
 
@@ -61,6 +61,14 @@ namespace Actor.Util
             : base()
         {
             fValue = default(T);
+            Pattern = t => t is Tuple<StateAction, T>;
+            Apply = t => {
+                if (t.Item1 == StateAction.Get)
+                    GetValue();
+                else
+                if (t.Item1 == StateAction.Set)
+                    SetValue(t.Item2);
+                    };
         }
 
         public void SetValue(T msg)

@@ -14,16 +14,16 @@ namespace Actor.Util
 
         }
 
-        public async Task<Tuple<bool,K,V>> GetValue(DictionaryActor<K, V> IActor, K key)
+        public async Task<Tuple<bool, K, V>> GetV(DictionaryActor<K, V> IActor, K K)
         {
             var task =Receive(t => t is Tuple<bool, K, V>);
-            IActor.SendMessage(new Tuple<IActor, K>(this, key));
+            IActor.SendMessage(new Tuple<IActor, K>(this, K));
             return await task as Tuple<bool, K, V>;
         }
 
-        public void AddValue(DictionaryActor<K,V> IActor, K key, V value)
+        public void AddV(DictionaryActor<K, V> IActor, K K, V V)
         {
-            IActor.SendMessage(new Tuple<K, V>(key, value));
+            IActor.SendMessage(new Tuple<K, V>(K, V));
         }
     }
 
@@ -34,20 +34,20 @@ namespace Actor.Util
 
         public DictionaryActor() : base()
         {
-            Become(new Behavior<Tuple<K, V>>(AddKeyValue));
-            AddBehavior(new Behavior<Tuple<IActor,K>>(GetKeyValue));
+            Become(new Behavior<Tuple<K, V>>(AddKV));
+            AddBehavior(new Behavior<Tuple<IActor,K>>(GetKV));
         }
 
-        private void AddKeyValue(Tuple<K,V> message)
+        private void AddKV(Tuple<K,V> message)
         {
             fDico[message.Item1] =  message.Item2 ;
         }
 
-        private void GetKeyValue(Tuple<IActor,K> message)
+        private void GetKV(Tuple<IActor,K> message)
         {
-            V value;
-            bool result = fDico.TryGetValue(message.Item2, out value);
-            message.Item1.SendMessage(new Tuple<bool, K, V>(result, message.Item2, value));
+            V V;
+            bool result = fDico.TryGetValue(message.Item2, out V);
+            message.Item1.SendMessage(new Tuple<bool, K, V>(result, message.Item2, V));
         }
 
     }
