@@ -36,6 +36,7 @@ namespace Actor.Server
             var servername = ActorServer.GetInstance().Name;
             var prefix = "http://";
             var suffix = ":" + ActorServer.GetInstance().Port.ToString(CultureInfo.InvariantCulture);
+            Listener.Prefixes.Add(prefix + "localhost" + suffix + "/" + servername + "/");
             Listener.Prefixes.Add(prefix + localhost + suffix + "/" + servername + "/");
             Listener.Prefixes.Add(prefix + "127.0.0.1" + suffix + "/" + servername + "/");
             try

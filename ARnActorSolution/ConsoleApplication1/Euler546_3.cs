@@ -10,43 +10,132 @@ using System.Threading.Tasks;
 
 namespace PrimeSumNumber_Euler543
 {
+    public class Euler546Message
+    {
+        public IActor Sender;
+        public BigInteger Key;
+        public BigInteger Number;
+        public BigInteger Sum;
+    }
+
+    public class Receiver : BaseActor
+    {
+        public Euler546Message Call(IActor sender,BigInteger key, BigInteger number)
+        {
+            var r = Receive(t => t is Euler546Message);
+
+            sender.SendMessage(new Tuple<IActor, BigInteger, BigInteger>(this, key, number));
+
+            return (Euler546Message)r.Result ;
+
+        }
+    }
+
     public class Euler546_3 : BaseActor
     {
-        BigInteger fK;
-
-        public Euler546_3(BigInteger aK) : base()
+        public Euler546_3() : base()
         {
-            fK = aK;
-            Become(new Behavior<Tuple<IActor, BigInteger>>(Start));
+            Become(new Behavior<Tuple<IActor, BigInteger, BigInteger>>(DoCalc));
         }
 
-        private BigInteger func(BigInteger n)
+
+        private BigInteger func2(BigInteger key, BigInteger number)
         {
-            BigInteger fSum = 0;
-            if (n == 0)
-                return 1;
-            if (n == 1)
-                return 2;
-            BigInteger Remainder;
-            BigInteger div = BigInteger.DivRem(n, fK, out Remainder);
+
+            BigInteger remainder;
+            BigInteger key2 = key * key;
+            BigInteger div = BigInteger.DivRem(number, key2, out remainder);
+            BigInteger sum = 0;
+
+            for (BigInteger i = 0; i <= div - 1; i++)
+            {
+                if (i == 0)
+                    sum += key;
+                else
+                if (i == 1)
+                    sum += 2 * key;
+                else
+                {
+                    sum += func2(key, i) * key;
+                }
+            }
+
             if (div == 0)
-                return Remainder + 1;
+                sum += (remainder + 1);
+            else
             if (div == 1)
-                return  fK + 2* (Remainder + 1);
-            fSum = (Remainder + 1) * func(div) + 3 * fK;
-            for(BigInteger i = 2;i<=div-1;i++)
-              fSum += fK*func(div-1) ;
-            return fSum;
+                sum += 2 * (remainder + 1);
+            else
+            {
+                sum += (remainder + 1) * ( (number / key2 + 1) * func2(key, div / key));
+                for (BigInteger i = 0; i <= number / key2 - 1; i++)
+                {
+                    if (i == 0)
+                        sum += key * (remainder + 1) ;
+                    else
+                    if (i == 1)
+                        sum += 2 * key * (remainder + 1);
+                    else
+                    {
+                        sum += func2(key, i) * key * (remainder + 1);
+                    }
+                }
+            }
+
+
+            return sum ;
+
+    }
+
+    private BigInteger func(BigInteger key,BigInteger number)
+        {
+
+            BigInteger remainder;
+            BigInteger div = BigInteger.DivRem(number, key, out remainder);
+            BigInteger sum = 0;
+
+            for (BigInteger i = 0; i <= div - 1; i++)
+            {
+                if (i == 0)
+                    sum += key;
+                else
+                if (i == 1)
+                    sum += 2 * key;
+                else
+                {
+                    sum += func(key, i) * key ;
+                }
+            }
+
+            if (div == 0)
+                sum += (remainder + 1);
+            else
+            if (div == 1)
+                sum += 2 * (remainder + 1);
+            else
+            {
+                sum += func(key, div) * (remainder + 1);
+            }
+
+
+            return sum;
         }
 
-        private void Start(Tuple<IActor, BigInteger> msg)
+        private void DoCalc(Tuple<IActor, BigInteger, BigInteger> msg)
         {
-            IActor fCaller = msg.Item1;
-            BigInteger fN = msg.Item2;
-            BigInteger fSum = func(fN);
-            fCaller.SendMessage(new Tuple<IActor, BigInteger>(this, fSum));
+            BigInteger sum = func2(msg.Item2, msg.Item3);
+            var ans = new Euler546Message()
+            {
+                Sender = this,
+                Key = msg.Item2,
+                Number = msg.Item3,
+                Sum = sum
+            };
+            msg.Item1.SendMessage(ans);
         }
+
 
     }
 }
+
 

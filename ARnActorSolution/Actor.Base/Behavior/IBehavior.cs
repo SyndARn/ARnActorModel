@@ -44,5 +44,18 @@ namespace Actor.Base
         TaskCompletionSource<T> Completion { get; }
     }
 
+    public interface IBehavior<A,T> : IBehavior
+    {
+        Func<A, T, Boolean> Pattern { get; }
+        Action<A, T> Apply { get; }
+        TaskCompletionSource<Tuple<A,T>> Completion { get; }
+    }
+
+    public interface IBehavior<O, D, A> : IBehavior
+    {
+        Func<O, D, A, Boolean> Pattern { get; }
+        Action<O, D, A> Apply { get; }
+        TaskCompletionSource<Tuple<O, D, A>> Completion { get; }
+    }
 
 }

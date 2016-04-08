@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Euler23.cs" />
     <Compile Include="Euler546_2.cs" />
     <Compile Include="Euler546_3.cs" />
     <Compile Include="Euler546_FloorRevenge.cs" />

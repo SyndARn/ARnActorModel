@@ -84,6 +84,178 @@ namespace Actor.Base
         }
     }
 
+    public class Behavior<A,T> : IBehavior<A,T>, IBehavior
+    {
+        public Func<A,T, Boolean> Pattern { get; protected set; }
+        public Action<A,T> Apply { get; protected set; }
+        public TaskCompletionSource<Tuple<A,T>> Completion { get; protected set; }
+        public TaskCompletionSource<Object> StandardCompletion
+        {
+            get
+            {
+                return Completion as TaskCompletionSource<Object>;
+            }
+        }
+
+        private Behaviors fLinkedBehaviors;
+
+        public BaseActor LinkedActor
+        {
+            get
+            {
+                return fLinkedBehaviors.LinkedActor;
+            }
+        }
+
+        public Behaviors LinkedTo
+        {
+            get
+            {
+                return fLinkedBehaviors;
+            }
+        }
+
+        public void LinkBehaviors(Behaviors someBehaviors)
+        {
+            fLinkedBehaviors = someBehaviors;
+        }
+
+        public Behavior(Func<A, T, Boolean> aPattern, Action<A, T> anApply)
+        {
+            Pattern = aPattern;
+            Apply = anApply;
+            Completion = null;
+        }
+
+        public Behavior(Func<A, T, Boolean> aPattern, TaskCompletionSource<Tuple<A,T>> aCompletion)
+        {
+            Pattern = aPattern;
+            Apply = null;
+            Completion = aCompletion;
+        }
+
+        public Behavior()
+        {
+        }
+
+        public Func<T, Boolean> DefaultPattern()
+        {
+            return t => { return t is T; };
+        }
+
+        public Behavior(Action<A,T> anApply)
+        {
+            Pattern = (a,t) => { return a is A && t is T; };
+            Apply = anApply;
+            Completion = null;
+        }
+
+        public Boolean StandardPattern(Object aT)
+        {
+            if (Pattern == null)
+                return false;
+            Tuple<A,T> tupleT = (Tuple<A,T>) aT;
+            if (tupleT != null)
+                return Pattern(tupleT.Item1, tupleT.Item2);
+            else return false;
+        }
+
+        public void StandardApply(Object aT)
+        {
+            if (Apply != null)
+            {
+                Tuple<A, T> tupleT = (Tuple<A, T>)aT;
+                Apply(tupleT.Item1,tupleT.Item2);
+            }
+        }
+    }
+
+    public class Behavior<O, D, A> : IBehavior<O, D, A>, IBehavior
+    {
+        public Func<O, D, A, Boolean> Pattern { get; protected set; }
+        public Action<O, D, A> Apply { get; protected set; }
+        public TaskCompletionSource<Tuple<O, D, A>> Completion { get; protected set; }
+        public TaskCompletionSource<Object> StandardCompletion
+        {
+            get
+            {
+                return Completion as TaskCompletionSource<Object>;
+            }
+        }
+
+        private Behaviors fLinkedBehaviors;
+
+        public BaseActor LinkedActor
+        {
+            get
+            {
+                return fLinkedBehaviors.LinkedActor;
+            }
+        }
+
+        public Behaviors LinkedTo
+        {
+            get
+            {
+                return fLinkedBehaviors;
+            }
+        }
+
+        public void LinkBehaviors(Behaviors someBehaviors)
+        {
+            fLinkedBehaviors = someBehaviors;
+        }
+
+        public Behavior(Func<O, D, A, Boolean> aPattern, Action<O, D, A> anApply)
+        {
+            Pattern = aPattern;
+            Apply = anApply;
+            Completion = null;
+        }
+
+        public Behavior(Func<O, D, A, Boolean> aPattern, TaskCompletionSource<Tuple<O, D, A>> aCompletion)
+        {
+            Pattern = aPattern;
+            Apply = null;
+            Completion = aCompletion;
+        }
+
+        public Behavior()
+        {
+        }
+
+        public Func<O, Boolean> DefaultPattern()
+        {
+            return t => { return t is O; };
+        }
+
+        public Behavior(Action<O, D, A> anApply)
+        {
+            Pattern = (o, d, a) => { return o is O && d is D && a is A; };
+            Apply = anApply;
+            Completion = null;
+        }
+
+        public Boolean StandardPattern(Object aT)
+        {
+            if (Pattern == null)
+                return false;
+            Tuple<O, D, A> tupleT = (Tuple<O, D, A>)aT;
+            if (tupleT != null)
+                return Pattern(tupleT.Item1, tupleT.Item2, tupleT.Item3);
+            else return false;
+        }
+
+        public void StandardApply(Object aT)
+        {
+            if (Apply != null)
+            {
+                Tuple<O, D, A> tupleT = (Tuple<O, D, A>)aT;
+                Apply(tupleT.Item1, tupleT.Item2, tupleT.Item3);
+            }
+        }
+    }
+
     /// <summary>
     /// bhvBehavior
     /// A behavior is describe with two properties : Pattern and Apply.
