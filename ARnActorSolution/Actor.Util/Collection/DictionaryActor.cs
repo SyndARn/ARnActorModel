@@ -34,20 +34,20 @@ namespace Actor.Util
 
         public DictionaryActor() : base()
         {
-            Become(new Behavior<Tuple<K, V>>(AddKV));
-            AddBehavior(new Behavior<Tuple<IActor,K>>(GetKV));
+            Become(new Behavior<K, V>(AddKV));
+            AddBehavior(new Behavior<IActor,K>(GetKV));
         }
 
-        private void AddKV(Tuple<K,V> message)
+        private void AddKV(K k, V v)
         {
-            fDico[message.Item1] =  message.Item2 ;
+            fDico[k] = v ;
         }
 
-        private void GetKV(Tuple<IActor,K> message)
+        private void GetKV(IActor actor, K k)
         {
-            V V;
-            bool result = fDico.TryGetValue(message.Item2, out V);
-            message.Item1.SendMessage(new Tuple<bool, K, V>(result, message.Item2, V));
+            V v;
+            bool result = fDico.TryGetValue(k, out v);
+            actor.SendMessage(result, k, v); 
         }
 
     }

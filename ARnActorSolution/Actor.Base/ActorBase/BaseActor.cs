@@ -78,17 +78,12 @@ namespace Actor.Base
             Interlocked.Exchange(ref fRedirector, aRedirector);
         }
 
-        private void AddMessage(Object aMessage)
-        {
-            fMailBox.AddMessage(aMessage);
-            IncMess();
-        }
-
         private void TrySetInTask(Object msg)
         {
             if (msg != null)
             {
-                AddMessage(msg);
+                fMailBox.AddMessage(msg);
+                Interlocked.Increment(ref messCount);
             }
             TrySetInTask();
         }
@@ -112,6 +107,11 @@ namespace Actor.Base
             ((BaseActor)aTargetActor).TrySetInTask(msg);
         }
 
+        private void SendMessageTo(Object msg)
+        {
+            TrySetInTask(msg);
+        }
+
         public void SendMessage(Object msg)
         {
             if (fRedirector != null)
@@ -120,7 +120,7 @@ namespace Actor.Base
             }
             else
             {
-                DoSendMessageTo(msg, this);
+                SendMessageTo(msg);
             }
         }
 
@@ -159,7 +159,7 @@ namespace Actor.Base
             Tag = new ActorTag();
         }
 
-        protected async Task<Object> Receive(Func<Object, bool> aPattern, int TimeOutMs)
+        public async Task<Object> Receive(Func<Object, bool> aPattern, int TimeOutMs)
         {
             if (aPattern == null)
                 throw new ActorException("null pattern");
@@ -169,54 +169,41 @@ namespace Actor.Base
             AddMissedMessages();
             Interlocked.Exchange(ref fInTask, 0);
             TrySetInTask();
-            bool noTimeOut = lTCS.Completion.Task.Wait(TimeOutMs);
-            if (noTimeOut)
+            if (TimeOutMs != Timeout.Infinite)
             {
-                return await lTCS.Completion.Task;
+                bool noTimeOut = lTCS.Completion.Task.Wait(TimeOutMs);
+                if (noTimeOut)
+                {
+                    return await lTCS.Completion.Task;
+                }
+                else
+                {
+                    // remove this lTCS
+                    Queue<IBehavior> lQueue = new Queue<IBehavior>();
+                    IBehavior bhv;
+                    while (fCompletions.TryDequeue(out bhv))
+                    {
+                        if (bhv != lTCS)
+                            lQueue.Enqueue(bhv);
+                    }
+                    while (lQueue.Count > 0)
+                    {
+                        fCompletions.Enqueue(lQueue.Dequeue());
+                    }
+
+                    Interlocked.Decrement(ref fReceive);
+                    return null;
+                }
             }
             else
             {
-                // remove this lTCS
-                Queue<IBehavior> lQueue = new Queue<IBehavior>();
-                IBehavior bhv ;
-                while (fCompletions.TryDequeue(out bhv))
-                {
-                    if (bhv != lTCS)
-                        lQueue.Enqueue(bhv);
-                }
-                while (lQueue.Count > 0)
-                {
-                    fCompletions.Enqueue(lQueue.Dequeue());
-                }
-
-                Interlocked.Decrement(ref fReceive);
-                return null ;
+                return await lTCS.Completion.Task;
             }
         }
 
-        protected async Task<Object> Receive(Func<Object, bool> aPattern)
+        public async Task<Object> Receive(Func<Object, bool> aPattern)
         {
-            if (aPattern == null)
-                throw new ActorException("null pattern");
-            Object ret = null;
-            var lTCS = new Behavior<Object>(aPattern, new TaskCompletionSource<Object>());
-            Interlocked.Increment(ref fReceive);
-            fCompletions.Enqueue(lTCS);
-            AddMissedMessages();
-            Interlocked.Exchange(ref fInTask, 0);
-            TrySetInTask();
-            ret = await lTCS.Completion.Task;
-            return ret;
-        }
-
-        private void IncMess()
-        {
-            Interlocked.Increment(ref messCount);
-        }
-
-        private void DecMess()
-        {
-            Interlocked.Decrement(ref messCount);
+            return await Receive(aPattern, Timeout.Infinite);
         }
 
         private Object ReceiveMessage()
@@ -224,7 +211,7 @@ namespace Actor.Base
             Object msg = fMailBox.GetMessage();
             if (msg != null)
             {
-                DecMess();
+                Interlocked.Decrement(ref messCount);
             }
             return msg;
         }
@@ -384,4 +371,5 @@ namespace Actor.Base
         }
 
     }
+
 }

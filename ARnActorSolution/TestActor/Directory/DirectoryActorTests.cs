@@ -104,7 +104,7 @@ namespace Actor.Base.Tests
             {
                 var act = new DirectoryTestActor();
                 DirectoryActor.GetDirectory().Register(act, act.Tag.Id.ToString(CultureInfo.InvariantCulture));
-                act.SendMessage(new Tuple<IActor, IActor, string>(fLauncher, act, act.Tag.Id.ToString(CultureInfo.InvariantCulture)));
+                act.SendMessage(fLauncher, act, act.Tag.Id.ToString(CultureInfo.InvariantCulture));
                 fLauncher.Finish();
             });
             Assert.IsTrue(fLauncher.Wait());

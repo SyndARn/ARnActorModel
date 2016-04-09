@@ -84,6 +84,7 @@
     <Compile Include="ActionActorTest.cs" />
     <Compile Include="ActorCollectionTest.cs" />
     <Compile Include="ActorQueueTest.cs" />
+    <Compile Include="Actors\bhvGraphTests.cs" />
     <Compile Include="actRingTests.cs" />
     <Compile Include="actTestlauncher.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />
@@ -118,6 +119,10 @@
     <ProjectReference Include="..\Actor.Util\Actor.Util.csproj">
       <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
       <Name>Actor.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ActorGraph\ActorGraph.csproj">
+      <Project>{C96A3533-5D0D-40FF-AFC7-1FF72EFAA9CA}</Project>
+      <Name>ActorGraph</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

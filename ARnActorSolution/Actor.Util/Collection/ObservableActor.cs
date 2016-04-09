@@ -38,7 +38,7 @@ namespace Actor.Util
         public ObservableActor() : base()
         {
             fCollection = new List<IActor>();
-            Become(new Behavior<Tuple<ObservableAction, IActor>>(DoRegister));
+            Become(new Behavior<ObservableAction, IActor>(DoRegister));
             AddBehavior(new Behavior<T>(DoPublishData));
         }
 
@@ -49,22 +49,22 @@ namespace Actor.Util
 
         public void RegisterObserver(IActor anActor)
         {
-            SendMessage(new Tuple<ObservableAction, IActor>(ObservableAction.Register, anActor));
+            this.SendMessage(ObservableAction.Register, anActor);
         }
 
         public void UnRegisterObserver(IActor anActor)
         {
-            SendMessage(new Tuple<ObservableAction, IActor>(ObservableAction.UnRegister, anActor));
+            this.SendMessage(ObservableAction.UnRegister, anActor);
         }
 
-        private void DoRegister(Tuple<ObservableAction,IActor> msg)
+        private void DoRegister(ObservableAction action, IActor actor)
         {
-            if (msg.Item1.Equals(ObservableAction.Register))
+            if (action.Equals(ObservableAction.Register))
             {
-                fCollection.Add(msg.Item2);
+                fCollection.Add(actor);
             } else
             {
-                fCollection.Remove(msg.Item2);
+                fCollection.Remove(actor);
             }
         }
 

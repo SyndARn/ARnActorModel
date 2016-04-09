@@ -154,7 +154,7 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            Tuple<A,T> tupleT = (Tuple<A,T>) aT;
+            Tuple<A,T> tupleT = aT as Tuple<A, T>;
             if (tupleT != null)
                 return Pattern(tupleT.Item1, tupleT.Item2);
             else return false;
@@ -240,7 +240,7 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            Tuple<O, D, A> tupleT = (Tuple<O, D, A>)aT;
+            Tuple<O, D, A> tupleT = aT as Tuple<O, D, A> ;
             if (tupleT != null)
                 return Pattern(tupleT.Item1, tupleT.Item2, tupleT.Item3);
             else return false;

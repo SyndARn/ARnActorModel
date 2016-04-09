@@ -32,13 +32,12 @@ namespace Actor.Base
     /// <summary>
     /// How an actor is known to other actor
     /// </summary>
-    public interface IActor 
+    public interface IActor
     {
-        ActorTag Tag {get ;}
-        
-        void SendMessage(Object msg) ;
-    }
+        ActorTag Tag { get; }
 
+        void SendMessage(Object msg);
+    }
 
 
 }

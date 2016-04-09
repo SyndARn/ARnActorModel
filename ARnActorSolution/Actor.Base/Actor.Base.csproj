@@ -73,6 +73,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActorBase\ActorExtension.cs" />
+    <Compile Include="ActorBase\ActorFuture.cs" />
     <Compile Include="ActorBase\BaseActor.cs" />
     <Compile Include="ActorBase\ActorInjection.cs" />
     <Compile Include="Exception\ActorException.cs" />
