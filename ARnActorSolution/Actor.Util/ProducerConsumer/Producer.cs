@@ -29,7 +29,7 @@ namespace Actor.Util.ProducerConsumer
         {
             AddBehavior(new FsmBehavior<string, Work<T>>("SleepState", "BusyState", t =>
             {
-                t.SendMessage(new Tuple<IActor, string>(this, "Start"));
+                t.SendMessage(new Tuple<IActor, T>(this, default(T)));
             }, t => true));
 
             AddBehavior(new Behavior<Work<T>>(
@@ -55,7 +55,7 @@ namespace Actor.Util.ProducerConsumer
         protected void DoProduce(T aT)
         {
            var work = new Work<T>();
-           Buffer.SendMessage(new Tuple<IActor, string, Work<T>>(this, "", work));
+           Buffer.SendMessage(new Tuple<IActor, Work<T>>(this, work));
         }
     }
 
@@ -72,12 +72,26 @@ namespace Actor.Util.ProducerConsumer
                 item.Buffer = this;
             }
 
+            AddBehavior(new Behavior<Tuple<IActor,Work<T>>>( t =>
+            {
+                WorkList.Enqueue(t.Item2);
+                SendMessage(new Tuple<IActor, string, Work<T>>(t.Item1, this.CurrentState, t.Item2));
+            }
+                )) ;
+
             AddBehavior(new FsmBehavior<string, Work<T>>("BufferEmpty", "BufferNotEmpty",
                 t =>
                 {
-                    var cons = ConsList.Dequeue();
-                    cons.SendMessage(t);
-                }, t => WorkList.Count == 0));
+                    if (ConsList.Count == 0)
+                    {
+                        WorkList.Enqueue(t);
+                    }
+                    else
+                    {
+                        var cons = ConsList.Dequeue();
+                        cons.SendMessage(t);
+                    }
+                }, t => WorkList.Count != 0));
 
             AddBehavior(new FsmBehavior<string, Work<T>>("BufferNotEmpty", "BufferNotEmpty",
                 t =>

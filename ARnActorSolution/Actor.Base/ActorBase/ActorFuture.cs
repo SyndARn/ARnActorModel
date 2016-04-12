@@ -13,9 +13,7 @@ namespace Actor.Base
         {
         }
 
-        public T Result()
-        {
-            return (T)Receive(t => t is T).Result;
-        }
+        public T Result() => (T)Receive(t => t is T).Result;
+
     }
 }

@@ -53,7 +53,10 @@ namespace Actor.Base
 
         public static void AddActor(BaseActor anActor)
         {
-            if (anActor == null) throw new ActorException("bad, no actor should be null at this point");
+            if (anActor == null)
+            {
+                throw new ActorException(string.Format("bad, no actor should be null at this point {0}", nameof(anActor)));
+            }
 
             Task.Factory.StartNew(() =>
             {

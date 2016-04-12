@@ -22,10 +22,7 @@ namespace Actor.Util
             return (Tuple<IActor, T>)await r;
         }
 
-        public void SetResult(IActor sender, T data)
-        {
-            this.SendMessage(new Tuple<IActor, T>(sender, data));
-        }
+        public void SetResult(IActor sender, T data) => this.SendMessage(sender, data);
     }
 
     public class ReceiveActor<Q, R> : BaseActor
@@ -43,10 +40,8 @@ namespace Actor.Util
             return (Tuple<IActor, R>)await r;
         }
 
-        public void SetResult(IActor sender, R data)
-        {
-            this.SendMessage(new Tuple<IActor, R>(sender, data));
-        }
+        public void SetResult(IActor sender, R data) => this.SendMessage(sender, data) ;
+
     }
 
 }

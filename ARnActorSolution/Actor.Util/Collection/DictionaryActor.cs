@@ -21,10 +21,7 @@ namespace Actor.Util
             return await task as Tuple<bool, K, V>;
         }
 
-        public void AddV(DictionaryActor<K, V> IActor, K K, V V)
-        {
-            IActor.SendMessage(new Tuple<K, V>(K, V));
-        }
+        public void AddV(DictionaryActor<K, V> IActor, K K, V V) => IActor.SendMessage(K, V) ;
     }
 
     public class DictionaryActor<K,V> : BaseActor
@@ -38,10 +35,7 @@ namespace Actor.Util
             AddBehavior(new Behavior<IActor,K>(GetKV));
         }
 
-        private void AddKV(K k, V v)
-        {
-            fDico[k] = v ;
-        }
+        private void AddKV(K k, V v) => fDico[k] = v ;
 
         private void GetKV(IActor actor, K k)
         {

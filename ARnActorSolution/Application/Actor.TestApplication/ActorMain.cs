@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Actor.Base ;
-using Actor.Util ;
+using Actor.Base;
+using Actor.Util;
 using Actor.Service;
 using System.Diagnostics;
+using System.Dynamic;
 
 namespace Actor.TestApplication
 {
@@ -79,6 +80,11 @@ namespace Actor.TestApplication
             middle.SendMessage("Bonjour");
 
 
+            // dynamic use DLR to handle the send / dispatch business ...
+            dynamic test = new ExpandoObject();
+            dynamic dyn = new DynamicActor(test);
+            test.PrintSomething = (Action<string>)((t) => Console.WriteLine(t));
+            dyn.PrintSomething("Got it !");
         }
    }
 

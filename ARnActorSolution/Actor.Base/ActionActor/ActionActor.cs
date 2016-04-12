@@ -77,10 +77,9 @@ namespace Actor.Base
         {
             Become(new ActionBehavior());
         }
-        public void SendAction(Action anAction)
-        {
-            SendMessage(anAction);
-        }
+
+        public void SendAction(Action anAction) => SendMessage(anAction);
+
     }
 
     /// <summary>
@@ -99,15 +98,9 @@ namespace Actor.Base
             BecomeMany(bhvs);
         }
 
-        public void SendAction(Action anAction)
-        {
-            SendMessage(anAction);
-        }
+        public void SendAction(Action anAction) => SendMessage(anAction);
 
-        public void SendAction(Action<T> anAction, T aT)
-        {
-            SendMessage(Tuple.Create(anAction, aT));
-        }
+        public void SendAction(Action<T> anAction, T aT) => SendMessage(Tuple.Create(anAction, aT));
 
     }
 

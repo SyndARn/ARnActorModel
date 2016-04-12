@@ -4,13 +4,28 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C3B224C6-8161-485E-89C5-A92D46FFF358}</ProjectGuid>
+    <ProjectGuid>{D524A2BA-111D-433C-8093-E92888A06931}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AgentTestApplication</RootNamespace>
-    <AssemblyName>AgentTestApplication</AssemblyName>
+    <RootNamespace>Actor.TestApplication</RootNamespace>
+    <AssemblyName>Actor.TestApplication</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publier\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -22,6 +37,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -40,7 +57,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
@@ -50,8 +67,23 @@
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'x64|AnyCPU'">
+    <OutputPath>bin\x64\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'x64|x64'">
+    <OutputPath>bin\x64\x64\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -63,37 +95,60 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MarketAgent.cs" />
+    <Compile Include="ActMillion.cs" />
+    <Compile Include="ActorMain.cs" />
+    <Compile Include="DynamicActor.cs" />
+    <Compile Include="TestLauncherActor.cs" />
+    <Compile Include="ParserTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestAgent.cs" />
-    <Compile Include="TickerAgent.cs" />
-    <Compile Include="wfwMarketAgent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Properties\app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Actor.Base\Actor.Base.csproj">
+    <ProjectReference Include="..\..\Actor.Base\Actor.Base.csproj">
       <Project>{26a2eae7-170e-4248-b9e2-cf3f95e86f27}</Project>
       <Name>Actor.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Actor.Server\Actor.Server\Actor.Server.csproj">
+    <ProjectReference Include="..\..\Actor.MonteCarlo\Actor.MonteCarlo.csproj">
+      <Project>{7405dd75-d19c-4c80-8107-6492a9583802}</Project>
+      <Name>Actor.MonteCarlo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Actor.RemoteLoading\Actor.RemoteLoading.csproj">
+      <Project>{5e11368e-e121-45c2-87a2-03dac2de3073}</Project>
+      <Name>Actor.RemoteLoading</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Actor.Server\Actor.Server\Actor.Server.csproj">
       <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
       <Name>Actor.Server</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Actor.Service\Actor.Service.csproj">
+    <ProjectReference Include="..\..\Actor.Service\Actor.Service.csproj">
       <Project>{7fed180b-b123-4668-9c2d-7f3f0c692e1e}</Project>
       <Name>Actor.Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Actor.Util\Actor.Util.csproj">
+    <ProjectReference Include="..\..\Actor.Util\Actor.Util.csproj">
       <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
       <Name>Actor.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ARnAgent\ARnAgent.csproj">
-      <Project>{6be4c46f-6c16-4637-82da-9adf83494819}</Project>
-      <Name>ARnAgent</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 et x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

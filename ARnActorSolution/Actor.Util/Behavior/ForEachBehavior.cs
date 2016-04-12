@@ -34,10 +34,9 @@ namespace Actor.Util
                 this.Pattern = t => { return true ;} ;
                 this.Apply = DoEach ;
             }
-            private void DoEach(Tuple<T,Action<T>> msg)
-            {
-                msg.Item2(msg.Item1);
-            }
+
+            private void DoEach(Tuple<T,Action<T>> msg) => msg.Item2(msg.Item1);
+
         }
 }
 

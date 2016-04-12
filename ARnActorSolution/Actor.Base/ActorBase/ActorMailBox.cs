@@ -64,10 +64,7 @@ namespace Actor.Base
             return i;
         }
 
-        public void AddMessage(T aMessage)
-        {
-            fQueue.Enqueue(aMessage);
-        }
+        public void AddMessage(T aMessage) => fQueue.Enqueue(aMessage);
 
         public T GetMessage()
         {
