@@ -82,7 +82,7 @@
       <Project>{5e11368e-e121-45c2-87a2-03dac2de3073}</Project>
       <Name>Actor.RemoteLoading</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Actor.Server\Actor.Server\Actor.Server.csproj">
+    <ProjectReference Include="..\Actor.Server\Actor.Server.csproj">
       <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
       <Name>Actor.Server</Name>
     </ProjectReference>
