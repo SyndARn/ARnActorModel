@@ -264,7 +264,7 @@ namespace Actor.Base
         internal void MessageLoop()
         {
             bool receivematch = false;
-            Object msg = null;
+            object msg = null;
             IBehavior tcs = null;
             bool patternmatch = false;
             int oldReceive = Interlocked.Exchange(ref fReceive, fReceive);

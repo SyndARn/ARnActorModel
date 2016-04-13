@@ -62,7 +62,7 @@ namespace Actor.Base
         }
 
         // todo : speed up this one
-        public IBehavior PatternMatching(Object msg)
+        public IBehavior PatternMatching(object msg)
         {
             for (int i = 0; i < fList.Count; i++)
             {
@@ -77,7 +77,7 @@ namespace Actor.Base
 
     }
 
-    public class Behavior : Behavior<Object>
+    public class Behavior : Behavior<object>
     {
         public Behavior():base()
         {
@@ -267,15 +267,15 @@ namespace Actor.Base
     /// <typeparam name="T"></typeparam>
     public class Behavior<T> : IBehavior<T>, IBehavior
     {
-        public Func<T, Boolean> Pattern { get; protected set; }
+        public Func<T, bool> Pattern { get; protected set; }
         public Action<T> Apply { get; protected set; }
         public TaskCompletionSource<T> Completion { get; protected set; }
 
-        public TaskCompletionSource<Object> StandardCompletion
+        public TaskCompletionSource<object> StandardCompletion
         {
             get
             {
-                return Completion as TaskCompletionSource<Object>;
+                return Completion as TaskCompletionSource<object>;
             }
         }
 
@@ -302,14 +302,14 @@ namespace Actor.Base
             fLinkedBehaviors = someBehaviors;
         }
 
-        public Behavior(Func<T, Boolean> aPattern, Action<T> anApply)
+        public Behavior(Func<T, bool> aPattern, Action<T> anApply)
         {
             Pattern = aPattern;
             Apply = anApply;
             Completion = null;
         }
 
-        public Behavior(Func<T, Boolean> aPattern, TaskCompletionSource<T> aCompletion)
+        public Behavior(Func<T, bool> aPattern, TaskCompletionSource<T> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -320,7 +320,7 @@ namespace Actor.Base
         {
         }
 
-        public Func<T, Boolean> DefaultPattern()
+        public Func<T, bool> DefaultPattern()
         {
             return t => { return t is T; };
         }
@@ -332,7 +332,7 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public Boolean StandardPattern(Object aT)
+        public Boolean StandardPattern(object aT)
         {
             if (Pattern == null)
                 return false;
@@ -341,7 +341,7 @@ namespace Actor.Base
             else return false;
         }
 
-        public void StandardApply(Object aT)
+        public void StandardApply(object aT)
         {
             if (Apply != null)
             {
