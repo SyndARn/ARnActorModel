@@ -10,7 +10,7 @@ namespace Actor.Util
 
     // state x event = action x state
 
-    public class FsmBehavior<S, E> : Behavior<Tuple<IActor, S, E>>
+    public class FsmBehavior<S, E> : Behavior<Tuple<S, E>>
     {
         public S StartState { get; private set; }
         public S EndState { get; private set; }
@@ -32,15 +32,17 @@ namespace Actor.Util
             Apply = DoApply;
         }
 
-        private bool DoPattern(Tuple<IActor, S, E> aStateEvent)
+        private bool DoPattern(Tuple<S, E> aStateEvent)
         {
-            return StartState.Equals(aStateEvent.Item2) && (Condition != null && Condition(aStateEvent.Item3));
+            return StartState.Equals(aStateEvent.Item1) && (Condition != null && Condition(aStateEvent.Item2));
         }
 
-        private void DoApply(Tuple<IActor, S, E> aStateEvent)
+        private void DoApply(Tuple<S, E> aStateEvent)
         {
-            if (Action != null) Action(aStateEvent.Item3);
-            aStateEvent.Item1.SendMessage(EndState);
+            // first change state
+            ((FsmActor<S, E>)LinkedActor).ProcessState(EndState);
+            if (Action != null) Action(aStateEvent.Item2);
+            // this.LinkedActor.SendMessage(EndState);
         }
 
     }
@@ -53,6 +55,7 @@ namespace Actor.Util
         {
             CurrentState = StartState;
             Become(new Behavior<S>(ProcessState));
+            AddBehavior(new Behavior<Tuple<IActor, S>>(GetState));
             if (someBehaviors != null)
                 foreach (var item in someBehaviors)
                 {
@@ -60,9 +63,21 @@ namespace Actor.Util
                 }
         }
 
-        private void ProcessState(S newState)
+        private void GetState(Tuple<IActor, S> sender)
+        {
+            sender.Item1.SendMessage(new Tuple<IActor, S>(this, CurrentState));
+        }
+
+        internal void ProcessState(S newState)
         {
             CurrentState = newState;
+        }
+
+        public Future<Tuple<IActor,S>> GetCurrentState()
+        {
+            var future = new Future<Tuple<IActor,S>>();
+            SendMessage(new Tuple<IActor, S>(future,CurrentState));
+            return future;
         }
     }
 

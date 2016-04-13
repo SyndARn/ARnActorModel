@@ -51,7 +51,7 @@ namespace Actor.Base.Tests
                 var act = new DirectoryTestActor();
                 act.SendMessage(new Tuple<IActor,IActor,string>(fLauncher, DirectoryActor.GetDirectory(), "Directory"));
             });
-            Assert.IsTrue(fLauncher.Wait());
+            Assert.IsTrue(fLauncher.Wait(100000));
         }
 
         [TestMethod()]

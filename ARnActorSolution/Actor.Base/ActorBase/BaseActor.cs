@@ -159,7 +159,7 @@ namespace Actor.Base
             Tag = new ActorTag();
         }
 
-        public async Task<Object> Receive(Func<Object, bool> aPattern, int TimeOutMs)
+        public async Task<object> Receive(Func<object, bool> aPattern, int TimeOutMs)
         {
             if (aPattern == null)
                 throw new ActorException("null pattern");
@@ -267,6 +267,7 @@ namespace Actor.Base
             Object msg = null;
             IBehavior tcs = null;
             bool patternmatch = false;
+            int oldReceive = Interlocked.Exchange(ref fReceive, fReceive);
 
             while (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
             {
@@ -332,6 +333,13 @@ namespace Actor.Base
                 AddMissedMessages();
                 Interlocked.Decrement(ref fReceive);
                 tcs.StandardCompletion.SetResult(msg);
+            }
+
+            int newReceive = Interlocked.Exchange(ref fReceive, fReceive);
+
+            if ((newReceive > 0) && (oldReceive != newReceive))
+            {
+                AddMissedMessages();
             }
 
             Interlocked.Exchange(ref fInTask, 0);

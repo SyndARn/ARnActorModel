@@ -15,5 +15,7 @@ namespace Actor.Base
 
         public T Result() => (T)Receive(t => t is T).Result;
 
+        public T Result(int timeOutMs) => (T)Receive(t => t is T, timeOutMs).Result;
+
     }
 }

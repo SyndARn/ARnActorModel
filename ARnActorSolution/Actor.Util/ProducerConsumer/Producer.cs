@@ -5,20 +5,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Actor.Util.ProducerConsumer
+namespace Actor.Util
 {
 
     public class Work<T> : BaseActor
     {
-        public Work()
+        T fT;
+
+        public Work(T aT)
         {
-            Become(new Behavior<Tuple<IActor, T>>(DoIt));
+            fT = aT;
+            Become(new Behavior<IActor>(DoIt));
         }
 
-        protected void DoIt(Tuple<IActor, T> aMessage)
+        protected void DoIt(IActor aMessage)
         {
-            Console.WriteLine("I do work" + this.Tag.Id.ToString());
-            aMessage.Item1.SendMessage(this);
+            // Console.WriteLine("I do work" + this.Tag.Id.ToString());
+            aMessage.SendMessage(this);
         }
 
     }
@@ -29,14 +32,20 @@ namespace Actor.Util.ProducerConsumer
         {
             AddBehavior(new FsmBehavior<string, Work<T>>("SleepState", "BusyState", t =>
             {
-                t.SendMessage(new Tuple<IActor, T>(this, default(T)));
+                t.SendMessage(this);
             }, t => true));
 
-            AddBehavior(new Behavior<Work<T>>(
-            T =>
+            AddBehavior(new FsmBehavior<string, Work<T>>("BusyState", "SleepState", t =>
             {
-                CurrentState = "SleepState";
                 Buffer.SendMessage(this);
+            }, t => true));
+
+            
+
+            AddBehavior(new Behavior<Work<T>>(
+            t =>
+            {
+                SendMessage(new Tuple<string, Work<T>>(CurrentState, t));
             }));
         }
 
@@ -54,8 +63,8 @@ namespace Actor.Util.ProducerConsumer
 
         protected void DoProduce(T aT)
         {
-           var work = new Work<T>();
-           Buffer.SendMessage(new Tuple<IActor, Work<T>>(this, work));
+           var work = new Work<T>(aT);
+           Buffer.SendMessage(work);
         }
     }
 
@@ -72,37 +81,34 @@ namespace Actor.Util.ProducerConsumer
                 item.Buffer = this;
             }
 
-            AddBehavior(new Behavior<Tuple<IActor,Work<T>>>( t =>
+            AddBehavior(new Behavior<Work<T>>( t =>
             {
-                WorkList.Enqueue(t.Item2);
-                SendMessage(new Tuple<IActor, string, Work<T>>(t.Item1, this.CurrentState, t.Item2));
+                SendMessage(new Tuple<string, Work<T>>(this.CurrentState, t));
             }
                 )) ;
 
             AddBehavior(new FsmBehavior<string, Work<T>>("BufferEmpty", "BufferNotEmpty",
                 t =>
                 {
-                    if (ConsList.Count == 0)
-                    {
-                        WorkList.Enqueue(t);
-                    }
-                    else
+                    if (ConsList.Count != 0)
                     {
                         var cons = ConsList.Dequeue();
                         cons.SendMessage(t);
                     }
-                }, t => WorkList.Count != 0));
+                    else
+                        WorkList.Enqueue(t);
+                }, t => true ));
 
             AddBehavior(new FsmBehavior<string, Work<T>>("BufferNotEmpty", "BufferNotEmpty",
                 t =>
                 {
-                    if (ConsList.Count == 0)
-                        WorkList.Enqueue(t);
-                    else
+                    if (ConsList.Count != 0)
                     {
                         var cons = ConsList.Dequeue();
                         cons.SendMessage(t);
                     }
+                    else
+                        WorkList.Enqueue(t);
                 },
                 t => WorkList.Count != 0));
 
@@ -128,33 +134,39 @@ namespace Actor.Util.ProducerConsumer
     {
         public Chain() : base()
         {
-            Become(new Behavior<String>(Start));
+            Become(new Behavior<Tuple<int,int,int>>(Start));
         }
 
-        private void Start(string aMessage)
+        private void Start(Tuple<int, int, int> msg)
         {
             List<Consumer<long>> list = new List<Consumer<long>>();
-            list.Add(new Consumer<long>());
-            list.Add(new Consumer<long>());
-            list.Add(new Consumer<long>());
-            list.Add(new Consumer<long>());
-            list.Add(new Consumer<long>());
+
+            for (int i = 0; i < msg.Item2; i++)
+                list.Add(new Consumer<long>());
 
             Buffer<long> buffer = new Buffer<long>(list);
 
-            Producer<long> prod1 = new Producer<long>(buffer);
-            Producer<long> prod2 = new Producer<long>(buffer);
-            Producer<long> prod3 = new Producer<long>(buffer);
-            Producer<long> prod4 = new Producer<long>(buffer);
-            Producer<long> prod5 = new Producer<long>(buffer);
-            for(long i = 0; i<= 1000;i++)
+            List<Producer<long>> list2 = new List<Producer<long>>();
+
+            for (int i = 0; i < msg.Item1; i++)
+                list2.Add(new Producer<long>(buffer));
+
+            for(long i = 0; i<= msg.Item3;i++)
             {
-                prod1.SendMessage(i);
-                prod2.SendMessage(i);
-                prod3.SendMessage(i);
-                prod4.SendMessage(i);
-                prod5.SendMessage(i);
+                foreach (var prod in list2)
+                    prod.SendMessage(i);
             }
+
+            while(true)
+            {
+                var fut = buffer.GetCurrentState().Result(10000);
+                if (fut == null) 
+                        Console.WriteLine("Stop");
+                if (fut != null ? fut.Item2 == "BufferEmpty" : false)
+                    break;
+            }
+
+            Console.WriteLine("End of chain");
 
         }
 
