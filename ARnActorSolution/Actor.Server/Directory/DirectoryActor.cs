@@ -74,6 +74,13 @@ namespace Actor.Base
             SendMessage(new Tuple<Action<IActor, string>, IActor, string>(DoFind, anActor, aKey));
         }
 
+        public IActor GetActorByName(string actorName)
+        {
+            var future = new Future<Tuple<DirectoryRequest, IActor>>();
+            Find(future, actorName);
+            return future.Result().Item2;
+        }
+
         private void DoDisco(IActor anActor)
         {
             Dictionary<string, string> directory = new Dictionary<string, string>();

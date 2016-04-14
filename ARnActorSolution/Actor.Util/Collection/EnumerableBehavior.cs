@@ -12,6 +12,15 @@ using System.Threading;
 namespace Actor.Util
 {
 
+    public static class QueryActor
+    {
+        public static EnumerableActor<T> AsActorQueryiable<T>(this IEnumerable<T> source)
+        {
+            var act = new EnumerableActor<T>(source);
+            return act ;
+        }
+    }
+
     public class EnumerableActor<T> : BaseActor, IEnumerable<T>, IEnumerable, ICollection<T>
     {
         private List<T> fList = new List<T>();
@@ -45,10 +54,27 @@ namespace Actor.Util
 
         public EnumerableActor() : base()
         {
+            SetBehavior();
+        }
+
+        public EnumerableActor(IEnumerable<T> source) : base()
+        {
+            Become(new Behavior<IEnumerable<T>>(SetupData));
+            SendMessage(source);
+        }
+
+        private void SetupData(IEnumerable<T> source) 
+        {
+            fList.AddRange(source);
+            SetBehavior();
+        }
+
+        private void SetBehavior()
+        {
             Become(new Behavior<Action<T>, T>((a, t) => a(t)));
             AddBehavior(new Behavior<Action<IActor>, IActor>((a, i) => a(i)));
-            AddBehavior(new Behavior<Action<IActor,T>, IActor,T>((a, i, t) => a(i,t)));
-            AddBehavior(new Behavior<Action>((a) => a())) ;
+            AddBehavior(new Behavior<Action<IActor, T>, IActor, T>((a, i, t) => a(i, t)));
+            AddBehavior(new Behavior<Action>((a) => a()));
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -128,7 +154,7 @@ namespace Actor.Util
             // better than this ?
             public void Reset()
             {
-                var future = new Future<bool>();
+                var future = new Future<int>();
                 this.SendMessage<Action<IActor>, IActor>((a) =>
                 {
                     fIndex = -1;
