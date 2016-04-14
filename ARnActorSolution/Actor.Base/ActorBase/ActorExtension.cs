@@ -8,6 +8,10 @@ namespace Actor.Base
 {
     public static class IActorExtension
     {
+        public static void SendMessage<T1>(this IActor anActor, T1 t1)
+        {
+            anActor.SendMessage(t1);
+        }
         public static void SendMessage<T1, T2>(this IActor anActor, T1 t1, T2 t2)
         {
             anActor.SendMessage(new Tuple<T1, T2>(t1, t2));
@@ -20,6 +24,10 @@ namespace Actor.Base
 
     public static class BaseActorExtension
     {
+        public static void SendMessage<T1>(this BaseActor anActor, T1 t1)
+        {
+            anActor.SendMessage(t1);
+        }
         public static void SendMessage<T1, T2>(this BaseActor anActor, T1 t1, T2 t2)
         {
             anActor.SendMessage(new Tuple<T1, T2>(t1, t2));

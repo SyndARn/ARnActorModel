@@ -40,7 +40,7 @@ namespace TestActor
                     Assert.IsTrue(s.Contains("c"));
                     fLauncher.Finish();
                 });
-            fLauncher.Wait();
+            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }

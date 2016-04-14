@@ -30,7 +30,7 @@ namespace Actor.Util.ProducerConsumer.Tests
                 fLauncher.Wait(10000);
                 fLauncher.Finish();
             });
-            fLauncher.Wait(11000);
+            Assert.IsTrue(fLauncher.Wait(11000));
         }
 
     }

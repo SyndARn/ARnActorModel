@@ -89,6 +89,7 @@
     <Compile Include="actTestlauncher.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />
     <Compile Include="Behavior\bhvForEachTests.cs" />
+    <Compile Include="Collection\EnumerableActorTests.cs" />
     <Compile Include="Collection\ObservableActorTests.cs" />
     <Compile Include="Directory\DirectoryActorTests.cs" />
     <Compile Include="ProducerConsumer\ChainTests.cs" />

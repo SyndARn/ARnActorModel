@@ -80,6 +80,7 @@
     <Compile Include="Behavior\CrudBehavior.cs" />
     <Compile Include="Behavior\StateBehavior.cs" />
     <Compile Include="Behavior\ClientServer\OnBehalfActor.cs" />
+    <Compile Include="Collection\EnumerableBehavior.cs" />
     <Compile Include="Collection\ObservableActor.cs" />
     <Compile Include="Collection\DictionaryActor.cs" />
     <Compile Include="Collection\QueueActor.cs" />
