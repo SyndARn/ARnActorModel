@@ -20,6 +20,20 @@ namespace TestActor
             fLauncher = new TestLauncherActor();
         }
 
+        class EventSourceTest : EventSource<string>
+        {
+            public EventSourceTest(string aString) : base()
+            {
+                Data = aString;
+            }
+            public override string Apply(string aT)
+            {
+                // Data = aT;
+                return Data;
+            }
+
+        }
+
         [TestMethod()]
         public void PersistentActorTest()
         {
@@ -27,9 +41,9 @@ namespace TestActor
             {
                 var service = new MemoizePersistentService<string>();
                 var persistent = new PersistentActor<string>(service, "TestActor");
-                persistent.SendMessage("A");
-                persistent.SendMessage("B");
-                persistent.SendMessage("C");
+                persistent.SendMessage(new EventSourceTest("A"));
+                persistent.SendMessage(new EventSourceTest("B"));
+                persistent.SendMessage(new EventSourceTest("C"));
                 Assert.AreEqual("C", persistent.GetCurrent().Result());
                 var persistent2 = new PersistentActor<string>(service, "TestActor");
                 persistent2.Reload();
@@ -39,10 +53,5 @@ namespace TestActor
             Assert.IsTrue(fLauncher.Wait());
         }
 
-        [TestMethod()]
-        public void GetCurrentTest()
-        {
-            Assert.Fail();
-        }
     }
 }

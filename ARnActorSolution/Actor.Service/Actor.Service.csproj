@@ -70,6 +70,7 @@
     <Compile Include="actRing.cs" />
     <Compile Include="Logger\actTrace.cs" />
     <Compile Include="Logger\LoggerBehavior.cs" />
+    <Compile Include="Persistent\PersistentService.cs" />
     <Compile Include="Persistent\PersistentActor.cs" />
     <Compile Include="RPrint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

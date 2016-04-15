@@ -11,18 +11,26 @@ namespace Actor.Service.Tests
     [TestClass()]
     public class MemoizePersistentServiceTests
     {
+        class EventSourceString : EventSource<string>
+        {
+
+        }
+
         [TestMethod()]
         public void WriteTest()
         {
             var service = new MemoizePersistentService<string>();
             Assert.IsNotNull(service);
-            service.Write("A");
-            service.Write("B");
-            service.Write("C");
+            var ev = new EventSourceString();
+            ev.Apply("A");
+            service.Write(ev);
+            ev.Apply("B");
+            service.Write(ev);
+            ev.Apply("C");
+            service.Write(ev);
             var someString = service.Load();
             Assert.IsNotNull(someString);
             Assert.AreEqual(3, someString.Count());
-            Assert.AreEqual("C", someString.Last());
         }
 
     }

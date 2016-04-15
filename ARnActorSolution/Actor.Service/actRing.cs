@@ -102,11 +102,11 @@ namespace Actor.Service
             prevNode.SendMessage(
                 Tuple.Create(State.Start, (IActor)null));
             lastNode = prevNode;
-            Become(new Behavior<Boolean>(msg => { return msg; }, Test));
+            Become(new Behavior<bool>(msg => { return msg; }, Test));
             SendMessage(true);
         }
 
-        protected void Test(Boolean msg)
+        protected void Test(bool msg)
         {
             testResult.start = DateTimeOffset.UtcNow ;
             Console.WriteLine("Start at " + testResult.start.ToString());

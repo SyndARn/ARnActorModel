@@ -6,9 +6,11 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
+using Procurios.Public;
 
 namespace Actor.Server
 {
+
     static class NetDataActorSerializer
     {
         public static SerialObject DeSerialize(Stream inputStream)
@@ -28,4 +30,5 @@ namespace Actor.Server
             dcs.Serialize(outputStream, so);
         }
     }
+
 }

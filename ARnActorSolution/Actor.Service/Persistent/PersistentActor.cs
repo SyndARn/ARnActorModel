@@ -9,9 +9,28 @@ using Actor.Util;
 
 namespace Actor.Service
 {
+
+    public interface IEventSource<T>
+    {
+        T Apply(T aState);
+    }
+
+    public class EventSource<T> : IEventSource<T>
+    {
+        public T Data { get; protected set; }
+        public EventSource() : base()
+        {
+        }
+        public virtual T Apply(T aT)
+        {
+            Data = aT;
+            return Data;
+        }
+    }
+
     public class PersistentActor<T> : BaseActor 
     {
-        private T fCurrentValue;
+        private T fCurrentState ;
         public PersistentActor(IPersistentService<T> service, string actorName) : base()
         {
             var act = DirectoryActor.GetDirectory().GetActorByName(actorName);
@@ -21,54 +40,38 @@ namespace Actor.Service
             }
             Become(new PersistentLoadBehavior<T>(service));
             AddBehavior(new PersistentWriteBehavior<T>(service));
-            AddBehavior(new Behavior<T>(Transact));
-            AddBehavior(new Behavior<IActor>(a => a.SendMessage<T>(fCurrentValue)));
+            AddBehavior(new Behavior<IEventSource<T>>(Transact));
+            AddBehavior(new Behavior<PersistentCommand,IActor>(                
+                (c,a) => c == PersistentCommand.GetCurrent,
+                (c,a) => a.SendMessage<T>(fCurrentState)));
         }
 
-        private void Transact(T aT)
+        private void Transact(IEventSource<T> anEvent)
         {
-            this.SendMessage(PersistentCommand.Write, aT);
-            fCurrentValue = aT;
+            this.SendMessage(PersistentCommand.Write, anEvent);
+            fCurrentState = anEvent.Apply(fCurrentState);
         }
 
         public Future<T> GetCurrent()
         {
             var future = new Future<T>();
-            this.SendMessage<IActor>(future);
+            this.SendMessage<PersistentCommand,IActor>(PersistentCommand.GetCurrent,(IActor)future);
             return future;
         }
 
         public void Reload()
         {
-            var future = new Future<IEnumerable<T>>();
+            var future = new Future<IEnumerable<IEventSource<T>>>();
             this.SendMessage(PersistentCommand.Load, (IActor)future);
-            fCurrentValue = future.Result().Last();
-        }
-    }
-
-    public enum PersistentCommand { Write, Load} 
-
-    public interface IPersistentService<T>
-    {
-        void Write(T aT);
-        IEnumerable<T> Load();
-    }
-
-    public class MemoizePersistentService<T> : IPersistentService<T>
-    {
-        private List<T> fList = new List<T>();
-        public void Write(T aT)
-        {
-            fList.Add(aT);
-        }
-        public IEnumerable<T> Load()
-        {
-            foreach(var item in fList)
+            fCurrentState = default(T);
+            foreach(var item in future.Result())
             {
-                yield return item;
-            }
+                fCurrentState = item.Apply(fCurrentState);
+            }            
         }
     }
+
+    public enum PersistentCommand { Write, Load, GetCurrent} 
 
     public class PersistentLoadBehavior<T> : Behavior<PersistentCommand, IActor>
     {
@@ -88,11 +91,11 @@ namespace Actor.Service
         private void DoApply(PersistentCommand command, IActor sender)
         {
             var load = fService.Load();
-            sender.SendMessage(load);
+            sender.SendMessage<IEnumerable<IEventSource<T>>>(load);
         }
     }
 
-    public class PersistentWriteBehavior<T> : Behavior<PersistentCommand,T>
+    public class PersistentWriteBehavior<T> : Behavior<PersistentCommand,IEventSource<T>>
     {
         IPersistentService<T> fService;
         public PersistentWriteBehavior(IPersistentService<T> service) : base()
@@ -102,12 +105,12 @@ namespace Actor.Service
             Pattern = DoPattern;
         }
 
-        private bool DoPattern(PersistentCommand command, T aT)
+        private bool DoPattern(PersistentCommand command, IEventSource<T> aT)
         {
             return command == PersistentCommand.Write;
         }
 
-        private void DoApply(PersistentCommand command, T aT)
+        private void DoApply(PersistentCommand command, IEventSource<T> aT)
         {
             fService.Write(aT);
         }
