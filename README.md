@@ -12,13 +12,11 @@ I was looking for an actor model things with some requirements :
  
 #With ARnActor, now you can :
 
-    '''C#
     var sender = new actActor() ;
     var receiver = new actActor() ;
  
  and in sender code ..
  
-    '''C#
     receiver.SendMessage("something") ;
  
 #The library holds some useful features :
