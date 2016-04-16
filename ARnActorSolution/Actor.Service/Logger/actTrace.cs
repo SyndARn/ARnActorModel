@@ -9,7 +9,7 @@ using System.Globalization;
 
 namespace Actor.Service
 {
-    public class TraceActor : BaseActor // dummmy actor
+    public class TraceActor : BaseActor 
     {
         public TraceActor()
         {

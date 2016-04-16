@@ -59,8 +59,13 @@ namespace Actor.Base
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actEntryConnection : ActionActor<TcpClient>
+    public class actEntryConnection : BaseActor
     {
+        public actEntryConnection() : base()
+        {
+            Become(new Behavior<TcpClient>(DoListen));
+        }
+
         private void DoListen(TcpClient client)
         {
             NetworkStream stream = client.GetStream();
