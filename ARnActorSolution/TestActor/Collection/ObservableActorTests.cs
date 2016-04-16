@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestActor;
 using Actor.Base ;
 
-namespace Actor.Util.Tests
+namespace TestActor
 {
     [TestClass()]
     public class ObservableActorTests

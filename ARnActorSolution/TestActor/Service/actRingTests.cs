@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestActor;
+using Actor.Base;
 
-namespace Actor.Service.Tests
+
+namespace TestActor
 {
     [TestClass()]
     public class actRingTests
@@ -25,7 +26,17 @@ namespace Actor.Service.Tests
         {
             fLauncher.SendAction(() =>
             {
-                new actRing(1000, 1000); // 10 sec
+                var future = new Future<string>();
+                new actRing(1000, 1000, future); // 10 sec
+
+                var result = future.Result();
+
+                Assert.IsFalse(string.IsNullOrEmpty(result));
+
+                Assert.IsTrue(result.Contains("End Test"));
+
+                Assert.IsTrue(result.Contains("Elapsed"));
+
                 fLauncher.Finish();
             });
             fLauncher.Wait(10000);

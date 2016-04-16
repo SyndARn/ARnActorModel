@@ -18,4 +18,16 @@ namespace Actor.Base
         public T Result(int timeOutMs) => (T)Receive(t => t is T, timeOutMs).Result;
 
     }
+
+    public class Future<T1,T2> : BaseActor
+    {
+        public Future()
+        {
+        }
+
+        public Tuple<T1,T2> Result() => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>).Result;
+
+        public Tuple<T1, T2> Result(int timeOutMs) => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>, timeOutMs).Result;
+
+    }
 }

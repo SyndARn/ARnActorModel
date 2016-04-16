@@ -31,5 +31,12 @@ namespace TestActor
             return inTime && (bool)val.Result;
         }
 
+        public static bool Test(Action action)
+        {
+            var launcher = new TestLauncherActor();
+            launcher.SendAction(action);
+            launcher.SendMessage(true);
+            return launcher.Wait();
+        }
     }
 }
