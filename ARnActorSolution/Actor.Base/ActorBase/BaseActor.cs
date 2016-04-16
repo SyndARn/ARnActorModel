@@ -47,7 +47,7 @@ namespace Actor.Base
 
         private Behaviors fBehaviors; // our behavior
         private ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>(); // receive behaviors
-        private ActorMailBox fMailBox = new ActorMailBox(); // our mailbox
+        private ActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
         private int fInTask = 0; // 0 out of task, 1 in task
         private int fReceive = 0;
 
@@ -58,7 +58,7 @@ namespace Actor.Base
         {
             if (anActor == null) throw new ActorException("Null actor");
             anActor.fCompletions = new ConcurrentQueue<IBehavior>();
-            anActor.fMailBox = new ActorMailBox();
+            anActor.fMailBox = new ActorMailBox<object>();
             if (anActor.Tag == null)
             {
                 anActor.Tag = new ActorTag();
@@ -163,7 +163,7 @@ namespace Actor.Base
         {
             if (aPattern == null)
                 throw new ActorException("null pattern");
-            var lTCS = new Behavior<Object>(aPattern, new TaskCompletionSource<Object>());
+            var lTCS = new Behavior<object>(aPattern, new TaskCompletionSource<object>());
             Interlocked.Increment(ref fReceive);
             fCompletions.Enqueue(lTCS);
             AddMissedMessages();
@@ -234,7 +234,7 @@ namespace Actor.Base
             TrySetInTask();
         }
 
-        protected void Becomes(IBehavior[] manyBehaviors)
+        protected void Becomes(params IBehavior[] manyBehaviors)
         {
             if (manyBehaviors == null) throw new ActorException("Null manyBehaviors");
             fBehaviors = new Behaviors();

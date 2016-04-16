@@ -31,10 +31,6 @@ using System.Collections.Concurrent;
 namespace Actor.Base
 {
 
-    class ActorMailBox : ActorMailBox<Object>
-    {
-    }
-
     /// <summary>
     /// ActorMailBox
     /// </summary>

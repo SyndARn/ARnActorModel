@@ -20,35 +20,81 @@ namespace Actor.Util.Tests
             fLauncher = new TestLauncherActor();
         }
 
+        class CrudTest : CrudActor<int,string>
+        {
+
+        }
+
         [TestMethod()]
         public void actCrudeActorTest()
         {
-            var act = new CrudActor<string>();
+            var act = new CrudTest();
             Assert.IsNotNull(act);
         }
 
         [TestMethod()]
-        public void SelectTest()
+        public void SetTest()
         {
-            Assert.Fail();
+            fLauncher.SendAction(() =>
+            {
+                var act = new CrudTest();
+                act.Set(1, "1");
+                act.Set(2, "2");
+                fLauncher.Finish();
+            }
+            );
+            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
-        public void InsertTest()
+        public void GetSetTest()
         {
-            Assert.Fail();
+            fLauncher.SendAction( () =>
+            {
+                var act = new CrudTest();
+                act.Set(1, "1");
+                act.Set(2, "2");
+                string s = act.Get(1).Result();
+                Assert.AreEqual("1", s);
+                fLauncher.Finish();
+            }
+            ) ;
+            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
-            Assert.Fail();
+            fLauncher.SendAction(() =>
+            {
+                var act = new CrudTest();
+                act.Set(1, "1");
+                act.Set(2, "2");
+                act.Delete(1);
+                string s = act.Get(1).Result(2000) ;
+                Assert.IsNull(s);
+                fLauncher.Finish();
+            }
+            );
+            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void UpdateTest()
         {
-            Assert.Fail();
+            fLauncher.SendAction(() =>
+            {
+                var act = new CrudTest();
+                act.Set(1, "1");
+                act.Set(2, "2");
+                string s = act.Get(1).Result();
+                Assert.AreEqual("1", s);
+                act.Update(1, "11");
+                Assert.AreEqual("11", act.Get(1).Result());
+                fLauncher.Finish();
+            }
+            );
+            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }

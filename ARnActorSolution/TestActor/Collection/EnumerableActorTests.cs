@@ -75,7 +75,7 @@ namespace TestActor
                 Assert.AreEqual(2, act.Count());
                 fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait(1000*120));
+            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]

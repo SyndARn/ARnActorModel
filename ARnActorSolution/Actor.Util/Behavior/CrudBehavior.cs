@@ -29,66 +29,95 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public enum CrudAction { Get, Set, Update, Delete } ;
+    public enum CrudAction { Get, Set, Update, Delete} ;
 
-    public class CrudActor<T> : BaseActor
+    public class CrudActor<K,V> : BaseActor
     {
         public CrudActor()
             : base()
         {
-            Become(new CrudBehavior<T>());
+            Become(new CrudBehavior<K,V>());
         }
 
-        public T Get()
+        public Future<V> Get(K key)
         {
-            SendMessage(Tuple.Create(CrudAction.Get, default(T)));
-            var retVal = Receive(t => { return true; }).Result;
-            return retVal == null ? default(T) : (T)retVal;
+            var future = new Future<V>();
+            this.SendMessage(new CrudMessage<K, V>(CrudAction.Get, key, default(V), (IActor)future));
+            return future;
         }
 
-        public void Insert(T aT)
+        public void Set(K key, V value)
         {
-            SendMessage(Tuple.Create(CrudAction.Set, aT));
+            SendMessage(new CrudMessage<K,V>(CrudAction.Set, key,value, null));
         }
 
-        public void Delete()
+        public void Delete(K key)
         {
-            SendMessage(Tuple.Create(CrudAction.Delete,default(T))) ;
+            SendMessage(new CrudMessage<K, V>(CrudAction.Delete,key,default(V),null)) ;
         }
 
-        public void Update()
+        public void Update(K key, V value)
         {
-            SendMessage(Tuple.Create(CrudAction.Update,default(T))) ;
+            SendMessage(new CrudMessage<K, V>(CrudAction.Update,key, value, null)) ;
         }
     }
 
-    public class CrudBehavior<T> : Behavior<Tuple<CrudAction, T>>
+    public class CrudMessage<K, V>
     {
-         private T fValue;
+        public CrudMessage(CrudAction anAction, K aKey, V aValue, IActor sender)
+        {
+            Action = anAction;
+            Key = aKey;
+            Value = aValue;
+            Sender = sender;
+        }
+        public CrudAction Action { get; private set; }
+        public K Key { get; set; }
+        public V Value { get; set; }
+        public IActor Sender { get; set; }
+    }
+
+    public class CrudBehavior<K,V> : Behavior<CrudMessage<K,V>>
+    {
+         private Dictionary<K,V> fKV;
 
          public CrudBehavior()
             : base()
         {
-            fValue = default(T);
+            fKV = new Dictionary<K, V>();
+
+            Pattern = o => true ;
+
+            Apply = (o) =>
+            {
+                switch (o.Action)
+                {
+                    case CrudAction.Get: Get(o.Key, o.Sender); break;
+                    case CrudAction.Set: Set(o.Key,o.Value); break;
+                    case CrudAction.Update: Update(o.Key,o.Value); break;
+                    case CrudAction.Delete: Delete(o.Key); break;
+                }
+            };
         }
 
-        public void SelectValue(T msg)
+        public void Get(K key, IActor sender)
         {
-            fValue = msg;
+            sender.SendMessage(fKV[key]);
         }
 
-        public void InsertValue()
+        public void Set(K key, V value)
         {
-            LinkedActor.SendMessage(fValue);
+            fKV[key] = value ;
         }
 
-        public void UpdateValue()
+        public void Update(K key, V value)
         {
-
+            fKV[key] = value;
         }
 
-        public void DeleteValue()
+        public void Delete(K key)
         {
+            fKV.Remove(key);
         }
 
     }
