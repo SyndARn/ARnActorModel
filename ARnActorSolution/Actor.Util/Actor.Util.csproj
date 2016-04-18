@@ -96,6 +96,7 @@
     <Compile Include="Continuation\actGraphHedge.cs" />
     <Compile Include="Fsm\FsmActor.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MapReduce\MapReduceActor.cs" />
     <Compile Include="Monadic\actMonad.cs" />
     <Compile Include="ProducerConsumer\Producer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
