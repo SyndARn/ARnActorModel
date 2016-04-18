@@ -28,8 +28,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Actor.Base ;
 
-namespace Actor.Base
+namespace Actor.Server
 {
 
     public class DirectoryActor : BaseActor

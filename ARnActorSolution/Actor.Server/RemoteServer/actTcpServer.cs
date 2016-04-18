@@ -30,9 +30,9 @@ using System.Net;
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using Actor.Server;
+using Actor.Base;
 
-namespace Actor.Base
+namespace Actor.Server
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actTcpServer : BaseActor

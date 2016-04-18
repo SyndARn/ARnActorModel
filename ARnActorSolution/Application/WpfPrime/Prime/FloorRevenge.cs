@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Actor.Base;
 using Actor.Util;
 using System.Collections.Concurrent;
+using Actor.Server;
 
 namespace WpfPrime.Prime
 {
