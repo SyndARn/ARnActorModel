@@ -51,17 +51,17 @@ namespace Actor.Base
             return sb.ToString();
         }
 
-        public static void AddActor(BaseActor anActor)
+        public static void AddActor(Action messageLoop)
         {
-            if (anActor == null)
+            if (messageLoop == null)
             {
-                throw new ActorException(string.Format("bad, no actor should be null at this point {0}", nameof(anActor)));
+                throw new ActorException(string.Format("bad, no actor should be null at this point {0}", nameof(messageLoop)));
             }
 
             Task.Factory.StartNew(() =>
             {
                 Interlocked.Increment(ref numAddTask);
-                anActor.MessageLoop();
+                messageLoop();
                 Interlocked.Increment(ref numCloseTask);
             }, TaskCreationOptions.None);
             //.ContinueWith((t) =>

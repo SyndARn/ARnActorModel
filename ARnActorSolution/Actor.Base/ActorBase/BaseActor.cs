@@ -92,7 +92,7 @@ namespace Actor.Base
         {
             if (Interlocked.CompareExchange(ref fInTask, 1, 0) == 0)
             {
-                ActorTask.AddActor(this);
+                ActorTask.AddActor(MessageLoop);
             }
         }
 
@@ -261,7 +261,7 @@ namespace Actor.Base
         }
 
 
-        internal void MessageLoop()
+        private void MessageLoop()
         {
             bool receivematch = false;
             object msg = null;

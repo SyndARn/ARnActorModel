@@ -7,23 +7,6 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public class DictionaryAssistant<K,V> : BaseActor
-    {
-        public DictionaryAssistant() : base()
-        {
-
-        }
-
-        public async Task<Tuple<bool, K, V>> GetV(DictionaryActor<K, V> IActor, K K)
-        {
-            var task =Receive(t => t is Tuple<bool, K, V>);
-            IActor.SendMessage(new Tuple<IActor, K>(this, K));
-            return await task as Tuple<bool, K, V>;
-        }
-
-        public void AddV(DictionaryActor<K, V> IActor, K K, V V) => IActor.SendMessage(K, V) ;
-    }
-
     public class DictionaryActor<K,V> : BaseActor
     {
 
@@ -31,13 +14,25 @@ namespace Actor.Util
 
         public DictionaryActor() : base()
         {
-            Become(new Behavior<K, V>(AddKV));
-            AddBehavior(new Behavior<IActor,K>(GetKV));
+            Become(new Behavior<K, V>(DoAddKV));
+            AddBehavior(new Behavior<IActor,K>(DoGetKV));
         }
 
-        private void AddKV(K k, V v) => fDico[k] = v ;
+        public void AddKV(K K, V V)
+        {
+            this.SendMessage(K, V);
+        }
 
-        private void GetKV(IActor actor, K k)
+        private void DoAddKV(K k, V v) => fDico[k] = v ;
+
+        public Future<Tuple<bool,K,V>> GetKV(K k)
+        {
+            var future = new Future<Tuple<bool, K, V>>();
+            this.SendMessage(future, k);
+            return future;
+        }
+
+        private void DoGetKV(IActor actor, K k)
         {
             V v;
             bool result = fDico.TryGetValue(k, out v);
