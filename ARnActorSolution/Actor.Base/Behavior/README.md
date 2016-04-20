@@ -14,13 +14,12 @@ Each behavior handles two functions :
 During Actor creation (new BaseActor() ..), a Become statement is most always used to set the initial Behavior of this actor.
 
 Typically, the following pattern is used :
-""
-public class MyActor : BaseActor
-{
 
-  public MyActor() : base()
-  {
-    Become(new MyBehavior()) ;
-  }
-""
+    public class MyActor : BaseActor
+    {
+      public MyActor() : base()
+      {
+        Become(new MyBehavior()) ;
+      }
+    }
 
