@@ -23,3 +23,17 @@ Typically, the following pattern is used :
       }
     }
 
+To continue this small example :
+
+    public MyBehavior()
+    {
+      Pattern = t => true ; // accept all messages
+      Apply = t => Console.WriteLine(t.ToString()) ; // print message received
+    }
+
+And of course :
+
+    var myActor = new MyActor() ;
+    myActor.SendMessage("Hello world !") ;
+
+will print "Hello world !" to the console.
