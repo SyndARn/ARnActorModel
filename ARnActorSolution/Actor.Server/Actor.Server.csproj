@@ -73,6 +73,7 @@
     <Compile Include="ActorConsole\ConsoleBehavior.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
     <Compile Include="ActorServer\ShardDirectoryActor.cs" />
+    <Compile Include="Broker\BrokerActor.cs" />
     <Compile Include="Directory\ConnectActor.cs" />
     <Compile Include="Directory\DirectoryActor.cs" />
     <Compile Include="Directory\DiscoveryActor.cs" />

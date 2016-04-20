@@ -5,12 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestActor;
 using System.Globalization;
 using Actor.Server;
 using Actor.Util;
 
-namespace Actor.Base.Tests
+namespace TestActor
 {
     [TestClass()]
     public class DirectoryActorTests

@@ -85,6 +85,8 @@
     <Compile Include="Exception\CheckArg.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="PatternActor\PatternActor.cs" />
+    <Compile Include="ProcessActor\ProcessActor.cs" />
+    <Compile Include="ProcessActor\ProxyActor.cs" />
     <Compile Include="Supervision\SupervisorActor.cs" />
     <Compile Include="Tag\ActorTag.cs" />
     <Compile Include="ActionActor\ActionActor.cs" />

@@ -27,3 +27,5 @@ PopulateServerDirectory
 have a service exposes some dynamic actor name, with this name you can get a new actor
 this will be usefull for remote loading (load once, use many)
 it could also be used for supervision
+(5)
+some simple pattern for broker/dispatch
