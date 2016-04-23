@@ -8,10 +8,10 @@ using Actor.Util;
 
 namespace Actor.Util
 {
-    public class MapReduceActor<D,Km, Vm, Kr, Vr> : BaseActor
+    public class MapReduceActor<D,TKeyMap, TValueMap, TKeyReduce, TValueReduce> : BaseActor
     {
 
-        private Dictionary<Kr, List<Vr>> fDict = new Dictionary<Kr, List<Vr>>();
+        private Dictionary<TKeyReduce, List<TValueReduce>> fDict = new Dictionary<TKeyReduce, List<TValueReduce>>();
 
         private int fActiveMap;
 
@@ -19,8 +19,8 @@ namespace Actor.Util
             (
                 // Func<D, IEnumerable<Tuple<Km, Vm>>> parserKV,
                 Action<IActor,D> senderKV,
-                Action<IActor, Km, Vm> mapKV,
-                Func<Kr, IEnumerable<Vr>, Vr> reduceKV,
+                Action<IActor, TKeyMap, TValueMap> mapKV,
+                Func<TKeyReduce, IEnumerable<TValueReduce>, TValueReduce> reduceKV,
                 IActor outputActor
             ) : base()
         {
@@ -32,11 +32,11 @@ namespace Actor.Util
             });
 
             // receive data to process
-            var bhvInput = new Behavior<Km,Vm>(
+            var bhvInput = new Behavior<TKeyMap,TValueMap>(
                 (k,v) =>
                 {
                     // parse data
-                        var map = new MapActor<Km, Vm>(this, mapKV);
+                        var map = new MapActor<TKeyMap, TValueMap>(this, mapKV);
                         fActiveMap++;
                         map.SendMessage((IActor)this, k, v);
                 }
@@ -49,21 +49,21 @@ namespace Actor.Util
              });
 
             // receive from Map, index
-            var bhvMap2Index = new Behavior<Kr, Vr>
+            var bhvMap2Index = new Behavior<TKeyReduce, TValueReduce>
                 (
                 (k, v) =>
                 {
-                    List<Vr> someValue;
+                    List<TValueReduce> someValue;
                     if (!fDict.TryGetValue(k, out someValue))
                     {
-                        fDict[k] = new List<Vr>();
+                        fDict[k] = new List<TValueReduce>();
                     }
                     fDict[k].Add(v);
                 }
                 );
 
             // receive end of job from Map, go to reduce
-            var bhvMap2EndOfJov = new Behavior<MapActor<Km, Vm>>
+            var bhvMap2EndOfJov = new Behavior<MapActor<TKeyMap, TValueMap>>
                 (
                 (a) =>
                 {
@@ -73,7 +73,7 @@ namespace Actor.Util
                         // launch reduce
                         foreach (var item in fDict)
                         {
-                            var red = new ReduceActor<Kr, Vr>(this, reduceKV);
+                            var red = new ReduceActor<TKeyReduce, TValueReduce>(this, reduceKV);
                             red.SendMessage(item.Key, item.Value.AsEnumerable());
                         }
                     }
@@ -81,7 +81,7 @@ namespace Actor.Util
                 );
 
             // receive from Reduce, send to output
-            var bhvReduceToOutput = new Behavior<ReduceActor<Kr, Vr>, Kr, Vr>
+            var bhvReduceToOutput = new Behavior<ReduceActor<TKeyReduce, TValueReduce>, TKeyReduce, TValueReduce>
                 (
                 (r, k, v) =>
                 {

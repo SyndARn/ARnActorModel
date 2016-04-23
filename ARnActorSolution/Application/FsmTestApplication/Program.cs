@@ -13,7 +13,7 @@ namespace FsmTestApplication
     {
         static void Main(string[] args)
         {
-            ActorServer.Start("localhost", 80, false);
+            ActorServer.Start("localhost", 80, null);
             Console.WriteLine("Starting FSM");
 
             BaseActor fsm = new Chain();

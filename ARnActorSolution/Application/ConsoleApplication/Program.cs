@@ -62,7 +62,7 @@ namespace PrimeSumNumber_Euler543
 
         static void Main(string[] args)
         {
-            ActorServer.Start("localhost", 1123, false);
+            ActorServer.Start("localhost", 1123, null);
             // Euler 23
             // Calc23(28123);
             

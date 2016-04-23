@@ -50,7 +50,7 @@ namespace TestActor
         [TestMethod]
         public void TestShardRun()
         {
-          ActorServer.Start(this.ToString(), 80);
+          ActorServer.Start(this.ToString(), 80, new HostRelayActor());
           fLauncher.SendAction(() => {new actShardDirectoryClientTest(); }) ;
             Assert.IsTrue(fLauncher.Wait(10000));
         }

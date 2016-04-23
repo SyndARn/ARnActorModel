@@ -90,6 +90,7 @@ namespace Actor.Server
 
                 // find hosted actor directory
                 // forward msg to hostedactordirectory
+                Become(new Behavior<SerialObject>(t => { return true; }, DoProcessMessage));
                 SendMessage(so);
             }
         }

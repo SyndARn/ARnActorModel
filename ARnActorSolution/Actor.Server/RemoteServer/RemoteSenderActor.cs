@@ -65,22 +65,21 @@ namespace Actor.Server
         private void SendRemoteMessage(Object aMsg)
         {
             // send message with http
-            SerialObject so = new SerialObject(aMsg,fRemoteTag);
+            SerialObject so = new SerialObject(aMsg, fRemoteTag);
 
-            using (MemoryStream ms = new MemoryStream())
+            MemoryStream ms = null;
+            try
             {
+                ms = new MemoryStream();
                 NetDataActorSerializer.Serialize(so, ms);
 
                 ms.Seek(0, SeekOrigin.Begin);
-                using (StreamReader sr = new StreamReader(ms))
+                using (StreamReader srDebug = new StreamReader(ms))
                 {
-                    while (!sr.EndOfStream)
-                        Debug.Print(sr.ReadLine());
-                }
+                    while (!srDebug.EndOfStream)
+                        Debug.Print(srDebug.ReadLine());
 
-                ms.Seek(0, SeekOrigin.Begin);
-                using (StreamReader sr = new StreamReader(ms))
-                {
+                    ms.Seek(0, SeekOrigin.Begin);
                     using (var client = new HttpClient())
                     {
                         using (var hc = new StreamContent(ms))
@@ -91,7 +90,16 @@ namespace Actor.Server
                     }
                 }
             }
+            finally
+            {
+                if (ms != null)
+                {
+                    ms.Dispose();
+                    ms = null;
+                }
+            }
         }
-
     }
+
 }
+

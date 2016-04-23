@@ -25,7 +25,7 @@ namespace ActorRing
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ActorServer.Start("localhost", 80, false);
+            ActorServer.Start("localhost", 80, null);
             catcher = new StringToEventCatcherActor();
         }
 

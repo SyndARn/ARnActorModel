@@ -41,10 +41,10 @@ namespace Actor.Server
             return fServerInstance ;
         }
 
-        public static void Start(string lName, int lPort, bool withRelay = true)
+        public static void Start(string lName, int lPort, HostRelayActor hostRelayActor)
         {
             fServerInstance = new ActorServer(lName,lPort) ;
-            fServerInstance.DoInit(withRelay);
+            fServerInstance.DoInit(hostRelayActor);
         }
 
         public ActorServer(string lName, int lPort)
@@ -54,17 +54,18 @@ namespace Actor.Server
             ActorTagHelper.SetFullHost(Fullhost());
         }
 
-        private void DoInit(bool withRelay) 
+        private void DoInit(HostRelayActor hostRelayActor) 
         {
             DirectoryActor.GetDirectory(); // Start directory
             ActorConsole.Register(); // Start console
             // should work now
             SendByName<string>.Send("Actor Server Start", "Console");
             Become(null);
-            if (withRelay)
+            if (hostRelayActor != null)
             {
                 new ShardDirectoryActor(); // start shard directory
-                fActHostRelay = new HostRelayActor();
+                fActHostRelay = hostRelayActor;
+                fActHostRelay.SendMessage("Listen");
             }
             // new actTcpServer();
         }

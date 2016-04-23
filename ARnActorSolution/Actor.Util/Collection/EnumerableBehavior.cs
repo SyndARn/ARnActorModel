@@ -125,15 +125,15 @@ namespace Actor.Util
             return future.Result();
         }
 
-        private class ActorEnumerator<T> : BaseActor, IEnumerator<T>, IEnumerator, IDisposable
+        private class ActorEnumerator<TSource> : BaseActor, IEnumerator<TSource>, IEnumerator, IDisposable
         {
-            private EnumerableActor<T> fCollection;
+            private EnumerableActor<TSource> fCollection;
 
             private enum EnumeratorAction { MoveNext,Reset, Current};
 
             private int fIndex;
 
-            public ActorEnumerator(EnumerableActor<T> aCollection) : base()
+            public ActorEnumerator(EnumerableActor<TSource> aCollection) : base()
             {
                 fCollection = aCollection;
                 fIndex = -1;
@@ -177,10 +177,10 @@ namespace Actor.Util
                 }
             }
 
-            T IEnumerator<T>.Current
+            TSource IEnumerator<TSource>.Current
             {
                 get {
-                    var future = new Future<T>();
+                    var future = new Future<TSource>();
                     fCollection.SendMessage<Action<IActor>, IActor>((a) =>
                     {
                         a.SendMessage(fCollection.fList[fIndex]);
@@ -192,7 +192,7 @@ namespace Actor.Util
             object IEnumerator.Current
             {
                 get {
-                    var future = new Future<T>();
+                    var future = new Future<TSource>();
                     fCollection.SendMessage<Action<IActor>, IActor>((a) =>
                     {
                         a.SendMessage(fCollection.fList[fIndex]);

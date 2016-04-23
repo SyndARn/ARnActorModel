@@ -27,7 +27,7 @@ namespace WpfPrime
         public MainWindow()
         {
             InitializeComponent();
-            ActorServer.Start("localhost", 80, false);
+            ActorServer.Start("localhost", 80, null);
         }
 
         private void button_Click(object sender, RoutedEventArgs e)

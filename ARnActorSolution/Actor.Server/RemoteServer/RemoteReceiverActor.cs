@@ -12,10 +12,16 @@ namespace Actor.Server
 {
     class RemoteReceiverActor : BaseActor
     {
-        public RemoteReceiverActor(HttpListenerContext aContext)
+
+        public static void Cast(HttpListenerContext aContext)
         {
-            Become(new Behavior<HttpListenerContext>(t => { return true; }, DoContext));
-            SendMessage(aContext);
+            var remoteReceiver = new RemoteReceiverActor();
+            remoteReceiver.SendMessage(aContext);
+        }
+
+        public RemoteReceiverActor()
+        {
+            Become(new Behavior<HttpListenerContext>(t => { return true; }, DoContext));            
         }
 
         private void DoContext(HttpListenerContext aContext)

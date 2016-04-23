@@ -37,7 +37,7 @@ namespace Actor.TestApplication
             else
                 lPort = "80";
 
-            ActorServer.Start(lName, int.Parse(lPort));
+            ActorServer.Start(lName, int.Parse(lPort), new HostRelayActor());
             IActor fMain = new ActorMain();
 
             // new actActionReceiver().ConsoleWrite("Welcome in an action world");

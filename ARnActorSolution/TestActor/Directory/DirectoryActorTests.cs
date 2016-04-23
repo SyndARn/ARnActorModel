@@ -85,7 +85,7 @@ namespace TestActor
         [TestMethod()]
         public void DiscoTest()
         {
-            ActorServer.Start("localhost", 80,false );
+            ActorServer.Start("localhost", 80,null);
             fLauncher.SendAction(() =>
             {
                 var act = new DiscoTestActor(fLauncher);

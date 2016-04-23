@@ -24,6 +24,11 @@ namespace Actor.Server
         public HostRelayActor()
         {
             fListener = new HttpListener();
+            Become(new Behavior<String>(t => { return "Listen".Equals(t); }, DoListen));
+        }
+
+        private void StartServer()
+        {
             var localhost = Dns.GetHostName();
             var servername = ActorServer.GetInstance().Name;
             var prefix = "http://";
@@ -35,20 +40,20 @@ namespace Actor.Server
             {
                 fListener.Start();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Debug.WriteLine("Can't start http "+e );
+                Debug.WriteLine("Can't start http " + e);
             }
-            Become(new Behavior<String>(t => { return "Listen".Equals(t); }, DoListen));
-            SendMessage("Listen");
         }
 
         private void DoListen(Object aMsg)
         {
+            if (! fListener.IsListening)
+                StartServer();
             try
             {
                 HttpListenerContext Context = fListener.GetContext();
-                new RemoteReceiverActor(Context);
+                RemoteReceiverActor.Cast(Context);
                 SendMessage("Listen");
             }
             catch(Exception e)

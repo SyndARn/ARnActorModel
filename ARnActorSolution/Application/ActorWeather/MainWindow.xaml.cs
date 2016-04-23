@@ -40,7 +40,7 @@ namespace ActorWeather
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ActorServer.Start("localhost", 80, false);
+            ActorServer.Start("localhost", 80, null);
         }
     }
 }
