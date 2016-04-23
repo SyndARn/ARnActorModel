@@ -7,37 +7,57 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public class DictionaryActor<K,V> : BaseActor
-    {
 
-        private Dictionary<K, V> fDico = new Dictionary<K, V>();
+    public class DictionaryBehavior<Key,Value> : Behaviors, IDictionaryActor<Key,Value>
+    {
+        private Dictionary<Key, Value> fDico = new Dictionary<Key, Value>();
+
+        public DictionaryBehavior()
+        {
+            var bhv1 = new Behavior<Key, Value>( (k, v) => fDico[k] = v);
+            var bhv2 = new Behavior<IActor, Key>((a, k) =>
+                {
+                    Value v ;
+                    bool result = fDico.TryGetValue(k, out v);
+                    a.SendMessage(result, k, v);
+                });
+            AddBehavior(bhv1);
+            AddBehavior(bhv2);
+        }
+
+        public void AddKV(Key K, Value V)
+        {
+            LinkedActor.SendMessage(K, V);
+        }
+
+        public Future<Tuple<bool, Key, Value>> GetKV(Key k)
+        {
+            var future = new Future<Tuple<bool, Key, Value>>();
+            LinkedActor.SendMessage(future, k);
+            return future;
+        }
+    }
+
+
+    public class DictionaryActor<K,V> : BaseActor, IDictionaryActor<K, V>
+    {
+        private IDictionaryActor<K, V> fServiceDictionary;
 
         public DictionaryActor() : base()
         {
-            Become(new Behavior<K, V>(DoAddKV));
-            AddBehavior(new Behavior<IActor,K>(DoGetKV));
+            DictionaryBehavior<K, V> lServiceDictionary = new DictionaryBehavior<K, V>();
+            fServiceDictionary = lServiceDictionary;
+            BecomeMany(lServiceDictionary);
         }
 
         public void AddKV(K K, V V)
         {
-            this.SendMessage(K, V);
+            fServiceDictionary.AddKV(K, V);
         }
 
-        private void DoAddKV(K k, V v) => fDico[k] = v ;
-
-        public Future<Tuple<bool,K,V>> GetKV(K k)
+        public Future<Tuple<bool, K, V>> GetKV(K k)
         {
-            var future = new Future<Tuple<bool, K, V>>();
-            this.SendMessage(future, k);
-            return future;
+            return fServiceDictionary.GetKV(k);
         }
-
-        private void DoGetKV(IActor actor, K k)
-        {
-            V v;
-            bool result = fDico.TryGetValue(k, out v);
-            actor.SendMessage(result, k, v); 
-        }
-
     }
 }

@@ -247,6 +247,13 @@ namespace Actor.Base
             TrySetInTask();
         }
 
+        protected void AddBehaviors(IBehavior[] someBehavior)
+        {
+            foreach(var item in someBehavior)
+              fBehaviors.AddBehavior(item);
+            TrySetInTask();
+        }
+
         protected void AddBehavior(IBehavior aBehavior)
         {
             fBehaviors.AddBehavior(aBehavior);

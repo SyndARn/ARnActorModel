@@ -22,7 +22,7 @@ namespace Actor.Server
     /// 
     /// </summary>
     /// 
-    public enum BrokerAction { RegisterWorker };
+    public enum BrokerAction { RegisterWorker, UnRegisterWorker };
     public enum WorkerState { Ready, Busy };
 
     public class BrokerActor : BaseActor

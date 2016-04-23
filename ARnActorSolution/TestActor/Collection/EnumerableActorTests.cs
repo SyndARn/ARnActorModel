@@ -84,6 +84,7 @@ namespace TestActor
             fLauncher.SendAction(() =>
             {
                 var act = new EnumerableActor<string>();
+
                 foreach (var item in Enumerable.Range(0, 1000))
                 {
                     act.Add(item.ToString());
