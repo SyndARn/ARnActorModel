@@ -56,7 +56,7 @@ namespace Actor.Server
         private void DoDisco(string msg)
         {
             Become(new Behavior<Dictionary<string,string>>(Found));
-            BaseActor rem = new RemoteActor(new ActorTag(fUri));
+            BaseActor rem = new RemoteSenderActor(new ActorTag(fUri));
             rem += new DiscoCommand(this); // send message
         }
 
@@ -86,7 +86,7 @@ namespace Actor.Server
 
         private void DoConnect(ActorTag tag)
         {
-            IActor remoteSend = new RemoteActor(tag);
+            IActor remoteSend = new RemoteSenderActor(tag);
             fSender.SendMessage(new Tuple<string, ActorTag, IActor>(fServiceName, tag, remoteSend));
         }
 

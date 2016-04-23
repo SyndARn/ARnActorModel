@@ -17,31 +17,23 @@ using Actor.Base;
 namespace Actor.Server
 {
 
-    [Serializable]
-    public class SerialObject
-    {
-        public Object Data { get; set; }
-        public ActorTag Tag { get; set; }
-        public SerialObject() {  }
-    }
-
     // http listener ...
     public class HostRelayActor : BaseActor, IDisposable
     {
-        HttpListener Listener;
+        private HttpListener fListener;
         public HostRelayActor()
         {
-            Listener = new HttpListener();
+            fListener = new HttpListener();
             var localhost = Dns.GetHostName();
             var servername = ActorServer.GetInstance().Name;
             var prefix = "http://";
             var suffix = ":" + ActorServer.GetInstance().Port.ToString(CultureInfo.InvariantCulture);
-            Listener.Prefixes.Add(prefix + "localhost" + suffix + "/" + servername + "/");
-            Listener.Prefixes.Add(prefix + localhost + suffix + "/" + servername + "/");
-            Listener.Prefixes.Add(prefix + "127.0.0.1" + suffix + "/" + servername + "/");
+            fListener.Prefixes.Add(prefix + "localhost" + suffix + "/" + servername + "/");
+            fListener.Prefixes.Add(prefix + localhost + suffix + "/" + servername + "/");
+            fListener.Prefixes.Add(prefix + "127.0.0.1" + suffix + "/" + servername + "/");
             try
             {
-                Listener.Start();
+                fListener.Start();
             }
             catch(Exception e)
             {
@@ -55,8 +47,8 @@ namespace Actor.Server
         {
             try
             {
-                HttpListenerContext Context = Listener.GetContext();
-                new actProcessRelayRequest(Context);
+                HttpListenerContext Context = fListener.GetContext();
+                new RemoteReceiverActor(Context);
                 SendMessage("Listen");
             }
             catch(Exception e)
@@ -80,8 +72,8 @@ namespace Actor.Server
                     // Free other state (managed objects).
                     // fEvent.Dispose();
                 }
-                if (Listener != null)
-                    Listener.Close();
+                if (fListener != null)
+                    fListener.Close();
                 // Free your own state (unmanaged objects).
                 // Set large fields to null.
         }

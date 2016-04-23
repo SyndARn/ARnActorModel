@@ -100,9 +100,7 @@ namespace TestActor
             lst.Add(tst2);
 
             // serialize
-            SerialObject so = new SerialObject();
-            so.Data = lst;
-            so.Tag = new ActorTag("test uri") ;
+            SerialObject so = new SerialObject(lst, new ActorTag("test uri"));
             NetDataContractSerializer dcs = new NetDataContractSerializer();
             dcs.SurrogateSelector = new ActorSurrogatorSelector();
             dcs.Binder = new ActorBinder();

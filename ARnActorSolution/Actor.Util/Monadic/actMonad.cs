@@ -17,29 +17,37 @@ namespace Actor.Util
     {
     }
 
-    public class monadIdentity<T> : BaseActor
+    public class Identity<T>
     {
-        public T Value {get; private set;}
-        public monadIdentity(T aValue) {Value = aValue ;}
+        public T Value { get; private set; }
+        public Identity(T aValue) { Value = aValue; }
     }
 
-    public static class monadIdentityHelper
+    public static class LinqHelper
     {
-        public static monadIdentity<T> Unit<T>(this T aValue)
+        public static Identity<C> SelectMany<A, B, C>(this Identity<A> a, Func<A, Identity<B>> fct, Func<A, B, C> select)
         {
-            return new monadIdentity<T>(aValue) ;
+            return select(a.Value, a.Bind(fct).Value).ToIdentity();
         }
-        public static monadIdentity<T> Bind<T>(this monadIdentity<T> aT, Func<T,monadIdentity<T>> fct)
-        {
-            return fct(aT.Value) ;
-        }
-
-        public static monadIdentity<T> ToIdentity<T>(this T aValue) 
-        { return Unit(aValue); }
-
-        public static monadIdentity<T> SelectMany<T>(this monadIdentity<T> aT, Func<T,monadIdentity<T>> fct)
-        { return Bind(aT,fct); }
     }
+
+    public static class IdentityHelper
+    {
+
+        public static Identity<B> Bind<A, B>(this Identity<A> a, Func<A, Identity<B>> func)
+        {
+            return func(a.Value);
+        }
+
+        public static Identity<T> ToIdentity<T>(this T value)
+        {
+            return new Identity<T>(value);
+        }
+
+    }
+
+    interface MayBe<T> { }
+
 
 
 }

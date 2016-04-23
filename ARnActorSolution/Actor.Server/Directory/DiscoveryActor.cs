@@ -47,7 +47,7 @@ namespace Actor.Server
         {
             Become(new Behavior<Dictionary<string,string>>(t => {return true ;}, 
                 Found)) ;
-            var rem = new RemoteActor(new ActorTag(hostAddress));
+            var rem = new RemoteSenderActor(new ActorTag(hostAddress));
             rem.SendMessage(new DiscoCommand(this));
         }
 

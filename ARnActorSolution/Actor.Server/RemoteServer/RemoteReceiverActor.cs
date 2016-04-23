@@ -10,9 +10,9 @@ using System.Diagnostics;
 
 namespace Actor.Server
 {
-    class actProcessRelayRequest : BaseActor
+    class RemoteReceiverActor : BaseActor
     {
-        public actProcessRelayRequest(HttpListenerContext aContext)
+        public RemoteReceiverActor(HttpListenerContext aContext)
         {
             Become(new Behavior<HttpListenerContext>(t => { return true; }, DoContext));
             SendMessage(aContext);

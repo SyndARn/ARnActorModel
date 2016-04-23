@@ -16,7 +16,7 @@ namespace Actor.Server
             IActor act = (IActor)obj;
             HostDirectoryActor.Register(act);
             // continue
-            info.SetType(typeof(RemoteActor));
+            info.SetType(typeof(RemoteSenderActor));
             ActorTag remoteTag = act.Tag;
             info.AddValue("RemoteTag", remoteTag, typeof(ActorTag));
         }
@@ -25,7 +25,7 @@ namespace Actor.Server
         {
             // Reset the property value using the GetValue method.
 
-            RemoteActor remoteActor = obj as RemoteActor;
+            RemoteSenderActor remoteActor = obj as RemoteSenderActor;
             // force misc init
             if (remoteActor != null)
             {
@@ -34,9 +34,9 @@ namespace Actor.Server
                     throw new ActorException("Receiving null SerializationInfo");
                 }
                 BaseActor.CompleteInitialize(remoteActor);
-                RemoteActor.CompleteInitialize(remoteActor);
+                RemoteSenderActor.CompleteInitialize(remoteActor);
                 ActorTag getTag = (ActorTag)info.GetValue("RemoteTag", typeof(ActorTag));
-                typeof(RemoteActor).GetField("fRemoteTag").SetValue(obj, getTag);
+                typeof(RemoteSenderActor).GetField("fRemoteTag").SetValue(obj, getTag);
             }
 
 

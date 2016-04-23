@@ -37,20 +37,20 @@ namespace Actor.Server
 
     /// <summary>
     /// actRemoteActor
-    ///   A remote Actor is used (transparently) when sending messages across servers (ie across process)
+    ///   A Remote Sender is used (transparently) when sending messages across servers (ie across process)
     /// </summary>
-    public class RemoteActor : BaseActor
+    public class RemoteSenderActor : BaseActor
     {
 
         public ActorTag fRemoteTag;
 
-        public static void CompleteInitialize(RemoteActor anActor)
+        public static void CompleteInitialize(RemoteSenderActor anActor)
         {
             CheckArg.Actor(anActor);
             anActor.Become(new Behavior<Object>(anActor.DoRouting));
         }
 
-        public RemoteActor(ActorTag aTag)
+        public RemoteSenderActor(ActorTag aTag)
             : base()
         {
             fRemoteTag = aTag;
@@ -65,9 +65,7 @@ namespace Actor.Server
         private void SendRemoteMessage(Object aMsg)
         {
             // send message with http
-            SerialObject so = new SerialObject();
-            so.Data = aMsg;
-            so.Tag = fRemoteTag;
+            SerialObject so = new SerialObject(aMsg,fRemoteTag);
 
             using (MemoryStream ms = new MemoryStream())
             {
