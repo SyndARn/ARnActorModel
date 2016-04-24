@@ -13,7 +13,7 @@ namespace Actor.Service
     {
         public TraceActor()
         {
-            Become(null);
+            Become(new NullBehaviors());
         }
 
         private static Lazy<LoggerActor> fLogger = new Lazy<LoggerActor>

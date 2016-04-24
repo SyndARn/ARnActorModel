@@ -196,7 +196,7 @@ namespace Actor.Util
         public CollectionActor()
             : base()
         {
-            BecomeMany(new CollectionBehaviors<T>());
+            Become(new CollectionBehaviors<T>());
         }
 
         public IEnumerator<T> GetEnumerator()

@@ -46,7 +46,7 @@ namespace Actor.Server
             behaviors.AddBehavior(new ActionBehavior<IActor>());
             behaviors.AddBehavior(new ActionBehavior());
             behaviors.AddBehavior(new Behavior<SerialObject>(DoRouting));
-            BecomeMany(behaviors);
+            Become(behaviors);
         }
 
         private void DoRouting(SerialObject aMsg)

@@ -26,7 +26,7 @@ namespace Actor.Util
             // get number of actor in hostdirectory
             sb.AppendLine(HostDirectoryActor.GetInstance().GetStat());
             msg.SendMessage(sb.ToString()) ;
-            Become(null);
+            Become(new NullBehaviors());
         }
     }
 }

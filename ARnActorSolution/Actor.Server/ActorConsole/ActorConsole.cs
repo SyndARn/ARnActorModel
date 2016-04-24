@@ -34,7 +34,7 @@ namespace Actor.Server
     {
         public ActorConsole()
         {
-            BecomeMany(new ConsoleBehavior());
+            Become(new ConsoleBehavior());
         }
 
         public static void Register()

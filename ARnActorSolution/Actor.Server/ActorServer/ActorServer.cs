@@ -60,7 +60,7 @@ namespace Actor.Server
             ActorConsole.Register(); // Start console
             // should work now
             SendByName<string>.Send("Actor Server Start", "Console");
-            Become(null);
+            Become(new NullBehavior());
             if (hostRelayActor != null)
             {
                 new ShardDirectoryActor(); // start shard directory

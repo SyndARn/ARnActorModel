@@ -95,7 +95,7 @@ namespace Actor.Base
             Behaviors bhvs = new Behaviors();
             bhvs.AddBehavior(new ActionBehavior());
             bhvs.AddBehavior(new ActionBehavior<T>());
-            BecomeMany(bhvs);
+            Become(bhvs);
         }
 
         public void SendAction(Action anAction) => SendMessage(anAction);

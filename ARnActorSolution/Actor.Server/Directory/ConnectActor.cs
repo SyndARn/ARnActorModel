@@ -74,13 +74,13 @@ namespace Actor.Server
                 else
                 // service with no end point
                 {
-                    Become(null);
+                    Become(new NullBehaviors());
                 }
             }
             else
             // not found
             {
-                Become(null);
+                Become(new NullBehaviors());
             }
         }
 

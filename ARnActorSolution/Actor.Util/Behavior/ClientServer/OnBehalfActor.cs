@@ -17,7 +17,7 @@ namespace Actor.Util
         private void DoIt(Tuple<Action, IActor> msg)
         {
             msg.Item2.SendMessage(msg.Item1);
-            Become(null);
+            Become(new NullBehaviors());
         }
     }
 }

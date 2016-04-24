@@ -97,7 +97,7 @@ namespace Actor.Util
             bhvs.AddBehavior(bhvMap2Index);
             bhvs.AddBehavior(bhvMap2EndOfJov);
             bhvs.AddBehavior(bhvReduceToOutput);
-            BecomeMany(bhvs);
+            Become(bhvs);
         }
     }
 

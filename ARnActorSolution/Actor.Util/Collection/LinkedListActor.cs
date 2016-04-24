@@ -35,7 +35,7 @@ namespace Actor.Util
         public LinkedListActor()
             : base()
         {
-            BecomeMany(new LinkedListBehaviors<T>());
+            Become(new LinkedListBehaviors<T>());
         }
     }
 

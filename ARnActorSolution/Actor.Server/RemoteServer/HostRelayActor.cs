@@ -59,7 +59,7 @@ namespace Actor.Server
             catch(Exception e)
             {
                 Debug.WriteLine("Can't listen " + e);
-                Become(null);
+                Become(new NullBehavior());
             }
         }
 

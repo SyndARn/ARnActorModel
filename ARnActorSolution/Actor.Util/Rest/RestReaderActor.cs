@@ -34,7 +34,7 @@ namespace Actor.Util
     {
         public RestReaderActor() : base()
         {
-            BecomeMany(new BehaviorsRestReader()) ;
+            Become(new BehaviorsRestReader()) ;
         }
 
         public void SendRest(Uri anUri, IActor answer) 

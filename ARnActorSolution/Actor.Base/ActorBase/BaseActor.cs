@@ -25,6 +25,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
@@ -45,7 +46,7 @@ namespace Actor.Base
     {
         public ActorTag Tag { get; private set; } // unique identifier, and host
 
-        private Behaviors fBehaviors; // our behavior
+        private List<IBehavior> fListBehaviors = new List<IBehavior>(); // our behavior
         private ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>(); // receive behaviors
         private ActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
         private int fInTask = 0; // 0 out of task, 1 in task
@@ -57,6 +58,7 @@ namespace Actor.Base
         public static void CompleteInitialize(BaseActor anActor)
         {
             if (anActor == null) throw new ActorException("Null actor");
+            anActor.fListBehaviors = new List<IBehavior>();
             anActor.fCompletions = new ConcurrentQueue<IBehavior>();
             anActor.fMailBox = new ActorMailBox<object>();
             if (anActor.Tag == null)
@@ -102,36 +104,31 @@ namespace Actor.Base
             Interlocked.Add(ref messCount, fMailBox.RefreshFromMissed());
         }
 
-        private static void DoSendMessageTo(Object msg, IActor aTargetActor)
+        private static void SendWithRedirector(object msg, IActor aTargetActor)
         {
             ((BaseActor)aTargetActor).TrySetInTask(msg);
         }
 
-        private void SendMessageTo(Object msg)
-        {
-            TrySetInTask(msg);
-        }
-
-        public void SendMessage(Object msg)
+        public void SendMessage(object msg)
         {
             if (fRedirector != null)
             {
-                DoSendMessageTo(new RedirectMessage(msg, this), fRedirector);
+                SendWithRedirector(new RedirectMessage(msg, this), fRedirector);
             }
             else
             {
-                SendMessageTo(msg);
+                TrySetInTask(msg);
             }
         }
 
-        public static BaseActor Add(BaseActor anActor, Object aMessage)
+        public static BaseActor Add(BaseActor anActor, object aMessage)
         {
             CheckArg.Actor(anActor);
             anActor.SendMessage(aMessage);
             return anActor;
         }
 
-        public static BaseActor operator +(BaseActor anActor, Object aMessage)
+        public static BaseActor operator +(BaseActor anActor, object aMessage)
         {
             return Add(anActor, aMessage);
         }
@@ -139,7 +136,7 @@ namespace Actor.Base
         public BaseActor(Behaviors someBehaviors)
         {
             Tag = new ActorTag();
-            BecomeMany(someBehaviors);
+            Become(someBehaviors);
         }
 
         public BaseActor(IBehavior aBehavior)
@@ -151,7 +148,7 @@ namespace Actor.Base
         public BaseActor(IBehavior[] someBehaviors)
         {
             Tag = new ActorTag();
-            Becomes(someBehaviors);
+            Become(someBehaviors);
         }
 
         public BaseActor()
@@ -216,47 +213,55 @@ namespace Actor.Base
             return msg;
         }
 
-        protected void BecomeMany(Behaviors someBehaviors)
+        protected void Become(Behaviors someBehaviors)
         {
             CheckArg.Behaviors(someBehaviors);
-            fBehaviors = someBehaviors;
-            fBehaviors.LinkToActor(this);
+            fListBehaviors.Clear();
+            someBehaviors.LinkToActor(this);
+            fListBehaviors.AddRange(someBehaviors.AllBehaviors());
             AddMissedMessages();
             TrySetInTask();
         }
 
-        protected void Become(IBehavior aBehavior)
+        protected void Become(params IBehavior[] manyBehaviors)
         {
-            fBehaviors = new Behaviors();
-            fBehaviors.AddBehavior(aBehavior);
-            fBehaviors.LinkToActor(this);
-            AddMissedMessages();
-            TrySetInTask();
-        }
+            if (manyBehaviors == null)
+            {
+                throw new ActorException("Null manyBehaviors");
+            }
 
-        protected void Becomes(params IBehavior[] manyBehaviors)
-        {
-            if (manyBehaviors == null) throw new ActorException("Null manyBehaviors");
-            fBehaviors = new Behaviors();
+            fListBehaviors.Clear();
+
+            var someBehaviors = new Behaviors();
             foreach (var item in manyBehaviors)
             {
-                fBehaviors.AddBehavior(item);
+                someBehaviors.AddBehavior(item);
+                fListBehaviors.Add(item);
             }
-            fBehaviors.LinkToActor(this);
+            someBehaviors.LinkToActor(this);
             AddMissedMessages();
             TrySetInTask();
         }
 
-        protected void AddBehaviors(IBehavior[] someBehavior)
+        protected void AddBehavior(Behaviors someBehaviors)
         {
-            foreach(var item in someBehavior)
-              fBehaviors.AddBehavior(item);
+            CheckArg.Behaviors(someBehaviors);
+            someBehaviors.LinkToActor(this);
+            fListBehaviors.AddRange(someBehaviors.AllBehaviors());
+            AddMissedMessages();
             TrySetInTask();
         }
 
-        protected void AddBehavior(IBehavior aBehavior)
+        protected void AddBehavior(params IBehavior[] someBehavior)
         {
-            fBehaviors.AddBehavior(aBehavior);
+            var someBehaviors = new Behaviors();
+
+            foreach (var item in someBehavior)
+            {
+                someBehaviors.AddBehavior(item);
+                fListBehaviors.Add(item);
+            }
+            someBehaviors.LinkToActor(this);
             AddMissedMessages();
             TrySetInTask();
         }
@@ -264,7 +269,7 @@ namespace Actor.Base
         protected void RemoveBehavior(IBehavior aBehavior)
         {
             AddMissedMessages();
-            fBehaviors.RemoveBehavior(aBehavior);
+            fListBehaviors.Remove(aBehavior);
         }
 
 
@@ -285,14 +290,16 @@ namespace Actor.Base
                 {
                     patternmatch = false;
                     receivematch = false;
+                    tcs = null;
 
                     // pattern matching
-                    if (fBehaviors != null)
+                    foreach (var fBehavior in fListBehaviors)
                     {
-                        tcs = fBehaviors.PatternMatching(msg);
-                        if (tcs != null)
+                        if ((fBehavior != null) && (fBehavior.StandardPattern(msg)))
                         {
+                            tcs = fBehavior;
                             patternmatch = true;
+                            break;
                         }
                     }
 
@@ -315,12 +322,12 @@ namespace Actor.Base
 
                 if (patternmatch)
                 {
-                    if (Interlocked.CompareExchange(ref fReceive,fReceive,0) ==0)
+                    if (Interlocked.CompareExchange(ref fReceive, fReceive, 0) == 0)
                     {
                         tcs.StandardApply(msg);
                         patternmatch = false;
                         if (Interlocked.CompareExchange(ref fReceive, fReceive, 0) != 0)
-                        { 
+                        {
                             break;
                         }
                     }

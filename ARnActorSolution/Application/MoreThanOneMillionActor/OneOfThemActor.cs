@@ -39,8 +39,8 @@ namespace MoreThanOneMillionActor
     {
         public OneOfThemActor(int i) : base()
         {
-            Set(i);
             AddBehavior(new Behavior<IActor>(Observe));
+            Set(i);
             // SendMessage(observer);
         }
 

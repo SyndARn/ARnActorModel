@@ -58,7 +58,7 @@ namespace Actor.Server
             {
                 Console.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0} - {1}",s,aList[s]));
             }
-            Become(null);
+            Become(new NullBehaviors());
         }
     }
 

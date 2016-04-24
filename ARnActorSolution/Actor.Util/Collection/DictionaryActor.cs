@@ -47,7 +47,7 @@ namespace Actor.Util
         {
             DictionaryBehavior<K, V> lServiceDictionary = new DictionaryBehavior<K, V>();
             fServiceDictionary = lServiceDictionary;
-            BecomeMany(lServiceDictionary);
+            Become(lServiceDictionary);
         }
 
         public void AddKV(K K, V V)

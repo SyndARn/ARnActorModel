@@ -85,7 +85,7 @@ namespace Actor.RemoteLoading
         public actActorDownloadTest()
             : base()
         {
-            this.BecomeMany(new ConsoleBehavior());
+            this.Become(new ConsoleBehavior());
             // start download
             IActor down = new actActorDownload();
             // start upload

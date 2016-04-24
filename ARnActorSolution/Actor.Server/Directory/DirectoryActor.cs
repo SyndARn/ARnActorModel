@@ -47,7 +47,7 @@ namespace Actor.Server
             Behaviors bhvs = new Behaviors();
             bhvs.AddBehavior(new ActionBehavior<IActor>()) ;
             bhvs.AddBehavior(new ActionBehavior<IActor,string>());
-            BecomeMany(bhvs);
+            Become(bhvs);
         }
 
         public static DirectoryActor GetDirectory()

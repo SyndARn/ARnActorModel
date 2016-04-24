@@ -77,6 +77,7 @@
     <Compile Include="ActorBase\ActorFuture.cs" />
     <Compile Include="ActorBase\BaseActor.cs" />
     <Compile Include="ActorBase\ActorInjection.cs" />
+    <Compile Include="Behavior\NullBehavior.cs" />
     <Compile Include="Exception\ActorException.cs" />
     <Compile Include="Composition\ActorComposition.cs" />
     <Compile Include="ActorBase\ActorMailBox.cs" />

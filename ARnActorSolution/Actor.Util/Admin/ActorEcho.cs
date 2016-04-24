@@ -25,7 +25,7 @@ namespace Actor.Util
         public EchoActor(IActor dest, String value)
         {
             if (dest == null) throw new ActorException("Dest can't be null");
-            BecomeMany(new ConsoleBehavior());
+            Become(new ConsoleBehavior());
             dest.SendMessage(new Tuple<IActor, String>(this, value));
         }
     }

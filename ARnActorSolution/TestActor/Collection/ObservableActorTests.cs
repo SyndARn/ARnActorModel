@@ -60,7 +60,6 @@ namespace TestActor
         {
             public TestObserver() : base()
             {
-                Become(null);
             }
 
             public string GetData()
