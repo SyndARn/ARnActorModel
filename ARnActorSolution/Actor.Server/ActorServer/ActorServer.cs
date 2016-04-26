@@ -14,6 +14,7 @@ namespace Actor.Server
     {
         public string Name { get; private set; }
         public int Port { get; private set; }
+        public ISerializeService SerializeService { get; private set; }
         private string fFullHost = "" ;
         private HostRelayActor fActHostRelay;
         public string FullHost { get 
@@ -51,6 +52,7 @@ namespace Actor.Server
         {
             Name = lName;
             Port = lPort;
+            SerializeService = new ConfigManager().GetSerializeService();
             ActorTagHelper.SetFullHost(Fullhost());
         }
 

@@ -13,6 +13,8 @@ namespace Actor.Server
     class RemoteReceiverActor : BaseActor
     {
 
+        ISerializeService fSerializeService;
+
         public static void Cast(HttpListenerContext aContext)
         {
             var remoteReceiver = new RemoteReceiverActor();
@@ -21,6 +23,7 @@ namespace Actor.Server
 
         public RemoteReceiverActor()
         {
+            fSerializeService = ActorServer.GetInstance().SerializeService;
             Become(new Behavior<HttpListenerContext>(t => { return true; }, DoContext));            
         }
 
@@ -40,7 +43,9 @@ namespace Actor.Server
                 }
 
                 ms.Seek(0, SeekOrigin.Begin);
-                SerialObject so = NetDataActorSerializer.DeSerialize(ms);
+
+                // SerialObject so = NetDataActorSerializer.DeSerialize(ms);
+                SerialObject so = fSerializeService.DeSerialize(ms);
                 // prepare an answer
                 HttpListenerResponse Response = aContext.Response;
 

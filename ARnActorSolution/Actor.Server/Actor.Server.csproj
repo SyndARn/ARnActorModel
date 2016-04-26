@@ -57,6 +57,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -72,6 +73,7 @@
     <Compile Include="ActorConsole\ActorConsole.cs" />
     <Compile Include="ActorConsole\ConsoleBehavior.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
+    <Compile Include="ActorServer\ConfigManager.cs" />
     <Compile Include="ActorServer\ShardDirectoryActor.cs" />
     <Compile Include="Broker\BrokerActor.cs" />
     <Compile Include="Directory\ConnectActor.cs" />

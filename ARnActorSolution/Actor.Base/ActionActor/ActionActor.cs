@@ -65,6 +65,15 @@ namespace Actor.Base
         }
     }
 
+    public class ActionBehaviors<T> : Behaviors
+    {
+        public ActionBehaviors() : base()
+        {
+            AddBehavior(new ActionBehavior());
+            AddBehavior(new ActionBehavior<T>());
+        }
+    }
+
     /// <summary>
     /// actActionActor
     ///     Action actor are a facility : they provide template to send method as message within an actor
@@ -92,10 +101,7 @@ namespace Actor.Base
         public ActionActor()
             : base()
         {
-            Behaviors bhvs = new Behaviors();
-            bhvs.AddBehavior(new ActionBehavior());
-            bhvs.AddBehavior(new ActionBehavior<T>());
-            Become(bhvs);
+            Become(new ActionBehaviors<T>());
         }
 
         public void SendAction(Action anAction) => SendMessage(anAction);
