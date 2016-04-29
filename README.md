@@ -26,4 +26,4 @@ I was looking for an actor model things with some requirements :
 
 Unit tests are included as well as some sample applications.
 
-For a common usage, you can find SyndARn here in Nuget : https://www.nuget.org/packages/ARnActorModel/0.1.1
+For a common usage, you can find SyndARn here in Nuget : https://www.nuget.org/packages/ARnActorModel/
