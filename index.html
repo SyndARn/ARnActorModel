@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -23,18 +23,20 @@
         </header>
 
         <section id="downloads" class="clearfix">
-          <a href="https://github.com/SyndARn/ARnActorSolution/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/SyndARn/ARnActorSolution/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/SyndARn/ARnActorSolution" id="view-on-github" class="button"><span>View on GitHub</span></a>
+          <a href="https://github.com/SyndARn/ARnActorModel/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/SyndARn/ARnActorModel/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/SyndARn/ARnActorModel" id="view-on-github" class="button"><span>View on GitHub</span></a>
         </section>
 
         <hr>
 
         <section id="main_content">
           <h1>
-<a id="arnactor-actor-model-solution-for-net-c" class="anchor" href="#arnactor-actor-model-solution-for-net-c" aria-hidden="true"><span class="octicon octicon-link"></span></a>ARnActor Actor Model solution for .NET C</h1>
+<a id="arnactor-actor-model-solution-for-net-c" class="anchor" href="#arnactor-actor-model-solution-for-net-c" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ARnActor Actor Model solution for .NET C</h1>
 
 <p>ARnActor is a small Actor Model Library for C#.</p>
+
+<p>Nuget : <a href="https://www.nuget.org/packages/ARnActorModel/">https://www.nuget.org/packages/ARnActorModel/</a></p>
 
 <p>This is a first draft, so be patient for anything else.</p>
 
@@ -46,7 +48,7 @@
 <p>To send a message to another actor :
     var receiver = new actActor() ;</p>
 
-<pre><code>actor.SendMessageTo("Hello world",receiver) ;
+<pre><code>actor.SendMessage("Hello world",receiver) ;
 </code></pre>
 
 <p>Some samples are furnished around a small console application, try :</p>
