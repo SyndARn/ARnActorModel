@@ -90,13 +90,12 @@
     <Compile Include="RemoteServer\RemoteReceiverActor.cs" />
     <Compile Include="RemoteServer\actTcpServer.cs" />
     <Compile Include="Serializer\ActorSurrogator.cs" />
+    <Compile Include="Serializer\ISerializeService.cs" />
     <Compile Include="Serializer\JSON.cs" />
+    <Compile Include="Serializer\NetDataContract\NetDataContractSerializeService.cs" />
     <Compile Include="Serializer\NetDataContract\NetDataActorSerializer.cs" />
     <Compile Include="Serializer\SerializationHelper.cs" />
     <Compile Include="Serializer\SerialObject.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Actor.Base\Actor.Base.csproj">

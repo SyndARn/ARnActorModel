@@ -61,7 +61,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Doc\ARnActorKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>ARnActorKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -102,14 +102,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Doc\ARnActorDoc.html" />
-    <Compile Include="Doc\Licence.cs" />
     <Content Include="Supervision\Pattern.txt" />
-    <Content Include="Doc\TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Doc\ARnActorKey.snk" />
-    <None Include="Doc\ClassDiagram1.cd" />
+    <None Include="ARnActorKey.snk" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
