@@ -36,7 +36,19 @@ namespace Actor.Base
 
         private static long fBaseId = 0;
 
-        internal static long CastNewTagId() { return Interlocked.Increment(ref fBaseId); }
+        internal static Guid CastNewTagId()
+        {
+            long baseId = Interlocked.Increment(ref fBaseId);
+            Guid guid = new Guid(0, 0, 0, BitConverter.GetBytes(baseId));
+            return guid;
+        }
+
+        internal static Guid CastWithHash(long hash)
+        {
+            long baseId = Interlocked.Increment(ref fBaseId);
+            Guid guid = new Guid(BitConverter.GetBytes((hash << 64) + baseId));
+            return guid;
+        }
 
         private static string fFullHost = "";
 
@@ -54,9 +66,9 @@ namespace Actor.Base
     {
         private string fUri;
         private bool fIsRemote;
-        private long fId;
+        private Guid fId;
 
-        public long Id { get { return fId; } }
+        public Guid Id { get { return fId; } }
 
         public string Uri
         {
@@ -70,7 +82,7 @@ namespace Actor.Base
             }
         }
 
-        public bool IsRemote { get { return fIsRemote; } }
+        private bool IsRemote { get { return fIsRemote; } }
 
         public ActorTag()
         {
@@ -97,7 +109,7 @@ namespace Actor.Base
             }
             else
             {
-                return Uri + Id.ToString(System.Globalization.CultureInfo.InvariantCulture);
+                return Uri + Id.ToString();
             }
         }
     }

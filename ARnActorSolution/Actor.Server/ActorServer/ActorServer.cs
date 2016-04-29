@@ -53,6 +53,7 @@ namespace Actor.Server
             Name = lName;
             Port = lPort;
             SerializeService = new ConfigManager().GetSerializeService();
+
             ActorTagHelper.SetFullHost(Fullhost());
         }
 
