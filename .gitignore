@@ -106,3 +106,17 @@
 /ARnActorSolution/Application/AvecVoie/bin/Debug
 /ARnActorSolution/Application/MapReduceApplication/bin/Debug
 /ARnActorSolution/Application/MapReduceApplication/obj/Debug
+/ARnActorSolution/Application/MoreThanOneMillionActor/bin/Release
+/ARnActorSolution/Application/MapReduceApplication/obj/Release
+/ARnActorSolution/Application/MapReduceApplication/bin/Release
+/ARnActorSolution/Application/LinqAndActorApplication/obj/Release
+/ARnActorSolution/Application/LinqAndActorApplication/bin/Release
+/ARnActorSolution/Application/FsmTestApplication/obj/Release
+/ARnActorSolution/Application/FsmTestApplication/bin/Release
+/ARnActorSolution/Application/AvecVoie/bin/Release
+/ARnActorSolution/Application/ARnActorHelloWorld/bin/Release
+/ARnActorSolution/Application/ARnActorHelloWorld/obj/Release
+/ARnActorSolution/Application/ActorWeather/bin/Release
+/ARnActorSolution/Actor.Windows/bin/Release
+/ARnActorSolution/ActorGraph/bin/Release
+/ARnActorSolution/Actor.Server/bin/Release
