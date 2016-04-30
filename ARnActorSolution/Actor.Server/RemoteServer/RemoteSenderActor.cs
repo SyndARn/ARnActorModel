@@ -58,15 +58,15 @@ namespace Actor.Server
         {
             fRemoteTag = aTag;
             fSerializeService = ActorServer.GetInstance().SerializeService;
-            Become(new Behavior<Object>(DoRouting));
+            Become(new Behavior<object>(DoRouting));
         }
 
-        private void DoRouting(Object aMsg)
+        private void DoRouting(object aMsg)
         {
             SendRemoteMessage(aMsg);
         }
 
-        private void SendRemoteMessage(Object aMsg)
+        private void SendRemoteMessage(object aMsg)
         {
             // send message with http
             SerialObject so = new SerialObject(aMsg, fRemoteTag);
@@ -76,25 +76,28 @@ namespace Actor.Server
             {
                 ms = new MemoryStream();
 
-                fSerializeService.Serialize(so, ms);
-                // NetDataActorSerializer.Serialize(so, ms);
+                fSerializeService.Serialize(so, ms);                
 
                 ms.Seek(0, SeekOrigin.Begin);
-                using (StreamReader srDebug = new StreamReader(ms))
-                {
-                    while (!srDebug.EndOfStream)
-                        Debug.Print(srDebug.ReadLine());
 
-                    ms.Seek(0, SeekOrigin.Begin);
-                    using (var client = new HttpClient())
-                    {
-                        using (var hc = new StreamContent(ms))
-                        {
-                            Uri uri = new Uri(so.Tag.Uri);
-                            client.PostAsync(uri, hc).Wait();
-                        }
-                    }
-                }
+                IContextComm contextComm = ActorServer.GetInstance().ListenerService.GetCommunicationContext();
+                contextComm.SendStream(so.Tag.Uri,ms);
+
+                //using (StreamReader srDebug = new StreamReader(ms))
+                //{
+                //    while (!srDebug.EndOfStream)
+                //        Debug.Print(srDebug.ReadLine());
+
+                //    ms.Seek(0, SeekOrigin.Begin);
+                //    using (var client = new HttpClient())
+                //    {
+                //        using (var hc = new StreamContent(ms))
+                //        {
+                //            Uri uri = new Uri(so.Tag.Uri);
+                //            client.PostAsync(uri, hc).Wait();
+                //        }
+                //    }
+                //}
             }
             finally
             {

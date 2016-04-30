@@ -211,6 +211,7 @@ namespace Actor.Util
 
         public void Add(T aData)
         {
+            // TODO this is weird
             Receive(t =>
             {
                 var val = t is CollectionRequest;
@@ -221,6 +222,7 @@ namespace Actor.Util
 
         public void Remove(T aData)
         {
+            // TODO this is weird
             Receive(t =>
             {
                 var val = t is CollectionRequest;

@@ -85,6 +85,8 @@
     <Compile Include="RemoteServer\HttpListenerService.cs" />
     <Compile Include="RemoteServer\IContextComm.cs" />
     <Compile Include="RemoteServer\IListenerService.cs" />
+    <Compile Include="RemoteServer\MemoryContextComm.cs" />
+    <Compile Include="RemoteServer\MemoryListenerService.cs" />
     <Compile Include="RemoteServer\RemoteSenderActor.cs" />
     <Compile Include="Directory\SendByNameActor.cs" />
     <Compile Include="Directory\DiscoCommand.cs" />

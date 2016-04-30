@@ -11,5 +11,6 @@ namespace Actor.Server
     {
         Stream ReceiveStream();
         void Acknowledge();
+        void SendStream(string uri, Stream stream);
     }
 }

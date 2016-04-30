@@ -87,6 +87,7 @@
     <Compile Include="Graph\bhvGraphTests.cs" />
     <Compile Include="Collection\DictionaryActorTests.cs" />
     <Compile Include="ProcessActor\ProcessActorTests.cs" />
+    <Compile Include="RemoteServer\MemoryContextCommTests.cs" />
     <Compile Include="Service\actRingTests.cs" />
     <Compile Include="Util\TestLauncherActor.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />

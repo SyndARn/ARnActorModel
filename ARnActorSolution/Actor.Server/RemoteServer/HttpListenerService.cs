@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Actor.Server
 {
-
+    
     class HttpListenerService : IListenerService
     {
         private HttpListener fListener;
