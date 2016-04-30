@@ -20,7 +20,7 @@ I was looking for an actor model things with some requirements :
     receiver.SendMessage("something") ;
  
 #The library holds some useful features :
--  behavior can be affected or remove from actor, (an actor can change it's behavior ...)
+-  behavior can be attached or removed from actor, (an actor can change it's own behavior ...)
 -  actor can send messages across servers, you just need to hold a reference to another actor on a server ...
 -  some actor can behave as public services, or be supervised
 
