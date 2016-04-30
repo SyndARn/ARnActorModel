@@ -84,7 +84,7 @@
     <Compile Include="ActionActor\ActionActorTest.cs" />
     <Compile Include="Collection\ActorCollectionTest.cs" />
     <Compile Include="Collection\ActorQueueTest.cs" />
-    <Compile Include="Actors\bhvGraphTests.cs" />
+    <Compile Include="Graph\bhvGraphTests.cs" />
     <Compile Include="Collection\DictionaryActorTests.cs" />
     <Compile Include="ProcessActor\ProcessActorTests.cs" />
     <Compile Include="Service\actRingTests.cs" />

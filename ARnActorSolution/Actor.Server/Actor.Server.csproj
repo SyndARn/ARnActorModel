@@ -81,6 +81,10 @@
     <Compile Include="Directory\DiscoveryActor.cs" />
     <Compile Include="Directory\HostDirectoryActor.cs" />
     <Compile Include="Factory\ActorAddressFactory.cs" />
+    <Compile Include="RemoteServer\HttpContextComm.cs" />
+    <Compile Include="RemoteServer\HttpListenerService.cs" />
+    <Compile Include="RemoteServer\IContextComm.cs" />
+    <Compile Include="RemoteServer\IListenerService.cs" />
     <Compile Include="RemoteServer\RemoteSenderActor.cs" />
     <Compile Include="Directory\SendByNameActor.cs" />
     <Compile Include="Directory\DiscoCommand.cs" />

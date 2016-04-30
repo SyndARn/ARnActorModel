@@ -20,40 +20,23 @@ namespace Actor.Server
     // http listener ...
     public class HostRelayActor : BaseActor, IDisposable
     {
-        private HttpListener fListener;
+        private IListenerService fListener;
         public HostRelayActor()
         {
-            fListener = new HttpListener();
             Become(new Behavior<String>(t => { return "Listen".Equals(t); }, DoListen));
         }
 
-        private void StartServer()
-        {
-            var localhost = Dns.GetHostName();
-            var servername = ActorServer.GetInstance().Name;
-            var prefix = "http://";
-            var suffix = ":" + ActorServer.GetInstance().Port.ToString(CultureInfo.InvariantCulture);
-            fListener.Prefixes.Add(prefix + "localhost" + suffix + "/" + servername + "/");
-            fListener.Prefixes.Add(prefix + localhost + suffix + "/" + servername + "/");
-            fListener.Prefixes.Add(prefix + "127.0.0.1" + suffix + "/" + servername + "/");
-            try
-            {
-                fListener.Start();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Can't start http " + e);
-            }
-        }
 
         private void DoListen(Object aMsg)
         {
-            if (! fListener.IsListening)
-                StartServer();
             try
             {
-                HttpListenerContext Context = fListener.GetContext();
-                RemoteReceiverActor.Cast(Context);
+                if (fListener == null)
+                {
+                    fListener = ActorServer.GetInstance().ListenerService;
+                }
+                IContextComm context = fListener.GetCommunicationContext();
+                RemoteReceiverActor.Cast(context);
                 SendMessage("Listen");
             }
             catch(Exception e)

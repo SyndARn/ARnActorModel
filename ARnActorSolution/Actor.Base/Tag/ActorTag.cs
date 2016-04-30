@@ -45,8 +45,11 @@ namespace Actor.Base
 
         internal static Guid CastWithHash(long hash)
         {
+            int lHash1 = (int)hash >> 4;
+            short lHash2 = (short)((hash << 4) >> 6);
+            short lHash3 = (short)((hash << 6) >> 6);
             long baseId = Interlocked.Increment(ref fBaseId);
-            Guid guid = new Guid(BitConverter.GetBytes((hash << 64) + baseId));
+            Guid guid = new Guid(lHash1, lHash2, lHash3, BitConverter.GetBytes(baseId));
             return guid;
         }
 

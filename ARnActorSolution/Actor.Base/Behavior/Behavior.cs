@@ -346,5 +346,93 @@ namespace Actor.Base
             }
         }
     }
+
+    public class Behavior<O, D, A, R> : IBehavior<O, D, A, R>, IBehavior
+    {
+        public Func<O, D, A, R, bool> Pattern { get; protected set; }
+        public Action<O, D, A,R> Apply { get; protected set; }
+        public TaskCompletionSource<Tuple<O, D, A, R>> Completion { get; protected set; }
+        public TaskCompletionSource<object> StandardCompletion
+        {
+            get
+            {
+                return Completion as TaskCompletionSource<object>;
+            }
+        }
+
+        private Behaviors fLinkedBehaviors;
+
+        public BaseActor LinkedActor
+        {
+            get
+            {
+                return fLinkedBehaviors.LinkedActor;
+            }
+        }
+
+        public Behaviors LinkedTo
+        {
+            get
+            {
+                return fLinkedBehaviors;
+            }
+        }
+
+        public void LinkBehaviors(Behaviors someBehaviors)
+        {
+            fLinkedBehaviors = someBehaviors;
+        }
+
+        public Behavior(Func<O, D, A, R, bool> aPattern, Action<O, D, A, R> anApply)
+        {
+            Pattern = aPattern;
+            Apply = anApply;
+            Completion = null;
+        }
+
+        public Behavior(Func<O, D, A, R, bool> aPattern, TaskCompletionSource<Tuple<O, D, A, R>> aCompletion)
+        {
+            Pattern = aPattern;
+            Apply = null;
+            Completion = aCompletion;
+        }
+
+        public Behavior()
+        {
+        }
+
+        public Func<O, D, A, R, Boolean> DefaultPattern()
+        {
+            return (o, d, a, r) => { return o is O && d is D && a is A && r is R; };
+        }
+
+        public Behavior(Action<O, D, A, R> anApply)
+        {
+            Pattern = (o, d, a, r) => { return o is O && d is D && a is A && r is R; };
+            Apply = anApply;
+            Completion = null;
+        }
+
+        public Boolean StandardPattern(Object aT)
+        {
+            if (Pattern == null)
+                return false;
+            Tuple<O, D, A, R> tupleT = aT as Tuple<O, D, A, R>;
+            if (tupleT != null)
+                return Pattern(tupleT.Item1, tupleT.Item2, tupleT.Item3, tupleT.Item4);
+            else return false;
+        }
+
+        public void StandardApply(Object aT)
+        {
+            if (Apply != null)
+            {
+                Tuple<O, D, A, R> tupleT = (Tuple<O, D, A, R>)aT;
+                Apply(tupleT.Item1, tupleT.Item2, tupleT.Item3, tupleT.Item4);
+            }
+        }
+    }
+
+
 }
 

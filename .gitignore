@@ -120,3 +120,5 @@
 /ARnActorSolution/Actor.Windows/bin/Release
 /ARnActorSolution/ActorGraph/bin/Release
 /ARnActorSolution/Actor.Server/bin/Release
+/ARnActorSolution/TreeApplication/bin
+/ARnActorSolution/TreeApplication/obj

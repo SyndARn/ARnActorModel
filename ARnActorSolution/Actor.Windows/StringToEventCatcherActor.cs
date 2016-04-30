@@ -12,20 +12,20 @@ namespace Actor.Windows
     /// <summary>
     /// catch a C# event and publish it to a winform control
     /// </summary>
-    public class StringToEventCatcherActor : ActionActor
+    public class EventCatcherActor<T> : ActionActor
     {
 
 
-        public StringToEventCatcherActor()
+        public EventCatcherActor()
             : base()
         {
         }
 
-        EventHandler<string> fEvent = null;
+        EventHandler<T> fEvent = null;
         Control fControl = null;
 
 
-        public void SetEvent(Control control, EventHandler<string> anEvent)
+        public void SetEvent(Control control, EventHandler<T> anEvent)
         {
             fEvent = anEvent;
             fControl = control;
@@ -34,12 +34,17 @@ namespace Actor.Windows
 
         private void DoWait()
         {
-            var retval = Receive(t => { return t is string; }).Result;
+            var retval = Receive(t => { return t is T; }).Result;
             if ((fEvent != null) && (fControl != null))
             {
-                fControl.Invoke(fEvent, this, retval.ToString());
+                fControl.Invoke(fEvent, this, retval);
             }
         }
 
     }
+
+    public class StringToEventCatcherActor : EventCatcherActor<string>
+    {
+    }
+
 }

@@ -4,36 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
-using System.Net;
 using System.IO;
 using System.Diagnostics;
 
 namespace Actor.Server
 {
+
     class RemoteReceiverActor : BaseActor
     {
 
         ISerializeService fSerializeService;
 
-        public static void Cast(HttpListenerContext aContext)
+        public static void Cast(IContextComm contextComm)
         {
             var remoteReceiver = new RemoteReceiverActor();
-            remoteReceiver.SendMessage(aContext);
+            remoteReceiver.SendMessage(contextComm);
         }
 
         public RemoteReceiverActor()
         {
             fSerializeService = ActorServer.GetInstance().SerializeService;
-            Become(new Behavior<HttpListenerContext>(t => { return true; }, DoContext));            
+            Become(new Behavior<IContextComm>(t => { return true; }, DoContext));
         }
 
-        private void DoContext(HttpListenerContext aContext)
+        private void DoContext(IContextComm contextComm)
         {
+            Stream streamMessage = contextComm.ReceiveStream();
             // get the request stream
-            Stream str = aContext.Request.InputStream;
             using (MemoryStream ms = new MemoryStream())
             {
-                str.CopyTo(ms);
+                streamMessage.CopyTo(ms);
                 ms.Seek(0, SeekOrigin.Begin);
                 StreamReader sr = new StreamReader(ms);
                 while (!sr.EndOfStream)
@@ -44,13 +44,9 @@ namespace Actor.Server
 
                 ms.Seek(0, SeekOrigin.Begin);
 
-                // SerialObject so = NetDataActorSerializer.DeSerialize(ms);
                 SerialObject so = fSerializeService.DeSerialize(ms);
-                // prepare an answer
-                HttpListenerResponse Response = aContext.Response;
-
-                // write something to response ...
-                Response.Close();
+                // send an ack
+                contextComm.Acknowledge();
 
                 // find hosted actor directory
                 // forward msg to hostedactordirectory

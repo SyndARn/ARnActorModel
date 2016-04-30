@@ -15,6 +15,7 @@ namespace Actor.Server
         public string Name { get; private set; }
         public int Port { get; private set; }
         public ISerializeService SerializeService { get; private set; }
+        public IListenerService ListenerService { get; private set; }
         private string fFullHost = "" ;
         private HostRelayActor fActHostRelay;
         public string FullHost { get 
@@ -66,6 +67,7 @@ namespace Actor.Server
             Become(new NullBehavior());
             if (hostRelayActor != null)
             {
+                ListenerService = new ConfigManager().GetListenerService();
                 new ShardDirectoryActor(); // start shard directory
                 fActHostRelay = hostRelayActor;
                 fActHostRelay.SendMessage("Listen");

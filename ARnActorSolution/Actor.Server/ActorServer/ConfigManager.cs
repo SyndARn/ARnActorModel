@@ -58,6 +58,32 @@ namespace Actor.Server
             return fHost;
         }
 
+        private IListenerService fListenerService;
+        public IListenerService GetListenerService()
+        {
+            if (fListenerService == null)
+            {
+                fListenerService = new HttpListenerService();
+            }
+            return fListenerService;
+            //fListener = new HttpListener();
+            //var localhost = Dns.GetHostName();
+            //var servername = ActorServer.GetInstance().Name;
+            //var prefix = "http://";
+            //var suffix = ":" + ActorServer.GetInstance().Port.ToString(CultureInfo.InvariantCulture);
+            //fListener.Prefixes.Add(prefix + "localhost" + suffix + "/" + servername + "/");
+            //fListener.Prefixes.Add(prefix + localhost + suffix + "/" + servername + "/");
+            //fListener.Prefixes.Add(prefix + "127.0.0.1" + suffix + "/" + servername + "/");
+            //try
+            //{
+            //    fListener.Start();
+            //}
+            //catch (Exception e)
+            //{
+            //    Debug.WriteLine("Can't start http " + e);
+            //}
+        }
+
         private ISerializeService fSerializeService;
 
         public ISerializeService GetSerializeService()
