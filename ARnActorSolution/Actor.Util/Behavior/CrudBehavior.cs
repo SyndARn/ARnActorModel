@@ -31,40 +31,40 @@ namespace Actor.Util
 {
     public enum CrudAction { Get, Set, Update, Delete} ;
 
-    public class CrudActor<K,V> : BaseActor
+    public class CrudActor<TKey,TValue> : BaseActor
     {
         public CrudActor()
             : base()
         {
-            Become(new CrudBehavior<K,V>());
+            Become(new CrudBehavior<TKey,TValue>());
         }
 
-        public Future<V> Get(K key)
+        public Future<TValue> Get(TKey key)
         {
-            var future = new Future<V>();
-            this.SendMessage(new CrudMessage<K, V>(CrudAction.Get, key, default(V), (IActor)future));
+            var future = new Future<TValue>();
+            this.SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Get, key, default(TValue), (IActor)future));
             return future;
         }
 
-        public void Set(K key, V value)
+        public void Set(TKey key, TValue value)
         {
-            SendMessage(new CrudMessage<K,V>(CrudAction.Set, key,value, null));
+            SendMessage(new CrudMessage<TKey,TValue>(CrudAction.Set, key,value, null));
         }
 
-        public void Delete(K key)
+        public void Delete(TKey key)
         {
-            SendMessage(new CrudMessage<K, V>(CrudAction.Delete,key,default(V),null)) ;
+            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Delete,key,default(TValue),null)) ;
         }
 
-        public void Update(K key, V value)
+        public void Update(TKey key, TValue value)
         {
-            SendMessage(new CrudMessage<K, V>(CrudAction.Update,key, value, null)) ;
+            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Update,key, value, null)) ;
         }
     }
 
-    public class CrudMessage<K, V>
+    public class CrudMessage<TKey, TValue>
     {
-        public CrudMessage(CrudAction anAction, K aKey, V aValue, IActor sender)
+        public CrudMessage(CrudAction anAction, TKey aKey, TValue aValue, IActor sender)
         {
             Action = anAction;
             Key = aKey;
@@ -72,19 +72,19 @@ namespace Actor.Util
             Sender = sender;
         }
         public CrudAction Action { get; private set; }
-        public K Key { get; set; }
-        public V Value { get; set; }
+        public TKey Key { get; set; }
+        public TValue Value { get; set; }
         public IActor Sender { get; set; }
     }
 
-    public class CrudBehavior<K,V> : Behavior<CrudMessage<K,V>>
+    public class CrudBehavior<TKey,TValue> : Behavior<CrudMessage<TKey,TValue>>
     {
-         private Dictionary<K,V> fKV;
+         private Dictionary<TKey,TValue> fKV;
 
          public CrudBehavior()
             : base()
         {
-            fKV = new Dictionary<K, V>();
+            fKV = new Dictionary<TKey, TValue>();
 
             Pattern = o => true ;
 
@@ -100,22 +100,22 @@ namespace Actor.Util
             };
         }
 
-        public void Get(K key, IActor sender)
+        public void Get(TKey key, IActor sender)
         {
             sender.SendMessage(fKV[key]);
         }
 
-        public void Set(K key, V value)
+        public void Set(TKey key, TValue value)
         {
             fKV[key] = value ;
         }
 
-        public void Update(K key, V value)
+        public void Update(TKey key, TValue value)
         {
             fKV[key] = value;
         }
 
-        public void Delete(K key)
+        public void Delete(TKey key)
         {
             fKV.Remove(key);
         }

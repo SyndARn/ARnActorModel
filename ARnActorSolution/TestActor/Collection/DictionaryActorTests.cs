@@ -28,8 +28,8 @@ namespace TestActor
             {
                 var act = new DictionaryActor<string, int>();
                 Assert.IsNotNull(act);
-                act.AddKV("1", 1);
-                act.AddKV("2", 2);
+                act.AddKeyValue("1", 1);
+                act.AddKeyValue("2", 2);
             });
         }
 
@@ -40,11 +40,11 @@ namespace TestActor
             {
                 var act = new DictionaryActor<string, int>();
                 Assert.IsNotNull(act);
-                act.AddKV("1", 1);
-                act.AddKV("2", 2);
-                var r1 = act.GetKV("1");
-                var r2 = act.GetKV("2");
-                var r3 = act.GetKV("3");
+                act.AddKeyValue("1", 1);
+                act.AddKeyValue("2", 2);
+                var r1 = act.GetKeyValue("1");
+                var r2 = act.GetKeyValue("2");
+                var r3 = act.GetKeyValue("3");
                 Assert.IsTrue(r1.Result().Item1);
                 Assert.IsTrue(r2.Result().Item1);
                 Assert.AreEqual("2",r2.Result().Item2) ;

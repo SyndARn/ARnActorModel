@@ -11,9 +11,9 @@ namespace Actor.Service
 {
     public class LoggerActor : BaseActor
     {
-        public LoggerActor(string aFilename) : base()
+        public LoggerActor(string aFileName) : base()
         {
-            Become(LoggerBehavior.CastLogger(aFilename));
+            Become(LoggerBehavior.CastLogger(aFileName));
             SendMessage("Logging start");
         }
     }

@@ -8,16 +8,16 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-    public class DictionaryBehavior<Key,Value> : Behaviors, IDictionaryActor<Key,Value>
+    public class DictionaryBehavior<TKey,TValue> : Behaviors, IDictionaryActor<TKey,TValue>
     {
-        private Dictionary<Key, Value> fDico = new Dictionary<Key, Value>();
+        private Dictionary<TKey, TValue> fDico = new Dictionary<TKey, TValue>();
 
         public DictionaryBehavior()
         {
-            var bhv1 = new Behavior<Key, Value>( (k, v) => fDico[k] = v);
-            var bhv2 = new Behavior<IActor, Key>((a, k) =>
+            var bhv1 = new Behavior<TKey, TValue>( (k, v) => fDico[k] = v);
+            var bhv2 = new Behavior<IActor, TKey>((a, k) =>
                 {
-                    Value v ;
+                    TValue v ;
                     bool result = fDico.TryGetValue(k, out v);
                     a.SendMessage(result, k, v);
                 });
@@ -25,39 +25,39 @@ namespace Actor.Util
             AddBehavior(bhv2);
         }
 
-        public void AddKV(Key K, Value V)
+        public void AddKeyValue(TKey key, TValue value)
         {
-            LinkedActor.SendMessage(K, V);
+            LinkedActor.SendMessage(key, value);
         }
 
-        public Future<Tuple<bool, Key, Value>> GetKV(Key k)
+        public Future<Tuple<bool, TKey, TValue>> GetKeyValue(TKey key)
         {
-            var future = new Future<Tuple<bool, Key, Value>>();
-            LinkedActor.SendMessage(future, k);
+            var future = new Future<Tuple<bool, TKey, TValue>>();
+            LinkedActor.SendMessage(future, key);
             return future;
         }
     }
 
 
-    public class DictionaryActor<K,V> : BaseActor, IDictionaryActor<K, V>
+    public class DictionaryActor<TKey,TValue> : BaseActor, IDictionaryActor<TKey, TValue>
     {
-        private IDictionaryActor<K, V> fServiceDictionary;
+        private IDictionaryActor<TKey, TValue> fServiceDictionary;
 
         public DictionaryActor() : base()
         {
-            DictionaryBehavior<K, V> lServiceDictionary = new DictionaryBehavior<K, V>();
+            DictionaryBehavior<TKey, TValue> lServiceDictionary = new DictionaryBehavior<TKey, TValue>();
             fServiceDictionary = lServiceDictionary;
             Become(lServiceDictionary);
         }
 
-        public void AddKV(K K, V V)
+        public void AddKeyValue(TKey key, TValue value)
         {
-            fServiceDictionary.AddKV(K, V);
+            fServiceDictionary.AddKeyValue(key, value);
         }
 
-        public Future<Tuple<bool, K, V>> GetKV(K k)
+        public Future<Tuple<bool, TKey, TValue>> GetKeyValue(TKey key)
         {
-            return fServiceDictionary.GetKV(k);
+            return fServiceDictionary.GetKeyValue(key);
         }
     }
 }

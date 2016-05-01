@@ -21,9 +21,9 @@ namespace Actor.Service
         public EventSource() : base()
         {
         }
-        public virtual T Apply(T aT)
+        public virtual T Apply(T aState)
         {
-            Data = aT;
+            Data = aState;
             return Data;
         }
     }

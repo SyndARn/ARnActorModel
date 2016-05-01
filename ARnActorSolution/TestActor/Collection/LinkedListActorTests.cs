@@ -40,7 +40,7 @@ namespace TestActor
         }
 
         [TestMethod()]
-        public void bhvLinkedListFirstTest()
+        public void LinkedListFirstTest()
         {
             TestLauncherActor.Test(
                 () =>
@@ -58,7 +58,7 @@ namespace TestActor
         }
 
         [TestMethod()]
-        public void bhvLinkedListNextTest()
+        public void LinkedListNextTest()
         {
             TestLauncherActor.Test(
                 () =>

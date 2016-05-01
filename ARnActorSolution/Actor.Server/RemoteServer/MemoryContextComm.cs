@@ -21,8 +21,10 @@ namespace Actor.Server
             return future.Result();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "clone stream is send as message")]
         public void SendStream(string uri, Stream stream)
         {
+            CheckArg.Stream(stream);
             stream.Seek(0, SeekOrigin.Begin);
             MemoryStream clone = new MemoryStream();
             stream.CopyTo(clone);

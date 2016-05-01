@@ -3,11 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Actor.Base
 {
     public static class CheckArg
     {
+        public static void Stream(Stream aStream)
+        {
+            if (aStream == null)
+            {
+                throw new ActorException("Stream can't be null");
+            }
+        }
+
+        public static void Address(string anAddress)
+        {
+            if (string.IsNullOrEmpty(anAddress))
+            {
+                throw new ActorException("Address should be filled");
+            }
+        }
+
         public static void Behavior(IBehavior aBehavior)
         {
             if (aBehavior == null)

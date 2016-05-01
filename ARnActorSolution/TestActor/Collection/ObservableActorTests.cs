@@ -9,6 +9,28 @@ using Actor.Base ;
 
 namespace TestActor
 {
+
+    class TestObserver : BaseActor
+    {
+        public TestObserver() : base()
+        {
+        }
+
+        public string GetData()
+        {
+            return Receive(t => t is string).Result as string;
+        }
+
+        public string GetDataInTime(int timeOutMs)
+        {
+            var r = Receive(t => t is string, timeOutMs).Result;
+            if (r != null)
+                return r as string;
+            else
+                return null;
+        }
+    }
+
     [TestClass()]
     public class ObservableActorTests
     {
@@ -50,31 +72,10 @@ namespace TestActor
                 string result1 = observer1.GetData();
                 Assert.AreEqual(result1, string.Format("Test {0}", observer1.Tag));
                 string result2 = observer2.GetData();
-                Assert.AreEqual(result1, string.Format("Test {0}", observer1.Tag));
+                Assert.AreEqual(result2, string.Format("Test {0}", observer2.Tag));
                 fLauncher.Finish();
             });
             Assert.IsTrue(fLauncher.Wait());
-        }
-
-        public class TestObserver : BaseActor
-        {
-            public TestObserver() : base()
-            {
-            }
-
-            public string GetData()
-            {
-                return Receive(t => t is string).Result as string;
-            }
-
-            public string GetDataInTime(int timeOutMs)
-            {
-                var r = Receive(t => t is string, timeOutMs).Result;
-                if (r != null)
-                    return r as string;
-                else
-                    return null;
-            }
         }
 
         [TestMethod()]

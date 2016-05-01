@@ -83,21 +83,6 @@ namespace Actor.Server
                 IContextComm contextComm = ActorServer.GetInstance().ListenerService.GetCommunicationContext();
                 contextComm.SendStream(so.Tag.Uri,ms);
 
-                //using (StreamReader srDebug = new StreamReader(ms))
-                //{
-                //    while (!srDebug.EndOfStream)
-                //        Debug.Print(srDebug.ReadLine());
-
-                //    ms.Seek(0, SeekOrigin.Begin);
-                //    using (var client = new HttpClient())
-                //    {
-                //        using (var hc = new StreamContent(ms))
-                //        {
-                //            Uri uri = new Uri(so.Tag.Uri);
-                //            client.PostAsync(uri, hc).Wait();
-                //        }
-                //    }
-                //}
             }
             finally
             {

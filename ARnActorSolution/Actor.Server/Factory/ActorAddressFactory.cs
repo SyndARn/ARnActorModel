@@ -27,6 +27,7 @@ namespace Actor.Server.Factory
     {
         public static long HashAddress(string anAddress)
         {
+            CheckArg.Address(anAddress);
             var hash = anAddress.GetHashCode();
             return hash;
         }

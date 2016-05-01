@@ -32,15 +32,6 @@ namespace Actor.Base
 {
 
     public enum SystemMessage { NullBehavior };
-    // composing actor ...
-    /// <summary>
-    /// actor have a default target
-    /// when use in composition
-    /// this default target could be use to make relay
-    /// message should transport this default target to enable the real sender
-    /// message should handle sender,target,relaysender,relaytarget
-    /// with relaysender and relaytarget, you could have a composition
-    /// </summary>
 
     public class BaseActor : IActor
     {

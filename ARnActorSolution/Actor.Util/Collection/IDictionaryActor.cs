@@ -3,9 +3,9 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public interface IDictionaryActor<K, V>
+    public interface IDictionaryActor<TKey, TValue>
     {
-        void AddKV(K K, V V);
-        Future<Tuple<bool, K, V>> GetKV(K k);
+        void AddKeyValue(TKey key, TValue value);
+        Future<Tuple<bool, TKey, TValue>> GetKeyValue(TKey key);
     }
 }

@@ -63,7 +63,7 @@ namespace Actor.Base
                 Interlocked.Increment(ref numAddTask);
                 messageLoop();
                 Interlocked.Increment(ref numCloseTask);
-            }, TaskCreationOptions.None)//;
+            }, TaskCreationOptions.None)
             .ContinueWith((t) =>
             {
                 Debug.WriteLine(string.Format("task fault on {0}", t.Exception.InnerExceptions.ToString()),"Task Actor Fault");

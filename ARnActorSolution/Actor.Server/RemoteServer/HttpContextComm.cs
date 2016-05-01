@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Actor.Base;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -32,6 +33,7 @@ namespace Actor.Server
 
         public void SendStream(string uri, Stream stream)
         {
+            CheckArg.Stream(stream);
             using (StreamReader srDebug = new StreamReader(stream))
             {
                 while (!srDebug.EndOfStream)
