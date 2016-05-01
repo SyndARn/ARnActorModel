@@ -46,10 +46,10 @@ namespace Actor.Server
 
         public ActorTag fRemoteTag;
 
-        public static void CompleteInitialize(ISerializeService serializeservice, RemoteSenderActor anActor)
+        public static void CompleteInitialize(RemoteSenderActor anActor)
         {
             CheckArg.Actor(anActor);
-            anActor.fSerializeService = serializeservice;
+            anActor.fSerializeService = ActorServer.GetInstance().SerializeService;
             anActor.Become(new Behavior<Object>(anActor.DoRouting));
         }
 

@@ -18,18 +18,18 @@ namespace Actor.Server
         public static void Cast(IContextComm contextComm)
         {
             var remoteReceiver = new RemoteReceiverActor();
-            remoteReceiver.SendMessage(contextComm);
+            Stream streamMessage = contextComm.ReceiveStream();
+            remoteReceiver.SendMessage(contextComm,streamMessage);
         }
 
         public RemoteReceiverActor()
         {
             fSerializeService = ActorServer.GetInstance().SerializeService;
-            Become(new Behavior<IContextComm>(t => { return true; }, DoContext));
+            Become(new Behavior<IContextComm,Stream>((i,t) => { return true; }, DoContext));
         }
 
-        private void DoContext(IContextComm contextComm)
+        private void DoContext(IContextComm contextComm, Stream streamMessage)
         {
-            Stream streamMessage = contextComm.ReceiveStream();
             // get the request stream
             using (MemoryStream ms = new MemoryStream())
             {

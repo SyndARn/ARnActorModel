@@ -120,21 +120,21 @@ namespace Actor.Util
         }
     }
 
-    public class ReduceActor<K, V> : BaseActor
+    public class ReduceActor<TKey, TValue> : BaseActor
     {
         IActor fSender;
-        Func<K, IEnumerable<V>, V> fReduceAction;
+        Func<TKey, IEnumerable<TValue>, TValue> fReduceAction;
 
-        public ReduceActor(IActor sender, Func<K, IEnumerable<V>, V> reduceAction) : base()
+        public ReduceActor(IActor sender, Func<TKey, IEnumerable<TValue>, TValue> reduceAction) : base()
         {
             fReduceAction = reduceAction;
             fSender = sender;
-            Become(new Behavior<K, IEnumerable<V>>(DoReduceAction));
+            Become(new Behavior<TKey, IEnumerable<TValue>>(DoReduceAction));
         }
 
-        private void DoReduceAction(K key, IEnumerable<V> someValues)
+        private void DoReduceAction(TKey key, IEnumerable<TValue> someValues)
         {
-            V value = fReduceAction(key, someValues);
+            TValue value = fReduceAction(key, someValues);
             fSender.SendMessage(this, key, value);
         }
     }

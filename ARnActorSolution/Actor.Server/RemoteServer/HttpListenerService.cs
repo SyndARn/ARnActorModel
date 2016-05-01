@@ -25,7 +25,7 @@ namespace Actor.Server
 
         public IContextComm GetCommunicationContext()
         {
-            return new HttpContextComm(fListener.GetContext());
+            return new HttpContextComm(fListener);
         }
 
         public void Close()

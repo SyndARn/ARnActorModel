@@ -15,20 +15,27 @@ namespace Actor.Server
     class HttpContextComm : IContextComm
     {
         private HttpListenerContext fContext;
-        public HttpContextComm(HttpListenerContext context)
+        private HttpListener fListener;
+        public HttpContextComm(HttpListener listener)
         {
-            fContext = context;
+            fListener = listener;
         }
 
         public Stream ReceiveStream()
         {
+            fContext = fListener.GetContext(); // blocking
             return fContext.Request.InputStream;
         }
 
         public void Acknowledge()
         {
-            HttpListenerResponse response = fContext.Response;
-            response.Close();
+            if (fContext != null)
+            {
+                HttpListenerResponse response = fContext.Response;
+                response.Close();
+                fContext = null;
+                fListener = null;
+            }
         }
 
         public void SendStream(string uri, Stream stream)

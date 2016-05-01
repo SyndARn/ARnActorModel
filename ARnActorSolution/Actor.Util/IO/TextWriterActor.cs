@@ -8,7 +8,8 @@ using System.IO;
 
 namespace Actor.Util
 {
-    public class TextWriterActor : actActor
+    // TODO test this
+    public class TextWriterActor : BaseActor
     {
         private StreamWriter fStream;
         private string fFileName;

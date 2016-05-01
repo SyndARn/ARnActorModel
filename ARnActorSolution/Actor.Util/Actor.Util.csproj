@@ -103,6 +103,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Behavior\ReceiveActor.cs" />
     <Compile Include="Rest\RestReaderActor.cs" />
+    <Compile Include="IO\TextWriterActor.cs" />
     <Compile Include="Workflow\actWorkflow.cs" />
   </ItemGroup>
   <ItemGroup>

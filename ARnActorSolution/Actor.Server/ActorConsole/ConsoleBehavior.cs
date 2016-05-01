@@ -72,22 +72,22 @@ namespace Actor.Server
         {
             foreach (var item in dico)
             {
-                Console.WriteLine(String.Format(CultureInfo.InvariantCulture,"{0} - {1}", item.Key,item.Value));
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0} - {1}", item.Key,item.Value));
             }
         }
     }
 
-    public class ConsoleStringListbehavior : Behavior<IEnumerable<String>>
+    public class ConsoleStringListbehavior : Behavior<IEnumerable<string>>
     {
         public ConsoleStringListbehavior()
             : base()
         {
-            Pattern = t => t is IEnumerable<String>; ;
+            Pattern = t => t is IEnumerable<string>; ;
             Apply = DoConsole;
         }
-        private void DoConsole(IEnumerable<String> msg)
+        private void DoConsole(IEnumerable<string> msg)
         {
-            foreach (String s in msg)
+            foreach (string s in msg)
             {
                 Console.WriteLine(s);
             }

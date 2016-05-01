@@ -233,7 +233,7 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public Boolean StandardPattern(Object aT)
+        public bool StandardPattern(object aT)
         {
             if (Pattern == null)
                 return false;
@@ -243,7 +243,7 @@ namespace Actor.Base
             else return false;
         }
 
-        public void StandardApply(Object aT)
+        public void StandardApply(object aT)
         {
             if (Apply != null)
             {
