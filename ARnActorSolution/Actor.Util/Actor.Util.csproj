@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behavior\CrudBehavior.cs" />
+    <Compile Include="Behavior\ProxyActor.cs" />
     <Compile Include="Behavior\StateBehavior.cs" />
     <Compile Include="Collection\EnumerableBehavior.cs" />
     <Compile Include="Collection\IDictionaryActor.cs" />
