@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Actor.Base;
 using System.Net.Http;
 
-namespace Actor.Util
+namespace Actor.Server
 {
     public class WebRequest
     {

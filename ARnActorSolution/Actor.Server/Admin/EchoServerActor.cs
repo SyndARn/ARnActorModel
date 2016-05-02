@@ -26,9 +26,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
-using Actor.Server;
 
-namespace Actor.Util
+namespace Actor.Server
 {
     public class EchoServerActor : BaseActor
     {

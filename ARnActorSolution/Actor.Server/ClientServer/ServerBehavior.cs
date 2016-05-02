@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Actor.Base;
 using System.Diagnostics;
 
-namespace Actor.Util
+namespace Actor.Server
 {
     public enum ServerRequest{Connect,Disconnect,Request,Answer,Accept}
 

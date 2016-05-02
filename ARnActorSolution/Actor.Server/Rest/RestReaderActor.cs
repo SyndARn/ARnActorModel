@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 using Actor.Base;
 using System.Diagnostics;
 
-namespace Actor.Util
+namespace Actor.Server
 {
     public class RestReaderActor : BaseActor
     {
