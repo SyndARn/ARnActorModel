@@ -82,6 +82,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ActionActor\ActionActorTest.cs" />
+    <Compile Include="actParserTests.cs" />
     <Compile Include="actRemoteTest.cs" />
     <Compile Include="Collection\ActorCollectionTest.cs" />
     <Compile Include="Collection\ActorQueueTest.cs" />
