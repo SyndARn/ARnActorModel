@@ -17,6 +17,11 @@ namespace Actor.Base
 
         public T Result(int timeOutMs) => (T)Receive(t => t is T, timeOutMs).Result;
 
+        public async Task<T> ResultAsync()
+        {
+            return (T)await Receive(t => t is T);
+        }
+
     }
 
     public class Future<T1,T2> : BaseActor
@@ -28,6 +33,11 @@ namespace Actor.Base
         public Tuple<T1,T2> Result() => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>).Result;
 
         public Tuple<T1, T2> Result(int timeOutMs) => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>, timeOutMs).Result;
+
+        public async Task<Tuple<T1, T2>> ResultAsync()
+        {
+            return (Tuple < T1, T2 >) await Receive(t => t is Tuple<T1, T2>);
+        }
 
     }
 }
