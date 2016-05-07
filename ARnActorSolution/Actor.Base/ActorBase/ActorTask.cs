@@ -29,6 +29,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace Actor.Base
 {
@@ -51,6 +52,7 @@ namespace Actor.Base
             return sb.ToString();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddActor(Action messageLoop)
         {
             if (messageLoop == null)

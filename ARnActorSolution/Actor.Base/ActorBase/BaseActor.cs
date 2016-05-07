@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
@@ -81,6 +82,7 @@ namespace Actor.Base
             TrySetInTask();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask()
         {
             if (Interlocked.CompareExchange(ref fInTask, 1, 0) == 0)
@@ -95,11 +97,13 @@ namespace Actor.Base
             Interlocked.Add(ref messCount, fMailBox.RefreshFromMissed());
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void SendWithRedirector(object msg, IActor aTargetActor)
         {
             ((BaseActor)aTargetActor).TrySetInTask(msg);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SendMessage(object msg)
         {
             if (fRedirector != null)

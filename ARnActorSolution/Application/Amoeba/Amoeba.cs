@@ -25,7 +25,7 @@ namespace Amoeba
 
         private void FutureMessage(IActor aFuture)
         {
-            long total = results.Count(r => r > 0);
+            long total = results.Count(r => r <= 0);
             long qtt = results.Count();
             aFuture.SendMessage(new Tuple<long,long>(total, qtt));
         }
@@ -59,16 +59,17 @@ namespace Amoeba
                 for (long i = 0; i < iteration; i++)
                 {
                     long newPopulation = 0;
-                    for (long p = 0; p < population; p++)
-                    {
-                        newPopulation += random.Next(4);
-                    }
+
+                        for (long p = 0; p < population; p++)
+                        {
+                            newPopulation += random.Next(4);
+                        }
                     population = newPopulation;
                     if (population <= 0)
                         break;
                 }
                 result.SendMessage(population);
-            }, 30, resultActor, 1000000);
+            }, 20, resultActor, 100000);
         }
     }
 }
