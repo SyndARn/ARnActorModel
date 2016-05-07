@@ -19,27 +19,27 @@ namespace Actor.MonteCarlo
     {
         public MonteCarloActor()
         {
-            Become(new Behavior<Action<TInput,IActor>,TInput, IActor, int>(Process));
+            Become(new Behavior<Action<long,TInput,IActor>,TInput, IActor, long>(Process));
         }
 
         public static MonteCarloActor<TInput> Cast(
-            Action<TInput,IActor> simulation, 
+            Action<long, TInput,IActor> simulation, 
             TInput data,
             IActor result, 
-            int simulationQtt)
+            long simulationQtt)
         {
             var r = new MonteCarloActor<TInput>();
             r.SendMessage(simulation, data, result, simulationQtt);
             return r;
         }
 
-        private void Process(Action<TInput,IActor> simulation, TInput data, IActor result, int simulationQtt)
+        private void Process(Action<long,TInput,IActor> simulation, TInput data, IActor result, long simulationQtt)
         {
-            for(int i =0;i<simulationQtt;i++)
+            for(long i =0;i<simulationQtt;i++)
             {
-                var actor = new BaseActor(new Behavior<Action<TInput, IActor>, TInput, IActor>(
-                    (action, input, act) => action(input, act)));
-                actor.SendMessage(simulation, data, result);
+                var actor = new BaseActor(new Behavior<Action<long, TInput, IActor>, TInput, long, IActor>(
+                    (action, input, num, act) => action(num, input, act)));
+                actor.SendMessage(simulation, data, i,result);
             }
         }
     }

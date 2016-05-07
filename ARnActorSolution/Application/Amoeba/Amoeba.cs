@@ -40,7 +40,7 @@ namespace Amoeba
 
     public class Amoeba
     {
-        MonteCarloActor<int> fMonteCarlo = new MonteCarloActor<int>();
+        MonteCarloActor<long> fMonteCarlo = new MonteCarloActor<long>();
 
         public Amoeba()
         {
@@ -48,13 +48,13 @@ namespace Amoeba
 
         public void Launch(ResultActor resultActor)
         {
-            MonteCarloActor<long>.Cast((iteration, result) =>
+            MonteCarloActor<long>.Cast((simnum, iteration, result) =>
             {
                 if (iteration <= 0)
                 {
                     return;
                 }
-                Random random = new Random();
+                Random random = new Random((int)simnum);
                 long population = 1;
                 for (long i = 0; i < iteration; i++)
                 {
