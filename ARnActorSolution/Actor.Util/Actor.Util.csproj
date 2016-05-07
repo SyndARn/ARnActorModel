@@ -87,6 +87,7 @@
     <Compile Include="Behavior\ForEachBehavior.cs" />
     <Compile Include="Collection\LinkedListActor.cs" />
     <Compile Include="Behavior\SendReplyBehavior.cs" />
+    <Compile Include="Collection\RxObservable.cs" />
     <Compile Include="Continuation\actGraphHedge.cs" />
     <Compile Include="Fsm\FsmActor.cs" />
     <Compile Include="GlobalSuppressions.cs" />

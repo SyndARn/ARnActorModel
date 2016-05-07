@@ -8,12 +8,6 @@ using System.Threading.Tasks;
 
 namespace Actor.MonteCarlo
 {
-/*
- * random source
- * qtt of simul
- * simul as Action
- * result collector
- */
 
     public class MonteCarloActor<TInput> : BaseActor
     {

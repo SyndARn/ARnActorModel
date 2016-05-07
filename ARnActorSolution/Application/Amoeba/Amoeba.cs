@@ -69,7 +69,7 @@ namespace Amoeba
                         break;
                 }
                 result.SendMessage(population);
-            }, 20, resultActor, 100000);
+            }, 30, resultActor, 100000);
         }
     }
 }
