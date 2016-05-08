@@ -27,22 +27,22 @@ namespace Amoeba
         {
             long total = results.Count(r => r <= 0);
             long qtt = results.Count();
-            aFuture.SendMessage(new Tuple<long,long>(total, qtt));
+            aFuture.SendMessage(total, qtt);
         }
 
-        public Future<Tuple<long,long>> GetResult()
+        public Future<long,long> GetResult()
         {
-            Future<Tuple<long, long>> future = new Future<Tuple<long, long>>();
+            Future<long, long> future = new Future<long, long>();
             SendMessage((IActor)future);
             return future;
         }
     }
 
-    public class Amoeba
+    public class AmoebaActor
     {
         MonteCarloActor<long> fMonteCarlo = new MonteCarloActor<long>();
 
-        public Amoeba()
+        public AmoebaActor()
         {
         }
 

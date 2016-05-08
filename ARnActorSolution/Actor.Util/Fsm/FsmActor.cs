@@ -49,7 +49,7 @@ namespace Actor.Util
 
     public class FsmActor<S, E> : BaseActor
     {
-        protected S CurrentState;
+        protected S CurrentState { get; set; }
 
         public FsmActor(S StartState, IEnumerable<FsmBehavior<S, E>> someBehaviors) : base()
         {

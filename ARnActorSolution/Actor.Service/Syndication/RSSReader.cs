@@ -21,12 +21,14 @@ namespace Actor.Service
 
         private void DoSyndication(Tuple<string, IActor> msg)
         {
-            XmlReader reader = XmlReader.Create(msg.Item1);
-            SyndicationFeed feed = SyndicationFeed.Load(reader);
-            reader.Close();
-            foreach (SyndicationItem item in feed.Items)
+            using (XmlReader reader = XmlReader.Create(msg.Item1))
             {
-                msg.Item2.SendMessage(item.Title.Text);
+                SyndicationFeed feed = SyndicationFeed.Load(reader);
+                reader.Close();
+                foreach (SyndicationItem item in feed.Items)
+                {
+                    msg.Item2.SendMessage(item.Title.Text);
+                }
             }
         }
     }

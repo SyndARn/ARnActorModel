@@ -13,6 +13,10 @@ namespace Actor.Server
     {
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
         {
+            if (info == null)
+            {
+                throw new ArgumentNullException("SerializationInfo was null");
+            }
             IActor act = (IActor)obj;
             HostDirectoryActor.Register(act);
             // continue

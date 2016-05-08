@@ -31,9 +31,9 @@ namespace ActorRing
 
         StringToEventCatcherActor catcher;
 
-        protected void EvHandler(object sender, string e)
+        protected void EvHandler(object sender, string message)
         {
-            lblDuration.Text = e;
+            lblDuration.Text = message;
         }
 
         private void btStartStop_Click(object sender, EventArgs e)

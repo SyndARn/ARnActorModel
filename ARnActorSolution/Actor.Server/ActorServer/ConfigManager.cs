@@ -16,18 +16,18 @@ namespace Actor.Server
 
     public class HostService : IHostService
     {
-        public Uri GetHostUri(string Name, int Port)
+        public Uri GetHostUri(string name, int port)
         {
             var localhost = Dns.GetHostName();
             var prefix = "http://";
-            var suffix = ":" + Port.ToString(CultureInfo.InvariantCulture);
-            var fullhost = prefix + localhost + suffix + "/" + Name + "/";
+            var suffix = ":" + port.ToString(CultureInfo.InvariantCulture);
+            var fullhost = prefix + localhost + suffix + "/" + name + "/";
 
             return new Uri(fullhost);
         }
     }
 
-    public class ConfigManager
+    public class ConfigManager : IDisposable
     {
 
         private Uri fHost;
@@ -53,7 +53,7 @@ namespace Actor.Server
                     // var serv = new HostService();
                 }
                 var serv = new HostService();
-                fHost =  serv.GetHostUri(name, int.Parse(port));
+                fHost =  serv.GetHostUri(name, int.Parse(port,CultureInfo.InvariantCulture));
             }
             return fHost;
         }
@@ -70,7 +70,6 @@ namespace Actor.Server
         }
 
         private ISerializeService fSerializeService;
-
         public ISerializeService GetSerializeService()
         {
             if (fSerializeService == null)
@@ -101,5 +100,45 @@ namespace Actor.Server
             }
             return fSerializeService;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // Pour détecter les appels redondants
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: supprimer l'état managé (objets managés).
+                    if (fListenerService != null)
+                    {
+                        ((IDisposable)fListenerService).Dispose();
+                        fListenerService = null;
+                    }
+                }
+
+                // TODO: libérer les ressources non managées (objets non managés) et remplacer un finaliseur ci-dessous.
+                // TODO: définir les champs de grande taille avec la valeur Null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: remplacer un finaliseur seulement si la fonction Dispose(bool disposing) ci-dessus a du code pour libérer les ressources non managées.
+        // ~ConfigManager() {
+        //   // Ne modifiez pas ce code. Placez le code de nettoyage dans Dispose(bool disposing) ci-dessus.
+        //   Dispose(false);
+        // }
+
+        // Ce code est ajouté pour implémenter correctement le modèle supprimable.
+        public void Dispose()
+        {
+            // Ne modifiez pas ce code. Placez le code de nettoyage dans Dispose(bool disposing) ci-dessus.
+            Dispose(true);
+            // TODO: supprimer les marques de commentaire pour la ligne suivante si le finaliseur est remplacé ci-dessus.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

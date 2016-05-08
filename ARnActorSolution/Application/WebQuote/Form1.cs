@@ -21,7 +21,7 @@ namespace WebQuote
         private async void button1_Click(object sender, EventArgs e)
         {
             var future = new Future<string>();
-            var yahoo = new actYahooQuote(tbCCY1.Text+tbCCY2.Text,future);
+            var yahoo = new YahooQuote(tbCCY1.Text+tbCCY2.Text,future);
             tbQuote.Text = await future.ResultAsync();
         }
     }

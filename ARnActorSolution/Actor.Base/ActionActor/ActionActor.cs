@@ -77,7 +77,7 @@ namespace Actor.Base
     /// <summary>
     /// actActionActor
     ///     Action actor are a facility : they provide template to send method as message within an actor
-    ///     e.g. SendMessageTo(() => {do something},anActor) ;
+    ///     e.g. SendMessage(() => {do something},anActor) ;
     /// </summary>
     public class ActionActor : BaseActor
     {

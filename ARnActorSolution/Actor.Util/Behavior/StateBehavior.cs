@@ -46,9 +46,16 @@ namespace Actor.Util
         public T Get()
         {
             SendMessage(Tuple.Create(StateAction.Get, default(T)));
-            var retVal = Receive(t => { return t is T ; }).Result;
-            return retVal == null ? default(T) : (T)retVal ;
+            var retVal = Receive(t => { return t is T; });
+            return retVal == null ? default(T) : (T)retVal.Result ;
         }
+
+        public async Task<T> GetAsync()
+        {
+            SendMessage(Tuple.Create(StateAction.Get, default(T)));
+            return (T) await Receive(t => { return t is T; }) ;
+        }
+
     }
 
     public enum StateAction { Set, Get } ;

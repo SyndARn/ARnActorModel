@@ -20,7 +20,7 @@ namespace Amoeba
         private ResultActor resultActor;
         private void button1_Click(object sender, EventArgs e)
         {
-            var amoeba = new Amoeba();
+            var amoeba = new AmoebaActor();
             resultActor = new ResultActor();
             amoeba.Launch(resultActor);
         }

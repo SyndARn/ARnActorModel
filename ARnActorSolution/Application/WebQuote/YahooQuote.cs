@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace WebQuote
 {
-    public class actYahooQuote : BaseActor
+    public class YahooQuote : BaseActor
     {
         const string model = @"http://download.finance.yahoo.com/d/quotes.csv?e=.csv&f=c4l1&s={0}=X";
-        public actYahooQuote(string currencyPair, IActor target)
+        public YahooQuote(string currencyPair, IActor target)
         {
             Become(new Behavior<Tuple<string, IActor>>(DoQuote));
             SendMessage(Tuple.Create(string.Format(model, currencyPair), target));

@@ -28,11 +28,6 @@ namespace Actor.Base
 
     public static class BaseActorExtension
     {
-        public static void tell(IActor anActor, object aT)
-        {
-            anActor.SendMessage(aT);
-        }
-
         public static void SendMessage<T1>(this BaseActor anActor, T1 t1)
         {
             anActor.SendMessage(t1);
