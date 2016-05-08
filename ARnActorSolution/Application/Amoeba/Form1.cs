@@ -33,5 +33,21 @@ namespace Amoeba
                 textBox1.AppendText(string.Format("Somme {0} Quantité {1} \n", data.Item1, data.Item2)) ;
             }
         }
+
+        PiActor pi;
+        private void button3_Click(object sender, EventArgs e)
+        {
+            pi = new PiActor();
+            pi.Launch(100000);
+        }
+
+        private async void button4_Click(object sender, EventArgs e)
+        {
+            if (pi != null)
+            {
+                var data = await pi.GetResultAsync();
+                textBox1.AppendText(data);
+            }
+        }
     }
 }
