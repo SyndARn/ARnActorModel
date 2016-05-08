@@ -73,6 +73,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Doc\ARnActorModelVersion.cs">
+      <Link>Properties\ARnActorModelVersion.cs</Link>
+    </Compile>
     <Compile Include="ActorBase\ActorExtension.cs" />
     <Compile Include="ActorBase\ActorFuture.cs" />
     <Compile Include="ActorBase\BaseActor.cs" />

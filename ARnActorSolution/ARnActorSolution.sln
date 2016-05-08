@@ -51,9 +51,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{8C30EA8E-BA7
 	ProjectSection(SolutionItems) = preProject
 		Doc\ARnActorDoc.html = Doc\ARnActorDoc.html
 		Doc\ARnActorKey.snk = Doc\ARnActorKey.snk
-		Doc\ClassDiagram1.cd = Doc\ClassDiagram1.cd
+		Doc\ARnActorModelVersion.cs = Doc\ARnActorModelVersion.cs
 		Doc\Licence.cs = Doc\Licence.cs
 		Doc\TextFile1.txt = Doc\TextFile1.txt
+		VersionHistory.md = VersionHistory.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amoeba", "Application\Amoeba\Amoeba.csproj", "{E5356FC0-E0E9-4C3A-AFC8-5C239498A4B1}"

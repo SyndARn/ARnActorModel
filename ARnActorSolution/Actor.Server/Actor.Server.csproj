@@ -70,6 +70,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Doc\ARnActorModelVersion.cs">
+      <Link>Properties\ARnActorModelVersion.cs</Link>
+    </Compile>
     <Compile Include="ActorConsole\ActorConsole.cs" />
     <Compile Include="ActorConsole\ConsoleBehavior.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />

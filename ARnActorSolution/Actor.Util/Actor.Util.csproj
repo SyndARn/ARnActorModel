@@ -74,6 +74,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Doc\ARnActorModelVersion.cs">
+      <Link>Properties\ARnActorModelVersion.cs</Link>
+    </Compile>
     <Compile Include="Behavior\CrudBehavior.cs" />
     <Compile Include="Behavior\ProxyActor.cs" />
     <Compile Include="Behavior\StateBehavior.cs" />
