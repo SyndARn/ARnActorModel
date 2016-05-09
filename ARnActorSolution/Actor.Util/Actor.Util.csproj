@@ -103,18 +103,17 @@
     <Compile Include="Workflow\actWorkflow.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Actor.Base\Actor.Base.csproj">
-      <Project>{26a2eae7-170e-4248-b9e2-cf3f95e86f27}</Project>
-      <Name>Actor.Base</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Workflow\Image1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ARnActorKey.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Window\Actor.Base\Actor.Base.csproj">
+      <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>
+      <Name>Actor.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

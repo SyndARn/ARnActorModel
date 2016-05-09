@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{26A2EAE7-170E-4248-B9E2-CF3F95E86F27}</ProjectGuid>
+    <ProjectGuid>{6CA2469F-3839-4404-BBFD-A959AD2FD95E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Actor.Base</RootNamespace>
@@ -73,29 +73,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Doc\ARnActorModelVersion.cs">
+    <Compile Include="..\..\Doc\ARnActorModelVersion.cs">
       <Link>Properties\ARnActorModelVersion.cs</Link>
     </Compile>
-    <Compile Include="ActorBase\ActorExtension.cs" />
-    <Compile Include="ActorBase\ActorFuture.cs" />
-    <Compile Include="ActorBase\BaseActor.cs" />
-    <Compile Include="ActorBase\ActorInjection.cs" />
-    <Compile Include="Behavior\NullBehavior.cs" />
-    <Compile Include="Exception\ActorException.cs" />
-    <Compile Include="Composition\ActorComposition.cs" />
-    <Compile Include="ActorBase\ActorMailBox.cs" />
-    <Compile Include="ActorBase\ActorTask.cs" />
-    <Compile Include="Composition\RedirectorActor.cs" />
-    <Compile Include="Exception\CheckArg.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="PatternActor\PatternActor.cs" />
-    <Compile Include="ProcessActor\ProcessActor.cs" />
     <Compile Include="Supervision\SupervisorActor.cs" />
-    <Compile Include="Tag\ActorTag.cs" />
-    <Compile Include="ActionActor\ActionActor.cs" />
-    <Compile Include="Behavior\Behavior.cs" />
-    <Compile Include="ActorBase\IActor.cs" />
-    <Compile Include="Behavior\IBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -114,6 +96,7 @@
     </None>
   </ItemGroup>
   <ItemGroup />
+  <Import Project="..\..\Actor.Base.Shared\Actor.Base.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

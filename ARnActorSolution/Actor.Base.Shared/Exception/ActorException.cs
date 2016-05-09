@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Actor.Base
 {
+    
     [Serializable]
     public class ActorException : Exception
     {
@@ -20,7 +21,9 @@ namespace Actor.Base
 
         public ActorException(String message, Exception inner) : base(message, inner) { }
 
+#if !NETFX_CORE
         protected ActorException(SerializationInfo si, StreamingContext sc) : base(si, sc) { }
+#endif
 
     }
 

@@ -43,9 +43,13 @@ namespace Actor.Base
         {
             int workerThread;
             int ioThread;
+#if ! NETFX_CORE
             ThreadPool.GetAvailableThreads(out workerThread, out ioThread);
+#endif
             StringBuilder sb = new StringBuilder();
+#if ! NETFX_CORE
             sb.AppendLine("Max Active Threads " + workerThread.ToString(CultureInfo.InvariantCulture) + " " + ioThread.ToString(CultureInfo.InvariantCulture));
+#endif
             sb.AppendLine("Task processed " + numAddTask.ToString(CultureInfo.InvariantCulture));
             long total = numAddTask - numCloseTask; // 2 at rest, the actorserver AND the current task
             sb.AppendLine("Task running " + total.ToString(CultureInfo.InvariantCulture));

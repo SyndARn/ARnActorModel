@@ -81,13 +81,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Actor.Base\Actor.Base.csproj">
-      <Project>{26a2eae7-170e-4248-b9e2-cf3f95e86f27}</Project>
-      <Name>Actor.Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Actor.Util\Actor.Util.csproj">
       <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
       <Name>Actor.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Window\Actor.Base\Actor.Base.csproj">
+      <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>
+      <Name>Actor.Base</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

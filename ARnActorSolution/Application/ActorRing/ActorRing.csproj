@@ -101,10 +101,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Actor.Base\Actor.Base.csproj">
-      <Project>{26a2eae7-170e-4248-b9e2-cf3f95e86f27}</Project>
-      <Name>Actor.Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Actor.Server\Actor.Server.csproj">
       <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
       <Name>Actor.Server</Name>
@@ -120,6 +116,10 @@
     <ProjectReference Include="..\..\Actor.Windows\Actor.Windows.csproj">
       <Project>{746fad75-4a24-44ee-84a4-9b509cab4d30}</Project>
       <Name>Actor.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Window\Actor.Base\Actor.Base.csproj">
+      <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>
+      <Name>Actor.Base</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
