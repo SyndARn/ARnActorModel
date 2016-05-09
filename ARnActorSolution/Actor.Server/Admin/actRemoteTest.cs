@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
 
-namespace Actor.Util
+namespace Actor.Server
 {
     // TODO to be completed
     class actRemoteTest : BaseActor 

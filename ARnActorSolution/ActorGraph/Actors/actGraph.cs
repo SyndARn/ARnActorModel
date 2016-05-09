@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Actor.Base;
 using Actor.Util;
 
-namespace ActorGraph.Actors
+namespace ActorGraph
 {
 
     /*

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
 using System.Collections.Concurrent;
 
-namespace Actor.Server.Factory
+namespace Actor.Server
 {
 
     public class ActorFactory : IActorFactory
