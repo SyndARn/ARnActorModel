@@ -25,7 +25,6 @@ I was looking for an actor model things with some requirements :
 -  some actor can behave as public services, or be supervised
 
 Unit tests are included as well as some sample applications.
-![](ARnActorModel / ARnActorSolution / TestActor / Report / badge_combined.svg)
 
 For a common usage, you can find SyndARn here in Nuget : https://www.nuget.org/packages/ARnActorModel/
 
