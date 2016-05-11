@@ -137,6 +137,20 @@
       <Name>Actor.Base</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CodeCoverageLaunch.bat" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Report\badge_branchcoverage.svg" />
+    <Content Include="Report\badge_combined.svg" />
+    <Content Include="Report\badge_linecoverage.svg" />
+    <Content Include="Report\index.htm" />
+    <Content Include="Report\summary.htm" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
