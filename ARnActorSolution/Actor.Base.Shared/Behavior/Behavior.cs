@@ -329,21 +329,22 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public Boolean StandardPattern(object aT)
+        public bool StandardPattern(object aT)
         {
             if (Pattern == null)
+            {
                 return false;
+            }
             if (aT is T)
+            {
                 return Pattern((T)aT);
-            else return false;
+            }
+            return false;
         }
 
         public void StandardApply(object aT)
         {
-            if (Apply != null)
-            {
-                Apply((T)aT);
-            }
+            Apply?.Invoke((T)aT);
         }
     }
 
