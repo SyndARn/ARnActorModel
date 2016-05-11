@@ -12,8 +12,8 @@ I was looking for an actor model things with some requirements :
  
 #With ARnActor, now you can :
 
-    var sender = new actActor() ;
-    var receiver = new actActor() ;
+    var sender = new BaseActor() ;
+    var receiver = new BaseActor() ;
  
  and in sender code ..
  
