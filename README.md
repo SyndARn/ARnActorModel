@@ -29,7 +29,8 @@ Unit tests are included as well as some sample applications.
 For a common usage, you can find SyndARn here in Nuget : https://www.nuget.org/packages/ARnActorModel/
 
 #### Current works
+
 - more coverage
 - moving to PCL/Universal/Shared model
-- 
+ 
 
