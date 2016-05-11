@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>73609681-bce2-42ea-88f2-b377225453ec</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Actor.Util</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadCastBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\ForEachBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\ProxyActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\ReceiveActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\SendReplyBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\StateBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\CollectionBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\DictionaryActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\EnumerableBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\IDictionaryActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\LinkedListActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\ObservableActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\QueueActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\RxObservable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Continuation\actGraphHedge.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Fsm\FsmActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IO\TextWriterActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MapReduce\MapReduceActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Monadic\actMonad.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Producer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workflow\actWorkflow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Workflow\Image1.png" />
+  </ItemGroup>
+</Project>
