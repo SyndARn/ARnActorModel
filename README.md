@@ -1,4 +1,4 @@
-# ARnActorModel
+#### ARnActorModel
 A C# Actor Model library.
 
 I was looking for an actor model things with some requirements :
@@ -10,7 +10,7 @@ I was looking for an actor model things with some requirements :
  - behaviors are dynamic
  - actor can send message across servers
  
-#With ARnActor, now you can :
+#### With ARnActor, now you can :
 
     var sender = new BaseActor() ;
     var receiver = new BaseActor() ;
@@ -19,7 +19,7 @@ I was looking for an actor model things with some requirements :
  
     receiver.SendMessage("something") ;
  
-#The library holds some useful features :
+#### The library holds some useful features :
 -  behavior can be attached or removed from actor, (an actor can change it's own behavior ...)
 -  actor can send messages across servers, you just need to hold a reference to another actor on a server ...
 -  some actor can behave as public services, or be supervised
@@ -27,3 +27,10 @@ I was looking for an actor model things with some requirements :
 Unit tests are included as well as some sample applications.
 
 For a common usage, you can find SyndARn here in Nuget : https://www.nuget.org/packages/ARnActorModel/
+
+#### Current works
+
+- more coverage
+- moving to PCL/Universal/Shared model
+ 
+
