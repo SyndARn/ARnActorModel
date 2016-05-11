@@ -76,7 +76,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -85,6 +87,9 @@
     <Compile Include="ActorBase\ActorMailBoxTests.cs" />
     <Compile Include="actParserTests.cs" />
     <Compile Include="actRemoteTest.cs" />
+    <Compile Include="Admin\EchoActorTests.cs" />
+    <Compile Include="Behavior\NullBehaviorTest.cs" />
+    <Compile Include="ClientServer\WebAnswerTests.cs" />
     <Compile Include="Collection\ActorCollectionTest.cs" />
     <Compile Include="Collection\ActorQueueTest.cs" />
     <Compile Include="Collection\RxObservableTests.cs" />
@@ -92,6 +97,7 @@
     <Compile Include="Collection\DictionaryActorTests.cs" />
     <Compile Include="ProcessActor\ProcessActorTests.cs" />
     <Compile Include="RemoteServer\MemoryContextCommTests.cs" />
+    <Compile Include="RemoteServer\MemoryListener\MemoryListenerServiceTests.cs" />
     <Compile Include="Service\actRingTests.cs" />
     <Compile Include="Util\TestLauncherActor.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />

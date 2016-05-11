@@ -16,12 +16,8 @@ namespace Actor.Base
         protected abstract void DoApply(T msg);
     }
 
-    public class StringPatternActor : PatternActor<string>
+    public abstract class StringPatternActor : PatternActor<string>
     {
-        protected override void DoApply(string msg)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 }

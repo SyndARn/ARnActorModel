@@ -7,7 +7,7 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    class MemoryListenerService : IListenerService
+    public class MemoryListenerService : IListenerService
     {
 
         public void Close()

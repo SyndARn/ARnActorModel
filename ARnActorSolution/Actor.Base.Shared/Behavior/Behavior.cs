@@ -74,13 +74,6 @@ namespace Actor.Base
 
     }
 
-    public class Behavior : Behavior<object>
-    {
-        public Behavior() : base()
-        {
-        }
-    }
-
     public class Behavior<A, T> : IBehavior<A, T>, IBehavior
     {
         public Func<A, T, Boolean> Pattern { get; protected set; }

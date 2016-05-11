@@ -24,7 +24,6 @@ namespace TestActor
         {
             protected override void DoApply(string msg)
             {
-                // base.DoApply(msg);
                 if (msg == "Start")
                 {
 
