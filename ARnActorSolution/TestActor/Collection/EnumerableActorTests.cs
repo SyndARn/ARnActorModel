@@ -81,24 +81,22 @@ namespace TestActor
         [TestMethod()]
         public void StressEnumeratorWithLinqTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new EnumerableActor<string>();
 
-                foreach (var item in Enumerable.Range(0, 1000))
+                foreach (var item in Enumerable.Range(0, 100))
                 {
                     act.Add(item.ToString());
                 }
-                Assert.AreEqual(1000, act.Count());
+                Assert.AreEqual(100, act.Count());
                 var query =
                     from s in act
                     where s.StartsWith("1")
                     select s;
-                Assert.AreEqual(111, query.Count());
-                Assert.IsTrue(query.Contains("111"));
-                fLauncher.Finish();
+                Assert.AreEqual(11, query.Count());
+                Assert.IsTrue(query.Contains("11"));
             });
-            Assert.IsTrue(fLauncher.Wait()) ;
         }
     }
 }

@@ -72,7 +72,11 @@ namespace Actor.Base
             }, TaskCreationOptions.None)
             .ContinueWith((t) =>
             {
-                Debug.WriteLine(string.Format("task fault on {0}", t.Exception.InnerExceptions.ToString()),"Task Actor Fault");
+                foreach(var item in t.Exception.InnerExceptions)
+                {
+                    Debug.WriteLine(string.Format("Task fault on {0}", item.Message, "[Task Actor Fault]"));
+                }
+                
             },
             TaskContinuationOptions.OnlyOnFaulted);
         }

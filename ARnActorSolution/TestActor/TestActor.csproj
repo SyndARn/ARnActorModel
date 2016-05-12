@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="ActionActor\ActionActorTest.cs" />
     <Compile Include="ActorBase\ActorMailBoxTests.cs" />
+    <Compile Include="ActorBase\FutureTest.cs" />
     <Compile Include="actParserTests.cs" />
     <Compile Include="actRemoteTest.cs" />
     <Compile Include="Admin\EchoActorTests.cs" />
