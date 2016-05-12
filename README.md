@@ -24,7 +24,7 @@ I was looking for an actor model things with some requirements :
 -  actor can send messages across servers, you just need to hold a reference to another actor on a server ...
 -  some actor can behave as public services, or be supervised
 
-[![Coverage]()](https://github.com/SyndARn/ARnActorModel/ARnActorSolution/TestActor/Report/badge_combined.svg)
+[![Coverage]()](https://github.com/SyndARn/ARnActorModel/blob/0fcd6804cbd675718fee301d12947f1e9484cc91/ARnActorSolution/TestActor/Report/badge_combined.svg)
 Unit tests are included as well as some sample applications.
 
 I used the excellent OpenCover to give some tests coverage.
