@@ -29,7 +29,7 @@ Unit tests are included as well as some sample applications.
 
 I used the excellent OpenCover to give some tests coverage.
 
-For a common usage, you can find SyndARn here in : [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
+For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
 
 #### Current works
 
