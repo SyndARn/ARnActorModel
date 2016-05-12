@@ -24,7 +24,9 @@ I was looking for an actor model things with some requirements :
 -  actor can send messages across servers, you just need to hold a reference to another actor on a server ...
 -  some actor can behave as public services, or be supervised
 
-Unit tests are included as well as some sample applications.
+![](https://github.com/SyndARn/ARnActorModel/blob/ccb034c6094f264e4af1ff88973bf394eabc6f29/ARnActorSolution/TestActor/Report/badge_combined.svg) Unit tests are included as well as some sample applications.
+
+I used the excellent OpenCover to give some tests coverage.
 
 For a common usage, you can find SyndARn here in Nuget : https://www.nuget.org/packages/ARnActorModel/
 
