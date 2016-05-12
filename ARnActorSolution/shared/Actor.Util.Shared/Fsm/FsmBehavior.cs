@@ -23,42 +23,42 @@
 
 using Actor.Base;
 using System;
-using System.Collections.Generic;
 
 namespace Actor.Util
 {
 
-    public class FsmActor<TState, TEvent> : BaseActor
+    public class FsmBehavior<TState, TEvent> : Behavior<Tuple<TState, TEvent>>
     {
-        protected TState CurrentState { get; set; }
+        public TState StartState { get; private set; }
+        public TState EndState { get; private set; }
+        public Action<TEvent> Action { get; private set; }
+        public Func<TEvent, bool> Condition { get; private set; }
 
-        public FsmActor(TState StartState, IEnumerable<FsmBehavior<TState, TEvent>> someBehaviors) : base()
+        public FsmBehavior(
+            TState origState,
+            TState endState,
+            Action<TEvent> anAction,
+            Func<TEvent, bool> aCondition)
         {
-            CurrentState = StartState;
-            Become(new Behavior<TState>(ProcessState));
-            AddBehavior(new Behavior<Tuple<IActor, TState>>(GetState));
-            if (someBehaviors != null)
-                foreach (var item in someBehaviors)
-                {
-                    AddBehavior(item);
-                }
+            StartState = origState;
+            EndState = endState;
+            Action = anAction;
+            Condition = aCondition;
+
+            Pattern = DoPattern;
+            Apply = DoApply;
         }
 
-        private void GetState(Tuple<IActor, TState> sender)
+        private bool DoPattern(Tuple<TState, TEvent> aStateEvent)
         {
-            sender.Item1.SendMessage(new Tuple<IActor, TState>(this, CurrentState));
+            return StartState.Equals(aStateEvent.Item1) && (Condition != null && Condition(aStateEvent.Item2));
         }
 
-        internal void ProcessState(TState newState)
+        private void DoApply(Tuple<TState, TEvent> aStateEvent)
         {
-            CurrentState = newState;
-        }
-
-        public Future<Tuple<IActor,TState>> GetCurrentState()
-        {
-            var future = new Future<Tuple<IActor,TState>>();
-            SendMessage(new Tuple<IActor, TState>(future,CurrentState));
-            return future;
+            // first change state
+            ((FsmActor<TState, TEvent>)LinkedActor).ProcessState(EndState);
+            Action?.Invoke(aStateEvent.Item2);
         }
     }
 

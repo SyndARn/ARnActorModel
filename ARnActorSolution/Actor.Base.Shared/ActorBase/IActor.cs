@@ -20,23 +20,18 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Actor.Base
 {
 
     /// <summary>
-    /// How an actor is known to other actor
+    /// How an actor is known to other actors
     /// </summary>
     public interface IActor
     {
         ActorTag Tag { get; }
 
-        void SendMessage(Object msg);
+        void SendMessage(object msg);
     }
 
 
