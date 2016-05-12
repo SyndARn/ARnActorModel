@@ -28,7 +28,7 @@ I was looking for an actor model things with some requirements :
 
 I used the excellent OpenCover to give some tests coverage.
 
-For a common usage, you can find SyndARn here in Nuget : https://www.nuget.org/packages/ARnActorModel/
+For a common usage, you can find SyndARn here in : [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
 
 #### Current works
 
