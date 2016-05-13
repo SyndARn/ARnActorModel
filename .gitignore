@@ -183,3 +183,11 @@
 /ARnActorSolution/Application/MoreThanOneMillionActor/obj/AppVeyor
 /ARnActorSolution/Application/MapReduceApplication/obj/AppVeyor
 /ARnActorSolution/Application/WebQuote/obj/AppVeyor
+/ARnActorSolution/ActorGraph/bin/AppVeyor
+/ARnActorSolution/Actor.Windows/bin/AppVeyor
+/ARnActorSolution/Actor.Server/bin/AppVeyor
+/ARnActorSolution/Application/Actor.TestApplication/bin/AppVeyor
+/ARnActorSolution/Application/FsmTestApplication/bin/AppVeyor
+/ARnActorSolution/Application/ARnActorHelloWorld/bin/AppVeyor
+/ARnActorSolution/Application/Amoeba/bin/AppVeyor
+/ARnActorSolution/Application/ActorWeather/bin/AppVeyor

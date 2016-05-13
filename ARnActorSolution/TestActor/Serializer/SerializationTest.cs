@@ -90,6 +90,7 @@ namespace TestActor
         }
 
         [TestMethod]
+        [TestCategory("needhost")]
         public void TestSerializeActor()
         {
             //

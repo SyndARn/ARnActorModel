@@ -43,7 +43,6 @@ namespace TestActor
         }
 
         [TestMethod()]
-        [TestCategory("needhost")]
         public void DirectoryActorTest()
         {
             fLauncher.SendAction(() =>
@@ -55,14 +54,12 @@ namespace TestActor
         }
 
         [TestMethod()]
-        [TestCategory("needhost")]
         public void GetDirectoryTest()
         {
             Assert.IsTrue(DirectoryActor.GetDirectory() is DirectoryActor);
         }
 
         [TestMethod()]
-        [TestCategory("needhost")]
         public void StatTest()
         {
             Assert.IsTrue(DirectoryActor.GetDirectory().Stat().StartsWith("Directory entries "));
@@ -86,7 +83,6 @@ namespace TestActor
         }
 
         [TestMethod()]
-        [TestCategory("needhost")]
         public void DiscoTest()
         {
             ActorServer.Start("localhost", 80,null);
@@ -101,7 +97,6 @@ namespace TestActor
         }
 
         [TestMethod()]
-        [TestCategory("needhost")]
         public void RegisterTest()
         {
             fLauncher.SendAction(() =>
@@ -115,7 +110,6 @@ namespace TestActor
         }
 
         [TestMethod()]
-        [TestCategory("needhost")]
         public void FindTest()
         {
             fLauncher.SendAction(() =>

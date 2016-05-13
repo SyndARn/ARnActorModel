@@ -39,7 +39,7 @@ namespace TestActor
 
                 fLauncher.Finish();
             });
-            fLauncher.Wait(10000);
+            fLauncher.Wait(20000);
         }
     }
 }
