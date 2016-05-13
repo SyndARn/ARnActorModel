@@ -29,7 +29,7 @@ I was looking for an actor model things with some requirements :
 
 
 Unit tests are included as well as some sample applications.
-I used the excellent OpenCover to give some tests coverage.
+I used the excellent [OpenCover](https://github.com/OpenCover/opencover) to give some tests coverage.
 
 For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
 
