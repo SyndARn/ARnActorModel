@@ -209,26 +209,24 @@ namespace Actor.Util
             return new CollectionActorEnumerator<T>(this);
         }
 
-        public void Add(T aData)
+        public async void Add(T aData)
         {
-            // TODO this is weird
-            Receive(t =>
+            SendMessage(Tuple.Create(CollectionRequest.Add, aData));
+            await Receive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkAdd;
             }) ;
-            SendMessage(Tuple.Create(CollectionRequest.Add, aData));
         }
 
-        public void Remove(T aData)
+        public async void Remove(T aData)
         {
-            // TODO this is weird
-            Receive(t =>
+            SendMessage(Tuple.Create(CollectionRequest.Remove, aData));
+            await Receive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkRemove;
             });
-            SendMessage(Tuple.Create(CollectionRequest.Remove, aData));
         }
     }
 

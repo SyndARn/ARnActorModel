@@ -8,7 +8,7 @@ namespace Actor.Base
 {
     public abstract class PatternActor<T> : BaseActor
     {
-        public PatternActor() : base()
+        protected PatternActor() : base()
         {
             Become(new Behavior<T>(DoApply));
         }

@@ -41,9 +41,9 @@ namespace Actor.Base
 
         public static string Stat()
         {
+#if ! NETFX_CORE
             int workerThread;
             int ioThread;
-#if ! NETFX_CORE
             ThreadPool.GetAvailableThreads(out workerThread, out ioThread);
 #endif
             StringBuilder sb = new StringBuilder();
