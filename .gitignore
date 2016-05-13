@@ -174,3 +174,12 @@
 /ARnActorSolution/Window/Actor.Base/bin/x64/Debug
 /ARnActorSolution/packages
 /ARnActorSolution/Application/WebQuote/bin/AppVeyor
+/ARnActorSolution/Application/LinqAndActorApplication/obj/AppVeyor
+/ARnActorSolution/Application/FsmTestApplication/obj/AppVeyor
+/ARnActorSolution/Application/ARnActorHelloWorld/obj/AppVeyor
+/ARnActorSolution/Application/Amoeba/obj/AppVeyor
+/ARnActorSolution/Actor.Plugin/obj/AppVeyor
+/ARnActorSolution/Actor.MonteCarlo/obj/AppVeyor
+/ARnActorSolution/Application/MoreThanOneMillionActor/obj/AppVeyor
+/ARnActorSolution/Application/MapReduceApplication/obj/AppVeyor
+/ARnActorSolution/Application/WebQuote/obj/AppVeyor

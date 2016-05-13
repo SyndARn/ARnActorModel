@@ -83,6 +83,7 @@ namespace TestActor
         }
 
         [TestMethod()]
+        [TestCategory("needhost")]
         public void DiscoTest()
         {
             ActorServer.Start("localhost", 80,null);
