@@ -35,7 +35,6 @@ namespace TestActor
         }
 
         [TestMethod()]
-        [TestCategory("needhost")]
         public void PersistentActorTest()
         {
             fLauncher.SendAction(() =>

@@ -191,3 +191,7 @@
 /ARnActorSolution/Application/ARnActorHelloWorld/bin/AppVeyor
 /ARnActorSolution/Application/Amoeba/bin/AppVeyor
 /ARnActorSolution/Application/ActorWeather/bin/AppVeyor
+/ARnActorSolution/Universal/Actor.Base.Universal/obj/AppVeyor
+/ARnActorSolution/Pcl/Actor.Base.Pcl/obj/AppVeyor
+/ARnActorSolution/Application/Universal/HelloUniversal/obj/x86/AppVeyor
+/ARnActorSolution/Application/Pcl/HelloPclActor/HelloPclActor.WindowsPhone/obj/AppVeyor
