@@ -49,6 +49,7 @@ namespace TestActor
 
         [TestMethod]
         [TestCategory("needhost")]
+        [Ignore]
         public void TestShardRun()
         {
           ActorServer.Start(this.ToString(), 80, new HostRelayActor());
