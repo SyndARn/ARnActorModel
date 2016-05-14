@@ -30,6 +30,7 @@ I was looking for an actor model things with some requirements :
 
 Unit tests are included as well as some sample applications.
 I used the excellent [OpenCover](https://github.com/OpenCover/opencover) to give some tests coverage.
+[![Coverage Status](https://coveralls.io/repos/github/SyndARn/ARnActorModel/badge.svg?branch=master)](https://coveralls.io/github/SyndARn/ARnActorModel?branch=master)
 
 For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
 
