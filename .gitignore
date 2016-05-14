@@ -172,7 +172,6 @@
 /ARnActorSolution/Universal/Actor.Base.Universal/obj/x64/Debug
 /ARnActorSolution/Universal/Actor.Base.Universal/obj/x86/Release
 /ARnActorSolution/Window/Actor.Base/bin/x64/Debug
-/ARnActorSolution/packages
 /ARnActorSolution/Application/WebQuote/bin/AppVeyor
 /ARnActorSolution/Application/LinqAndActorApplication/obj/AppVeyor
 /ARnActorSolution/Application/FsmTestApplication/obj/AppVeyor
@@ -195,3 +194,4 @@
 /ARnActorSolution/Pcl/Actor.Base.Pcl/obj/AppVeyor
 /ARnActorSolution/Application/Universal/HelloUniversal/obj/x86/AppVeyor
 /ARnActorSolution/Application/Pcl/HelloPclActor/HelloPclActor.WindowsPhone/obj/AppVeyor
+/ARnActorSolution/Application/Universal/HelloUniversal/bin/x86/AppVeyor
