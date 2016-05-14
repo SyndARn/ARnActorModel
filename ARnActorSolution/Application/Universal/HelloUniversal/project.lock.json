@@ -3,6 +3,9 @@
   "version": 2,
   "targets": {
     "UAP,Version=v10.0": {
+      "coveralls.io/1.3.4": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -277,6 +280,9 @@
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
+      },
+      "OpenCover/4.6.519": {
+        "type": "package"
       },
       "System.AppContext/4.0.0": {
         "type": "package",
@@ -1880,6 +1886,9 @@
       }
     },
     "UAP,Version=v10.0/win10-arm": {
+      "coveralls.io/1.3.4": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -2103,6 +2112,9 @@
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
+      },
+      "OpenCover/4.6.519": {
+        "type": "package"
       },
       "runtime.any.System.Private.DataContractSerialization/4.1.0": {
         "type": "package",
@@ -3623,6 +3635,9 @@
       }
     },
     "UAP,Version=v10.0/win10-arm-aot": {
+      "coveralls.io/1.3.4": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -3844,6 +3859,9 @@
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
+      },
+      "OpenCover/4.6.519": {
+        "type": "package"
       },
       "runtime.aot.System.Private.DataContractSerialization/4.1.0": {
         "type": "package",
@@ -5323,6 +5341,9 @@
       }
     },
     "UAP,Version=v10.0/win10-x64": {
+      "coveralls.io/1.3.4": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -5552,6 +5573,9 @@
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
+      },
+      "OpenCover/4.6.519": {
+        "type": "package"
       },
       "runtime.any.System.Private.DataContractSerialization/4.1.0": {
         "type": "package",
@@ -7075,6 +7099,9 @@
       }
     },
     "UAP,Version=v10.0/win10-x64-aot": {
+      "coveralls.io/1.3.4": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -7296,6 +7323,9 @@
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
+      },
+      "OpenCover/4.6.519": {
+        "type": "package"
       },
       "runtime.aot.System.Private.DataContractSerialization/4.1.0": {
         "type": "package",
@@ -8775,6 +8805,9 @@
       }
     },
     "UAP,Version=v10.0/win10-x86": {
+      "coveralls.io/1.3.4": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -9004,6 +9037,9 @@
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
+      },
+      "OpenCover/4.6.519": {
+        "type": "package"
       },
       "runtime.any.System.Private.DataContractSerialization/4.1.0": {
         "type": "package",
@@ -10527,6 +10563,9 @@
       }
     },
     "UAP,Version=v10.0/win10-x86-aot": {
+      "coveralls.io/1.3.4": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -10748,6 +10787,9 @@
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
+      },
+      "OpenCover/4.6.519": {
+        "type": "package"
       },
       "runtime.aot.System.Private.DataContractSerialization/4.1.0": {
         "type": "package",
@@ -12228,6 +12270,29 @@
     }
   },
   "libraries": {
+    "coveralls.io/1.3.4": {
+      "sha512": "LeQN1gLl0Y0DjPPQt3RT+a9Rv1UWTbgfMrr+tREytIxsD3K0dmozJ2Scu2L/GFXSLyc7HHWJbdpbp0lVxHeesw==",
+      "type": "package",
+      "files": [
+        "coveralls.io.1.3.4.nupkg.sha512",
+        "coveralls.io.nuspec",
+        "tools/CommandLine.dll",
+        "tools/CommandLine.xml",
+        "tools/Coveralls.dll",
+        "tools/Coveralls.pdb",
+        "tools/LibGit2Sharp.dll",
+        "tools/LibGit2Sharp.xml",
+        "tools/NativeBinaries/amd64/git2-e0902fb.dll",
+        "tools/NativeBinaries/amd64/git2-e0902fb.pdb",
+        "tools/NativeBinaries/x86/git2-e0902fb.dll",
+        "tools/NativeBinaries/x86/git2-e0902fb.pdb",
+        "tools/Newtonsoft.Json.dll",
+        "tools/Newtonsoft.Json.xml",
+        "tools/coveralls.net.exe",
+        "tools/coveralls.net.exe.config",
+        "tools/coveralls.net.pdb"
+      ]
+    },
     "Microsoft.CSharp/4.0.0": {
       "sha512": "oWqeKUxHXdK6dL2CFjgMcaBISbkk+AqEg+yvJHE4DElNzS4QaTsCflgkkqZwVlWby1Dg9zo9n+iCAMFefFdJ/A==",
       "type": "package",
@@ -12810,6 +12875,56 @@
         "ref/net46/Microsoft.Win32.Primitives.dll",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._"
+      ]
+    },
+    "OpenCover/4.6.519": {
+      "sha512": "oReudTijK4ghbd1GNTzl7Su2KzOufj2evTS5PTGAGC5ThfrThcInB/t9w2ISkcEacOsgLQTdG+PO0UUUGZ+zTw==",
+      "type": "package",
+      "files": [
+        "License.rtf",
+        "MSBuild/OpenCover.MSBuild.dll",
+        "MSBuild/OpenCover.targets",
+        "OpenCover.4.6.519.nupkg.sha512",
+        "OpenCover.nuspec",
+        "SampleSln/.nuget/packages.config",
+        "SampleSln/Bom/Bom.csproj",
+        "SampleSln/Bom/BomManager.cs",
+        "SampleSln/Bom/Properties/AssemblyInfo.cs",
+        "SampleSln/BomSample.sln",
+        "SampleSln/BomTest/BomManagerTests.cs",
+        "SampleSln/BomTest/BomTest.csproj",
+        "SampleSln/BomTest/Properties/AssemblyInfo.cs",
+        "SampleSln/BomTest/packages.config",
+        "SampleSln/coverage.bat",
+        "SampleSln/packages/repositories.config",
+        "Samples/x64/OpenCover.Simple.Target.exe",
+        "Samples/x64/OpenCover.Simple.Target.pdb",
+        "Samples/x86/OpenCover.Simple.Target.exe",
+        "Samples/x86/OpenCover.Simple.Target.pdb",
+        "docs/ReleaseNotes.txt",
+        "docs/Usage.rtf",
+        "readme.txt",
+        "tools/Autofac.Configuration.dll",
+        "tools/Autofac.dll",
+        "tools/CrashReporter.NET.dll",
+        "tools/Gendarme.Framework.dll",
+        "tools/Gendarme.Rules.Maintainability.dll",
+        "tools/Mono.Cecil.Mdb.dll",
+        "tools/Mono.Cecil.Pdb.dll",
+        "tools/Mono.Cecil.dll",
+        "tools/OpenCover.Console.exe",
+        "tools/OpenCover.Console.exe.config",
+        "tools/OpenCover.Console.pdb",
+        "tools/OpenCover.Extensions.dll",
+        "tools/OpenCover.Extensions.pdb",
+        "tools/OpenCover.Framework.dll",
+        "tools/OpenCover.Framework.pdb",
+        "tools/log4net.config",
+        "tools/log4net.dll",
+        "tools/x64/OpenCover.Profiler.dll",
+        "tools/x86/OpenCover.Profiler.dll",
+        "transform/simple_report.xslt",
+        "transform/transform.ps1"
       ]
     },
     "runtime.any.System.Private.DataContractSerialization/4.1.0": {
@@ -15497,7 +15612,9 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Microsoft.NETCore.UniversalWindowsPlatform >= 5.1.0"
+      "Microsoft.NETCore.UniversalWindowsPlatform >= 5.1.0",
+      "OpenCover >= 4.6.519",
+      "coveralls.io >= 1.3.4"
     ],
     "UAP,Version=v10.0": []
   }
