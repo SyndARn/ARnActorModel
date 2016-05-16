@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
+using System.Threading.Tasks;
 
 namespace TestActor.ActorBase
 {
@@ -27,6 +28,11 @@ namespace TestActor.ActorBase
     public class FutureTest
     {        
 
+        private async Task<string> GetResult(Future<string> future)
+        {
+            return await future.ResultAsync();
+        }
+
         [TestMethod]
         public void FutureAsyncTest()
         {
@@ -35,7 +41,9 @@ namespace TestActor.ActorBase
                 var future = new Future<string>();
                 var actor = new ActorTest();
                 actor.SendMessage("Test Data");
-                Assert.AreEqual("Test Data", future.ResultAsync().Result);
+                var result = GetResult(future);
+                actor.SendMessage((IActor)future);
+                Assert.AreEqual("Test Data", result.Result);
             });
         }
     }

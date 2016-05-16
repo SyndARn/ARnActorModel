@@ -116,6 +116,7 @@
     <Compile Include="Collection\ActorQueueTest.cs" />
     <Compile Include="Collection\RxObservableTests.cs" />
     <Compile Include="Factory\ActorAddressFactoryTests.cs" />
+    <Compile Include="Fsm\FSMStateTest.cs" />
     <Compile Include="Graph\bhvGraphTests.cs" />
     <Compile Include="Collection\DictionaryActorTests.cs" />
     <Compile Include="ProcessActor\ProcessActorTests.cs" />
