@@ -22,6 +22,32 @@ namespace TestActor
         }
 
         [TestMethod()]
+        public void QueryiableTest()
+        {
+            var col = new EnumerableActor<int>();
+
+            int expected = 0;
+            for (int i = 0; i <= 100; i++)
+            {
+                col.Add(i);
+                expected += i;
+            }
+
+            var map = from item in col
+                      select item.ToString() ;
+
+            var queryActor = map.AsActorQueryiable();
+
+            int sum = 0;
+            foreach (var item in queryActor)
+            {
+                sum = sum + int.Parse(item);
+            }
+
+            Assert.AreEqual(expected, sum);
+        }
+
+        [TestMethod()]
         public void EnumerableActorTest()
         {
             fLauncher.SendAction(() =>

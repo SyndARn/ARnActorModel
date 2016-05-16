@@ -107,6 +107,7 @@
     <Compile Include="ActorBase\IActorExtensionTest.cs" />
     <Compile Include="actParserTests.cs" />
     <Compile Include="actRemoteTest.cs" />
+    <Compile Include="Admin\ActorStatServerTests.cs" />
     <Compile Include="Admin\EchoActorTests.cs" />
     <Compile Include="Behavior\NullBehaviorTest.cs" />
     <Compile Include="ClientServer\EchoServerActorTest.cs" />

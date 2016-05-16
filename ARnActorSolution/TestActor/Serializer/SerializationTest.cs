@@ -94,46 +94,41 @@ namespace TestActor
         [Ignore]
         public void TestSerializeActor()
         {
-            //
-            var tst1 = new Test1() { Name = "TestName1" };
-            var tst2 = new Test1() { Name = "TestName2" };
-            var lst = new List<IActor>();
-            lst.Add(tst1);
-            lst.Add(tst2);
-
-            // serialize
-            SerialObject so = new SerialObject(lst, new ActorTag("test uri"));
-            NetDataContractSerializer dcs = new NetDataContractSerializer();
-            dcs.SurrogateSelector = new ActorSurrogatorSelector();
-            dcs.Binder = new ActorBinder();
-
-            using (MemoryStream ms = new MemoryStream())
+            TestLauncherActor.Test(() =>
             {
-                dcs.Serialize(ms, so);
+                var tst1 = new Test1() { Name = "TestName1" };
+                var tst2 = new Test1() { Name = "TestName2" };
+                var lst = new List<IActor>();
+                lst.Add(tst1);
+                lst.Add(tst2);
 
-                // display
-                ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                while (!sr.EndOfStream)
-                    Debug.Print(sr.ReadLine());
+                // serialize
+                BaseActor actor = new BaseActor();
+                SerialObject so = new SerialObject(lst, actor.Tag);
+                NetDataContractSerializer dcs = new NetDataContractSerializer();
+                dcs.SurrogateSelector = new ActorSurrogatorSelector();
+                dcs.Binder = new ActorBinder();
 
-                // deserialize
-                ms.Seek(0, SeekOrigin.Begin);
-                Object obj = dcs.ReadObject(ms);
-                SerialObject soread = (SerialObject)obj;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    dcs.Serialize(ms, so);
 
-                // test
-                var lst2 = (List<IActor>)soread.Data;
+                    ms.Seek(0, SeekOrigin.Begin);
+                    Object obj = dcs.ReadObject(ms);
+                    SerialObject soread = (SerialObject)obj;
 
-                Assert.AreEqual(2, lst2.Count);
-                var l1 = (actRemoteActor)(lst2.First());
-                var l2 = (actRemoteActor)(lst2.Last());
+                    var lst2 = (List<IActor>)soread.Data;
 
-                Assert.AreEqual(so.Tag.Id, soread.Tag.Id);
+                    Assert.AreEqual(2, lst2.Count);
+                    var l1 = (actRemoteActor)(lst2.First());
+                    var l2 = (actRemoteActor)(lst2.Last());
 
-                Assert.AreEqual(tst1.Tag.Id, l1.remoteTag.Id);
-                Assert.AreEqual(tst2.Tag.Id, l2.remoteTag.Id);
-            }
+                    Assert.AreEqual(so.Tag.Id, soread.Tag.Id);
+
+                    Assert.AreEqual(tst1.Tag.Id, l1.remoteTag.Id);
+                    Assert.AreEqual(tst2.Tag.Id, l2.remoteTag.Id);
+                }
+            });
         }
     }
 }
