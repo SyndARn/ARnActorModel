@@ -31,35 +31,58 @@
         <hr>
 
         <section id="main_content">
-          <h1>
-<a id="arnactor-actor-model-solution-for-net-c" class="anchor" href="#arnactor-actor-model-solution-for-net-c" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ARnActor Actor Model solution for .NET C</h1>
+          <h4>
+<a id="arnactormodel" class="anchor" href="#arnactormodel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ARnActorModel</h4>
 
-<p>ARnActor is a small Actor Model Library for C#.</p>
+<p>A C# Actor Model library.</p>
 
-<p>Nuget : <a href="https://www.nuget.org/packages/ARnActorModel/">https://www.nuget.org/packages/ARnActorModel/</a></p>
-
-<p>This is a first draft, so be patient for anything else.</p>
-
-<p>To create your first actor :</p>
-
-<pre><code>var actor = new actActor() ;
-</code></pre>
-
-<p>To send a message to another actor :
-    var receiver = new actActor() ;</p>
-
-<pre><code>actor.SendMessage("Hello world",receiver) ;
-</code></pre>
-
-<p>Some samples are furnished around a small console application, try :</p>
+<p>I was looking for an actor model things with some requirements :</p>
 
 <ul>
-<li>disco =&gt; give you the well known public actors</li>
-<li>
-<p>Ring =&gt; a performance test (12 s expected)</p>
+<li>no dependancy from another library</li>
+<li>coding in plain C#, with such things like 'SendMessage', 'new Actor()', 'Become(behavior)'</li>
+<li>actor can change behaviors</li>
+<li>actor can send message</li>
+<li>actor can create other actors</li>
+<li>behaviors are dynamic</li>
+<li>actor can send message across servers</li>
+</ul>
 
-<p>There is no required Library or anything else : what you need is a CLR NET 4.5, also it could run on CLR NET 4.0.</p>
-</li>
+<h4>
+<a id="with-arnactor-now-you-can-" class="anchor" href="#with-arnactor-now-you-can-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>With ARnActor, now you can :</h4>
+
+<pre><code>var sender = new BaseActor() ;
+var receiver = new BaseActor() ;
+</code></pre>
+
+<p>and in sender code ..</p>
+
+<pre><code>receiver.SendMessage("something") ;
+</code></pre>
+
+<h4>
+<a id="the-library-holds-some-useful-features-" class="anchor" href="#the-library-holds-some-useful-features-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The library holds some useful features :</h4>
+
+<ul>
+<li> behavior can be attached or removed from actor, (an actor can change it's own behavior ...)</li>
+<li> actor can send messages across servers, you just need to hold a reference to another actor on a server ...</li>
+<li> some actor can behave as public services, or be supervised</li>
+</ul>
+
+<p><a href="https://ci.appveyor.com/project/SyndARn/arnactormodel/branch/master"><img src="https://ci.appveyor.com/api/projects/status/1050h54h8pdfbbh0/branch/master?svg=true" alt="Build status"></a></p>
+
+<p>Unit tests are included as well as some sample applications.
+I used the excellent <a href="https://github.com/OpenCover/opencover">OpenCover</a> to give some tests coverage.
+<a href="https://coveralls.io/github/SyndARn/ARnActorModel?branch=master"><img src="https://coveralls.io/repos/github/SyndARn/ARnActorModel/badge.svg?branch=master" alt="Coverage Status"></a></p>
+
+<p>For a common usage, you can download ARnActorModel here in Nuget. <a href="http://nuget.org/packages/ARnActorModel"><img src="https://buildstats.info/nuget/ARnActorModel" alt="Nuget"></a> </p>
+
+<h4>
+<a id="current-works" class="anchor" href="#current-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Current works</h4>
+
+<ul>
+<li>more coverage</li>
+<li>moving to PCL/Universal/Shared model</li>
 </ul>
         </section>
 
