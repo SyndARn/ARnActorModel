@@ -104,14 +104,17 @@
     <Compile Include="ActionActor\ActionActorTest.cs" />
     <Compile Include="ActorBase\ActorMailBoxTests.cs" />
     <Compile Include="ActorBase\FutureTest.cs" />
+    <Compile Include="ActorBase\IActorExtensionTest.cs" />
     <Compile Include="actParserTests.cs" />
     <Compile Include="actRemoteTest.cs" />
     <Compile Include="Admin\EchoActorTests.cs" />
     <Compile Include="Behavior\NullBehaviorTest.cs" />
+    <Compile Include="ClientServer\EchoServerActorTest.cs" />
     <Compile Include="ClientServer\WebAnswerTests.cs" />
     <Compile Include="Collection\ActorCollectionTest.cs" />
     <Compile Include="Collection\ActorQueueTest.cs" />
     <Compile Include="Collection\RxObservableTests.cs" />
+    <Compile Include="Factory\ActorAddressFactoryTests.cs" />
     <Compile Include="Graph\bhvGraphTests.cs" />
     <Compile Include="Collection\DictionaryActorTests.cs" />
     <Compile Include="ProcessActor\ProcessActorTests.cs" />

@@ -195,3 +195,5 @@
 /ARnActorSolution/Application/Universal/HelloUniversal/obj/x86/AppVeyor
 /ARnActorSolution/Application/Pcl/HelloPclActor/HelloPclActor.WindowsPhone/obj/AppVeyor
 /ARnActorSolution/Application/Universal/HelloUniversal/bin/x86/AppVeyor
+/ARnActorSolution/packages/OpenCover.4.6.519/tools/TestResults/ARn_CORSAIRPOWER 2016-05-16 14_06_53.trx
+/ARnActorSolution/packages/OpenCover.4.6.519/tools/TestResults/ARn_CORSAIRPOWER 2016-05-16 14_06_53/Out
