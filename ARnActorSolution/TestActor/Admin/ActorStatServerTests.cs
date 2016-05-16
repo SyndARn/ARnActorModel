@@ -11,7 +11,6 @@ using Actor.Base;
 namespace Actor.Server.Tests
 {
     [TestClass()]
-    [Ignore]
     public class ActorStatServerTests
     {
         [TestMethod()]

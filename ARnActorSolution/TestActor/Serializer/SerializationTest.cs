@@ -90,8 +90,6 @@ namespace TestActor
         }
 
         [TestMethod]
-        [TestCategory("needhost")]
-        [Ignore]
         public void TestSerializeActor()
         {
             TestLauncherActor.Test(() =>

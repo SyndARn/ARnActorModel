@@ -48,7 +48,6 @@ namespace TestActor
         }
 
         [TestMethod]
-        [TestCategory("needhost")]
         [Ignore]
         public void TestActorCollectionEnumerator()
         {
