@@ -115,10 +115,12 @@
     <Compile Include="Collection\ActorCollectionTest.cs" />
     <Compile Include="Collection\ActorQueueTest.cs" />
     <Compile Include="Collection\RxObservableTests.cs" />
+    <Compile Include="Exception\CheckArgTest.cs" />
     <Compile Include="Factory\ActorAddressFactoryTests.cs" />
     <Compile Include="Fsm\FSMStateTest.cs" />
     <Compile Include="Graph\bhvGraphTests.cs" />
     <Compile Include="Collection\DictionaryActorTests.cs" />
+    <Compile Include="MapReduce\MapReduceTesting.cs" />
     <Compile Include="ProcessActor\ProcessActorTests.cs" />
     <Compile Include="RemoteServer\MemoryContextCommTests.cs" />
     <Compile Include="RemoteServer\MemoryListener\MemoryListenerServiceTests.cs" />
