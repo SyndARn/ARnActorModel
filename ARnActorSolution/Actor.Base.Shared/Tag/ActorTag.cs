@@ -64,8 +64,10 @@ namespace Actor.Base
 
     }
 
+
+
     [Serializable]
-    public class ActorTag
+    public class ActorTag : IEquatable<ActorTag>
     {
         private string fUri;
         private bool fIsRemote;
@@ -114,6 +116,25 @@ namespace Actor.Base
             {
                 return Uri + Id.ToString();
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return Key().GetHashCode();
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj == null) return false;
+            ActorTag other = obj as ActorTag;
+            if (other == null) return false;
+            return Equals(other);
+        }
+
+        public bool Equals(ActorTag other)
+        {
+            if (other == null) return false;
+            return fUri == other.fUri && fIsRemote == other.fIsRemote && fId == other.fId;
         }
     }
 }

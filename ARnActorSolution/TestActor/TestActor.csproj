@@ -120,6 +120,7 @@
     <Compile Include="ProcessActor\ProcessActorTests.cs" />
     <Compile Include="RemoteServer\MemoryContextCommTests.cs" />
     <Compile Include="RemoteServer\MemoryListener\MemoryListenerServiceTests.cs" />
+    <Compile Include="Serializer\NetDataContract\NetDataContractSerializeServiceTests.cs" />
     <Compile Include="Service\actRingTests.cs" />
     <Compile Include="Util\TestLauncherActor.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />
