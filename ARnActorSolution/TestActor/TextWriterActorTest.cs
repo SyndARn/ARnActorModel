@@ -11,6 +11,7 @@ namespace TestActor
     public class TextWriterActorTest
     {
         [TestMethod]
+        [Ignore]
         public void TestTextWriter()
         {
             TestLauncherActor.Test(() =>
