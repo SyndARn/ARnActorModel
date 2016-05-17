@@ -19,8 +19,9 @@ namespace TestActor
                 textWriter.SendMessage("1st line");
                 textWriter.SendMessage("2nd line");
                 textWriter.SendMessage("3rd line");
+                textWriter.Flush();
             });
-            using (StreamReader reader = new StreamReader(Environment.CurrentDirectory + "textwritertestfile.txt"))
+            using (StreamReader reader = new StreamReader("textwritertestfile.txt"))
             {
                 Assert.AreEqual(reader.ReadLine(), "1st line");
                 Assert.AreEqual(reader.ReadLine(), "2nd line");
