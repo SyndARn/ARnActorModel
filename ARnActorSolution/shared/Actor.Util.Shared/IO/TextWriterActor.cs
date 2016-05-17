@@ -20,6 +20,19 @@ namespace Actor.Util
             SendMessage(aFileName);
         }
 
+        public TextWriterActor(Stream aStream)
+        {
+            Become(new Behavior<Stream>(DoInit));
+            SendMessage(aStream);
+        }
+
+        private void DoInit(Stream aStream)
+        {
+            fStream = new StreamWriter(aStream);
+            fStream.AutoFlush = true;
+            Become(new Behavior<string>(DoWrite));
+        }
+
         private void DoInit(string aFilename)
         {
             fFileName = Environment.CurrentDirectory + aFilename;

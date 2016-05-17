@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ActorGraph.Actors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
 using TestActor;
+using Actor.Util;
 
 namespace ActorGraph.Actors.Tests
 {
@@ -38,7 +38,7 @@ namespace ActorGraph.Actors.Tests
         {
             fLauncher.SendAction(() =>
             {
-                var graph = new bhvGraph<string, int>();
+                var graph = new BehaviorGraph<string, int>();
                 var nodeA = new NodeActor<string, int>();
                 var nodeB = new NodeActor<string, int>();
                 graph.AddNode(nodeA);
