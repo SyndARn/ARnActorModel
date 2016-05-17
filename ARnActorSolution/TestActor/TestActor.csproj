@@ -161,10 +161,6 @@
       <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
       <Name>Actor.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ActorGraph\ActorGraph.csproj">
-      <Project>{C96A3533-5D0D-40FF-AFC7-1FF72EFAA9CA}</Project>
-      <Name>ActorGraph</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Window\Actor.Base\Actor.Base.csproj">
       <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>
       <Name>Actor.Base</Name>
