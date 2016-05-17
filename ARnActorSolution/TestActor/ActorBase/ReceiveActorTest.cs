@@ -22,17 +22,27 @@ namespace TestActor
 
 
         [TestMethod]
-        public void ReceiveWaitTest()
+        public void ReceiveWait1Test()
         {
             TestLauncherActor.Test(() =>
             {
                 var actor = new ReceiveActor<int, string>();
                 var target = new TargetActor();
                 var resultOdd = actor.Wait((IActor)target, 1);
-                var resultEven = actor.Wait((IActor)target, 2);
                 Assert.IsTrue(resultOdd.Result.Item2 == "Odd");
-                Assert.IsTrue(resultEven.Result.Item2 == "Even");
             }) ;
+        }
+
+        [TestMethod]
+        public void ReceiveWait2Test()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var actor = new ReceiveActor<int, string>();
+                var target = new TargetActor();
+                var resultEven = actor.Wait((IActor)target, 2);
+                Assert.IsTrue(resultEven.Result.Item2 == "Even");
+            });
         }
     }
 }
