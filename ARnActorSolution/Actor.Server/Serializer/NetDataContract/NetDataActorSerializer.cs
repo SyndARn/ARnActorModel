@@ -11,7 +11,7 @@ using Procurios.Public;
 namespace Actor.Server
 {
 
-    static class NetDataActorSerializer
+    public static class NetDataActorSerializer
     {
         public static SerialObject DeSerialize(Stream inputStream)
         {

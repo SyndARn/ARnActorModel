@@ -11,7 +11,7 @@ using Actor.Base;
 namespace Actor.Server
 {
 
-    class ActorBinder : SerializationBinder
+    public class ActorBinder : SerializationBinder
     {
         public override Type BindToType(string assemblyName, string typeName)
         {
@@ -30,7 +30,7 @@ namespace Actor.Server
 
 
 
-    class ActorSurrogatorSelector : SurrogateSelector
+    public class ActorSurrogatorSelector : SurrogateSelector
     {
         public ActorSurrogatorSelector()
             : base()

@@ -9,22 +9,22 @@ using Actor.Server ;
 namespace Actor.Service
 {
 
-    public class bhvReceiveLine : Behavior<Tuple<IActor, string>>
+    public class BehaviorReceiveLine : Behavior<Tuple<IActor, string>>
     {
-        public bhvReceiveLine() : base()
+        public BehaviorReceiveLine() : base()
         {
             Pattern = t => t is Tuple<IActor,String> ;
             Apply = t =>
                 {
-                    IActor parser = new actStringParser();
+                    IActor parser = new StringParserActor();
                     parser.SendMessage(t);
                 };
         }
     }
 
-    public class actStringParser : BaseActor
+    public class StringParserActor : BaseActor
     {
-        public actStringParser()
+        public StringParserActor()
             : base()
         {
             Become(new Behavior<Tuple<IActor,string>>(
@@ -41,11 +41,11 @@ namespace Actor.Service
         }
     }
 
-    public class actParserServer : BaseActor
+    public class ParserServer : BaseActor
     {
-        public actParserServer() : base()
+        public ParserServer() : base()
         {
-            Become(new bhvReceiveLine()) ;
+            Become(new BehaviorReceiveLine()) ;
         }
     }
 
@@ -72,7 +72,7 @@ namespace Actor.Service
                     IActor aServer = null;
                     if (fParserServer == null)
                     {
-                        aServer = new actParserServer();
+                        aServer = new ParserServer();
                         fParserServer = aServer.Tag;
                     }
                     else

@@ -297,3 +297,8 @@ Build/
 /ARnActorSolution/TestActor/Report/TestActor_FSMStateTest.htm
 /ARnActorSolution/TestActor/Report/TestActor_CheckArgTest.htm
 /ARnActorSolution/TestActor/Report/TestActor_ActorStatServerTests.htm
+/ARnActorSolution/TestActor/Report/Actor.Service_StringParserActor.htm
+/ARnActorSolution/TestActor/Report/Actor.Service_ParserServer.htm
+/ARnActorSolution/TestActor/Report/Actor.Service_BehaviorReceiveLine.htm
+/ARnActorSolution/TestActor/Report/TestActor_TestParserActor.htm
+/ARnActorSolution/TestActor/Report/TestActor_StringParserActorTests.htm

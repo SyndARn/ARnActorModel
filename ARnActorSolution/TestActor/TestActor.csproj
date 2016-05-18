@@ -127,6 +127,7 @@
     <Compile Include="RemoteServer\MemoryListener\MemoryListenerServiceTests.cs" />
     <Compile Include="Serializer\NetDataContract\NetDataContractSerializeServiceTests.cs" />
     <Compile Include="Service\actRingTests.cs" />
+    <Compile Include="StringParserActorTests.cs" />
     <Compile Include="TextWriterActorTest.cs" />
     <Compile Include="Util\TestLauncherActor.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />

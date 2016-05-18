@@ -9,7 +9,7 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    class ActorSurrogator : ISerializationSurrogate
+    public class ActorSurrogator : ISerializationSurrogate
     {
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
         {
