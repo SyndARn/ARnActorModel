@@ -9,63 +9,46 @@ namespace Actor.Util
 {
 
 
-    public class BehaviorGraph<N, E> : BaseActor
+    public class BehaviorGraph<TNode, TEdge> : BaseActor
     {
-        private List<NodeActor<N, E>> fNodeCollection;
+        private List<NodeActor<TNode, TEdge>> fNodeCollection;
 
         public BehaviorGraph() : base()
         {
-            fNodeCollection = new List<NodeActor<N, E>>();
-            Become(new Behavior<GraphOperation, NodeActor<N, E>>(
+            fNodeCollection = new List<NodeActor<TNode, TEdge>>();
+            Become(new Behavior<GraphOperation, NodeActor<TNode, TEdge>>(
                 (o, n) => o == GraphOperation.AddNode,
                 (o, n) => fNodeCollection.Add(n)));
-            AddBehavior(new Behavior<GraphOperation, NodeActor<N, E>>(
+            AddBehavior(new Behavior<GraphOperation, NodeActor<TNode, TEdge>>(
                 (o, n) => o == GraphOperation.RemoveNode,
                 (o, n) => fNodeCollection.Remove(n)));
             AddBehavior(new Behavior<GraphOperation, IActor>(
                 (o, a) => o == GraphOperation.PickUpNode,
                 (o, a) => {
                     var node = fNodeCollection.FirstOrDefault();
-                    a.SendMessage(new Tuple<IActor, NodeActor<N, E>>(this, node));
+                    a.SendMessage(new Tuple<IActor, NodeActor<TNode, TEdge>>(this, node));
                 }));
         }
 
-        public void AddNode(NodeActor<N, E> node)
+        public void AddNode(NodeActor<TNode, TEdge> node)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<N, E>>(GraphOperation.AddNode, node));
+            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>>(GraphOperation.AddNode, node));
         }
-        public void RemoveNode(NodeActor<N, E> node)
+        public void RemoveNode(NodeActor<TNode, TEdge> node)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<N, E>>(GraphOperation.RemoveNode, node));
+            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>>(GraphOperation.RemoveNode, node));
         }
     }
 
-
-    /*
-    The basic operations provided by a graph data structure G usually include:[1]
-adjacent(G, x, y): tests whether there is an edge from the vertices x to y;
-neighbors(G, x): lists all vertices y such that there is an edge from the vertices x to y;
-add_vertex(G, x): adds the vertex x, if it is not there;
-remove_vertex(G, x): removes the vertex x, if it is there;
-add_edge(G, x, y): adds the edge from the vertices x to y, if it is not there;
-remove_edge(G, x, y): removes the edge from the vertices x to y, if it is there;
-get_vertex_value(G, x): returns the value associated with the vertex x;
-set_vertex_value(G, x, v): sets the value associated with the vertex x to v.
-
-Structures that associate values to the edges usually also provide:[1]
-get_edge_value(G, x, y): returns the value associated with the edge (x, y);
-set_edge_value(G, x, y, v): sets the value associated with the edge (x, y) to v.
-
-    */
-    public class EdgeActor<N, E> : BaseActor
+    public class EdgeActor<TNode, TEdge> : BaseActor
     {
-        private NodeActor<N, E> NodeA;
-        private NodeActor<N, E> NodeB;
-        private E fData;
+        private NodeActor<TNode, TEdge> NodeA;
+        private NodeActor<TNode, TEdge> NodeB;
+        private TEdge fData;
         public EdgeActor() : base()
         {
         }
-        public EdgeActor(NodeActor<N, E> nodeA, NodeActor<N, E> nodeB)
+        public EdgeActor(NodeActor<TNode, TEdge> nodeA, NodeActor<TNode, TEdge> nodeB)
         {
             NodeA = nodeA;
             NodeB = nodeB;
@@ -76,9 +59,9 @@ set_edge_value(G, x, y, v): sets the value associated with the edge (x, y) to v.
                 (o, a) => o == GraphOperation.GetEdgeValue,
                 (o, a) =>
                     {
-                    a.SendMessage(new Tuple<IActor, E>(this, fData));
+                    a.SendMessage(new Tuple<IActor, TEdge>(this, fData));
                     }));
-            Become(new Behavior<GraphOperation, E>(
+            Become(new Behavior<GraphOperation, TEdge>(
                 (o, e) => o == GraphOperation.SetEdgeValue,
                 (o, e) =>
                 {
@@ -88,20 +71,20 @@ set_edge_value(G, x, y, v): sets the value associated with the edge (x, y) to v.
         }
     }
 
-    public class NodeActor<N, E> : BaseActor
+    public class NodeActor<TNode, TEdge> : BaseActor
     {
-        private Dictionary<NodeActor<N, E>, EdgeActor<N, E>> Links;
-        private N fData;
+        private Dictionary<NodeActor<TNode, TEdge>, EdgeActor<TNode, TEdge>> Links;
+        private TNode fData;
         public NodeActor() : base()
         {
-            Links = new Dictionary<NodeActor<N, E>, EdgeActor<N, E>>();
-            Become(new Behavior<GraphOperation, NodeActor<N, E>>(
+            Links = new Dictionary<NodeActor<TNode, TEdge>, EdgeActor<TNode, TEdge>>();
+            Become(new Behavior<GraphOperation, NodeActor<TNode, TEdge>>(
                 (o, n) => o == GraphOperation.AddEdge,
                 (o, n) =>
                 {
-                    Links[n] = new EdgeActor<N, E>(this, n);
+                    Links[n] = new EdgeActor<TNode, TEdge>(this, n);
                 }));
-            AddBehavior(new Behavior<GraphOperation, NodeActor<N, E>>(
+            AddBehavior(new Behavior<GraphOperation, NodeActor<TNode, TEdge>>(
                 (o, n) => o == GraphOperation.RemoveEdge,
                 (o, n) =>
                 {
@@ -111,15 +94,15 @@ set_edge_value(G, x, y, v): sets the value associated with the edge (x, y) to v.
                 (o, n) => o == GraphOperation.GetNodeValue,
                 (o, n) =>
                 {
-                    n.SendMessage(new Tuple<IActor, N>(this, fData));
+                    n.SendMessage(new Tuple<IActor, TNode>(this, fData));
                 }));
-            AddBehavior(new Behavior<GraphOperation, N>(
+            AddBehavior(new Behavior<GraphOperation, TNode>(
                 (o, n) => o == GraphOperation.SetNodeValue,
                 (o, n) =>
                 {
                     fData = n;
                 }));
-            AddBehavior(new Behavior<GraphOperation, NodeActor<N, E>, IActor>(
+            AddBehavior(new Behavior<GraphOperation, NodeActor<TNode, TEdge>, IActor>(
                 (o, n, a) => o == GraphOperation.Adjacent,
                 (o, n, a) =>
                 {
@@ -130,23 +113,23 @@ set_edge_value(G, x, y, v): sets the value associated with the edge (x, y) to v.
                 (o, a) =>
                 {
                     var list = Links.Select(t => t.Key);
-                    a.SendMessage(new Tuple<IActor, IEnumerable<NodeActor<N, E>>>(this, list));
+                    a.SendMessage(new Tuple<IActor, IEnumerable<NodeActor<TNode, TEdge>>>(this, list));
                 }));
         }
 
-        public void AddEdge(NodeActor<N,E> node)
+        public void AddEdge(NodeActor<TNode,TEdge> node)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<N, E>>(GraphOperation.AddEdge, node));
+            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>>(GraphOperation.AddEdge, node));
         }
 
-        public void RemoveEdge(NodeActor<N, E> node)
+        public void RemoveEdge(NodeActor<TNode, TEdge> node)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<N, E>>(GraphOperation.RemoveEdge, node));
+            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>>(GraphOperation.RemoveEdge, node));
         }
 
-        public void Adjacent(NodeActor<N,E> nodeA, IActor sender)
+        public void Adjacent(NodeActor<TNode,TEdge> nodeA, IActor sender)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<N, E>, IActor>(GraphOperation.Adjacent, nodeA, sender));
+            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>, IActor>(GraphOperation.Adjacent, nodeA, sender));
         }
 
         public void Neighbors(IActor sender)
@@ -154,9 +137,9 @@ set_edge_value(G, x, y, v): sets the value associated with the edge (x, y) to v.
             SendMessage(new Tuple<GraphOperation, IActor>(GraphOperation.Neighbors, sender));
         }
 
-        public Future<Tuple<IActor, IEnumerable<NodeActor<N, E>>>> Neighbors()
+        public Future<Tuple<IActor, IEnumerable<NodeActor<TNode, TEdge>>>> Neighbors()
         {
-            var future = new Future<Tuple<IActor, IEnumerable<NodeActor<N, E>>>>();
+            var future = new Future<Tuple<IActor, IEnumerable<NodeActor<TNode, TEdge>>>>();
             SendMessage(new Tuple<GraphOperation, IActor>(GraphOperation.Neighbors, future));
             return future;
         }

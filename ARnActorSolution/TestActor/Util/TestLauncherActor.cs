@@ -34,8 +34,12 @@ namespace TestActor
         public static bool Test(Action action)
         {
             var launcher = new TestLauncherActor();
-            launcher.SendAction(action);
-            launcher.SendMessage(true);
+            launcher.SendAction(
+                () =>
+                {
+                    action.Invoke();
+                    launcher.SendMessage(true);
+                });
             return launcher.Wait();
         }
     }

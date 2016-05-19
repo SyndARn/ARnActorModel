@@ -49,11 +49,11 @@ namespace Actor.Service
         }
     }
 
-    public class actParser : BaseActor
+    public class ParserActor : BaseActor
     {
         private List<String> fList = new List<String>();
         private ActorTag fParserServer ;
-        public actParser()
+        public ParserActor()
             : base()
         {
             var collect = new Behavior<Tuple<IActor,string>>(t =>

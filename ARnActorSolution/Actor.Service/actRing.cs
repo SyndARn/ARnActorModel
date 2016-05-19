@@ -7,7 +7,7 @@ using Actor.Base;
 
 namespace Actor.Service
 {
-    public class testResult
+    public class TestResult
     {
         internal static DateTimeOffset start;
         internal static DateTimeOffset end;
@@ -16,11 +16,11 @@ namespace Actor.Service
 
     enum State { Start, Running }
 
-    class actNode : BaseActor
+    class RingNode : BaseActor
     {
         IActor fNextNode;
         int fTestRun = 0;
-        public actNode()
+        public RingNode()
         {
             Become(new Behavior<Tuple<State,IActor>>(msg => 
             {
@@ -54,44 +54,44 @@ namespace Actor.Service
             else
             {
 
-                if (fTestRun >= actTest.fTest)
+                if (fTestRun >= RingTest.fTest)
                 {
-                    testResult.end = DateTimeOffset.UtcNow ;
+                    TestResult.end = DateTimeOffset.UtcNow ;
                     StringBuilder sb = new StringBuilder();
-                    sb.AppendLine("End Test " + fTestRun.ToString() + " " + testResult.end.ToString());
-                    sb.AppendLine("Elapsed " + fTestRun.ToString() + " " + testResult.Delta.ToString()); // .ToString("N5"));
+                    sb.AppendLine("End Test " + fTestRun.ToString() + " " + TestResult.end.ToString());
+                    sb.AppendLine("Elapsed " + fTestRun.ToString() + " " + TestResult.Delta.ToString()); // .ToString("N5"));
                     Console.WriteLine(sb.ToString());
-                    if (actTest.answer != null)
+                    if (RingTest.answer != null)
                     {
-                        actTest.answer.SendMessage(sb.ToString());
+                        RingTest.answer.SendMessage(sb.ToString());
                     }
                 }
             }
         }
     }
 
-    public static class actTest
+    public static class RingTest
     {
         internal static int fTest;
         internal static IActor answer;
     }
 
-    public class actRing : BaseActor
+    public class RingActor : BaseActor
     {
         int fNode ;
         IActor firstNode = null;
         IActor lastNode;
-        public actRing(int aTest,int aNode, IActor answer = null)
+        public RingActor(int aTest,int aNode, IActor answer = null)
         {
-            actTest.fTest = aTest;
-            actTest.answer = answer;
+            RingTest.fTest = aTest;
+            RingTest.answer = answer;
             fNode = aNode;
             IActor prevNode = null;
 
             IActor act;
             for (int i = 0; i < fNode; i++)
             {
-                act = new actNode();
+                act = new RingNode();
                 if (firstNode == null)
                     firstNode = act;
                 else
@@ -108,9 +108,9 @@ namespace Actor.Service
 
         protected void Test(bool msg)
         {
-            testResult.start = DateTimeOffset.UtcNow ;
-            Console.WriteLine("Start at " + testResult.start.ToString());
-            for (int i = 0; i < actTest.fTest; i++)
+            TestResult.start = DateTimeOffset.UtcNow ;
+            Console.WriteLine("Start at " + TestResult.start.ToString());
+            for (int i = 0; i < RingTest.fTest; i++)
                 firstNode.SendMessage(
                     new ActorTag(/*i*/));
         }

@@ -56,7 +56,7 @@ namespace Actor.TestApplication
 
             new EchoActor<Tuple<LinkedListOperation, string>>(linkedlist, Tuple.Create(LinkedListOperation.First, "5"));
 
-            new actRing(1000,1000); // 10 sec
+            new RingActor(1000,1000); // 10 sec
 
             new LinkedListActor<string>();
 

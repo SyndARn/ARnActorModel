@@ -100,8 +100,10 @@ namespace Actor.Util
             };
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "1")]
         public void Get(TKey key, IActor sender)
         {
+            CheckArg.Actor(sender);
             sender.SendMessage(fKV[key]);
         }
 

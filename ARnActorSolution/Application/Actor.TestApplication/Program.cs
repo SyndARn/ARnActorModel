@@ -82,7 +82,7 @@ namespace Actor.TestApplication
                         }
                     case "Ring":
                         {
-                            new actRing(10000, 10000); // 30 sec
+                            new RingActor(10000, 10000); // 30 sec
                             break;
                         }
                     case "Rings":
@@ -95,7 +95,7 @@ namespace Actor.TestApplication
                             int y = 1 ;
                             int.TryParse(rs, out r) ;
                             int.TryParse(cy, out y) ;
-                            new actRing(y, r); // 30 sec
+                            new RingActor(y, r); // 30 sec
                             break;
                         }
                     case "Clients":

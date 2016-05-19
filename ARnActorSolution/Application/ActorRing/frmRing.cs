@@ -45,7 +45,7 @@ namespace ActorRing
             if ((ringSize > 0) && (msgQtt > 0))
             {
                 catcher.SetEvent(lblDuration, new EventHandler<string>(this.EvHandler));
-                new actRing(ringSize, msgQtt, catcher);
+                new RingActor(ringSize, msgQtt, catcher);
             }
         }
 

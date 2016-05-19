@@ -27,7 +27,7 @@ namespace TestActor
             fLauncher.SendAction(() =>
             {
                 var future = new Future<string>();
-                new actRing(1000, 1000, future); // 10 sec
+                new RingActor(1000, 1000, future); // 10 sec
 
                 var result = future.Result();
 

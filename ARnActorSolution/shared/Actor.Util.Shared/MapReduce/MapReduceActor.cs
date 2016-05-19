@@ -101,18 +101,18 @@ namespace Actor.Util
         }
     }
 
-    public class MapActor<Km, Vm> : BaseActor
+    public class MapActor<TKeyMap, TValueMap> : BaseActor
     {
         IActor fSender;
-        Action<IActor, Km, Vm> fMapAction;
-        public MapActor(IActor sender, Action<IActor, Km, Vm> mapAction) : base()
+        Action<IActor, TKeyMap, TValueMap> fMapAction;
+        public MapActor(IActor sender, Action<IActor, TKeyMap, TValueMap> mapAction) : base()
         {
             fSender = sender;
             fMapAction = mapAction;
-            Become(new Behavior<IActor, Km, Vm>(DoMapAction));
+            Become(new Behavior<IActor, TKeyMap, TValueMap>(DoMapAction));
         }
 
-        private void DoMapAction(IActor act, Km key, Vm value)
+        private void DoMapAction(IActor act, TKeyMap key, TValueMap value)
         {
             fMapAction(fSender, key, value);
             // end of job

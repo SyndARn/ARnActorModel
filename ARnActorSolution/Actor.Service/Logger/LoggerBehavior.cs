@@ -28,6 +28,7 @@ namespace Actor.Service
             DoInit(ActorServer.GetInstance().Name);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         public static LoggerBehavior CastLogger(string aFileName)
         {
             LoggerBehavior lLogger = new LoggerBehavior();

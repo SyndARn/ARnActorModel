@@ -26,15 +26,15 @@ namespace TestActor
             {
                 List<String> aList = new List<String>();
                 aList.Add(ActorTask.Stat());
-                var lParser = new actParser();
+                var lParser = new ParserActor();
                 lParser.SendMessage(aList.AsEnumerable<String>(), anActor);
             }
         }
 
-        public class testReceiver : BaseActor
+        public class TestReceiver : BaseActor
         {
             private List<string> fList = new List<string>();
-            public testReceiver()
+            public TestReceiver()
             {
                 Become(new Behavior<string>(Receive));
                 AddBehavior(new Behavior<IActor>(Result));
@@ -58,12 +58,12 @@ namespace TestActor
         }
 
         [TestMethod()]
-        public void actParserTest()
+        public void ParserActorTest()
         {
             TestLauncherActor.Test(() =>
            {
                var parserTest = new ParserTest();
-               var receiver = new testReceiver();
+               var receiver = new TestReceiver();
                parserTest.SendMessage(receiver);
                var future = receiver.GetResult();
                Assert.IsTrue(future.Result().Any());

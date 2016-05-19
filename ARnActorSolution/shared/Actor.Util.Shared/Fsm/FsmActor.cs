@@ -30,11 +30,11 @@ namespace Actor.Util
 
     public class FsmActor<TState, TEvent> : BaseActor
     {
-        protected TState CurrentState { get; set; }
+        protected TState InternalCurrentState { get; set; }
 
-        public FsmActor(TState StartState, IEnumerable<FsmBehavior<TState, TEvent>> someBehaviors) : base()
+        public FsmActor(TState startState, IEnumerable<FsmBehavior<TState, TEvent>> someBehaviors) : base()
         {
-            CurrentState = StartState;
+            InternalCurrentState = startState;
             Become(new Behavior<TState>(ProcessState));
             AddBehavior(new Behavior<Tuple<IActor, TState>>(GetState));
             if (someBehaviors != null)
@@ -46,18 +46,18 @@ namespace Actor.Util
 
         private void GetState(Tuple<IActor, TState> sender)
         {
-            sender.Item1.SendMessage(new Tuple<IActor, TState>(this, CurrentState));
+            sender.Item1.SendMessage(new Tuple<IActor, TState>(this, InternalCurrentState));
         }
 
         internal void ProcessState(TState newState)
         {
-            CurrentState = newState;
+            InternalCurrentState = newState;
         }
 
         public Future<Tuple<IActor,TState>> GetCurrentState()
         {
             var future = new Future<Tuple<IActor,TState>>();
-            SendMessage(new Tuple<IActor, TState>(future,CurrentState));
+            SendMessage(new Tuple<IActor, TState>(future,InternalCurrentState));
             return future;
         }
     }

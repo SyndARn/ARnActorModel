@@ -18,10 +18,11 @@ namespace Actor.Util
             Become(new Behavior<IActor>(DoIt));
         }
 
-        protected void DoIt(IActor aMessage)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
+        protected void DoIt(IActor anActor)
         {
-            // Console.WriteLine("I do work" + this.Tag.Id.ToString());
-            aMessage.SendMessage(this);
+            CheckArg.Actor(anActor);
+            anActor.SendMessage(this);
         }
 
     }
@@ -45,7 +46,7 @@ namespace Actor.Util
             AddBehavior(new Behavior<Work<T>>(
             t =>
             {
-                SendMessage(new Tuple<string, Work<T>>(CurrentState, t));
+                SendMessage(new Tuple<string, Work<T>>(InternalCurrentState, t));
             }));
         }
 
@@ -83,7 +84,7 @@ namespace Actor.Util
 
             AddBehavior(new Behavior<Work<T>>( t =>
             {
-                SendMessage(new Tuple<string, Work<T>>(this.CurrentState, t));
+                SendMessage(new Tuple<string, Work<T>>(this.InternalCurrentState, t));
             }
                 )) ;
 
@@ -117,7 +118,7 @@ namespace Actor.Util
                 if (WorkList.Count == 0)
                 {
                     ConsList.Enqueue(t);
-                    CurrentState = "BufferEmpty";
+                    InternalCurrentState = "BufferEmpty";
                 }
                 else
                 {

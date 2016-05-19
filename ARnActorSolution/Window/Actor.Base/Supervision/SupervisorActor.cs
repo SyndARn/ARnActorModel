@@ -22,19 +22,19 @@ namespace Actor.Base
         }
         public SupervisedActor(ActorTag previousTag) : base(previousTag)
         {
-            Become(new bhvSupervisedBehavior());
+            Become(new SupervisedBehavior());
         }
         public SupervisedActor() : base()
         {
-            Become(new bhvSupervisedBehavior());
+            Become(new SupervisedBehavior());
         }
     }
 
     public enum SupervisorAction { Register, Unregister, Respawn, Kill} ;
 
-    public class bhvSupervisedBehavior : Behavior<SupervisorAction>
+    public class SupervisedBehavior : Behavior<SupervisorAction>
     {
-        public bhvSupervisedBehavior()
+        public SupervisedBehavior()
         {
             Pattern =  t =>{return true;} ;
             Apply = t =>

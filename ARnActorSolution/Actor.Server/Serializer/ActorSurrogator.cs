@@ -15,7 +15,7 @@ namespace Actor.Server
         {
             if (info == null)
             {
-                throw new ArgumentNullException("SerializationInfo was null");
+                throw new ArgumentNullException("info","SerializationInfo was null");
             }
             IActor act = (IActor)obj;
             HostDirectoryActor.Register(act);

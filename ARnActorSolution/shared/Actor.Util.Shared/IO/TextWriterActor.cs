@@ -9,7 +9,7 @@ using System.IO;
 namespace Actor.Util
 {
     
-    public class TextWriterActor : BaseActor
+    public class TextWriterActor : BaseActor, IDisposable
     {
         private StreamWriter fStream;
         private string fFileName;
@@ -74,7 +74,6 @@ namespace Actor.Util
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 
