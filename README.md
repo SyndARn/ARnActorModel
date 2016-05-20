@@ -33,6 +33,7 @@ I used the excellent [OpenCover](https://github.com/OpenCover/opencover) to give
 [![Coverage Status](https://coveralls.io/repos/github/SyndARn/ARnActorModel/badge.svg?branch=master)](https://coveralls.io/github/SyndARn/ARnActorModel?branch=master)
 
 For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
+[![NuGet version](https://badge.fury.io/nu/syndarn%2Farnactormodel.svg)](https://badge.fury.io/nu/syndarn%2Farnactormodel)
 
 #### Current works
 
