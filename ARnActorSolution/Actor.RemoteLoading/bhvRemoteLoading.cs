@@ -147,8 +147,6 @@ namespace Actor.RemoteLoading
     {
         private List<chunk> fChunkList = new List<chunk>();
 
-        private bool fComplete = false;
-
         public bhvDownload()
         {
             this.Apply = Behavior;
@@ -161,7 +159,6 @@ namespace Actor.RemoteLoading
             var lastMsg = fChunkList.Where(t => t.last).FirstOrDefault();
             if ((lastMsg != null) && (fChunkList.Count - 1 == lastMsg.chunkPart))
             {
-                fComplete = true;
                 // send complete to sender
                 msg.sender.SendMessage("Download complete");
                 // try to do something with this assembly

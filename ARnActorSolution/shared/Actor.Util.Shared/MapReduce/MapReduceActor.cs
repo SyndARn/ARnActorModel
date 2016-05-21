@@ -8,7 +8,7 @@ using Actor.Util;
 
 namespace Actor.Util
 {
-    public class MapReduceActor<D,TKeyMap, TValueMap, TKeyReduce, TValueReduce> : BaseActor
+    public class MapReduceActor<TData,TKeyMap, TValueMap, TKeyReduce, TValueReduce> : BaseActor
     {
 
         private Dictionary<TKeyReduce, List<TValueReduce>> fDict = new Dictionary<TKeyReduce, List<TValueReduce>>();
@@ -18,14 +18,14 @@ namespace Actor.Util
         public MapReduceActor
             (
                 // Func<D, IEnumerable<Tuple<Km, Vm>>> parserKV,
-                Action<IActor,D> senderKV,
+                Action<IActor,TData> senderKV,
                 Action<IActor, TKeyMap, TValueMap> mapKV,
                 Func<TKeyReduce, IEnumerable<TValueReduce>, TValueReduce> reduceKV,
                 IActor outputActor
             ) : base()
         {
             // start reduce
-            var bhvStart = new Behavior<D>(d =>
+            var bhvStart = new Behavior<TData>(d =>
             {
                 fActiveMap++;
                 senderKV(this, d);
@@ -43,7 +43,7 @@ namespace Actor.Util
                 );
 
             // end parse
-            var bhvEndParse = new Behavior<D, IActor>((d, a) =>
+            var bhvEndParse = new Behavior<TData, IActor>((d, a) =>
              {
                  fActiveMap--;
              });

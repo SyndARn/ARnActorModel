@@ -23,9 +23,9 @@ namespace TestActor
                 {
                     var supervisor = new SupervisorActor();
                     ISupervisedActor supervised = new SupervisedActor();
-                    supervisor.SendMessage(Tuple.Create(SupervisorAction.Register, supervised));
-                    supervisor.SendMessage(Tuple.Create(SupervisorAction.Kill, supervised));
-                    supervisor.SendMessage(Tuple.Create(SupervisorAction.Respawn, supervised));
+                    supervisor.SendMessage(SupervisorAction.Register, supervised);
+                    supervisor.SendMessage(SupervisorAction.Kill, supervised);
+                    supervisor.SendMessage(SupervisorAction.Respawn, supervised);
                     fLauncher.Finish();
                 });
             fLauncher.Wait();

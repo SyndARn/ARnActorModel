@@ -33,6 +33,14 @@ namespace Actor.Base
             }
         }
 
+        public static void BehaviorParam(params IBehavior[] someBehaviors)
+        {
+            if (someBehaviors == null)
+            {
+                if (someBehaviors == null) throw new ActorException("Null someBehavior");
+            }
+        }
+
         public static void Behaviors(Behaviors someBehaviors)
         {
             if (someBehaviors == null)

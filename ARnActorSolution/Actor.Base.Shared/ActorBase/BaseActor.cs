@@ -72,6 +72,7 @@ namespace Actor.Base
             Interlocked.Exchange(ref fRedirector, aRedirector);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask(Object msg)
         {
             if (msg != null)
@@ -151,7 +152,7 @@ namespace Actor.Base
             Tag = new ActorTag();
         }
 
-        public async Task<object> Receive(Func<object, bool> aPattern, int TimeOutMs)
+        public async Task<object> Receive(Func<object, bool> aPattern, int timeOutMS)
         {
             if (aPattern == null)
                 throw new ActorException("null pattern");
@@ -161,9 +162,9 @@ namespace Actor.Base
             AddMissedMessages();
             Interlocked.Exchange(ref fInTask, 0);
             TrySetInTask();
-            if (TimeOutMs != Timeout.Infinite)
+            if (timeOutMS != Timeout.Infinite)
             {
-                bool noTimeOut = lTCS.Completion.Task.Wait(TimeOutMs);
+                bool noTimeOut = lTCS.Completion.Task.Wait(timeOutMS);
                 if (noTimeOut)
                 {
                     return await lTCS.Completion.Task;
@@ -247,16 +248,17 @@ namespace Actor.Base
             TrySetInTask();
         }
 
-        protected void AddBehavior(params IBehavior[] someBehavior)
+        protected void AddBehavior(params IBehavior[] someBehaviors)
         {
-            var someBehaviors = new Behaviors();
+            CheckArg.BehaviorParam(someBehaviors);
+            var behaviors = new Behaviors();
 
-            foreach (var item in someBehavior)
+            foreach (var item in someBehaviors)
             {
-                someBehaviors.AddBehavior(item);
+                behaviors.AddBehavior(item);
                 fListBehaviors.Add(item);
             }
-            someBehaviors.LinkToActor(this);
+            behaviors.LinkToActor(this);
             AddMissedMessages();
             TrySetInTask();
         }

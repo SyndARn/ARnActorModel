@@ -15,7 +15,7 @@ namespace Actor.Base
 
         public T Result() => (T)Receive(t => t is T).Result;
 
-        public T Result(int timeOutMs) => (T)Receive(t => t is T, timeOutMs).Result;
+        public T Result(int timeOutMS) => (T)Receive(t => t is T, timeOutMS).Result;
 
         public async Task<T> ResultAsync()
         {
@@ -32,7 +32,7 @@ namespace Actor.Base
 
         public Tuple<T1,T2> Result() => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>).Result;
 
-        public Tuple<T1, T2> Result(int timeOutMs) => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>, timeOutMs).Result;
+        public Tuple<T1, T2> Result(int timeOutMS) => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>, timeOutMS).Result;
 
         public async Task<Tuple<T1, T2>> ResultAsync()
         {

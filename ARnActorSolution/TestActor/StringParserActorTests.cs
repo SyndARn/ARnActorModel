@@ -74,7 +74,7 @@ namespace Actor.Service.Tests
                 parser.SendMessage((IActor)receive, "A B C D E");
                 launcher.Finish();
             });
-            Assert.IsTrue(launcher.Wait());
+            Assert.IsTrue(launcher.Wait(20000)); // open cover
 
             var launcher2 = new TestLauncherActor();
             launcher2.SendAction(() =>
@@ -85,7 +85,7 @@ namespace Actor.Service.Tests
                 Assert.IsTrue(result.Count(c => c == "C") == 1);
                 launcher2.Finish();
             });
-            Assert.IsTrue(launcher2.Wait());
+            Assert.IsTrue(launcher2.Wait(20000)); // open cover
         }        
     }
 }

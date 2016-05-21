@@ -29,7 +29,7 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public enum ObservableAction { Register, UnRegister} ;
+    public enum ObservableAction { Register, Unregister} ;
 
     public class ObservableActor<T> : BaseActor
     {
@@ -54,7 +54,7 @@ namespace Actor.Util
 
         public void UnRegisterObserver(IActor anActor)
         {
-            this.SendMessage(ObservableAction.UnRegister, anActor);
+            this.SendMessage(ObservableAction.Unregister, anActor);
         }
 
         private void DoRegister(ObservableAction action, IActor actor)

@@ -74,12 +74,12 @@ namespace Actor.Base
 
     }
 
-    public class Behavior<A, T> : IBehavior<A, T>, IBehavior
+    public class Behavior<T1, T2> : IBehavior<T1, T2>, IBehavior
     {
-        public Func<A, T, Boolean> Pattern { get; protected set; }
-        public Action<A, T> Apply { get; protected set; }
-        public TaskCompletionSource<Tuple<A, T>> Completion { get; protected set; }
-        public TaskCompletionSource<Object> StandardCompletion
+        public Func<T1, T2, bool> Pattern { get; protected set; }
+        public Action<T1, T2> Apply { get; protected set; }
+        public TaskCompletionSource<Tuple<T1, T2>> Completion { get; protected set; }
+        public TaskCompletionSource<object> StandardCompletion
         {
             get
             {
@@ -110,14 +110,14 @@ namespace Actor.Base
             fLinkedBehaviors = someBehaviors;
         }
 
-        public Behavior(Func<A, T, Boolean> aPattern, Action<A, T> anApply)
+        public Behavior(Func<T1, T2, Boolean> aPattern, Action<T1, T2> anApply)
         {
             Pattern = aPattern;
             Apply = anApply;
             Completion = null;
         }
 
-        public Behavior(Func<A, T, Boolean> aPattern, TaskCompletionSource<Tuple<A, T>> aCompletion)
+        public Behavior(Func<T1, T2, Boolean> aPattern, TaskCompletionSource<Tuple<T1, T2>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -128,14 +128,14 @@ namespace Actor.Base
         {
         }
 
-        public Func<T, Boolean> DefaultPattern()
+        public Func<T2, Boolean> DefaultPattern()
         {
-            return t => { return t is T; };
+            return t => { return t is T2; };
         }
 
-        public Behavior(Action<A, T> anApply)
+        public Behavior(Action<T1, T2> anApply)
         {
-            Pattern = (a, t) => { return a is A && t is T; };
+            Pattern = (a, t) => { return a is T1 && t is T2; };
             Apply = anApply;
             Completion = null;
         }
@@ -144,7 +144,7 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            Tuple<A, T> tupleT = aT as Tuple<A, T>;
+            Tuple<T1, T2> tupleT = aT as Tuple<T1, T2>;
             if (tupleT != null)
                 return Pattern(tupleT.Item1, tupleT.Item2);
             else return false;
@@ -154,17 +154,17 @@ namespace Actor.Base
         {
             if (Apply != null)
             {
-                Tuple<A, T> tupleT = (Tuple<A, T>)aT;
+                Tuple<T1, T2> tupleT = (Tuple<T1, T2>)aT;
                 Apply(tupleT.Item1, tupleT.Item2);
             }
         }
     }
 
-    public class Behavior<O, D, A> : IBehavior<O, D, A>, IBehavior
+    public class Behavior<T1, T2, T3> : IBehavior<T1, T2, T3>, IBehavior
     {
-        public Func<O, D, A, bool> Pattern { get; protected set; }
-        public Action<O, D, A> Apply { get; protected set; }
-        public TaskCompletionSource<Tuple<O, D, A>> Completion { get; protected set; }
+        public Func<T1, T2, T3, bool> Pattern { get; protected set; }
+        public Action<T1, T2, T3> Apply { get; protected set; }
+        public TaskCompletionSource<Tuple<T1, T2, T3>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -196,14 +196,14 @@ namespace Actor.Base
             fLinkedBehaviors = someBehaviors;
         }
 
-        public Behavior(Func<O, D, A, bool> aPattern, Action<O, D, A> anApply)
+        public Behavior(Func<T1, T2, T3, bool> aPattern, Action<T1, T2, T3> anApply)
         {
             Pattern = aPattern;
             Apply = anApply;
             Completion = null;
         }
 
-        public Behavior(Func<O, D, A, bool> aPattern, TaskCompletionSource<Tuple<O, D, A>> aCompletion)
+        public Behavior(Func<T1, T2, T3, bool> aPattern, TaskCompletionSource<Tuple<T1, T2, T3>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -214,14 +214,14 @@ namespace Actor.Base
         {
         }
 
-        public Func<O, Boolean> DefaultPattern()
+        public Func<T1, Boolean> DefaultPattern()
         {
-            return t => { return t is O; };
+            return t => { return t is T1; };
         }
 
-        public Behavior(Action<O, D, A> anApply)
+        public Behavior(Action<T1, T2, T3> anApply)
         {
-            Pattern = (o, d, a) => { return o is O && d is D && a is A; };
+            Pattern = (o, d, a) => { return o is T1 && d is T2 && a is T3; };
             Apply = anApply;
             Completion = null;
         }
@@ -230,7 +230,7 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            Tuple<O, D, A> tupleT = aT as Tuple<O, D, A>;
+            Tuple<T1, T2, T3> tupleT = aT as Tuple<T1, T2, T3>;
             if (tupleT != null)
                 return Pattern(tupleT.Item1, tupleT.Item2, tupleT.Item3);
             else return false;
@@ -240,7 +240,7 @@ namespace Actor.Base
         {
             if (Apply != null)
             {
-                Tuple<O, D, A> tupleT = (Tuple<O, D, A>)aT;
+                Tuple<T1, T2, T3> tupleT = (Tuple<T1, T2, T3>)aT;
                 Apply(tupleT.Item1, tupleT.Item2, tupleT.Item3);
             }
         }
@@ -275,7 +275,7 @@ namespace Actor.Base
         {
             get
             {
-                return fLinkedBehaviors.LinkedActor;
+                return fLinkedBehaviors != null ? fLinkedBehaviors.LinkedActor : null;
             }
         }
 
@@ -341,11 +341,11 @@ namespace Actor.Base
         }
     }
 
-    public class Behavior<O, D, A, R> : IBehavior<O, D, A, R>, IBehavior
+    public class Behavior<T1, T2, T3, T4> : IBehavior<T1, T2, T3, T4>, IBehavior
     {
-        public Func<O, D, A, R, bool> Pattern { get; protected set; }
-        public Action<O, D, A,R> Apply { get; protected set; }
-        public TaskCompletionSource<Tuple<O, D, A, R>> Completion { get; protected set; }
+        public Func<T1, T2, T3, T4, bool> Pattern { get; protected set; }
+        public Action<T1, T2, T3,T4> Apply { get; protected set; }
+        public TaskCompletionSource<Tuple<T1, T2, T3, T4>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -377,14 +377,14 @@ namespace Actor.Base
             fLinkedBehaviors = someBehaviors;
         }
 
-        public Behavior(Func<O, D, A, R, bool> aPattern, Action<O, D, A, R> anApply)
+        public Behavior(Func<T1, T2, T3, T4, bool> aPattern, Action<T1, T2, T3, T4> anApply)
         {
             Pattern = aPattern;
             Apply = anApply;
             Completion = null;
         }
 
-        public Behavior(Func<O, D, A, R, bool> aPattern, TaskCompletionSource<Tuple<O, D, A, R>> aCompletion)
+        public Behavior(Func<T1, T2, T3, T4, bool> aPattern, TaskCompletionSource<Tuple<T1, T2, T3, T4>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -395,14 +395,14 @@ namespace Actor.Base
         {
         }
 
-        public Func<O, D, A, R, Boolean> DefaultPattern()
+        public Func<T1, T2, T3, T4, Boolean> DefaultPattern()
         {
-            return (o, d, a, r) => { return o is O && d is D && a is A && r is R; };
+            return (o, d, a, r) => { return o is T1 && d is T2 && a is T3 && r is T4; };
         }
 
-        public Behavior(Action<O, D, A, R> anApply)
+        public Behavior(Action<T1, T2, T3, T4> anApply)
         {
-            Pattern = (o, d, a, r) => { return o is O && d is D && a is A && r is R; };
+            Pattern = (o, d, a, r) => { return o is T1 && d is T2 && a is T3 && r is T4; };
             Apply = anApply;
             Completion = null;
         }
@@ -411,7 +411,7 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            Tuple<O, D, A, R> tupleT = aT as Tuple<O, D, A, R>;
+            Tuple<T1, T2, T3, T4> tupleT = aT as Tuple<T1, T2, T3, T4>;
             if (tupleT != null)
                 return Pattern(tupleT.Item1, tupleT.Item2, tupleT.Item3, tupleT.Item4);
             else return false;
@@ -421,7 +421,7 @@ namespace Actor.Base
         {
             if (Apply != null)
             {
-                Tuple<O, D, A, R> tupleT = (Tuple<O, D, A, R>)aT;
+                Tuple<T1, T2, T3, T4> tupleT = (Tuple<T1, T2, T3, T4>)aT;
                 Apply(tupleT.Item1, tupleT.Item2, tupleT.Item3, tupleT.Item4);
             }
         }

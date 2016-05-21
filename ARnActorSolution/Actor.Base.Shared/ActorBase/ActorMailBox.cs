@@ -27,6 +27,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 
 namespace Actor.Base
 {
@@ -60,6 +61,7 @@ namespace Actor.Base
             return i;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void AddMessage(T aMessage) => fQueue.Enqueue(aMessage);
 
         public T GetMessage()

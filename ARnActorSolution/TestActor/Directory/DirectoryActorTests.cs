@@ -28,16 +28,16 @@ namespace TestActor
         {
             public DirectoryTestActor()
             {
-                Become(new Behavior<Tuple<IActor,IActor,string>>(DoIt));
+                Become(new Behavior<IActor,IActor,string>(DoIt));
             }
 
-            private void DoIt(Tuple<IActor, IActor, string> message)
+            private void DoIt(IActor caller, IActor lookup, string name)
             {
-                DirectoryActor.GetDirectory().Find(this, message.Item3);
+                DirectoryActor.GetDirectory().Find(this, name);
                 var task = Receive(ask => { return (ask is Tuple<DirectoryActor.DirectoryRequest, IActor>); });
-                if ((task.Result as Tuple<DirectoryActor.DirectoryRequest, IActor>).Item2 == message.Item2)
+                if ((task.Result as Tuple<DirectoryActor.DirectoryRequest, IActor>).Item2 == lookup)
                 {
-                    message.Item1.SendMessage(true);
+                    caller.SendMessage(true);
                 }
             }
         }
@@ -47,8 +47,8 @@ namespace TestActor
         {
             fLauncher.SendAction(() =>
             {
-                var act = new DirectoryTestActor();
-                act.SendMessage(new Tuple<IActor,IActor,string>(fLauncher, DirectoryActor.GetDirectory(), "Directory"));
+                IActor act = new DirectoryTestActor();
+                act.SendMessage((IActor)fLauncher, (IActor)DirectoryActor.GetDirectory(), "Directory");
             });
             Assert.IsTrue(fLauncher.Wait(100000));
         }
