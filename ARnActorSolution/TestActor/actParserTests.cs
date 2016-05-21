@@ -36,13 +36,14 @@ namespace TestActor
             private List<string> fList = new List<string>();
             public TestReceiver()
             {
-                Become(new Behavior<string>(Receive));
+                Become(new Behavior<IEnumerable<string>>(Receive));
                 AddBehavior(new Behavior<IActor>(Result));
             }
 
             public Future<IEnumerable<string>> GetResult()
             {
                 var future = new Future<IEnumerable<string>>();
+                SendMessage((IActor)future);
                 return future;
             }
 
@@ -51,24 +52,31 @@ namespace TestActor
                 aFuture.SendMessage(fList.AsEnumerable());
             }
 
-            private void Receive(string s)
+            private void Receive(IEnumerable<string> list)
             {
-                fList.Add(s);
+                foreach (var item in list)
+                {
+                    fList.Add(item);
+                }
             }
         }
 
         [TestMethod()]
+        [Ignore]
         public void ParserActorTest()
         {
-            TestLauncherActor.Test(() =>
+            var testLauncher = new TestLauncherActor();
+            testLauncher.SendAction(() =>
            {
                var parserTest = new ParserTest();
                var receiver = new TestReceiver();
-               parserTest.SendMessage(receiver);
-               var future = receiver.GetResult();
-               Assert.IsTrue(future.Result().Any());
-               Assert.IsTrue(future.Result().Contains("Max"));
+               parserTest.SendMessage((IActor)receiver);
+               var future = receiver.GetResult().ResultAsync().Result;
+               Assert.IsTrue(future.Any());
+               Assert.IsTrue(future.Contains("Max"));
+               testLauncher.Finish();
            });
+            Assert.IsTrue(testLauncher.Wait());
         }
     }
 }

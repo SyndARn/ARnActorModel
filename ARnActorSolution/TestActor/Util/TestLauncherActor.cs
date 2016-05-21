@@ -1,4 +1,5 @@
 ﻿using Actor.Base;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,16 +32,16 @@ namespace TestActor
             return inTime && (bool)val.Result;
         }
 
-        public static bool Test(Action action)
+        public static void Test(Action action)
         {
             var launcher = new TestLauncherActor();
             launcher.SendAction(
                 () =>
                 {
-                    action.Invoke();
-                    launcher.SendMessage(true);
+                    action();
+                    launcher.Finish();
                 });
-            return launcher.Wait();
+            Assert.IsTrue(launcher.Wait());
         }
     }
 }

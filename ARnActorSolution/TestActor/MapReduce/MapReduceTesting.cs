@@ -52,9 +52,8 @@ namespace TestActor.MapReduce
     public class MapReduceTesting
     {
 
-
-
         [TestMethod]
+        [Ignore]
         public void TestingSimpleMapReduce()
         {
             TestLauncherActor.Test(() =>

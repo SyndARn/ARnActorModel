@@ -20,11 +20,11 @@ namespace Actor.Server
 
     public class EchoActor : BaseActor
     {
-        public EchoActor(IActor dest, String value)
+        public EchoActor(IActor dest, string value)
         {
             if (dest == null) throw new ActorException("Dest can't be null");
             Become(new ConsoleBehavior());
-            dest.SendMessage(new Tuple<IActor, String>(this, value));
+            dest.SendMessage((IActor)this,value);
         }
     }
 }

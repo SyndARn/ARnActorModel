@@ -69,12 +69,14 @@ namespace TestActor
                     ll.SendMessage(LinkedListOperation.Add, "Test1");
                     ll.SendMessage(LinkedListOperation.Add, "Test2");
                     var future = new Future<LinkedListOperation, string>();
+                    var future2 = new Future<LinkedListOperation, string>();
 
                     ll.SendMessage(LinkedListOperation.First, (IActor)future);
-                    Assert.AreEqual("Test1", future.Result().Item2);
+                    var result = future.Result().Item2;
+                    Assert.AreEqual("Test1", result);
 
-                    ll.SendMessage(LinkedListOperation.First, (IActor)future);
-                    Assert.AreEqual("Test2", future.Result().Item2);
+                    ll.SendMessage(LinkedListOperation.Next, (IActor)future2, result);
+                    Assert.AreEqual("Test2", future2.Result().Item2);
                 }
                 );
         }

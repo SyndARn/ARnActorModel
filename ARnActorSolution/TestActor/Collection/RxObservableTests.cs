@@ -34,11 +34,11 @@ namespace TestActor
                 }));
             }
 
-            public string GetResult()
+            public async Task<string> GetResultAsync()
             {
                 var future = new Future<string>();
-                SendMessage(future);
-                return future.Result();
+                SendMessage((IActor)future);
+                return await future.ResultAsync();
             }
 
             private string Data { get; set; }
@@ -78,7 +78,7 @@ namespace TestActor
                 var obs = new Observer();
                 var dsp = rx.Subscribe(obs);
                 rx.Track("Test Message");
-                Assert.IsTrue(obs.GetResult() == "Test Message");
+                Assert.IsTrue(obs.GetResultAsync().Result == "Test Message");
             });
         }
     }

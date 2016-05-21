@@ -76,7 +76,6 @@ namespace Actor.Base
                 {
                     Debug.WriteLine(string.Format("Task fault on {0}", item.Message), "[Task Actor Fault]");
                 }
-                
             },
             TaskContinuationOptions.OnlyOnFaulted);
         }

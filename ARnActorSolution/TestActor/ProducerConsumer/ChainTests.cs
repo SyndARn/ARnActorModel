@@ -1,13 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Util.ProducerConsumer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestActor;
+using Actor.Util;
+using Actor.Base;
 
-namespace Actor.Util.ProducerConsumer.Tests
+namespace TestActor
 {
     [TestClass()]
     public class ChainTests
@@ -26,8 +26,7 @@ namespace Actor.Util.ProducerConsumer.Tests
             fLauncher.SendAction(() =>
             {
                 var chain = new Chain();
-                chain.SendMessage("start");
-                fLauncher.Wait(10000);
+                chain.SendMessage(4,4,4);
                 fLauncher.Finish();
             });
             Assert.IsTrue(fLauncher.Wait(11000));

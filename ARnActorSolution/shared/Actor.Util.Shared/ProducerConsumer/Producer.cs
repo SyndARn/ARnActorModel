@@ -1,6 +1,7 @@
 ﻿using Actor.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -162,12 +163,12 @@ namespace Actor.Util
             {
                 var fut = buffer.GetCurrentState().Result(10000);
                 if (fut == null) 
-                        Console.WriteLine("Stop");
+                        Debug.WriteLine("Stop");
                 if (fut != null ? fut.Item2 == "BufferEmpty" : false)
                     break;
             }
 
-            Console.WriteLine("End of chain");
+            Debug.WriteLine("End of chain");
 
         }
 

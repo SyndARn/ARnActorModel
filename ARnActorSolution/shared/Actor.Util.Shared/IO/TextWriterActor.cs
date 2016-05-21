@@ -16,15 +16,17 @@ namespace Actor.Util
 
         public TextWriterActor(string aFileName)
         {
-            Become(new Behavior<string>(DoInit));
-            AddBehavior(new Behavior<TextWriterActor>(DoFlush));
+            Become(new Behavior<TextWriterActor>(DoFlush));
+#if !(NETFX_CORE) || WINDOWS_UWP
+            AddBehavior(new Behavior<string>(DoInit));
+#endif
             SendMessage(aFileName);
         }
 
         public TextWriterActor(Stream aStream)
         {
-            Become(new Behavior<Stream>(DoInit));
-            AddBehavior(new Behavior<TextWriterActor>(DoFlush));
+            Become(new Behavior<TextWriterActor>(DoFlush));
+            AddBehavior(new Behavior<Stream>(DoInit));
             SendMessage(aStream);
         }
 
@@ -35,7 +37,7 @@ namespace Actor.Util
 
         private void DoFlush(TextWriterActor actor)
         {
-            fStream.Close();
+            fStream.Flush();
         }
 
         private void DoInit(Stream aStream)
@@ -45,13 +47,15 @@ namespace Actor.Util
             Become(new Behavior<string>(DoWrite));
         }
 
+#if !(NETFX_CORE) || WINDOWS_UWP
         private void DoInit(string aFilename)
         {
             fFileName = aFilename;
-            fStream = new StreamWriter(fFileName, true);
+            fStream = new StreamWriter(new FileStream(fFileName, FileMode.CreateNew));
             fStream.AutoFlush = true;
             Become(new Behavior<string>(DoWrite));
         }
+#endif
 
         private void DoWrite(string msg)
         {
@@ -65,7 +69,8 @@ namespace Actor.Util
                 // dispose managed resources
                 if (fStream != null)
                 {
-                    fStream.Close();
+                    fStream.Flush();
+                    fStream = null;
                 }
             }
             // free native resources

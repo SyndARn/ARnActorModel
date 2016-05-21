@@ -33,7 +33,7 @@ namespace Actor.Util
         public Future<Tuple<bool, TKey, TValue>> GetKeyValue(TKey key)
         {
             var future = new Future<Tuple<bool, TKey, TValue>>();
-            LinkedActor.SendMessage(future, key);
+            LinkedActor.SendMessage((IActor)future, key);
             return future;
         }
     }

@@ -34,7 +34,7 @@ namespace TestActor
         }
 
         [TestMethod()]
-        public void GetKVTest()
+        public void GetKeyValueTest()
         {
             TestLauncherActor.Test(() =>
             {
@@ -45,10 +45,12 @@ namespace TestActor
                 var r1 = act.GetKeyValue("1");
                 var r2 = act.GetKeyValue("2");
                 var r3 = act.GetKeyValue("3");
-                Assert.IsTrue(r1.Result().Item1);
-                Assert.IsTrue(r2.Result().Item1);
-                Assert.AreEqual("2",r2.Result().Item2) ;
-                Assert.AreEqual(2, r2.Result().Item3);
+                var f1 = r1.Result();
+                var f2 = r2.Result();
+                Assert.IsTrue(f1.Item1);
+                Assert.IsTrue(f2.Item1);
+                Assert.AreEqual("2",f2.Item2) ;
+                Assert.AreEqual(2, f2.Item3);
                 Assert.IsFalse(r3.Result().Item1);
             });
         }

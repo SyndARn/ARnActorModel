@@ -28,9 +28,9 @@ namespace TestActor
                 pong = new ProcessActor<string>(msg =>
                 {
                     futurePong.SendMessage(msg);
-                    ping.SendMessage("pong");
+                    ping.SendMessage("ping");
                 });
-                pong.SendMessage("ping");
+                pong.SendMessage("pong");
                 Assert.AreEqual("ping", futurePing.Result());
                 Assert.AreEqual("pong", futurePong.Result());
             });
