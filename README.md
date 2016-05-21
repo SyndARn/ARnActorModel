@@ -24,6 +24,7 @@ I was looking for an actor model things with some requirements :
 -  actor can send messages across servers, you just need to hold a reference to another actor on a server ...
 -  some actor can behave as public services, or be supervised
 
+[![GitHub version](https://badge.fury.io/gh/syndarn%2Farnactormodel.svg)](https://badge.fury.io/gh/syndarn%2Farnactormodel)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1050h54h8pdfbbh0/branch/master?svg=true)](https://ci.appveyor.com/project/SyndARn/arnactormodel/branch/master)
 
@@ -33,7 +34,7 @@ I used the excellent [OpenCover](https://github.com/OpenCover/opencover) to give
 [![Coverage Status](https://coveralls.io/repos/github/SyndARn/ARnActorModel/badge.svg?branch=master)](https://coveralls.io/github/SyndARn/ARnActorModel?branch=master)
 
 For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
-[![NuGet version](https://badge.fury.io/nu/syndarn%2Farnactormodel.svg)](https://badge.fury.io/nu/syndarn%2Farnactormodel)
+
 
 #### Current works
 
