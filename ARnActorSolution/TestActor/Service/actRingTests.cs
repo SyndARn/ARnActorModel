@@ -27,7 +27,7 @@ namespace TestActor
             fLauncher.SendAction(() =>
             {
                 var future = new Future<string>();
-                new RingActor(1000, 1000, future); // 10 sec
+                new RingActor(100, 100, future); // 10 sec
 
                 var result = future.Result();
 
@@ -39,7 +39,7 @@ namespace TestActor
 
                 fLauncher.Finish();
             });
-            fLauncher.Wait(20000);
+            Assert.IsTrue(fLauncher.Wait(20000));
         }
     }
 }
