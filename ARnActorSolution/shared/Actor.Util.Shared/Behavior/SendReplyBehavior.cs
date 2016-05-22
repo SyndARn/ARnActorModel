@@ -4,9 +4,9 @@ using System;
 namespace Actor.Util
 {
 
-    public class ReplySendBehavior<T> : Behavior<Tuple<IActor, T, IActor>>
+    public class SendReplyBehavior<T> : Behavior<Tuple<IActor, T, IActor>>
     {
-        public ReplySendBehavior()
+        public SendReplyBehavior()
             : base()
         {
             Pattern = t => { return t is Tuple<IActor, T, IActor>; };

@@ -11,6 +11,7 @@ using Actor.Util;
 namespace TestActor
 {
     [TestClass()]
+    [Ignore]
     public class actParserTests
     {
 

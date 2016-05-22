@@ -32,7 +32,7 @@ namespace Actor.Server
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
-        public void DoStat(IActor sender)
+        internal void DoStat(IActor sender)
         {
             CheckArg.Actor(sender);
             sender.SendMessage("Host entries " + fUri2Actor.Count.ToString());
@@ -65,7 +65,7 @@ namespace Actor.Server
 
         public static async Task<string> Stat(IActor sender)
         {
-            HostDirectoryActor.GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(HostDirectoryActor.GetInstance().DoStat, sender));
+            GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoStat, sender));
 
             var task = await HostDirectoryActor.GetInstance()
                 .Receive(ans => { return (ans is IActor) && (sender.Equals(((IActor)ans))); }) ;
@@ -74,23 +74,23 @@ namespace Actor.Server
 
         public static void Register(IActor anActor)
         {
-            HostDirectoryActor.GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(HostDirectoryActor.GetInstance().DoRegister, anActor)); 
+            GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoRegister, anActor)); 
         }
 
         public static void Unregister(IActor anActor)
         {
-            HostDirectoryActor.GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(HostDirectoryActor.GetInstance().DoUnregister, anActor));
+            GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoUnregister, anActor));
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
-        public void DoRegister(IActor anActor)
+        internal void DoRegister(IActor anActor)
         {
             CheckArg.Actor(anActor);
             fUri2Actor[anActor.Tag.Key()] = new WeakReference<IActor>(anActor) ;
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
-        public void DoUnregister(IActor anActor)
+        internal void DoUnregister(IActor anActor)
         {
             CheckArg.Actor(anActor, "anActor must exist");
             fUri2Actor.Remove(anActor.Tag.Key());

@@ -12,8 +12,9 @@ namespace Actor.Util
     public class TextWriterActor : BaseActor, IDisposable
     {
         private StreamWriter fStream;
+#if !(NETFX_CORE) || WINDOWS_UWP
         private string fFileName;
-
+#endif
         public TextWriterActor(string aFileName)
         {
             Become(new Behavior<TextWriterActor>(DoFlush));

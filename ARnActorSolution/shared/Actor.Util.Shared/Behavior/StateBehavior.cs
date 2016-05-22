@@ -56,6 +56,11 @@ namespace Actor.Util
             return (T) await Receive(t => { return t is T; }) ;
         }
 
+        public async Task<T> GetAsync(int timeOutMS)
+        {
+            SendMessage(Tuple.Create(StateAction.Get, default(T)));
+            return (T)await Receive(t => { return t is T; }, timeOutMS);
+        }
     }
 
     public enum StateAction { Set, Get } ;

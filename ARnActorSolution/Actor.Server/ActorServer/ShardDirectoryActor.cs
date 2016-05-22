@@ -12,50 +12,50 @@ namespace Actor.Server
     [Serializable]
     public class ShardRequest
     {
-        public string RequestType {get;private set;} // Ask or Answer
-        public IActor Sender {get ; private set;}
-        public IActor Target {get ; private set;}
-        public IEnumerable<string> Data {get;private set;}
-        public ShardRequest(){} 
+        public string RequestType { get; private set; } // Ask or Answer
+        public IActor Sender { get; private set; }
+        public IActor Target { get; private set; }
+        public IEnumerable<string> Data { get; private set; }
+        public ShardRequest() { }
         public static ShardRequest CastRequest(IActor aSender, IActor aTarget)
         {
-            var req = new ShardRequest() ;
-            req.RequestType = "Ask" ;
-            req.Sender = aSender ;
-            req.Target = aTarget ;
-            return req ;
+            var req = new ShardRequest();
+            req.RequestType = "Ask";
+            req.Sender = aSender;
+            req.Target = aTarget;
+            return req;
         }
         public ShardRequest CastAnswer(IEnumerable<string> someData)
         {
-            var req = new ShardRequest() ;
-            req.RequestType = "Answer" ;
-            req.Sender = this.Sender ;
-            req.Target = this.Target ;
-            req.Data = new List<string>(someData) ;
-            return req ;
+            var req = new ShardRequest();
+            req.RequestType = "Answer";
+            req.Sender = this.Sender;
+            req.Target = this.Target;
+            req.Data = new List<string>(someData);
+            return req;
         }
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder() ;
-            foreach(var s in Data)
-                sb.AppendLine(s) ;
+            StringBuilder sb = new StringBuilder();
+            foreach (var s in Data)
+                sb.AppendLine(s);
             return sb.ToString();
         }
     }
 
     public class ShardDirectoryActor : BaseActor
     {
-        private Dictionary<string,string> fShardList;
+        private Dictionary<string, string> fShardList;
         public ShardDirectoryActor()
             : base()
         {
-            fShardList = new Dictionary<string,string>();
-            fShardList.Add("LocalHost",ActorServer.GetInstance().FullHost);
+            fShardList = new Dictionary<string, string>();
+            fShardList.Add("LocalHost", ActorServer.GetInstance().FullHost);
             DirectoryActor.GetDirectory().Register(this, "KnownShards");
             HostDirectoryActor.Register(this);
             Become(new Behavior<ShardRequest>(
                 t => t is ShardRequest,
-                DoProcessShardRequest)) ;
+                DoProcessShardRequest));
         }
         private void DoProcessShardRequest(ShardRequest msg)
         {
@@ -67,10 +67,10 @@ namespace Actor.Server
                         msg.Target.SendMessage(ans);
                         break;
                     }
-                case "Answer" :
+                case "Answer":
                     {
-                        foreach(var item in msg.Data)
-                            fShardList.Add(item,item);
+                        foreach (var item in msg.Data)
+                            fShardList.Add(item, item);
                         break;
                     }
                 default: break;
@@ -81,7 +81,10 @@ namespace Actor.Server
     public class ShardListActor : ActionActor<string>
     {
         private HashSet<string> fShardList = new HashSet<string>();
-        public ShardListActor() : base() { }
+        public ShardListActor() : base()
+        {
+            AddBehavior(new Behavior<IActor>(DoGetAll));
+        }
         public void Add(string aShardName)
         {
             SendAction(DoSend, aShardName);
@@ -100,12 +103,14 @@ namespace Actor.Server
         }
         public async Task<IEnumerable<string>> GetAll()
         {
-            SendAction(DoGetAll);
-            return await Receive(t => { return t is IEnumerable<string>; }) as IEnumerable<string> ;
+            var future = new Future<IEnumerable<string>>();
+            SendMessage((IActor)future);
+            return await future.ResultAsync();
         }
-        private void DoGetAll()
+        private void DoGetAll(IActor future)
         {
-            SendMessage(fShardList.AsEnumerable<string>());
+            IEnumerable<string> list = fShardList.ToList().AsEnumerable();
+            future.SendMessage(list) ;
         }
     }
 

@@ -287,7 +287,6 @@ Build/
 /ARnActorSolution/TestActor/Report/TestActor_ActorCollectionTest.htm
 /ARnActorSolution/TestActor/Report/TestActor_ActorAddressFactoryTests.htm
 /ARnActorSolution/TestActor/Report/TestActor_ActionActorTest.htm
-/ARnActorSolution/TestActor/Report/index.htm
 /ARnActorSolution/TestActor/Report/Actor.Util_NodeActor_2.htm
 /ARnActorSolution/TestActor/Report/Actor.Util_EdgeActor_2.htm
 /ARnActorSolution/TestActor/Report/Actor.Util_BehaviorGraph_2.htm
@@ -308,3 +307,9 @@ Build/
 /ARnActorSolution/TestActor/Report/Actor.Service_ParserActor.htm
 /ARnActorSolution/TestActor/Report/Actor.Base_SupervisedBehavior.htm
 /ARnActorSolution/TestActor/Report/TestActor_BasicBehaviorsTest.htm
+/ARnActorSolution/TestActor/Report/TestActor_ShardListActorTests.htm
+/ARnActorSolution/TestActor/Report/TestActor_HostDirectoryActorTests.htm
+/ARnActorSolution/TestActor/Report/TestActor_FutureAsyncActorTest.htm
+/ARnActorSolution/TestActor/Report/TestActor_ForEachTests.htm
+/ARnActorSolution/TestActor/Report/Actor.Server_DataContractObject.htm
+/ARnActorSolution/TestActor/Report/index.htm

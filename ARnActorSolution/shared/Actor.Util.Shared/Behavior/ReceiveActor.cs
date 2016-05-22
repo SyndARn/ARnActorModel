@@ -22,7 +22,6 @@ namespace Actor.Util
             target.SendMessage((IActor)this, question);
             return (Tuple<IActor, T>)await r;
         }
-
         public void SetResult(IActor sender, T data) => this.SendMessage(sender, data);
     }
 
@@ -40,9 +39,7 @@ namespace Actor.Util
             target.SendMessage((IActor)this, question);
             return (Tuple<IActor, TAnswer>)await r;
         }
-
         public void SetResult(IActor sender, TAnswer data) => this.SendMessage(sender, data) ;
-
     }
 
 }

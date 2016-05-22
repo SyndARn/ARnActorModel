@@ -17,21 +17,22 @@ namespace Actor.Service.Tests
         List<string> fList = new List<string>();
         public TestParserActor()
         {
-            Become(new Behavior<IActor, string>((a,s) =>
+            Become(new Behavior<IActor, string>((a, s) =>
              {
                  fList.Add(s);
              }));
             AddBehavior(new Behavior<IActor>(a =>
             {
-                a.SendMessage(fList.AsEnumerable());
+                IEnumerable<string> list = fList.AsEnumerable();
+                a.SendMessage(list);
             }
             ));
         }
-        public IEnumerable<string> GetList()
+        public async Task<IEnumerable<string>> GetList()
         {
             var future = new Future<IEnumerable<string>>();
             SendMessage((IActor)future);
-            return future.Result();
+            return await future.ResultAsync();
         }
     }
 
@@ -54,7 +55,7 @@ namespace Actor.Service.Tests
             var launcher2 = new TestLauncherActor();
             launcher2.SendAction(() =>
             {
-                var result = receive.GetList();
+                var result = receive.GetList().Result;
                 Assert.IsTrue(result.Any());
                 Assert.IsTrue(result.Count() == 5);
                 Assert.IsTrue(result.Count(c => c == "C") == 1);
@@ -62,8 +63,14 @@ namespace Actor.Service.Tests
             });
             Assert.IsTrue(launcher2.Wait());
         }
+    }
 
+    [TestClass()]
+    [Ignore]
+    public class ParserServerActorTest
+    {
         [TestMethod()]
+        [Ignore]
         public void ParserServerTest()
         {
             ParserServer parser = new ParserServer();
@@ -74,18 +81,18 @@ namespace Actor.Service.Tests
                 parser.SendMessage((IActor)receive, "A B C D E");
                 launcher.Finish();
             });
-            Assert.IsTrue(launcher.Wait(20000)); // open cover
+            Assert.IsTrue(launcher.Wait()) ;
 
             var launcher2 = new TestLauncherActor();
             launcher2.SendAction(() =>
-            {
-                var result = receive.GetList();
+            { 
+                var result = receive.GetList().Result;
                 Assert.IsTrue(result.Any());
                 Assert.IsTrue(result.Count() == 5);
                 Assert.IsTrue(result.Count(c => c == "C") == 1);
-                launcher2.Finish();
+                launcher.Finish();
             });
-            Assert.IsTrue(launcher2.Wait(20000)); // open cover
-        }        
+            Assert.IsTrue(launcher2.Wait()); 
+        }
     }
 }

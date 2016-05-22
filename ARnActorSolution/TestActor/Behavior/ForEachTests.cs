@@ -12,9 +12,8 @@ using System.Globalization;
 
 namespace Actor.Util.Tests
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
     [TestClass()]
-    public class bhvForEachTests
+    public class ForEachTests
     {
         TestLauncherActor fLauncher;
 
@@ -24,9 +23,8 @@ namespace Actor.Util.Tests
             fLauncher = new TestLauncherActor();
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
         [TestMethod()]
-        public void bhvForEachTest()
+        public void ForEachBehaviorTest()
         {
             ConcurrentBag<string> start = new ConcurrentBag<string>();
             ConcurrentBag<string> end = new ConcurrentBag<string>();

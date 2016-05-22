@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,10 +68,14 @@ namespace Actor.Base
 
 
     [Serializable]
+    [DataContract]
     public class ActorTag : IEquatable<ActorTag>
     {
+        [DataMember]
         private string fUri;
+        [DataMember]
         private bool fIsRemote;
+        [DataMember]
         private Guid fId;
 
         public Guid Id { get { return fId; } }

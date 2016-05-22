@@ -11,19 +11,10 @@ namespace TestActor
     public class ActorCollectionTest
     {
 
-        TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
-
-
         [TestMethod]
         public void TestActorCollection()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
                 {
                     var collect = new CollectionActor<string>();
                     collect.Add("Test1");
@@ -42,16 +33,14 @@ namespace TestActor
                     collect.Add("Test5");
                     var enumerable = collect.ToList();
                     Assert.AreEqual(2, enumerable.Count);
-                    fLauncher.Finish();
                 });
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod]
         [Ignore]
         public void TestActorCollectionEnumerator()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var collect = new CollectionActor<string>();
                 for (int i = 0; i < 100; i++)
@@ -65,9 +54,7 @@ namespace TestActor
                             where col.Contains('1')
                             select col;
                 Assert.AreEqual(query.Count(), 19);
-                fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }

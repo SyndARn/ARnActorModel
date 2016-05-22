@@ -126,6 +126,7 @@
     <Compile Include="RemoteServer\TcpServer\actTcpServer.cs" />
     <Compile Include="Rest\RestReaderActor.cs" />
     <Compile Include="Serializer\ActorSurrogator.cs" />
+    <Compile Include="Serializer\DataContractObject.cs" />
     <Compile Include="Serializer\ISerializeService.cs" />
     <Compile Include="Serializer\JSON.cs" />
     <Compile Include="Serializer\NetDataContract\NetDataContractSerializeService.cs" />

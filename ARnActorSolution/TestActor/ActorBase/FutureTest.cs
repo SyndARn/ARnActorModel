@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace TestActor.ActorBase
 {
 
-    class ActorTest : BaseActor
+    class FutureAsyncActorTest : BaseActor
     {
         private string fData;
-        public ActorTest()
+        public FutureAsyncActorTest()
         {
             Become(new Behavior<string>(t =>
             {
@@ -39,7 +39,7 @@ namespace TestActor.ActorBase
             TestLauncherActor.Test(() =>
             {
                 var future = new Future<string>();
-                var actor = new ActorTest();
+                var actor = new FutureAsyncActorTest();
                 actor.SendMessage("Test Data");
                 var result = GetResult(future);
                 actor.SendMessage((IActor)future);
