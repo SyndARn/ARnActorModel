@@ -27,6 +27,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
@@ -34,18 +35,45 @@ namespace Actor.Base
 
     public enum SystemMessage { NullBehavior };
 
+    [StructLayout(LayoutKind.Explicit,Size =128)]
+    internal struct SharingStruct
+    {
+        // 16
+        [FieldOffset(0)]
+        long fPaddingBefore1;
+        [FieldOffset(8)]
+        long fPaddingBefore2;
+        [FieldOffset(16)]
+        long fPaddingBefore3;
+
+        // 32
+        [FieldOffset(20)]
+        public int fInTask ; // 0 out of task, 1 in task
+        [FieldOffset(24)]
+        public int fReceive ;
+        [FieldOffset(28)]
+        public int fMessCount; // this should always be queue + postpone total
+        [FieldOffset(32)]
+        public int fPadding;
+
+        // 16
+        [FieldOffset(40)]
+        long fPaddingAfter1;
+        [FieldOffset(48)]
+        long fPaddingAfter2;
+        [FieldOffset(56)]
+        long fPaddingAfter3;
+    }
+
     public class BaseActor : IActor
     {
         public ActorTag Tag { get; private set; } // unique identifier, and host
-
         private List<IBehavior> fListBehaviors = new List<IBehavior>(); // our behavior
         private ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>(); // receive behaviors
         private ActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
-        private int fInTask = 0; // 0 out of task, 1 in task
-        private int fReceive = 0;
-
         private IActor fRedirector = null;
-        private int messCount; // this should always be queue + postpone total
+        private SharingStruct fShared = new SharingStruct();
+
 
         public static void CompleteInitialize(BaseActor anActor)
         {
@@ -78,7 +106,7 @@ namespace Actor.Base
             if (msg != null)
             {
                 fMailBox.AddMessage(msg);
-                Interlocked.Increment(ref messCount);
+                Interlocked.Increment(ref fShared.fMessCount);
             }
             TrySetInTask();
         }
@@ -86,7 +114,7 @@ namespace Actor.Base
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask()
         {
-            if (Interlocked.CompareExchange(ref fInTask, 1, 0) == 0)
+            if (Interlocked.CompareExchange(ref fShared.fInTask, 1, 0) == 0)
             {
                 ActorTask.AddActor(MessageLoop);
             }
@@ -95,7 +123,7 @@ namespace Actor.Base
         private void AddMissedMessages()
         {
             // add all missed messages ...
-            Interlocked.Add(ref messCount, fMailBox.RefreshFromMissed());
+            Interlocked.Add(ref fShared.fMessCount, fMailBox.RefreshFromMissed());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -157,10 +185,10 @@ namespace Actor.Base
             if (aPattern == null)
                 throw new ActorException("null pattern");
             var lTCS = new Behavior<object>(aPattern, new TaskCompletionSource<object>());
-            Interlocked.Increment(ref fReceive);
+            Interlocked.Increment(ref fShared.fReceive);
             fCompletions.Enqueue(lTCS);
             AddMissedMessages();
-            Interlocked.Exchange(ref fInTask, 0);
+            Interlocked.Exchange(ref fShared.fInTask, 0);
             TrySetInTask();
             if (timeOutMS != Timeout.Infinite)
             {
@@ -184,7 +212,7 @@ namespace Actor.Base
                         fCompletions.Enqueue(lQueue.Dequeue());
                     }
 
-                    Interlocked.Decrement(ref fReceive);
+                    Interlocked.Decrement(ref fShared.fReceive);
                     return null;
                 }
             }
@@ -204,7 +232,7 @@ namespace Actor.Base
             Object msg = fMailBox.GetMessage();
             if (msg != null)
             {
-                Interlocked.Decrement(ref messCount);
+                Interlocked.Decrement(ref fShared.fMessCount);
             }
             return msg;
         }
@@ -276,9 +304,9 @@ namespace Actor.Base
             object msg = null;
             IBehavior tcs = null;
             bool patternmatch = false;
-            int oldReceive = Interlocked.Exchange(ref fReceive, fReceive);
+            int oldReceive = Interlocked.Exchange(ref fShared.fReceive, fShared.fReceive);
 
-            while (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
+            while (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
             {
 
                 // get message             
@@ -319,11 +347,11 @@ namespace Actor.Base
 
                 if (patternmatch)
                 {
-                    if (Interlocked.CompareExchange(ref fReceive, fReceive, 0) == 0)
+                    if (Interlocked.CompareExchange(ref fShared.fReceive, fShared.fReceive, 0) == 0)
                     {
                         tcs.StandardApply(msg);
                         patternmatch = false;
-                        if (Interlocked.CompareExchange(ref fReceive, fReceive, 0) != 0)
+                        if (Interlocked.CompareExchange(ref fShared.fReceive, fShared.fReceive, 0) != 0)
                         {
                             break;
                         }
@@ -342,20 +370,20 @@ namespace Actor.Base
             if (receivematch)
             {
                 AddMissedMessages();
-                Interlocked.Decrement(ref fReceive);
+                Interlocked.Decrement(ref fShared.fReceive);
                 tcs.StandardCompletion.SetResult(msg);
             }
 
-            int newReceive = Interlocked.Exchange(ref fReceive, fReceive);
+            int newReceive = Interlocked.Exchange(ref fShared.fReceive, fShared.fReceive);
 
             if ((newReceive > 0) && (oldReceive != newReceive))
             {
                 AddMissedMessages();
             }
 
-            Interlocked.Exchange(ref fInTask, 0);
+            Interlocked.Exchange(ref fShared.fInTask, 0);
 
-            if (Interlocked.CompareExchange(ref messCount, 0, 0) != 0)
+            if (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
             {
                 TrySetInTask();
             }
