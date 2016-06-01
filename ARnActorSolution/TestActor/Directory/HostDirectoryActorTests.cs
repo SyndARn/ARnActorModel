@@ -19,9 +19,11 @@ namespace TestActor
 
         
         [TestMethod()]
+        [Ignore]
         public void RegisterUnregisterTest()
         {
-            TestLauncherActor.Test(() =>
+            var launcher = new TestLauncherActor();
+            launcher.SendAction(() =>
             {
                 var actor = new StateFullActor<string>();
                 HostDirectoryActor.Register(actor);
@@ -35,8 +37,10 @@ namespace TestActor
                 HostDirectoryActor.GetInstance().SendMessage(so2);
                 var result2 = actor.GetAsync(1000).Result;
                 Assert.AreEqual("Test",result2);
+                launcher.Finish();
             });
+            Assert.IsTrue(launcher.Wait());
         }
-
+        
     }
 }
