@@ -20,6 +20,8 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
+// #define NO_FALSE_SHARING
+
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,12 +31,15 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
 {
 
     public enum SystemMessage { NullBehavior };
 
+
+#if NO_FALSE_SHARING
     [StructLayout(LayoutKind.Explicit,Size =128)]
     internal struct SharingStruct
     {
@@ -54,7 +59,8 @@ namespace Actor.Base
         [FieldOffset(28)]
         public int fMessCount; // this should always be queue + postpone total
         [FieldOffset(32)]
-        public int fPadding;
+        // public int fPadding;
+        public ActorTag fTag;
 
         // 16
         [FieldOffset(40)]
@@ -64,10 +70,21 @@ namespace Actor.Base
         [FieldOffset(56)]
         long fPaddingAfter3;
     }
+#else
+    internal struct SharingStruct
+    {
+        public int fInTask; // 0 out of task, 1 in task
+        public int fReceive;
+        public ActorTag fTag;
+#if DEBUG_MSG
+        public int fMessCount; // this should always be queue + postpone total
+#endif
+    }
+#endif
 
     public class BaseActor : IActor
     {
-        public ActorTag Tag { get; private set; } // unique identifier, and host
+        public ActorTag Tag { get { return fShared.fTag; } private set { fShared.fTag = value; } } // unique identifier, and host
         private List<IBehavior> fListBehaviors = new List<IBehavior>(); // our behavior
         private ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>(); // receive behaviors
         private ActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
@@ -106,7 +123,9 @@ namespace Actor.Base
             if (msg != null)
             {
                 fMailBox.AddMessage(msg);
+#if DEBUG_MSG
                 Interlocked.Increment(ref fShared.fMessCount);
+#endif
             }
             TrySetInTask();
         }
@@ -123,7 +142,12 @@ namespace Actor.Base
         private void AddMissedMessages()
         {
             // add all missed messages ...
+#if DEBUG_MSG
             Interlocked.Add(ref fShared.fMessCount, fMailBox.RefreshFromMissed());
+#else
+            fMailBox.RefreshFromMissed();
+#endif
+
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -230,10 +254,12 @@ namespace Actor.Base
         private Object ReceiveMessage()
         {
             Object msg = fMailBox.GetMessage();
+#if DEBUG_MSG
             if (msg != null)
             {
                 Interlocked.Decrement(ref fShared.fMessCount);
             }
+#endif
             return msg;
         }
 
@@ -305,8 +331,11 @@ namespace Actor.Base
             IBehavior tcs = null;
             bool patternmatch = false;
             int oldReceive = Interlocked.Exchange(ref fShared.fReceive, fShared.fReceive);
-
+#if DEBUG_MSG
             while (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
+#else
+            while (true)
+#endif
             {
 
                 // get message             
@@ -338,7 +367,13 @@ namespace Actor.Base
                         }
                     }
                 }
-
+#if DEBUG_MSG
+#else
+                else
+                {
+                    break;
+                }
+#endif
                 // miss
                 if (!patternmatch && !receivematch && msg != null)
                 {
@@ -383,7 +418,11 @@ namespace Actor.Base
 
             Interlocked.Exchange(ref fShared.fInTask, 0);
 
+#if DEBUG_MSG
             if (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
+#else
+            if (! fMailBox.IsEmpty)
+#endif
             {
                 TrySetInTask();
             }

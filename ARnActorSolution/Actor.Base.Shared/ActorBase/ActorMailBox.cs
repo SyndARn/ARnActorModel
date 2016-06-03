@@ -44,6 +44,11 @@ namespace Actor.Base
         {
         }
 
+        public bool IsEmpty
+        {
+            get { return fQueue.IsEmpty; }
+        }
+
         public void AddMiss(T aMessage)
         {
             fMissed.Enqueue(aMessage);
