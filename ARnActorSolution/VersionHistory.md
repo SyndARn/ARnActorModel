@@ -8,3 +8,6 @@
   
 2016 05 20 0.4.1.0
   Package for Net Portable and Win
+
+2016 05 20 0.4.2.0
+  Reducing False Sharing and Util Portable

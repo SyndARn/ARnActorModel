@@ -8,4 +8,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("0.4.1.*")]
+[assembly: AssemblyVersion("0.4.2.*")]
