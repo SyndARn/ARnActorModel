@@ -49,7 +49,6 @@ namespace TestActor.MapReduce
     }
 
     [TestClass]
-    [Ignore]
     public class MapReduceTesting
     {
 

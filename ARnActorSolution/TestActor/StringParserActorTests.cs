@@ -66,7 +66,6 @@ namespace Actor.Service.Tests
     }
 
     [TestClass()]
-    [Ignore]
     public class ParserServerActorTest
     {
         [TestMethod()]
