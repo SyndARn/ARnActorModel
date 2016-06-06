@@ -20,7 +20,6 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
-// #define NO_FALSE_SHARING
 
 using System;
 using System.Threading;
@@ -38,39 +37,6 @@ namespace Actor.Base
 
     public enum SystemMessage { NullBehavior };
 
-
-#if NO_FALSE_SHARING
-    [StructLayout(LayoutKind.Explicit,Size =128)]
-    internal struct SharingStruct
-    {
-        // 16
-        [FieldOffset(0)]
-        long fPaddingBefore1;
-        [FieldOffset(8)]
-        long fPaddingBefore2;
-        [FieldOffset(16)]
-        long fPaddingBefore3;
-
-        // 32
-        [FieldOffset(20)]
-        public int fInTask ; // 0 out of task, 1 in task
-        [FieldOffset(24)]
-        public int fReceive ;
-        [FieldOffset(28)]
-        public int fMessCount; // this should always be queue + postpone total
-        [FieldOffset(32)]
-        // public int fPadding;
-        public ActorTag fTag;
-
-        // 16
-        [FieldOffset(40)]
-        long fPaddingAfter1;
-        [FieldOffset(48)]
-        long fPaddingAfter2;
-        [FieldOffset(56)]
-        long fPaddingAfter3;
-    }
-#else
     internal struct SharingStruct
     {
         public int fInTask; // 0 out of task, 1 in task
@@ -80,7 +46,6 @@ namespace Actor.Base
         public int fMessCount; // this should always be queue + postpone total
 #endif
     }
-#endif
 
     public class BaseActor : IActor
     {
