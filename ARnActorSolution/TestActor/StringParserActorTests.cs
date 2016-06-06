@@ -37,6 +37,34 @@ namespace Actor.Service.Tests
     }
 
     [TestClass()]
+    public class ReceiveLineBehaviorTests
+    {
+        [TestMethod()]
+        public void ReceiveLineTest()
+        {
+            BehaviorReceiveLine brl = new BehaviorReceiveLine();
+            TestParserActor receive = new TestParserActor();
+            var launcher = new TestLauncherActor();
+            string testLine = "A B CD E F";
+            var msg = Tuple.Create((IActor)receive, testLine);
+            launcher.SendAction(() =>
+            {
+               // call behavior directly
+               if (brl.DefaultPattern()(msg))
+                {
+                    brl.StandardApply(msg);
+                    var result = receive.GetList().Result;
+                    Assert.IsTrue(result.Any());
+                    Assert.IsTrue(result.Count() == 5);
+                    Assert.IsTrue(result.Count(c => c == "CD") == 1);
+                }
+                launcher.Finish();
+            });
+            Assert.IsTrue(launcher.Wait());
+        }
+    }
+
+    [TestClass()]
     public class StringParserActorTests
     {
         [TestMethod()]
