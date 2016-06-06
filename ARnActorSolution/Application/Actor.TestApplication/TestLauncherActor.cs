@@ -9,6 +9,7 @@ namespace Actor.TestApplication
 {
     public class TestLauncherActor : ActionActor
     {
+        private Future<bool> future = new Future<bool>();
         public TestLauncherActor()
             : base()
         {
@@ -16,13 +17,12 @@ namespace Actor.TestApplication
 
         public void Finish()
         {
-            SendMessage(true);
+            future.SendMessage(true);
         }
 
         public bool Wait()
         {
-            var val = Receive(t => t is bool);
-            return (bool)val.Result;
+            return future.Result();
         }
     }
 }
