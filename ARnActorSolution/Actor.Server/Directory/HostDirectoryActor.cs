@@ -92,7 +92,7 @@ namespace Actor.Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         internal void DoUnregister(IActor anActor)
         {
-            CheckArg.Actor(anActor, "anActor must exist");
+            CheckArg.Actor(anActor);
             fUri2Actor.Remove(anActor.Tag.Key());
         }
 

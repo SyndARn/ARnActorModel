@@ -77,6 +77,7 @@ namespace Actor.Util
 
         public Buffer(IEnumerable<Consumer<T>> someConsumers) : base("BufferEmpty", null)
         {
+            CheckArg.IEnumerable(someConsumers);
             foreach (var item in someConsumers)
             {
                 ConsList.Enqueue(item);
@@ -164,7 +165,7 @@ namespace Actor.Util
                 var fut = buffer.GetCurrentState().Result(10000);
                 if (fut == null) 
                         Debug.WriteLine("Stop");
-                if (fut != null ? fut.Item2 == "BufferEmpty" : false)
+                if (fut != null ? fut == "BufferEmpty" : false)
                     break;
             }
 
