@@ -9,6 +9,7 @@ using Actor.Util;
 using Actor.Service;
 using System.Diagnostics;
 using System.Dynamic;
+using System.Globalization;
 
 namespace Actor.TestApplication
 {
@@ -32,8 +33,8 @@ namespace Actor.TestApplication
             var list = new List<string>();
             for (int i = 0; i < 10; i++)
             {
-                collect.Add(i.ToString());
-                list.Add(i.ToString());
+                collect.Add(i.ToString(CultureInfo.InvariantCulture));
+                list.Add(i.ToString(CultureInfo.InvariantCulture));
             }
 
             foreach (var item in collect)
@@ -67,7 +68,7 @@ namespace Actor.TestApplication
                 EchoClientActor aClient = new EchoClientActor();// new actEchoClient(aServer);
                 // DirectoryRequest.SendRegister("client + " + i.ToString(), aClient);
                 aClient.Connect("EchoServer");
-                aClient.SendMessage("client-" + i.ToString());
+                aClient.SendMessage("client-" + i.ToString(CultureInfo.InvariantCulture));
                 clientList.Add(aClient);
                 // aClient.Disconnect();
             }

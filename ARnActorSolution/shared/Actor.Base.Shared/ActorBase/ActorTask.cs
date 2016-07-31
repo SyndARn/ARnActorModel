@@ -61,7 +61,7 @@ namespace Actor.Base
         {
             if (messageLoop == null)
             {
-                throw new ActorException(string.Format("bad, no actor should be null at this point {0}", nameof(messageLoop)));
+                throw new ActorException(string.Format(CultureInfo.InvariantCulture,"bad, no actor should be null at this point {0}", nameof(messageLoop)));
             }
 
             Task.Factory.StartNew(() =>

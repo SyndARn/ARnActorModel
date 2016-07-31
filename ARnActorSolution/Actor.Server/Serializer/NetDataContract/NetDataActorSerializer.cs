@@ -15,6 +15,7 @@ namespace Actor.Server
     {
         public static SerialObject DeSerialize(Stream inputStream)
         {
+            CheckArg.Stream(inputStream);
             inputStream.Seek(0, SeekOrigin.Begin);
             NetDataContractSerializer dcs = new NetDataContractSerializer();
             dcs.SurrogateSelector = new ActorSurrogatorSelector();

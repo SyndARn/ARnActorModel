@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 #if NETFX_CORE
+    [AttributeUsage(AttributeTargets.All)]
     public class SerializableAttribute : Attribute
     {
         public SerializableAttribute()

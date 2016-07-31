@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
-using Actor.Util ;
+using Actor.Util;
+using System.Globalization;
 
 namespace Actor.TestApplication
 {
@@ -43,10 +44,10 @@ namespace Actor.TestApplication
             {
                 item.Data.SendMessage("Bop");
                 item = fQueue.TryDequeue().Result;
-                Console.WriteLine("receive " + i.ToString());
+                Console.WriteLine("receive " + i.ToString(CultureInfo.InvariantCulture));
                 i++;
             }
-            Console.WriteLine("end "+i.ToString());
+            Console.WriteLine("end "+i.ToString(CultureInfo.InvariantCulture));
         }
     }
 }
