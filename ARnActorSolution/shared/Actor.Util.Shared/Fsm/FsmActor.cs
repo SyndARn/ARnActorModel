@@ -46,17 +46,18 @@ namespace Actor.Util
 
         private void GetState(Tuple<IActor, TState> sender)
         {
-            sender.Item1.SendMessage(new Tuple<IActor, TState>(this, InternalCurrentState));
+            sender.Item1.SendMessage(InternalCurrentState);
         }
 
+        // TODO check this
         internal void ProcessState(TState newState)
         {
             InternalCurrentState = newState;
         }
 
-        public Future<Tuple<IActor,TState>> GetCurrentState()
+        public Future<TState> GetCurrentState()
         {
-            var future = new Future<Tuple<IActor,TState>>();
+            var future = new Future<TState>();
             SendMessage(new Tuple<IActor, TState>(future,InternalCurrentState));
             return future;
         }

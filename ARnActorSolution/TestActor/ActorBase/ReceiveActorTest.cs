@@ -15,7 +15,7 @@ namespace TestActor
             {
                 Become(new Behavior<IActor, int>((a, i) =>
                  {
-                     a.SendMessage(new Tuple<IActor,string>(this,i % 2 == 0 ? "even" : "odd"));
+                     a.SendMessage((IActor)this,i % 2 == 0 ? "even" : "odd");
                  })) ;
             }
         }
@@ -51,7 +51,7 @@ namespace TestActor
             {
                 Become(new Behavior<IActor, int>((a, i) =>
                 {
-                    a.SendMessage(new Tuple<IActor, int>(this, i *2));
+                    a.SendMessage((IActor)this, i *2);
                 }));
             }
         }

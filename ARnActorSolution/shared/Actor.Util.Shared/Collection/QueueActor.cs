@@ -8,7 +8,13 @@ using System.Threading.Tasks;
 namespace Actor.Util
 {
 
-    public class MsgQueue<T>
+    public interface IMsgQueue<T>
+    {
+        bool Result { get; }
+        T Data { get; }
+    }
+
+    public class MsgQueue<T> : IMsgQueue<T>
     {
         public bool Result { get; }
         public T Data{ get; }
@@ -33,11 +39,11 @@ namespace Actor.Util
             SendAction(DoQueue, at);
         }
 
-        public async Task<MsgQueue<T>> TryDequeue()
+        public async Task<IMsgQueue<T>> TryDequeue()
         {
-            var retVal = Receive(t => { return t is MsgQueue<T>; }) ;
+            var retVal = Receive(t => { return t is IMsgQueue<T>; }) ;
             SendAction(DoDequeue);
-            return await retVal as MsgQueue<T>;
+            return await retVal as IMsgQueue<T>;
         }
 
         private void DoQueue(T at)

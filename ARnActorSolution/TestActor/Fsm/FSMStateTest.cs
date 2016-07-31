@@ -22,23 +22,23 @@ namespace TestActor.Fsm
                 var fsmActor = new FsmActor<string, int>("StartState", behaviors);
 
                 var currentState1 = fsmActor.GetCurrentState();
-                Assert.IsTrue(currentState1.Result().Item2 == "StartState");
+                Assert.IsTrue(currentState1.Result() == "StartState");
 
                 fsmActor.SendMessage("StartState", 1);
 
                 var currentState2 = fsmActor.GetCurrentState();
-                Assert.IsTrue(currentState2.Result().Item2 == "MidState");
+                Assert.IsTrue(currentState2.Result() == "MidState");
 
                 fsmActor.SendMessage("MidState", 2);
 
                 var currentState3 = fsmActor.GetCurrentState();
-                Assert.IsTrue(currentState3.Result().Item2 == "EndState");
+                Assert.IsTrue(currentState3.Result() == "EndState");
 
                 fsmActor.SendMessage("MidState", 3);
 
                 // unchanged shoud be
                 var currentState4 = fsmActor.GetCurrentState();
-                Assert.IsTrue(currentState4.Result().Item2 == "EndState");
+                Assert.IsTrue(currentState4.Result() == "EndState");
             });
         }
     }

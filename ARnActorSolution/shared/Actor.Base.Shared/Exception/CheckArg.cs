@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections;
 
 namespace Actor.Base
 {
@@ -49,17 +50,24 @@ namespace Actor.Base
             }
         }
 
-        public static void Actor(IActor anActor)
+        public static void IEnumerable([ValidatedNotNullAttribute] IEnumerable enumerables)
         {
-            Actor(anActor, "actor can't be null");
+            if (enumerables == null)
+            {
+                throw new ActorException("Null enumerables");
+            }
         }
 
-        public static void Actor(IActor anActor, string aMessage)
+        public static void Actor([ValidatedNotNullAttribute] IActor anActor)
         {
             if (anActor == null)
             {
-                throw new ActorException(aMessage);
+                throw new ActorException("actor must exist");
             }
+        }
+
+        sealed class ValidatedNotNullAttribute : Attribute
+        {
         }
     }
 }
