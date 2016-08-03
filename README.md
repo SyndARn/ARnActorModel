@@ -40,5 +40,6 @@ For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](http
 
 - more coverage
 - moving to PCL/Universal/Shared model
+- focus on future vs actor
  
 
