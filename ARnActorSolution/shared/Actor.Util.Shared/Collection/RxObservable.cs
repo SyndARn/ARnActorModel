@@ -7,6 +7,7 @@ using Actor.Base;
 
 namespace Actor.Util
 {
+
     public class RxObservable<T> : BaseActor, IObservable<T>
     {
         private List<IObserver<T>> observers;
@@ -47,7 +48,7 @@ namespace Actor.Util
             foreach (var observer in observers)
             {
                 if (loc == null)
-                    observer.OnError(new Exception());
+                    observer.OnError(new ActorException());
                 else
                     observer.OnNext(loc);
             }

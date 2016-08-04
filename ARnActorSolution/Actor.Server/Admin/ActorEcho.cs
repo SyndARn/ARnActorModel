@@ -9,7 +9,6 @@ namespace Actor.Server
 
     public class EchoActor<T> : BaseActor
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         public EchoActor(IActor dest, T aT)
         {
             CheckArg.Actor(dest);
@@ -22,7 +21,7 @@ namespace Actor.Server
     {
         public EchoActor(IActor dest, string value)
         {
-            if (dest == null) throw new ActorException("Dest can't be null");
+            CheckArg.Actor(dest);
             Become(new ConsoleBehavior());
             dest.SendMessage((IActor)this,value);
         }
