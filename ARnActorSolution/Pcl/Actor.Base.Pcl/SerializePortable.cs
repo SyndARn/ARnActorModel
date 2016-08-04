@@ -8,7 +8,7 @@ namespace Actor.Base
 {
 #if NETFX_CORE
     [AttributeUsage(AttributeTargets.All)]
-    public class SerializableAttribute : Attribute
+    public sealed class SerializableAttribute : Attribute
     {
         public SerializableAttribute()
         {

@@ -18,24 +18,29 @@ namespace Actor.Server.Tests
         {
             // what
             string testString = "SendReceiveStreamTest";
+            string resultString = string.Empty;
 
-            // write
-            var stream = new MemoryStream();
-            var writer = new StreamWriter(stream);
-            writer.WriteLine(testString);
-            writer.Flush();
+            using (var stream = new MemoryStream())
+            {
+                // write
+                var writer = new StreamWriter(stream);
+                writer.WriteLine(testString);
+                writer.Flush();
 
-            // send
-            MemoryContextComm comm = new MemoryContextComm();
-            comm.SendStream("test", stream);
+                // send
+                MemoryContextComm comm = new MemoryContextComm();
+                comm.SendStream("test", stream);
 
-            // receive
-            var streamReceived = comm.ReceiveStream();
-            var reader = new StreamReader(streamReceived);
-            string s = reader.ReadLine();
+                // receive
+                using (var streamReceived = comm.ReceiveStream())
+                {
+                    var reader = new StreamReader(streamReceived);
+                    resultString = reader.ReadLine();
+                }
+            }
 
             // check
-            Assert.AreEqual(testString, s);            
+            Assert.AreEqual(testString, resultString);
 
         }
 

@@ -11,12 +11,12 @@ namespace Actor.Server
     {
         public OnBehalfActor() : base()
         {
-            Become(new Behavior<Tuple<Action, IActor>>(DoIt));
+            Become(new Behavior<Action, IActor>(DoIt));
         }
 
-        private void DoIt(Tuple<Action, IActor> msg)
+        private void DoIt(Action action, IActor actor)
         {
-            msg.Item2.SendMessage(msg.Item1);
+            actor.SendMessage(action);
             Become(new NullBehaviors());
         }
     }
