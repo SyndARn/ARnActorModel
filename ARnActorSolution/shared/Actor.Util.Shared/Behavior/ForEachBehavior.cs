@@ -12,32 +12,32 @@ namespace Actor.Util
     ///   Apply an Action on an IEnumerable by creating an actor for each item
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ForEachBehavior<T> : Behavior<Tuple<IEnumerable<T>, Action<T>>>
+    public class ForEachBehavior<T> : Behavior<IEnumerable<T>, Action<T>>
     {
         public ForEachBehavior() : base()
         {
-            this.Pattern = t => { return true; };
+            this.Pattern = (e,a) => { return true; };
             this.Apply = ForEach;
         }
 
-        private void ForEach(Tuple<IEnumerable<T>, Action<T>> msg)
+        private void ForEach(IEnumerable<T> list, Action<T> action)
         {
-            foreach (T act in msg.Item1)
+            foreach (T act in list)
             {
-                new BaseActor(new DoForEachbehavior<T>()).SendMessage(Tuple.Create(act, msg.Item2));
+                new BaseActor(new DoForEachbehavior<T>()).SendMessage(Tuple.Create(act, action));
             }
         }
     }
 
-    internal class DoForEachbehavior<T> : Behavior<Tuple<T, Action<T>>>
+    internal class DoForEachbehavior<T> : Behavior<T, Action<T>>
     {
         public DoForEachbehavior()
         {
-            this.Pattern = t => { return true; };
+            this.Pattern = (t,a) => { return true; };
             this.Apply = DoEach;
         }
 
-        private void DoEach(Tuple<T, Action<T>> msg) => msg.Item2(msg.Item1);
+        private void DoEach(T aT, Action<T> action) => action(aT);
     }
 }
 

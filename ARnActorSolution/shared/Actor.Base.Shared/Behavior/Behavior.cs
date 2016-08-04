@@ -128,9 +128,9 @@ namespace Actor.Base
         {
         }
 
-        public Func<T2, Boolean> DefaultPattern()
+        public Func<T1, T2, Boolean> DefaultPattern()
         {
-            return t => { return t is T2; };
+            return (t1,t2) => { return t1 is T1 && t2 is T2; };
         }
 
         public Behavior(Action<T1, T2> anApply)
@@ -214,9 +214,9 @@ namespace Actor.Base
         {
         }
 
-        public Func<T1, Boolean> DefaultPattern()
+        public Func<T1, T2, T3, Boolean> DefaultPattern()
         {
-            return t => { return t is T1; };
+            return (t1,t2,t3) => { return t1 is T1 && t2 is T2 && t3 is T3; };
         }
 
         public Behavior(Action<T1, T2, T3> anApply)

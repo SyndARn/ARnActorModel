@@ -23,7 +23,7 @@ namespace Actor.Server.Tests
                  {
                      fData = s;
                  }));
-                AddBehavior(new Behavior<IActor>(a =>
+                AddBehavior(new Behavior<IFuture<string>>(a =>
                 {
                     a.SendMessage(fData);
                 }));
@@ -38,8 +38,8 @@ namespace Actor.Server.Tests
             {
                 var actor = new EchoTest();
                 var echo = new EchoActor(actor, "Test Echo");
-                var future = new Future<string>();
-                actor.SendMessage((IActor)future);
+                IFuture<string> future = new Future<string>();
+                actor.SendMessage(future);
                 Assert.AreEqual("Test Echo", future.ResultAsync().Result);
                 launcher.Finish();
             });

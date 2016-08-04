@@ -83,7 +83,7 @@ namespace Actor.Server
         private HashSet<string> fShardList = new HashSet<string>();
         public ShardListActor() : base()
         {
-            AddBehavior(new Behavior<IActor>(DoGetAll));
+            AddBehavior(new Behavior<IFuture>(DoGetAll));
         }
         public void Add(string aShardName)
         {
@@ -103,11 +103,11 @@ namespace Actor.Server
         }
         public async Task<IEnumerable<string>> GetAll()
         {
-            var future = new Future<IEnumerable<string>>();
-            SendMessage((IActor)future);
+            IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
+            SendMessage(future);
             return await future.ResultAsync();
         }
-        private void DoGetAll(IActor future)
+        private void DoGetAll(IFuture future)
         {
             IEnumerable<string> list = fShardList.ToList().AsEnumerable();
             future.SendMessage(list) ;

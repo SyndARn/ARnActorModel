@@ -68,19 +68,19 @@ namespace Actor.Server
         }
     }
 
-    public class RestSendBehavior : Behavior<Tuple<Uri,IActor>>
+    public class RestSendBehavior : Behavior<Uri,IActor>
     {
         public RestSendBehavior()
             : base()
         {
-            Pattern = t => t is Tuple<Uri,IActor>;
+            Pattern = DefaultPattern();
             Apply = DoRestPost;
         }
-        private void DoRestPost(Tuple<Uri,IActor> anUri)
+        private void DoRestPost(Uri uri,IActor actor)
         {
-            (LinkedTo as BehaviorsRestReader).Answer = anUri.Item2;
+            (LinkedTo as BehaviorsRestReader).Answer = actor;
             var actWeb = new WebActor();
-            var wr = WebActor.Cast(LinkedActor, anUri.Item1);
+            var wr = WebActor.Cast(LinkedActor, uri);
             actWeb.SendMessage(wr);
         }
     }

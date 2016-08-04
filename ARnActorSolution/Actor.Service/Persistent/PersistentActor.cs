@@ -55,7 +55,7 @@ namespace Actor.Service
         public Future<T> GetCurrent()
         {
             var future = new Future<T>();
-            this.SendMessage<PersistentCommand,IActor>(PersistentCommand.GetCurrent,(IActor)future);
+            this.SendMessage(PersistentCommand.GetCurrent,(IActor)future);
             return future;
         }
 
