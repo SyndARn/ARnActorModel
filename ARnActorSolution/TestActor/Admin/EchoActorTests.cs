@@ -37,7 +37,7 @@ namespace Actor.Server.Tests
             launcher.SendAction(() =>
             {
                 var actor = new EchoTest();
-                var echo = new EchoActor(actor, "Test Echo");
+                new EchoActor(actor, "Test Echo");
                 IFuture<string> future = new Future<string>();
                 actor.SendMessage(future);
                 Assert.AreEqual("Test Echo", future.ResultAsync().Result);
