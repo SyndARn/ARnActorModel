@@ -7,10 +7,15 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 
-    public class Future<T> : BaseActor
+    public class Future<T> : BaseActor, IFuture<T>
     {
         public Future()
         {
+        }
+
+        public async Task<object> GetResultAsync()
+        {
+            return await ResultAsync();
         }
 
         public T Result() => (T)Receive(t => t is T).Result;
@@ -22,12 +27,21 @@ namespace Actor.Base
             return (T)await Receive(t => t is T);
         }
 
+        public async Task<T> ResultAsync(int timeOutMS)
+        {
+            return (T)await Receive(t => t is T, timeOutMS);
+        }
     }
 
-    public class Future<T1,T2> : BaseActor
+    public class Future<T1,T2> : BaseActor, IFuture<T1, T2>
     {
         public Future()
         {
+        }
+
+        public async Task<object> GetResultAsync()
+        {
+            return await ResultAsync();
         }
 
         public Tuple<T1,T2> Result() => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>).Result;
@@ -39,5 +53,9 @@ namespace Actor.Base
             return (Tuple < T1, T2 >) await Receive(t => t is Tuple<T1, T2>);
         }
 
+        public async Task<Tuple<T1, T2>> ResultAsync(int timeOutMS)
+        {
+            return (Tuple<T1, T2>)await Receive(t => t is Tuple<T1, T2>,timeOutMS);
+        }
     }
 }

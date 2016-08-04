@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Service", "Actor.Service\Actor.Service.csproj", "{7FED180B-B123-4668-9C2D-7F3F0C692E1E}"
 EndProject
@@ -93,17 +93,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Windows", "Window\Act
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{1095564c-f31b-468a-adb5-97d4f4502ff6}*SharedItemsImports = 4
+		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{2d5bfe8e-954e-4919-8c08-edd6cf69a3e7}*SharedItemsImports = 4
+		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{33a9e4e2-0a90-4573-b4a8-2aadc2030fa6}*SharedItemsImports = 4
+		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{6ca2469f-3839-4404-bbfd-a959ad2fd95e}*SharedItemsImports = 4
+		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{73609681-bce2-42ea-88f2-b377225453ec}*SharedItemsImports = 13
+		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{75d9639e-e043-41d5-926b-65b0c459f868}*SharedItemsImports = 4
 		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{aeae49ec-d5f6-448d-a098-f479bbdc69d2}*SharedItemsImports = 13
 		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{e107486f-a9b7-429c-81ac-e6ccee4177b2}*SharedItemsImports = 13
 		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{ed9f44af-4154-4f52-8b71-7c2148b631ab}*SharedItemsImports = 4
-		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{75d9639e-e043-41d5-926b-65b0c459f868}*SharedItemsImports = 4
-		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{6ca2469f-3839-4404-bbfd-a959ad2fd95e}*SharedItemsImports = 4
-		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{33a9e4e2-0a90-4573-b4a8-2aadc2030fa6}*SharedItemsImports = 4
-		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{2d5bfe8e-954e-4919-8c08-edd6cf69a3e7}*SharedItemsImports = 4
-		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{1095564c-f31b-468a-adb5-97d4f4502ff6}*SharedItemsImports = 4
-		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{0808ce9e-d4a8-4d87-a661-a73888f49abf}*SharedItemsImports = 4
-		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{73609681-bce2-42ea-88f2-b377225453ec}*SharedItemsImports = 13
-		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{21557bc3-f4e3-4c5e-8eca-a81ac35bbd4f}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppVeyor|Any CPU = AppVeyor|Any CPU

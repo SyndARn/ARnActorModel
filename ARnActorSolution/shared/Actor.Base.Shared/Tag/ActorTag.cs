@@ -34,13 +34,22 @@ namespace Actor.Base
 
     public static class ActorTagHelper
     {
-
-        private static long fBaseId = 0;
+        [ThreadStatic]
+        private static long fBaseId = 0 ;
+        [ThreadStatic]
+        private static int fBaseThread = 0 ;
 
         internal static Guid CastNewTagId()
         {
-            long baseId = Interlocked.Increment(ref fBaseId);
-            Guid guid = new Guid(0, 0, 0, BitConverter.GetBytes(baseId));
+
+#if ! NETFX_CORE
+            if (fBaseThread == 0)
+            {
+                fBaseThread = Thread.CurrentThread.ManagedThreadId;                
+            }
+#endif
+            fBaseId++;
+            Guid guid = new Guid(fBaseThread, 0, 0, BitConverter.GetBytes(fBaseId));
             return guid;
         }
 

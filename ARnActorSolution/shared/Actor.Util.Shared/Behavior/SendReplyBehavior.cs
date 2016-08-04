@@ -4,15 +4,15 @@ using System;
 namespace Actor.Util
 {
 
-    public class SendReplyBehavior<T> : Behavior<Tuple<IActor, T, IActor>>
+    public class SendReplyBehavior<T> : Behavior<IActor, T, IActor>
     {
         public SendReplyBehavior()
             : base()
         {
-            Pattern = t => { return t is Tuple<IActor, T, IActor>; };
-            Apply = t => 
+            Pattern = DefaultPattern();
+            Apply = (sender,t,target) => 
                 {
-                    t.Item1.SendMessage(Tuple.Create(this,t.Item2,t.Item1)) ;
+                    sender.SendMessage(Tuple.Create(this,t,target)) ;
                 } ;
         }
     }
