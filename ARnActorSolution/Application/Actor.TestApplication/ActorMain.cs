@@ -78,7 +78,6 @@ namespace Actor.TestApplication
             // basic redirection
             IActor target = new BaseActor(new Behavior<string>(t => { Console.WriteLine(t); }));
             IActor middle = new BaseActor(new Behavior<string>(t => { t = t + " augmenté"; }));
-            ((BaseActor)middle).RedirectTo(target);
             middle.SendMessage("Bonjour");
 
 

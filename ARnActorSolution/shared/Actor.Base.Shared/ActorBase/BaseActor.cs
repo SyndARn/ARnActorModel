@@ -52,14 +52,12 @@ namespace Actor.Base
         public ActorTag Tag { get { return fShared.fTag; } private set { fShared.fTag = value; } } // unique identifier, and host
         private List<IBehavior> fListBehaviors = new List<IBehavior>(); // our behavior
         private ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>(); // receive behaviors
-        private ActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
-        private IActor fRedirector = null;
+        private IActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
         private SharingStruct fShared = new SharingStruct();
-
 
         public static void CompleteInitialize(BaseActor anActor)
         {
-            if (anActor == null) throw new ActorException("Null actor");
+            CheckArg.Actor(anActor);
             anActor.fListBehaviors = new List<IBehavior>();
             anActor.fCompletions = new ConcurrentQueue<IBehavior>();
             anActor.fMailBox = new ActorMailBox<object>();
@@ -73,13 +71,6 @@ namespace Actor.Base
             : base()
         {
             Tag = previousTag;
-        }
-
-        public void RedirectTo(IActor anActor)
-        {
-            IActor aRedirector = new RedirectorActor(anActor);
-            // this could be threaded ...
-            Interlocked.Exchange(ref fRedirector, aRedirector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -116,22 +107,9 @@ namespace Actor.Base
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void SendWithRedirector(object msg, IActor aTargetActor)
-        {
-            ((BaseActor)aTargetActor).TrySetInTask(msg);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SendMessage(object msg)
         {
-            if (fRedirector != null)
-            {
-                SendWithRedirector(new RedirectMessage(msg, this), fRedirector);
-            }
-            else
-            {
                 TrySetInTask(msg);
-            }
         }
 
         public static BaseActor Add(BaseActor anActor, object aMessage)
@@ -171,8 +149,7 @@ namespace Actor.Base
 
         public async Task<object> Receive(Func<object, bool> aPattern, int timeOutMS)
         {
-            if (aPattern == null)
-                throw new ActorException("null pattern");
+            CheckArg.Pattern(aPattern);
             var lTCS = new Behavior<object>(aPattern, new TaskCompletionSource<object>());
             Interlocked.Increment(ref fShared.fReceive);
             fCompletions.Enqueue(lTCS);
@@ -240,10 +217,7 @@ namespace Actor.Base
 
         protected void Become(params IBehavior[] manyBehaviors)
         {
-            if (manyBehaviors == null)
-            {
-                throw new ActorException("Null manyBehaviors");
-            }
+            CheckArg.BehaviorParam(manyBehaviors);
 
             fListBehaviors.Clear();
 
@@ -288,7 +262,6 @@ namespace Actor.Base
             fListBehaviors.Remove(aBehavior);
         }
 
-
         private void MessageLoop()
         {
             bool receivematch = false;
@@ -307,29 +280,16 @@ namespace Actor.Base
                 msg = ReceiveMessage();
                 if (msg != null)
                 {
-                    patternmatch = false;
                     receivematch = false;
-                    tcs = null;
 
-                    // pattern matching
-                    foreach (var fBehavior in fListBehaviors)
-                    {
-                        if ((fBehavior != null) && (fBehavior.StandardPattern(msg)))
-                        {
-                            tcs = fBehavior;
-                            patternmatch = true;
-                            break;
-                        }
-                    }
+                    tcs = PatternMatching(msg);
+                    patternmatch = tcs != null;
 
                     // receive pattern
                     if (!patternmatch)
                     {
                         tcs = ReceiveMatching(msg);
-                        if (tcs != null)
-                        {
-                            receivematch = true;
-                        }
+                        receivematch = tcs != null;
                     }
                 }
 #if DEBUG_MSG
@@ -339,6 +299,7 @@ namespace Actor.Base
                     break;
                 }
 #endif
+
                 // miss
                 if (!patternmatch && !receivematch && msg != null)
                 {
@@ -393,12 +354,28 @@ namespace Actor.Base
             }
         }
 
+        private IBehavior PatternMatching(object msg)
+        {
+            foreach (var fBehavior in fListBehaviors)
+            {
+                if ((fBehavior != null) && (fBehavior.StandardPattern(msg)))
+                {
+                    return fBehavior;
+                }
+            }
+            return null;
+        }
+
         private IBehavior ReceiveMatching(Object msg)
         {
-            IBehavior tcs;
-            Queue<IBehavior> lQueue = new Queue<IBehavior>();
+            IBehavior tcs = null ;
+            Queue<IBehavior> lQueue = null;
             while (fCompletions.TryDequeue(out tcs))
             {
+                if (lQueue == null)
+                {
+                    lQueue = new Queue<IBehavior>();
+                }
                 if (!tcs.StandardPattern(msg))
                 {
                     lQueue.Enqueue(tcs);
@@ -411,16 +388,20 @@ namespace Actor.Base
                         break;
                     }
                     else
+                    {
                         tcs = null;
+                    }
                 }
             }
-            while (lQueue.Count > 0)
+            if (lQueue != null)
             {
-                fCompletions.Enqueue(lQueue.Dequeue());
+                while (lQueue.Count > 0)
+                {
+                    fCompletions.Enqueue(lQueue.Dequeue());
+                }
             }
             return tcs;
         }
-
     }
 
 }
