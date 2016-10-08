@@ -30,9 +30,10 @@ it could also be used for supervision
 (5)
 some simple pattern for broker/dispatch
 
+(6)
 build an object with interface proxy
-
 build a proxy actor around this interface
 message are interface / function / param
+=> Ok
 
 and call the object 
