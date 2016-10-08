@@ -106,6 +106,7 @@
     <Compile Include="ActorBase\FutureTest.cs" />
     <Compile Include="ActorBase\IActorExtensionTest.cs" />
     <Compile Include="ActorBase\ReceiveActorTest.cs" />
+    <Compile Include="ActorProxy\ActorProxyTest.cs" />
     <Compile Include="ActorServer\ShardListActorTests.cs" />
     <Compile Include="actParserTests.cs" />
     <Compile Include="actRemoteTest.cs" />
