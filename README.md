@@ -1,14 +1,14 @@
 #### ARnActorModel
 A C# Actor Model library.
 
-I was looking for an actor model things with some requirements :
+I was looking for an actor model thing with some requirements :
  - no dependancy from another library
  - coding in plain C#, with such things like 'SendMessage', 'new Actor()', 'Become(behavior)'
- - actor can change behaviors
- - actor can send message
+ - actor can change their own behaviors
+ - actor can send messages
  - actor can create other actors
  - behaviors are dynamic
- - actor can send message across servers
+ - actor can send messages across servers
  
 #### With ARnActor, now you can :
 
@@ -21,8 +21,8 @@ I was looking for an actor model things with some requirements :
  
 #### The library holds some useful features :
 -  behavior can be attached or removed from actor, (an actor can change it's own behavior ...)
--  actor can send messages across servers, you just need to hold a reference to another actor on a server ...
--  some actor can behave as public services, or be supervised
+-  actor can send messages across servers, you just need to hold a reference (an IActor interface) to another actor on a server ...
+-  some actors can behave as public services, or be supervised
 
 [![GitHub version](https://badge.fury.io/gh/syndarn%2Farnactormodel.svg)](https://badge.fury.io/gh/syndarn%2Farnactormodel)
 
