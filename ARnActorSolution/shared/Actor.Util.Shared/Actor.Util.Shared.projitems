@@ -13,7 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadCastBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\ForEachBehavior.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Behavior\ProxyActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\ReceiveActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\SendReplyBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\StateBehavior.cs" />
@@ -32,6 +31,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)MapReduce\MapReduceActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Monadic\actMonad.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Producer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\DataProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workflow\actWorkflow.cs" />
   </ItemGroup>
   <ItemGroup>

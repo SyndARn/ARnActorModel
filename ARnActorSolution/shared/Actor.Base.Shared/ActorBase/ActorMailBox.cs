@@ -35,7 +35,7 @@ namespace Actor.Base
     /// <summary>
     /// ActorMailBox
     /// </summary>
-    public class ActorMailBox<T> 
+    public class ActorMailBox<T> : IActorMailBox<T>
     {
         private ConcurrentQueue<T> fQueue = new ConcurrentQueue<T>(); // all actors may push here, only this one may dequeue
         private ConcurrentQueue<T> fMissed = new ConcurrentQueue<T>(); // only this one use it in run mode

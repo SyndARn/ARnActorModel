@@ -38,7 +38,7 @@ namespace Actor.Base
         {
             if (someBehaviors == null)
             {
-                if (someBehaviors == null) throw new ActorException("Null someBehavior");
+                if (someBehaviors == null) throw new ActorException("Null someBehaviors");
             }
         }
 
@@ -46,7 +46,7 @@ namespace Actor.Base
         {
             if (someBehaviors == null)
             {
-                if (someBehaviors == null) throw new ActorException("Null someBehavior");
+                throw new ActorException("Null someBehaviors");
             }
         }
 
@@ -63,6 +63,14 @@ namespace Actor.Base
             if (anActor == null)
             {
                 throw new ActorException("actor must exist");
+            }
+        }
+
+        public static void Pattern(Func<object, bool> aPattern)
+        {
+            if (aPattern == null)
+            {
+                throw new ActorException("Null pattern received");
             }
         }
 
