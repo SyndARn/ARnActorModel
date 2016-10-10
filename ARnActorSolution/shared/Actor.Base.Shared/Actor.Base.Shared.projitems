@@ -23,6 +23,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\NullBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Composition\ActorComposition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Composition\RedirectorActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Context\GlobalContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Context\IMessageTracerService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Context\MemoryMessageTracerService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exception\ActorException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exception\CheckArg.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PatternActor\PatternActor.cs" />

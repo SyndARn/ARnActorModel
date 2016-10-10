@@ -225,6 +225,10 @@ namespace Actor.Base
                 Interlocked.Decrement(ref fShared.fMessCount);
             }
 #endif
+            if (GlobalContext.MessageTracerService != null)
+            {
+                GlobalContext.MessageTracerService.TraceMessage(msg);
+            }
             return msg;
         }
 
@@ -284,6 +288,7 @@ namespace Actor.Base
 
         protected void RemoveBehavior(IBehavior aBehavior)
         {
+            CheckArg.Behavior(aBehavior);
             AddMissedMessages();
             fListBehaviors.Remove(aBehavior);
         }
