@@ -109,7 +109,11 @@ namespace Actor.Base
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SendMessage(object msg)
         {
-                TrySetInTask(msg);
+            if (GlobalContext.MessageTracerService != null)
+            {
+                GlobalContext.MessageTracerService.TraceMessage(msg);
+            }
+            TrySetInTask(msg);
         }
 
         public static BaseActor Add(BaseActor anActor, object aMessage)
@@ -202,10 +206,6 @@ namespace Actor.Base
                 Interlocked.Decrement(ref fShared.fMessCount);
             }
 #endif
-            if (GlobalContext.MessageTracerService != null)
-            {
-                GlobalContext.MessageTracerService.TraceMessage(msg);
-            }
             return msg;
         }
 

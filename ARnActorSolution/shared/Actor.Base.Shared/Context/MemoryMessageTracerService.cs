@@ -12,13 +12,15 @@ namespace Actor.Base
         {
             fMessageTrace.Enqueue(message == null ? "null message" : message.ToString());
         }
-        public IEnumerable<string> GetMessages()
+        public List<string> GetMessages()
         {
             string aMessage;
+            List<string> messages = new List<string>();
             while (fMessageTrace.TryDequeue(out aMessage))
             {
-                yield return aMessage;
+                messages.Add(aMessage);
             }
+            return messages;
         }
     }
 }

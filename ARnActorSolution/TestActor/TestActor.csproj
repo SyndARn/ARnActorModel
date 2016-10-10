@@ -114,6 +114,7 @@
     <Compile Include="Admin\EchoActorTests.cs" />
     <Compile Include="Behavior\BasicBehaviorsTest.cs" />
     <Compile Include="Behavior\NullBehaviorTest.cs" />
+    <Compile Include="Behavior\SendReplyBehaviorTest.cs" />
     <Compile Include="ClientServer\EchoServerActorTest.cs" />
     <Compile Include="ClientServer\WebAnswerTests.cs" />
     <Compile Include="Collection\ActorCollectionTest.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Exception\CheckArgTest.cs" />
     <Compile Include="Factory\ActorAddressFactoryTests.cs" />
     <Compile Include="Fsm\FSMStateTest.cs" />
+    <Compile Include="GlobalContext\MessageTracerTest.cs" />
     <Compile Include="Graph\bhvGraphTests.cs" />
     <Compile Include="Collection\DictionaryActorTests.cs" />
     <Compile Include="MapReduce\MapReduceTesting.cs" />
