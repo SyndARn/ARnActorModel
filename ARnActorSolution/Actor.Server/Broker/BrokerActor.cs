@@ -22,32 +22,56 @@ namespace Actor.Server
     /// 
     /// </summary>
     /// 
-    public enum BrokerAction { RegisterWorker, UnRegisterWorker };
-    public enum WorkerState { Ready, Busy };
+    public enum BrokerAction { RegisterWorker, UnRegisterWorker, Hearbeat, Start };
+    public enum WorkerReadyState { Unknown, Idle, Busy };
 
-    public class BrokerActor : BaseActor
+    public struct WorkerStatus
     {
-        private List<IActor> fWorkers = new List<IActor>();
-        private int fLastWorkerUsed = -1;
+        public WorkerReadyState State;
+        public int TTL;
+    }
+
+    public class BrokerActor<T> : BaseActor
+    {
+        private Dictionary<IActor, WorkerStatus> fWorkers = new Dictionary<IActor, WorkerStatus>();
+        private Dictionary<ActorTag, T> fRequests = new Dictionary<ActorTag, T>();
+        private int fLastWorkerUsed = 0;
+        private int fTTL = 0;
 
         public BrokerActor() : base()
         {
-            Become(new Behavior<BrokerAction, IActor>
-                (
-                 (b,a) =>
-                 {
-                     fWorkers.Add(a);
-                 }  
-                )) ;
+            // heartbeat actor
+            Become(new Behavior<BrokerAction>(
+                s => s == BrokerAction.Start,
+                s =>
+            {
+                var actor = new HeartBeatActor(30000);
+                actor.SendMessage((IActor)this);
+            }));
 
-            AddBehavior(new Behavior<WorkerState, IActor>
+            // register worker
+            AddBehavior(new Behavior<BrokerAction, IActor>
                 (
-                (s,a) =>
-                {
-                    // if busy, try another worker
-                }
+                (b, a) => b == BrokerAction.RegisterWorker,
+                 (b, a) =>
+                 {
+                     WorkerStatus workerStatus;
+                     workerStatus.TTL = 0;
+                     workerStatus.State = WorkerReadyState.Idle;
+                     fWorkers.Add(a, workerStatus);
+                 }
                 ));
-            AddBehavior(new Behavior<Object>(
+            // unregister worker
+            AddBehavior(new Behavior<BrokerAction, IActor>
+                (
+                (b, a) => b == BrokerAction.UnRegisterWorker,
+                 (b, a) =>
+                 {
+                     fWorkers.Remove(a);
+                 }
+                ));
+            // process client request
+            AddBehavior(new Behavior<T>(
                 (t) => true,
                 (t) =>
                 {
@@ -56,34 +80,153 @@ namespace Actor.Server
                     else
                         if (fLastWorkerUsed >= fWorkers.Count)
                         fLastWorkerUsed = 0;
-                    fWorkers[fLastWorkerUsed].SendMessage(t);
+                    var worker = fWorkers.Where(w => w.Value.State == WorkerReadyState.Idle).Skip(fLastWorkerUsed).FirstOrDefault();
+                    fLastWorkerUsed++;
+                    if (worker.Key == null)
+                    {
+                        worker = fWorkers.FirstOrDefault(w => w.Value.State == WorkerReadyState.Idle);
+                    }
+                    if (worker.Key == null)
+                    {
+                        worker = fWorkers.FirstOrDefault();
+                    }
+                    var tag = new ActorTag();
+                    var workerState = fWorkers[worker.Key];
+                    workerState.State = WorkerReadyState.Busy;
+                    workerState.TTL = 0;
+                    fWorkers[worker.Key] = workerState;
+                    fRequests[tag] = t;
+                    worker.Key.SendMessage((IActor)this, tag, t);
+                }));
+            // worker refuse job
+            AddBehavior(new Behavior<IActor, WorkerReadyState, ActorTag>
+                (
+                (a, s, t) => s == WorkerReadyState.Busy,
+                 (a, s, t) =>
+                 {
+                     var workerState = fWorkers[a];
+                     workerState.State = WorkerReadyState.Busy;
+                     fWorkers[a] = workerState;
+                     if (fLastWorkerUsed < 0)
+                     {
+                         fLastWorkerUsed = 0;
+                     }
+                     else
+                     {
+                         if (fLastWorkerUsed >= fWorkers.Count)
+                         {
+                             fLastWorkerUsed = 0;
+                         }
+                     }
+                     var worker = fWorkers.Where(w => w.Value.State == WorkerReadyState.Idle).Skip(fLastWorkerUsed).FirstOrDefault();
+                     fLastWorkerUsed++;
+                     if (worker.Key == null)
+                     {
+                         worker = fWorkers.FirstOrDefault(w => w.Value.State == WorkerReadyState.Idle);
+                     }
+                     if (worker.Key == null)
+                     {
+                         worker = fWorkers.FirstOrDefault();
+                     }
+                     workerState = fWorkers[worker.Key];
+                     workerState.State = WorkerReadyState.Busy;
+                     workerState.TTL = 0;
+                     fWorkers[worker.Key] = workerState;
+                     worker.Key.SendMessage((IActor)this, t, fRequests[t]);
+                 }
+                ));
+            // worker finished job
+            AddBehavior(new Behavior<IActor, WorkerReadyState, ActorTag>
+                (
+                (a, s, t) => s == WorkerReadyState.Idle,
+                 (a, s, t) =>
+                 {
+                     fRequests.Remove(t);
+                     var workerState = fWorkers[a];
+                     workerState.State = WorkerReadyState.Idle;
+                     workerState.TTL = fTTL;
+                     fWorkers[a] = workerState;
+                 }
+                ));
+            // heartbeatactor
+            AddBehavior(new Behavior<HeartBeatActor>
+                (
+                h =>
+                {
+                    foreach (var worker in fWorkers.Where(w => w.Value.TTL < fTTL))
+                    {
+                        worker.Key.SendMessage((IActor)this, BrokerAction.Hearbeat);
+                    }
+                    fTTL++;
+                }
+                ));
+            // heartbeat answer
+            AddBehavior(new Behavior<IActor, WorkerReadyState>(
+                (a, w) =>
+                {
+                    var workerState = fWorkers[a];
+                    workerState.TTL = fTTL;
+                    fWorkers[a] = workerState;
+                }));
+            // start heart beat
+            SendMessage(BrokerAction.Start);
+        }
+    }
+
+    public class HeartBeatActor : BaseActor
+    {
+        private int fTimeOutMs ;
+        public HeartBeatActor(int timeOutMs)
+        {
+            fTimeOutMs = timeOutMs;
+            Become(new Behavior<IActor>(a =>
+                {
+                    a.SendMessage(this);
+                    Task.Delay(fTimeOutMs).Wait();
                 }));
         }
     }
 
-    public class WorkerActor : BaseActor
+    public abstract class WorkerActor<T> : BaseActor
     {
-        private WorkerState fState = WorkerState.Ready;
+        private WorkerReadyState fState = WorkerReadyState.Idle;
 
         public WorkerActor() : base()
         {
-            Become(new Behavior<IActor, Object>
+            Become(new Behavior<IActor, ActorTag, T>
                 (
-                    (a,o) =>
+                    (a, t, o) =>
                     {
-                        switch(fState)
+                        switch (fState)
                         {
-                            case WorkerState.Busy: a.SendMessage((IActor)this,WorkerState.Busy); break;
-                            case WorkerState.Ready:
+                            case WorkerReadyState.Busy:
                                 {
-                                    a.SendMessage((IActor)this, WorkerState.Busy);
-                                    // do something with o
+                                    // send busy
+                                    a.SendMessage(WorkerReadyState.Busy, t);
+                                    break;
+                                }
+                            case WorkerReadyState.Idle:
+                                {
+                                    fState = WorkerReadyState.Busy;
+                                    Process(o);
+                                    a.SendMessage(WorkerReadyState.Idle, t);
+                                    fState = WorkerReadyState.Idle;
                                     break;
                                 }
                         }
                     }
                 ));
+
+            AddBehavior(new Behavior<IActor, BrokerAction>(
+                (a, b) => b == BrokerAction.Hearbeat,
+                (a, b) =>
+                {
+                    a.SendMessage((IActor)this, fState);
+                }));
         }
+
+        protected abstract void Process(T aT);
+
     }
 
 }

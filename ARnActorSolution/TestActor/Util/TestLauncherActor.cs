@@ -34,6 +34,11 @@ namespace TestActor
 
         public static void Test(Action action)
         {
+            Test(action, 10000);
+        }
+
+        public static void Test(Action action, int ms)
+        {
             var launcher = new TestLauncherActor();
             launcher.SendAction(
                 () =>
@@ -41,7 +46,8 @@ namespace TestActor
                     action();
                     launcher.Finish();
                 });
-            Assert.IsTrue(launcher.Wait());
+            Assert.IsTrue(launcher.Wait(ms));
         }
+
     }
 }

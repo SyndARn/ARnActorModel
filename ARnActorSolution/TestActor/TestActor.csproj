@@ -115,6 +115,10 @@
     <Compile Include="Behavior\BasicBehaviorsTest.cs" />
     <Compile Include="Behavior\NullBehaviorTest.cs" />
     <Compile Include="Behavior\SendReplyBehaviorTest.cs" />
+    <Compile Include="Broker\BrokerActorTests.cs" />
+    <Compile Include="Broker\HeartBeatActorTests.cs" />
+    <Compile Include="Broker\WorkerActorTests.cs" />
+    <Compile Include="Broker\WorkerActorTestString.cs" />
     <Compile Include="ClientServer\EchoServerActorTest.cs" />
     <Compile Include="ClientServer\WebAnswerTests.cs" />
     <Compile Include="Collection\ActorCollectionTest.cs" />
