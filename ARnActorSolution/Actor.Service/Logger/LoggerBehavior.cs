@@ -23,16 +23,20 @@ namespace Actor.Service
         private string fFilename;
         private StreamWriter fStream;
 
-        public LoggerBehavior()
+        public LoggerBehavior() : base()
         {
             DoInit(ActorServer.GetInstance().Name);
+        }
+
+        private LoggerBehavior(string aFileName) : base()
+        {
+            DoInit(aFileName);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         public static LoggerBehavior CastLogger(string aFileName)
         {
-            LoggerBehavior lLogger = new LoggerBehavior();
-            lLogger.DoInit(aFileName);
+            LoggerBehavior lLogger = new LoggerBehavior(aFileName);
             return lLogger;
         }
 
@@ -45,10 +49,13 @@ namespace Actor.Service
             Apply = DoLog;
         }
 
-        private void DoLog(Object msg)
+        private void DoLog(object msg)
         {
             if (msg != null)
-                fStream.WriteLine(DateTimeOffset.Now.ToString()+"-"+msg.ToString());
+            {
+                string s = String.Format("{0:o} - {1}", DateTimeOffset.UtcNow, msg);
+                fStream.WriteLine(s);
+            }
         }
 
         protected virtual void Dispose(bool aDispose)
