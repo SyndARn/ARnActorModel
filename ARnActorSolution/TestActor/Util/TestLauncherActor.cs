@@ -10,6 +10,8 @@ namespace TestActor
 {
     public class TestLauncherActor : ActionActor
     {
+        public Exception ExceptionCatched { get; set; }
+
         public TestLauncherActor()
             : base()
         {
@@ -37,17 +39,28 @@ namespace TestActor
             Test(action, 10000);
         }
 
-        public static void Test(Action action, int ms)
+        public static void Test(Action action, int timeOutMs)
         {
             var launcher = new TestLauncherActor();
             launcher.SendAction(
                 () =>
                 {
-                    action();
-                    launcher.Finish();
+                    try
+                    {
+                        action();
+                        launcher.Finish();
+                    }
+                    catch (Exception e)
+                    {
+                        launcher.ExceptionCatched = e;
+                    }
                 });
-            Assert.IsTrue(launcher.Wait(ms));
+            bool testResult = launcher.Wait(timeOutMs);
+            if (launcher.ExceptionCatched != null)
+            {
+                throw launcher.ExceptionCatched;
+            }
+            Assert.IsTrue(testResult, "Test Time Out");
         }
-
     }
 }

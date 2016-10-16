@@ -23,7 +23,7 @@ namespace Actor.Server
     /// </summary>
     /// 
     public enum BrokerAction { RegisterWorker, UnRegisterWorker, Hearbeat, Start };
-    public enum WorkerReadyState { Unknown, Idle, Busy };
+    public enum WorkerReadyState { Unknown, Idle, Busy, Transient };
 
     public struct WorkerStatus
     {
@@ -37,9 +37,43 @@ namespace Actor.Server
         private Dictionary<ActorTag, T> fRequests = new Dictionary<ActorTag, T>();
         private int fLastWorkerUsed = 0;
         private int fTTL = 0;
+        private int fRequestProcessed = 0;
+
+        public IActor fLogger { get; set; }
+
+        public void RegisterWorker(WorkerActor<T> worker)
+        {
+            this.SendMessage(BrokerAction.RegisterWorker, (IActor)worker);
+        }
+
+        private void Log(string toLog)
+        {
+            if (fLogger != null)
+                fLogger.SendMessage(toLog);
+        }
+
+        private void Log(string toLog, object[] args)
+        {
+            if (fLogger != null)
+                fLogger.SendMessage(string.Format(toLog, args));
+        }
+
+        private void Log(string toLog, object arg0)
+        {
+            if (fLogger != null)
+                fLogger.SendMessage(string.Format(toLog, arg0));
+        }
+
+        private void Log(string toLog, object arg0, object arg1)
+        {
+            if (fLogger != null)
+                fLogger.SendMessage(string.Format(toLog, arg0, arg1));
+        }
 
         public BrokerActor() : base()
         {
+            // logger
+
             // heartbeat actor
             Become(new Behavior<BrokerAction>(
                 s => s == BrokerAction.Start,
@@ -47,6 +81,7 @@ namespace Actor.Server
             {
                 var actor = new HeartBeatActor(30000);
                 actor.SendMessage((IActor)this);
+                Log("HeartBeat start");
             }));
 
             // register worker
@@ -59,6 +94,7 @@ namespace Actor.Server
                      workerStatus.TTL = 0;
                      workerStatus.State = WorkerReadyState.Idle;
                      fWorkers.Add(a, workerStatus);
+                     Log("Worker Register",a.Tag.Id);
                  }
                 ));
             // unregister worker
@@ -68,6 +104,7 @@ namespace Actor.Server
                  (b, a) =>
                  {
                      fWorkers.Remove(a);
+                     Log("Worker UnRegister",a.Tag.Id);
                  }
                 ));
             // process client request
@@ -97,6 +134,7 @@ namespace Actor.Server
                     fWorkers[worker.Key] = workerState;
                     fRequests[tag] = t;
                     worker.Key.SendMessage((IActor)this, tag, t);
+                    Log("Processing Request {0} on worker {1}",tag.Id, worker.Key.Tag.Id);
                 }));
             // worker refuse job
             AddBehavior(new Behavior<IActor, WorkerReadyState, ActorTag>
@@ -133,6 +171,7 @@ namespace Actor.Server
                      workerState.TTL = 0;
                      fWorkers[worker.Key] = workerState;
                      worker.Key.SendMessage((IActor)this, t, fRequests[t]);
+                     Log("Worker {0} can't process request {1}",a.Tag.Id, t.Id);
                  }
                 ));
             // worker finished job
@@ -146,6 +185,8 @@ namespace Actor.Server
                      workerState.State = WorkerReadyState.Idle;
                      workerState.TTL = fTTL;
                      fWorkers[a] = workerState;
+                     fRequestProcessed++;
+                     Log("Request {0} End on worker {1}",t.Id, a.Tag.Id);
                  }
                 ));
             // heartbeatactor
@@ -158,6 +199,7 @@ namespace Actor.Server
                         worker.Key.SendMessage((IActor)this, BrokerAction.Hearbeat);
                     }
                     fTTL++;
+                    Log(String.Format("Heart Beat Signal, Request Processed {0}",fRequestProcessed));
                 }
                 ));
             // heartbeat answer
@@ -167,6 +209,7 @@ namespace Actor.Server
                     var workerState = fWorkers[a];
                     workerState.TTL = fTTL;
                     fWorkers[a] = workerState;
+                    Log("Answer To HeartBeat from Worker {0}",a.Tag.Id);
                 }));
             // start heart beat
             SendMessage(BrokerAction.Start);
@@ -175,7 +218,7 @@ namespace Actor.Server
 
     public class HeartBeatActor : BaseActor
     {
-        private int fTimeOutMs ;
+        private int fTimeOutMs;
         public HeartBeatActor(int timeOutMs)
         {
             fTimeOutMs = timeOutMs;
@@ -183,6 +226,7 @@ namespace Actor.Server
                 {
                     a.SendMessage(this);
                     Task.Delay(fTimeOutMs).Wait();
+                    SendMessage(a);
                 }));
         }
     }
@@ -202,15 +246,18 @@ namespace Actor.Server
                             case WorkerReadyState.Busy:
                                 {
                                     // send busy
-                                    a.SendMessage(WorkerReadyState.Busy, t);
+                                    a.SendMessage((IActor)this, WorkerReadyState.Busy, t);
                                     break;
                                 }
                             case WorkerReadyState.Idle:
                                 {
                                     fState = WorkerReadyState.Busy;
-                                    Process(o);
-                                    a.SendMessage(WorkerReadyState.Idle, t);
-                                    fState = WorkerReadyState.Idle;
+                                    Task.Run(() =>
+                                    {
+                                        Process(o);
+                                        fState = WorkerReadyState.Idle;
+                                        a.SendMessage((IActor)this, WorkerReadyState.Idle, t);
+                                    });
                                     break;
                                 }
                         }
