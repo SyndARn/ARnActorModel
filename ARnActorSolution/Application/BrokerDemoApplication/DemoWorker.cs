@@ -32,6 +32,7 @@ namespace BrokerDemoApplication
                 System.Environment.TickCount,
                 listStrings.Count(), 
                 new string(listStrings.ToArray())));
+            Task.Delay(rnd.Next(100)).Wait();
         }
     }
 }
