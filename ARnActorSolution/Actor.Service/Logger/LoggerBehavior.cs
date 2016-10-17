@@ -21,7 +21,7 @@ namespace Actor.Service
     public class LoggerBehavior : Behavior<Object>, IDisposable
     {
         private string fFilename;
-        private StreamWriter fStream;
+        private FileStream fFileStream;
 
         public LoggerBehavior() : base()
         {
@@ -43,8 +43,7 @@ namespace Actor.Service
         private void DoInit(string aFilename)
         {
             fFilename = Environment.CurrentDirectory + aFilename;
-            fStream = new StreamWriter(fFilename, true);
-            fStream.AutoFlush = true;
+            // fFileStream = new FileStream(fFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             Pattern = t => true;
             Apply = DoLog;
         }
@@ -54,7 +53,10 @@ namespace Actor.Service
             if (msg != null)
             {
                 string s = String.Format("{0:o} - {1}", DateTimeOffset.UtcNow, msg);
-                fStream.WriteLine(s);
+                using (var fStream = new StreamWriter(fFilename, true))
+                {
+                    fStream.WriteLine(s);
+                }
             }
         }
 
@@ -62,7 +64,7 @@ namespace Actor.Service
         {
             if (aDispose)
             {
-                fStream.Dispose();
+                // fStream.Dispose();
             }
         }
 

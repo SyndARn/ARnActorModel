@@ -31,13 +31,13 @@ namespace BrokerDemoApplication
             // logger to broker
             fBroker.fLogger = new LoggerActor("Broker.Log");
             // launch worker
-            foreach (var item in Enumerable.Range(1, 4))
+            foreach (var item in Enumerable.Range(1, 8))
             {
                 var worker = new DemoWorker(fMemLogger);
                 fBroker.RegisterWorker(worker);
             }
             // launch client
-            foreach (var item in Enumerable.Range(1, 10000))
+            foreach (var item in Enumerable.Range(1, 1000))
             {
                 var client = new DemoClient(fBroker);
             }
@@ -68,7 +68,7 @@ namespace BrokerDemoApplication
         private void timer1_Tick(object sender, EventArgs e)
         {
             // launch client
-            foreach (var item in Enumerable.Range(1, 10))
+            foreach (var item in Enumerable.Range(1, 100))
             {
                 var client = new DemoClient(fBroker);
             }
