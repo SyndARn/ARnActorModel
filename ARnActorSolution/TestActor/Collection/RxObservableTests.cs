@@ -79,7 +79,7 @@ namespace TestActor
                 var dsp = rx.Subscribe(obs);
                 rx.Track("Test Message");
                 Assert.IsTrue(obs.GetResultAsync().Result == "Test Message");
-            });
+            },20000);
         }
     }
 }

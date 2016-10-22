@@ -115,14 +115,4 @@ namespace Actor.Base
         }
     }
 
-    public class TaskCompletionSource<T1, T2> : TaskCompletionSource<Tuple<T1, T2>>
-    {
-    }
-    public class TaskCompletionSource<T1, T2, T3> : TaskCompletionSource<Tuple<T1, T2, T3>>
-    {
-    }
-    public class TaskCompletionSource<T1, T2, T3, T4> : TaskCompletionSource<Tuple<T1, T2, T3, T4>>
-    {
-    }
-
 }

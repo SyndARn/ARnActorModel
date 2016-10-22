@@ -78,7 +78,7 @@ namespace Actor.Base
     {
         public Func<T1, T2, bool> Pattern { get; protected set; }
         public Action<T1, T2> Apply { get; protected set; }
-        public TaskCompletionSource<T1, T2> Completion { get; protected set; }
+        public TaskCompletionSource<Tuple<T1, T2>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -117,7 +117,7 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public Behavior(Func<T1, T2, Boolean> aPattern, TaskCompletionSource<T1, T2> aCompletion)
+        public Behavior(Func<T1, T2, Boolean> aPattern, TaskCompletionSource<Tuple<T1, T2>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -164,7 +164,7 @@ namespace Actor.Base
     {
         public Func<T1, T2, T3, bool> Pattern { get; protected set; }
         public Action<T1, T2, T3> Apply { get; protected set; }
-        public TaskCompletionSource<T1, T2, T3> Completion { get; protected set; }
+        public TaskCompletionSource<Tuple<T1, T2, T3>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -203,7 +203,7 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public Behavior(Func<T1, T2, T3, bool> aPattern, TaskCompletionSource<T1, T2, T3> aCompletion)
+        public Behavior(Func<T1, T2, T3, bool> aPattern, TaskCompletionSource<Tuple<T1, T2, T3>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -345,7 +345,7 @@ namespace Actor.Base
     {
         public Func<T1, T2, T3, T4, bool> Pattern { get; protected set; }
         public Action<T1, T2, T3,T4> Apply { get; protected set; }
-        public TaskCompletionSource<T1, T2, T3, T4> Completion { get; protected set; }
+        public TaskCompletionSource<Tuple<T1, T2, T3, T4>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -384,7 +384,7 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public Behavior(Func<T1, T2, T3, T4, bool> aPattern, TaskCompletionSource<T1, T2, T3, T4> aCompletion)
+        public Behavior(Func<T1, T2, T3, T4, bool> aPattern, TaskCompletionSource<Tuple<T1, T2, T3, T4>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
