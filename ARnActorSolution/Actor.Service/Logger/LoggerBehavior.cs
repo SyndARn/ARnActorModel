@@ -22,6 +22,7 @@ namespace Actor.Service
     public class LoggerBehavior : Behavior<Object>
     {
         private string fFilename;
+        private List<Object> fMessageList = new List<Object>();
 
         public LoggerBehavior() : base()
         {
@@ -44,18 +45,35 @@ namespace Actor.Service
         {
             fFilename = Environment.CurrentDirectory + aFilename;
             Pattern = t => true;
+            Apply = StartHeartBeat;
+        }
+
+        private void StartHeartBeat(object msg)
+        {
             Apply = DoLog;
+            var heartBeat = new HeartBeatActor(500);
+            heartBeat.SendMessage(LinkedActor);
         }
 
         private void DoLog(object msg)
         {
+            // heartbeat
+            if (msg is Tuple<HeartBeatActor,HeartBeatAction>)
+            {
+                if (fMessageList.Count > 0)
+                {
+                    using (var fStream = new StreamWriter(fFilename, true))
+                    {
+                        fMessageList.ForEach(o => fStream.WriteLine(o));
+                    }
+                    fMessageList.Clear();
+                }
+                return;
+            }
             if (msg != null)
             {
                 string s = String.Format("{0:o} - {1}", DateTimeOffset.UtcNow, msg);
-                using (var fStream = new StreamWriter(fFilename, true))
-                {
-                    fStream.WriteLine(s);
-                }
+                fMessageList.Add(s);
             }
         }
     }

@@ -22,7 +22,7 @@ namespace BrokerDemoApplication
         }
 
         private CollectionActor<string> fMemLogger = new CollectionActor<string>();
-        private BrokerActor<string> fBroker = new BrokerActor<string>() ;
+        private BrokerActor<int> fBroker = new BrokerActor<int>() ;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -33,11 +33,11 @@ namespace BrokerDemoApplication
             // launch worker
             foreach (var item in Enumerable.Range(1, 8))
             {
-                var worker = new DemoWorker(fMemLogger);
+                var worker = new PiWorker(fMemLogger);
                 fBroker.RegisterWorker(worker);
             }
             // launch client
-            foreach (var item in Enumerable.Range(1, 10))
+            foreach (var item in Enumerable.Range(1, 1000))
             {
                 var client = new DemoClient(fBroker);
             }
@@ -68,7 +68,7 @@ namespace BrokerDemoApplication
         private void timer1_Tick(object sender, EventArgs e)
         {
             // launch client
-            foreach (var item in Enumerable.Range(1, 100))
+            foreach (var item in Enumerable.Range(1, 10))
             {
                 var client = new DemoClient(fBroker);
             }

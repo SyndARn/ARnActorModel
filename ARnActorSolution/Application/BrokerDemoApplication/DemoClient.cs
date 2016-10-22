@@ -12,10 +12,11 @@ namespace BrokerDemoApplication
     public class DemoClient
     {
 
-        public DemoClient(BrokerActor<string> aBroker)
+        public DemoClient(BrokerActor<int> aBroker)
         {
-            foreach(var item in Enumerable.Range(1, 10000))
-                aBroker.SendMessage(String.Format("Start Job {0}",item));
+            foreach (var item in Enumerable.Range(1, 100))
+                // aBroker.SendMessage(String.Format("Start Job {0}",item));
+                aBroker.SendMessage(item);
         }
     }
 }

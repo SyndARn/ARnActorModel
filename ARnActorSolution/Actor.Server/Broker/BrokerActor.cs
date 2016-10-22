@@ -39,6 +39,7 @@ namespace Actor.Server
     public class BrokerActor<T> : BaseActor
     {
         private Dictionary<IActor, WorkerStatus> fWorkers = new Dictionary<IActor, WorkerStatus>();
+        // private Dictionary<ActorTag, RequestStatus<T>> fRequests = new Dictionary<ActorTag, RequestStatus<T>>();
         private Dictionary<ActorTag, RequestStatus<T>> fRequests = new Dictionary<ActorTag, RequestStatus<T>>();
         private int fLastWorkerUsed = 0;
         private int fTTL = 0;
@@ -199,7 +200,6 @@ namespace Actor.Server
                      fRequests.Remove(t);
                      fWorkers[a].State = WorkerReadyState.Idle;
                      fWorkers[a].TTL = fTTL;
-                     fRequestProcessed++;
                      LogString("Request {0} End on worker {1}",t.Id, a.Tag.Id);
                      // find a request
                      var tagRequest = fRequests.Values.FirstOrDefault(v => v.State == RequestState.Unprocessed);
@@ -214,9 +214,9 @@ namespace Actor.Server
                  }
                 ));
             // heartbeatactor
-            AddBehavior(new Behavior<HeartBeatActor>
+            AddBehavior(new Behavior<HeartBeatActor, HeartBeatAction>
                 (
-                h =>
+                (a,h) =>
                 {
                     foreach (var worker in fWorkers.Where(w => w.Value.TTL < fTTL))
                     {
