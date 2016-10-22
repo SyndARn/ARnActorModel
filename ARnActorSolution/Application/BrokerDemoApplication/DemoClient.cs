@@ -14,7 +14,8 @@ namespace BrokerDemoApplication
 
         public DemoClient(BrokerActor<string> aBroker)
         {
-            aBroker.SendMessage("Start Job");
+            foreach(var item in Enumerable.Range(1, 10000))
+                aBroker.SendMessage(String.Format("Start Job {0}",item));
         }
     }
 }

@@ -37,7 +37,7 @@ namespace BrokerDemoApplication
                 fBroker.RegisterWorker(worker);
             }
             // launch client
-            foreach (var item in Enumerable.Range(1, 1000))
+            foreach (var item in Enumerable.Range(1, 10))
             {
                 var client = new DemoClient(fBroker);
             }
@@ -48,7 +48,7 @@ namespace BrokerDemoApplication
             if (fMemLogger == null)
                 return;
             listBox1.Items.Clear();
-            var task = await Task<IEnumerable<string>>.Run(()
+            var task = await Task.Run(()
                 =>
             {
                 List<string> ls = fMemLogger.ToList();

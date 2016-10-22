@@ -207,6 +207,7 @@ namespace Actor.Server
                      {
                          fWorkers[a].State = WorkerReadyState.Busy;
                          fWorkers[a].TTL = 0;
+                         tagRequest.State = RequestState.Running;
                          a.SendMessage((IActor)this, tagRequest.Tag, tagRequest.Data);
                          LogString("Processing Request {0} reusing worker {1}", tagRequest.Tag.Id, a.Tag.Id);
                      }
