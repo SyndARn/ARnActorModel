@@ -56,10 +56,10 @@ namespace Actor.Service
         public ParserActor()
             : base()
         {
-            var collect = new Behavior<Tuple<IActor,string>>(t =>
+            var collect = new Behavior<IActor,string>((a,s) =>
                 {
-                    fList.Add(t.Item2) ;
-                    Console.WriteLine("parsed "+t.Item2);
+                    fList.Add(s) ;
+                    Console.WriteLine("parsed {0}",s);
                 }
                 );
             var connect = new Behavior<ActorTag>(t =>

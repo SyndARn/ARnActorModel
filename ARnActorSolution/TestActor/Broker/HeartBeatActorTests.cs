@@ -19,9 +19,9 @@ namespace Actor.Server.Tests
             public bool fHeartBeatReceive = false;
             public TestHeartBeatActor()
             {
-                Become(new Behavior<HeartBeatActor>
+                Become(new Behavior<HeartBeatActor, HeartBeatAction>
                     (
-                    a =>
+                    (a,h) =>
                     {
                         fHeartBeatReceive = true;
                     }
