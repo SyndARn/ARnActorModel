@@ -29,7 +29,7 @@ namespace BrokerDemoApplication
             // start console
             ActorConsole.Register();
             // logger to broker
-            fBroker.fLogger = new LoggerActor("Broker.Log");
+            fBroker.Logger = new LoggerActor("Broker.Log");
             // launch worker
             foreach (var item in Enumerable.Range(1, 4))
             {

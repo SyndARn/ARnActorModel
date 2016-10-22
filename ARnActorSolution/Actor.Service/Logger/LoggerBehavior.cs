@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Actor.Server;
 using Actor.Base;
+using System.Globalization;
 
 namespace Actor.Service
 {
@@ -53,7 +54,7 @@ namespace Actor.Service
         {
             if (msg != null)
             {
-                string s = String.Format("{0:o} - {1}", DateTimeOffset.UtcNow, msg);
+                string s = String.Format(CultureInfo.InvariantCulture,"{0:o} - {1}", DateTimeOffset.UtcNow, msg);
                 fStream.WriteLine(s);
             }
         }

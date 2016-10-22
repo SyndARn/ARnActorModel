@@ -32,5 +32,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)PatternActor\PatternActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessActor\ProcessActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tag\ActorTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Trait\Trait.cs" />
   </ItemGroup>
 </Project>

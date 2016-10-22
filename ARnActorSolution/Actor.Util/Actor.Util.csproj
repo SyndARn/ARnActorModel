@@ -95,7 +95,6 @@
     <Compile Include="..\Doc\ARnActorModelVersion.cs">
       <Link>Properties\ARnActorModelVersion.cs</Link>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

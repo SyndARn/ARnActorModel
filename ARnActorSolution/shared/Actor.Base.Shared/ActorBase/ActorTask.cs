@@ -74,7 +74,7 @@ namespace Actor.Base
             {
                 foreach(var item in t.Exception.InnerExceptions)
                 {
-                    Debug.WriteLine(string.Format("Task fault on {0}", item.Message), "[Task Actor Fault]");
+                    Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, "Task fault on {0}", item.Message), "[Task Actor Fault]");
                 }
             },
             TaskContinuationOptions.OnlyOnFaulted);

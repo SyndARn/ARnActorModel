@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Actor.Server.Tests
+namespace TestActor
 {
     [TestClass()]
     public class WebAnswerTests
