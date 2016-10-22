@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Server;
 
-namespace TestActor.ClientServer
+namespace TestActor
 {
     /// <summary>
     /// Description résumée pour EchoServerActorTest
@@ -12,15 +12,6 @@ namespace TestActor.ClientServer
     [TestClass]
     public class EchoServerActorTest
     {
-
-        private EchoServerActor fEchoServerActor;
-        public EchoServerActorTest()
-        {
-            DirectoryActor.GetDirectory().GetActorByName("EchoServerActor");
-            fEchoServerActor = new EchoServerActor();
-        }
-
-
 
         [TestMethod]
         public void EchoClient100Test()

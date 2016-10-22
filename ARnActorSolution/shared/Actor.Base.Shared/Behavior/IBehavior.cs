@@ -48,20 +48,20 @@ namespace Actor.Base
     {
         Func<T1, T2, Boolean> Pattern { get; }
         Action<T1, T2> Apply { get; }
-        TaskCompletionSource<Tuple<T1,T2>> Completion { get; }
+        TaskCompletionSource<T1,T2> Completion { get; }
     }
 
     public interface IBehavior<T1, T2, T3> : IBehavior
     {
         Func<T1, T2, T3, Boolean> Pattern { get; }
         Action<T1, T2, T3> Apply { get; }
-        TaskCompletionSource<Tuple<T1, T2, T3>> Completion { get; }
+        TaskCompletionSource<T1, T2, T3> Completion { get; }
     }
 
     public interface IBehavior<T1, T2, T3, T4> : IBehavior
     {
         Func<T1, T2, T3, T4, Boolean> Pattern { get; }
         Action<T1, T2, T3, T4> Apply { get; }
-        TaskCompletionSource<Tuple<T1, T2, T3, T4>> Completion { get; }
+        TaskCompletionSource<T1, T2, T3, T4> Completion { get; }
     }
 }

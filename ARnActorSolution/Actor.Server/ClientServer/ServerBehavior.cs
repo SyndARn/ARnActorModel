@@ -80,7 +80,7 @@ namespace Actor.Server
 
         protected abstract void DoRequest(ServerMessage<T> aMessage);
 
-        public static void SendAnswer(ServerMessage<T> aMessage, T data)
+        public void SendAnswer(ServerMessage<T> aMessage, T data)
         {
             if (aMessage == null)
             {

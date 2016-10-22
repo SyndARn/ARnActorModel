@@ -10,12 +10,14 @@ namespace Actor.Util
 {
     public class ReceiveActor<T> : BaseActor
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<Tuple<IActor, T>> Wait(IActor target, T question)
         {
             var r = Receive(t => t is Tuple<IActor, T>);
             target.SendMessage((IActor)this, question);
             return (Tuple<IActor, T>)await r;
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<Tuple<IActor, T>> Wait(IActor target, T question, int timeOutMS)
         {
             var r = Receive(t => t is Tuple<IActor, T>, timeOutMS);
@@ -27,12 +29,14 @@ namespace Actor.Util
 
     public class ReceiveActor<TQuestion, TAnswer> : BaseActor
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<Tuple<IActor, TAnswer>> Wait(IActor target, TQuestion question)
         {
             var r = Receive(t => t is Tuple<IActor, TAnswer>);
             target.SendMessage((IActor)this, question);
             return (Tuple<IActor, TAnswer>)await r;
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<Tuple<IActor, TAnswer>> Wait(IActor target, TQuestion question, int timeOutMS)
         {
             var r = Receive(t => t is Tuple<IActor, TAnswer>, timeOutMS);

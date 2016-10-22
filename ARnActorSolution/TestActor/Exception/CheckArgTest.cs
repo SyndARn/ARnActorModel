@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
 using System.IO;
 
-namespace TestActor.ExceptionTest
+namespace TestActor
 {
     [TestClass]
     public class CheckArgTest

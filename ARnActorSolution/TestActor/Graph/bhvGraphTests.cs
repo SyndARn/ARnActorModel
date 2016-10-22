@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
-using TestActor;
 using Actor.Util;
 
-namespace ActorGraph.Actors.Tests
+namespace TestActor
 {
     [TestClass()]
     public class bhvGraphTests

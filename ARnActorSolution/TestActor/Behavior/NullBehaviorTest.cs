@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
 using System.Linq;
 
-namespace TestActor.Behavior
+namespace TestActor
 {
     [TestClass]
     public class NullBehaviorTest

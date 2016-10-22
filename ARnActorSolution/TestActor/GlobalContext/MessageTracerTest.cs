@@ -14,23 +14,25 @@ namespace TestActor
         [TestMethod]
         public void TestMessageTracer()
         {
-            GlobalContext.MessageTracerService = new MemoryMessageTracerService();
+            IMessageTracerService mts = new MemoryMessageTracerService();
 
             TestLauncherActor.Test(() =>
             {
-                IActor actor1 = new BaseActor();
+                BaseActor actor1 = new BaseActor();
+                actor1.MessageTracerService = mts;
                 actor1.SendMessage("Test 1");
                 actor1.SendMessage("Test 2");
                 actor1.SendMessage("Test 3");
             });
 
-            var query = GlobalContext.MessageTracerService.GetMessages().ToList();
-            Assert.AreEqual(5, query.Count());
+            var query = mts.GetMessages().ToList();
+            string s = string.Empty;
+            query.ForEach(item => s = s + item);
+            Assert.AreEqual(3, query.Count(), s);
             Assert.IsTrue(query.Contains("Test 2"));
             Assert.IsFalse(query.Contains("Test 4"));
-            Assert.AreEqual("System.Action", query.First());
-            Assert.AreEqual("True", query.Last());
-            GlobalContext.MessageTracerService = null;
+            Assert.AreEqual("Test 1", query.First());
+            Assert.AreEqual("Test 3", query.Last());
         }
     }
 }
