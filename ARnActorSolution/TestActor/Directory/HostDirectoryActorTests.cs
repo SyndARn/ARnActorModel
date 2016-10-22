@@ -22,24 +22,21 @@ namespace TestActor
         [Ignore]
         public void RegisterUnregisterTest()
         {
-            var launcher = new TestLauncherActor();
-            launcher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var actor = new StateFullActor<string>();
                 HostDirectoryActor.Register(actor);
                 SerialObject so = new SerialObject(Tuple.Create(StateAction.Set,"Test"), actor.Tag);
                 HostDirectoryActor.GetInstance().SendMessage(so);
-                var result = actor.GetAsync().Result;
+                var result = actor.GetAsync(1000).Result;
                 Assert.AreEqual(result, "Test");
 
                 HostDirectoryActor.Unregister(actor);
                 SerialObject so2 = new SerialObject(Tuple.Create(StateAction.Set, "Test2"), actor.Tag);
                 HostDirectoryActor.GetInstance().SendMessage(so2);
                 var result2 = actor.GetAsync(1000).Result;
-                Assert.AreEqual("Test",result2);
-                launcher.Finish();
+                Assert.AreEqual("Test",result2,string.Format("Expected {0} Found {1}","Test",result2));
             });
-            Assert.IsTrue(launcher.Wait());
         }
         
     }

@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TestActor;
 using Actor.Base;
 using System.Collections.Concurrent;
 using System.Globalization;
 
-namespace Actor.Util.Tests
-{
+namespace TestActor
+{ 
     [TestClass()]
     public class ForEachTests
     {
