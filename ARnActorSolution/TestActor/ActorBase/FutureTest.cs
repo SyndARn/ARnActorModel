@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
 using System.Threading.Tasks;
 
-namespace TestActor.ActorBase
+namespace TestActor
 {
 
     class FutureAsyncActorTest : BaseActor

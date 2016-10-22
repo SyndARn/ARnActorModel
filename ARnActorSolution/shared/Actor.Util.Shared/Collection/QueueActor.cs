@@ -39,6 +39,7 @@ namespace Actor.Util
             SendAction(DoQueue, at);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<IMsgQueue<T>> TryDequeue()
         {
             var retVal = Receive(t => { return t is IMsgQueue<T>; }) ;

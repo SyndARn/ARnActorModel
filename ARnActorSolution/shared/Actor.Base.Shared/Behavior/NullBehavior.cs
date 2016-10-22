@@ -22,4 +22,12 @@ namespace Actor.Base
             AddBehavior(new NullBehavior());
         }
     }
+
+    public class NullActor : BaseActor
+    {
+        public NullActor() : base()
+        {
+            Become(new NullBehavior());
+        }
+    }
 }

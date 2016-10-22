@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,26 @@ namespace Actor.Base
         {
             CheckArg.Actor(anActor);
             anActor.SendMessage(new Tuple<T1, T2, T3, T4>(t1, t2, t3, t4));
+        }
+        public static void SendString(this IActor anActor, string aString)
+        {
+            CheckArg.Actor(anActor);
+            anActor.SendMessage(aString);
+        }
+        public static void SendString(this IActor anActor, string aString, object arg0)
+        {
+            CheckArg.Actor(anActor);
+            anActor.SendMessage(string.Format(CultureInfo.InvariantCulture, aString, arg0));
+        }
+        public static void SendString(this IActor anActor, string aString, object arg0, object arg1)
+        {
+            CheckArg.Actor(anActor);
+            anActor.SendMessage(string.Format(CultureInfo.InvariantCulture, aString, arg0, arg1));
+        }
+        public static void SendString(this IActor anActor, string aString, object[] args)
+        {
+            CheckArg.Actor(anActor);
+            anActor.SendMessage(string.Format(CultureInfo.InvariantCulture, aString, args));
         }
     }
 

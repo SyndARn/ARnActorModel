@@ -54,6 +54,7 @@ namespace Actor.Base
         private ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>(); // receive behaviors
         private IActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
         private SharingStruct fShared = new SharingStruct();
+        public IMessageTracerService MessageTracerService { get; set; }
 
         public static void CompleteInitialize(BaseActor anActor)
         {
@@ -109,11 +110,15 @@ namespace Actor.Base
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SendMessage(object msg)
         {
+            TrySetInTask(msg);
+            if (MessageTracerService != null)
+            {
+                MessageTracerService.TraceMessage(msg);
+            }
             if (GlobalContext.MessageTracerService != null)
             {
                 GlobalContext.MessageTracerService.TraceMessage(msg);
             }
-            TrySetInTask(msg);
         }
 
         public static BaseActor Add(BaseActor anActor, object aMessage)
