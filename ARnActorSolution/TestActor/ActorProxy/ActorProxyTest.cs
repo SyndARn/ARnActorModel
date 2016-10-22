@@ -4,7 +4,7 @@ using Actor.Base;
 using Actor.Util;
 
 
-namespace TestActor.ActorProxyTest
+namespace TestActor
 {
     [TestClass]
     public class ProxyTest

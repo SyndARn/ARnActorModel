@@ -5,7 +5,7 @@ using Actor.Base;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TestActor.ActorBase
+namespace TestActor
 {
 
     class ExtensionTestActor : BaseActor

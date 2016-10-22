@@ -6,7 +6,7 @@ using Actor.Util;
 using Actor.Base;
 using System.Linq;
 
-namespace TestActor.MapReduce
+namespace TestActor
 {
 
     class MapReduceSimpleTest
