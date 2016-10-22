@@ -11,14 +11,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("Actor.Base.Pcl")]
 [assembly: NeutralResourcesLanguage("fr")]
+[assembly:ComVisible(false)]
 
-// Les informations de version pour un assembly se composent des quatre valeurs suivantes :
-//
-//      Version principale
-//      Version secondaire 
-//      Numéro de build
-//      Révision
-//
-// Vous pouvez spécifier toutes les valeurs ou utiliser par défaut les numéros de build et de version 
-// en utilisant '*', comme indiqué ci-dessous :
-// [assembly: AssemblyVersion("1.0.*")]

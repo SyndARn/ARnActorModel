@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Actor.Server;
 using Actor.Base;
+using System.Globalization;
 
 namespace Actor.Service
 {
@@ -18,10 +19,9 @@ namespace Actor.Service
         }
     }
 
-    public class LoggerBehavior : Behavior<Object>, IDisposable
+    public class LoggerBehavior : Behavior<Object>
     {
         private string fFilename;
-        private FileStream fFileStream;
 
         public LoggerBehavior() : base()
         {
@@ -43,7 +43,6 @@ namespace Actor.Service
         private void DoInit(string aFilename)
         {
             fFilename = Environment.CurrentDirectory + aFilename;
-            // fFileStream = new FileStream(fFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             Pattern = t => true;
             Apply = DoLog;
         }
@@ -58,20 +57,6 @@ namespace Actor.Service
                     fStream.WriteLine(s);
                 }
             }
-        }
-
-        protected virtual void Dispose(bool aDispose)
-        {
-            if (aDispose)
-            {
-                // fStream.Dispose();
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

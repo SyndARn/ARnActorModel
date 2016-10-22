@@ -6,6 +6,6 @@ namespace Actor.Util
     public interface IDictionaryActor<TKey, TValue>
     {
         void AddKeyValue(TKey key, TValue value);
-        Future<Tuple<bool, TKey, TValue>> GetKeyValue(TKey key);
+        Future<bool, TKey, TValue> GetKeyValue(TKey key);
     }
 }

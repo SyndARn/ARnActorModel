@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Util;
 using Actor.Base;
 
-namespace TestActor.Fsm
+namespace TestActor
 {
     [TestClass]
     public class FSMStateTest
