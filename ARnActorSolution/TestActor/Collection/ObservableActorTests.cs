@@ -98,7 +98,7 @@ namespace TestActor
         [TestMethod()]
         public void UnRegisterObserverTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 ObservableActor<string> act = new ObservableActor<string>();
                 TestObserver observer = new TestObserver();
@@ -113,7 +113,6 @@ namespace TestActor
                 Assert.AreEqual(result, null);
                 fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }
