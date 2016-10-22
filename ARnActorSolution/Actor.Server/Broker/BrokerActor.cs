@@ -35,12 +35,6 @@ namespace Actor.Server
         public int TTL { get; set; }
     }
 
-    public struct RequestStatus<T>
-    {
-        public T Data;
-        public RequestReadyState State;
-    }
-
     public class BrokerActor<T> : BaseActor
     {
         private Dictionary<IActor, WorkerStatus> fWorkers = new Dictionary<IActor, WorkerStatus>();
