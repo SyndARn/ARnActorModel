@@ -11,13 +11,6 @@ namespace TestActor
     [Ignore]
     public class ShardDirectoryTest
     {
-        private static TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
 
         class actShardDirectoryClientTest : BaseActor
         {
@@ -44,17 +37,17 @@ namespace TestActor
             {
                 // waiting shard answer
                 Assert.IsTrue(msg.Data.Count() == 1);
-                fLauncher.Finish();
             }
         }
 
         [TestMethod]
-        [Ignore]
         public void TestShardRun()
         {
-          ActorServer.Start(this.ToString(), 80, new HostRelayActor());
-          fLauncher.SendAction(() => {new actShardDirectoryClientTest(); }) ;
-            Assert.IsTrue(fLauncher.Wait(10000));
+            TestLauncherActor.Test(() =>
+            {
+                ActorServer.Start(this.ToString(), 80, new HostRelayActor());
+                new actShardDirectoryClientTest(); 
+            });
         }
     }
 }

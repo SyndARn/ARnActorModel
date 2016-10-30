@@ -37,7 +37,6 @@ namespace TestActor
         }
 
         [TestMethod]
-        [Ignore]
         public void TestActorCollectionEnumerator()
         {
             TestLauncherActor.Test(() =>
