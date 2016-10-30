@@ -11,7 +11,6 @@ using Actor.Util;
 namespace TestActor
 {
     [TestClass()]
-    [Ignore]
     public class actParserTests
     {
 
@@ -66,8 +65,7 @@ namespace TestActor
         [Ignore]
         public void ParserActorTest()
         {
-            var testLauncher = new TestLauncherActor();
-            testLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
            {
                var parserTest = new ParserTest();
                var receiver = new TestReceiver();
@@ -75,9 +73,7 @@ namespace TestActor
                var future = receiver.GetResult().ResultAsync().Result;
                Assert.IsTrue(future.Any());
                Assert.IsTrue(future.Contains("Max"));
-               testLauncher.Finish();
            });
-            Assert.IsTrue(testLauncher.Wait());
         }
     }
 }

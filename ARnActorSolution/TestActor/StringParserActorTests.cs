@@ -98,29 +98,18 @@ namespace Actor.Service.Tests
     public class ParserServerActorTest
     {
         [TestMethod()]
-        [Ignore]
         public void ParserServerTest()
         {
             ParserServer parser = new ParserServer();
             TestParserActor receive = new TestParserActor();
-            var launcher = new TestLauncherActor();
-            launcher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 parser.SendMessage((IActor)receive, "A B C D E");
-                launcher.Finish();
-            });
-            Assert.IsTrue(launcher.Wait()) ;
-
-            var launcher2 = new TestLauncherActor();
-            launcher2.SendAction(() =>
-            { 
                 var result = receive.GetList().Result;
                 Assert.IsTrue(result.Any());
                 Assert.IsTrue(result.Count() == 5);
                 Assert.IsTrue(result.Count(c => c == "C") == 1);
-                launcher.Finish();
             });
-            Assert.IsTrue(launcher2.Wait()); 
         }
     }
 }

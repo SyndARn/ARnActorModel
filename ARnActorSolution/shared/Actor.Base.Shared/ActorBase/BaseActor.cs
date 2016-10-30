@@ -84,7 +84,16 @@ namespace Actor.Base
                 Interlocked.Increment(ref fShared.fMessCount);
 #endif
             }
-            TrySetInTask();
+            TrySetInTask(TaskCreationOptions.None);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void TrySetInTask(TaskCreationOptions taskCreationOptions)
+        {
+            if (Interlocked.CompareExchange(ref fShared.fInTask, 1, 0) == 0)
+            {
+                ActorTask.AddActor(MessageLoop, taskCreationOptions);
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -92,7 +101,7 @@ namespace Actor.Base
         {
             if (Interlocked.CompareExchange(ref fShared.fInTask, 1, 0) == 0)
             {
-                ActorTask.AddActor(MessageLoop);
+                ActorTask.AddActor(MessageLoop, TaskCreationOptions.None);
             }
         }
 
@@ -164,7 +173,7 @@ namespace Actor.Base
             fCompletions.Enqueue(lTCS);
             AddMissedMessages();
             Interlocked.Exchange(ref fShared.fInTask, 0);
-            TrySetInTask();
+            TrySetInTask(TaskCreationOptions.LongRunning);
             if (timeOutMS != Timeout.Infinite)
             {
                 bool noTimeOut = lTCS.Completion.Task.Wait(timeOutMS);

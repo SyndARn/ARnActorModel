@@ -57,7 +57,7 @@ namespace Actor.Base
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddActor(Action messageLoop)
+        public static void AddActor(Action messageLoop, TaskCreationOptions taskCreationOptions)
         {
             if (messageLoop == null)
             {
@@ -69,7 +69,7 @@ namespace Actor.Base
                 Interlocked.Increment(ref numAddTask);
                 messageLoop();
                 Interlocked.Increment(ref numCloseTask);
-            }, TaskCreationOptions.None)
+            }, taskCreationOptions)
             .ContinueWith((t) =>
             {
                 foreach(var item in t.Exception.InnerExceptions)

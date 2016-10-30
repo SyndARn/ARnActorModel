@@ -37,7 +37,7 @@ namespace Actor.Base
     /// </summary>
     public class ActorMailBox<T> : IActorMailBox<T>
     {
-        private ConcurrentQueue<T> fQueue = new ConcurrentQueue<T>(); // all actors may push here, only this one may dequeue
+        private IProducerConsumerCollection<T> fQueue = new ConcurrentQueue<T>(); // all actors may push here, only this one may dequeue
         private ConcurrentQueue<T> fMissed = new ConcurrentQueue<T>(); // only this one use it in run mode
         
         public ActorMailBox()
@@ -46,7 +46,7 @@ namespace Actor.Base
 
         public bool IsEmpty
         {
-            get { return fQueue.IsEmpty; }
+            get { return fQueue.Count == 0 ; }
         }
 
         public void AddMiss(T aMessage)
@@ -60,19 +60,19 @@ namespace Actor.Base
             T val = default(T);
             while (fMissed.TryDequeue(out val))
             {
-                fQueue.Enqueue(val) ;
+                fQueue.TryAdd(val) ;
                 i++ ;
             }
             return i;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void AddMessage(T aMessage) => fQueue.Enqueue(aMessage);
+        public void AddMessage(T aMessage) => fQueue.TryAdd(aMessage);
 
         public T GetMessage()
         {
             T val = default(T);
-            fQueue.TryDequeue(out val) ;
+            fQueue.TryTake(out val) ;
             return val;
         }
 
