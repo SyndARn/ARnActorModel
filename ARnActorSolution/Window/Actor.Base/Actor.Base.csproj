@@ -104,6 +104,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ActorBaseApp.config" />
     <Content Include="Supervision\Pattern.txt" />
   </ItemGroup>
   <ItemGroup>

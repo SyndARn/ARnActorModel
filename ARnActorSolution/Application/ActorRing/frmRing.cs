@@ -74,5 +74,10 @@ namespace ActorRing
                 }
             }
         }
+
+        private void tbRingSize_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

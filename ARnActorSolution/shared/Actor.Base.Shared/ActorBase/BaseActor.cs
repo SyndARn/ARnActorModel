@@ -24,11 +24,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 
 [assembly: CLSCompliant(true)]
@@ -51,7 +48,7 @@ namespace Actor.Base
     {
         public ActorTag Tag { get { return fShared.fTag; } private set { fShared.fTag = value; } } // unique identifier, and host
         private List<IBehavior> fListBehaviors = new List<IBehavior>(); // our behavior
-        private ConcurrentQueue<IBehavior> fCompletions = new ConcurrentQueue<IBehavior>(); // receive behaviors
+        private IMessageQueue<IBehavior> fCompletions = QueueFactory<IBehavior>.Cast(); // receive behaviors
         private IActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
         private SharingStruct fShared = new SharingStruct();
         public IMessageTracerService MessageTracerService { get; set; }
@@ -60,7 +57,7 @@ namespace Actor.Base
         {
             CheckArg.Actor(anActor);
             anActor.fListBehaviors = new List<IBehavior>();
-            anActor.fCompletions = new ConcurrentQueue<IBehavior>();
+            anActor.fCompletions = QueueFactory<IBehavior>.Cast();
             anActor.fMailBox = new ActorMailBox<object>();
             if (anActor.Tag == null)
             {
@@ -170,7 +167,7 @@ namespace Actor.Base
             CheckArg.Pattern(aPattern);
             var lTCS = new Behavior<object>(aPattern, new TaskCompletionSource<object>());
             Interlocked.Increment(ref fShared.fReceive);
-            fCompletions.Enqueue(lTCS);
+            fCompletions.Add(lTCS);
             AddMissedMessages();
             Interlocked.Exchange(ref fShared.fInTask, 0);
             TrySetInTask(TaskCreationOptions.LongRunning);
@@ -186,14 +183,14 @@ namespace Actor.Base
                     // remove this lTCS
                     Queue<IBehavior> lQueue = new Queue<IBehavior>();
                     IBehavior bhv;
-                    while (fCompletions.TryDequeue(out bhv))
+                    while (fCompletions.TryTake(out bhv))
                     {
                         if (bhv != lTCS)
                             lQueue.Enqueue(bhv);
                     }
                     while (lQueue.Count > 0)
                     {
-                        fCompletions.Enqueue(lQueue.Dequeue());
+                        fCompletions.Add(lQueue.Dequeue());
                     }
 
                     Interlocked.Decrement(ref fShared.fReceive);
@@ -389,7 +386,7 @@ namespace Actor.Base
         {
             IBehavior tcs = null ;
             Queue<IBehavior> lQueue = null;
-            while (fCompletions.TryDequeue(out tcs))
+            while (fCompletions.TryTake(out tcs))
             {
                 if (lQueue == null)
                 {
@@ -416,7 +413,7 @@ namespace Actor.Base
             {
                 while (lQueue.Count > 0)
                 {
-                    fCompletions.Enqueue(lQueue.Dequeue());
+                    fCompletions.Add(lQueue.Dequeue());
                 }
             }
             return tcs;

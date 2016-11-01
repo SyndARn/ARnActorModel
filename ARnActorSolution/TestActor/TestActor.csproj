@@ -133,6 +133,7 @@
     <Compile Include="Collection\DictionaryActorTests.cs" />
     <Compile Include="MapReduce\MapReduceTesting.cs" />
     <Compile Include="ProcessActor\ProcessActorTests.cs" />
+    <Compile Include="QueueFactory\QueueFactoryTest.cs" />
     <Compile Include="RemoteServer\MemoryContextCommTests.cs" />
     <Compile Include="RemoteServer\MemoryListener\MemoryListenerServiceTests.cs" />
     <Compile Include="Serializer\NetDataContract\NetDataContractSerializeServiceTests.cs" />
