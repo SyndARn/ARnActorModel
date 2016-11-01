@@ -23,7 +23,7 @@ namespace BrokerDemoApplication
             Random random = new Random(value);
 
             double inDisc = 0;
-            for (int i = 0; i <= 10000; i++)
+            for (int i = 0; i <= 1000; i++)
             {
                 var x = random.NextDouble();
                 var y = random.NextDouble();

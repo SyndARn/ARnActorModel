@@ -102,8 +102,8 @@ namespace TestActor
             fLauncher.SendAction(() =>
             {
                 var act = new DirectoryTestActor();
-                DirectoryActor.GetDirectory().Register(act, act.Tag.Id.ToString());
-                act.SendMessage(fLauncher, act, act.Tag.Id.ToString());
+                DirectoryActor.GetDirectory().Register(act, act.Tag.Key());
+                act.SendMessage(fLauncher, act, act.Tag.Key());
                 fLauncher.Finish();
             });
             Assert.IsTrue(fLauncher.Wait());
@@ -115,7 +115,7 @@ namespace TestActor
             fLauncher.SendAction(() =>
                 {
                 var dirtest = new DirectoryTestActor();
-                DirectoryActor.GetDirectory().Register(dirtest, dirtest.Tag.Id.ToString());
+                DirectoryActor.GetDirectory().Register(dirtest, dirtest.Tag.Key());
                     fLauncher.Finish();
                 });
             Assert.IsTrue(fLauncher.Wait());

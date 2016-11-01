@@ -106,7 +106,7 @@ namespace Actor.Server
                         ConnectActor.Connect(this, lHost, "RPrint");
                         var data = Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; });
                         var res = data.Result as Tuple<string, ActorTag, IActor>;
-                        res.Item3.SendMessage("call  from " + this.Tag.Id);
+                        res.Item3.SendMessage("call  from " + this.Tag.Key());
                         // SendMessageTo("call from " + this.Tag.Id,res.Item3);
                         break;
                     }

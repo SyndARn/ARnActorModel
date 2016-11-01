@@ -173,7 +173,7 @@ namespace Actor.Base
             TrySetInTask(TaskCreationOptions.LongRunning);
             if (timeOutMS != Timeout.Infinite)
             {
-                bool noTimeOut = lTCS.Completion.Task.Wait(timeOutMS);
+                var noTimeOut = lTCS.Completion.Task.Wait(timeOutMS) ;
                 if (noTimeOut)
                 {
                     return await lTCS.Completion.Task;

@@ -19,10 +19,10 @@ namespace Actor.Service
         }
     }
 
-    public class LoggerBehavior : Behavior<Object>
+    public class LoggerBehavior : Behavior<object>
     {
         private string fFilename;
-        private List<Object> fMessageList = new List<Object>();
+        private List<Object> fMessageList = new List<object>();
 
         public LoggerBehavior() : base()
         {

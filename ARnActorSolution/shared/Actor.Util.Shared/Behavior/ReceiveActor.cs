@@ -13,15 +13,15 @@ namespace Actor.Util
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<Tuple<IActor, T>> Wait(IActor target, T question)
         {
-            var r = Receive(t => t is Tuple<IActor, T>);
             target.SendMessage((IActor)this, question);
+            var r = Receive(t => t is Tuple<IActor, T>);
             return (Tuple<IActor, T>)await r;
         }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<Tuple<IActor, T>> Wait(IActor target, T question, int timeOutMS)
         {
-            var r = Receive(t => t is Tuple<IActor, T>, timeOutMS);
             target.SendMessage((IActor)this, question);
+            var r = Receive(t => t is Tuple<IActor, T>, timeOutMS);
             return (Tuple<IActor, T>)await r;
         }
         public void SetResult(IActor sender, T data) => this.SendMessage(sender, data);
@@ -32,15 +32,15 @@ namespace Actor.Util
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<Tuple<IActor, TAnswer>> Wait(IActor target, TQuestion question)
         {
-            var r = Receive(t => t is Tuple<IActor, TAnswer>);
             target.SendMessage((IActor)this, question);
+            var r = Receive(t => t is Tuple<IActor, TAnswer>);
             return (Tuple<IActor, TAnswer>)await r;
         }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<Tuple<IActor, TAnswer>> Wait(IActor target, TQuestion question, int timeOutMS)
         {
-            var r = Receive(t => t is Tuple<IActor, TAnswer>, timeOutMS);
             target.SendMessage((IActor)this, question);
+            var r = Receive(t => t is Tuple<IActor, TAnswer>, timeOutMS);
             return (Tuple<IActor, TAnswer>)await r;
         }
         public void SetResult(IActor sender, TAnswer data) => this.SendMessage(sender, data) ;

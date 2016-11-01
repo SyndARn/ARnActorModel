@@ -96,7 +96,7 @@ namespace Actor.Server
                      workerStatus.TTL = 0;
                      workerStatus.State = WorkerReadyState.Idle;
                      fWorkers.Add(a, workerStatus);
-                     LogString("Worker Register", a.Tag.Id);
+                     LogString("Worker Register", a.Tag.Key());
                  }
                 );
         }
@@ -109,7 +109,7 @@ namespace Actor.Server
                  (b, a) =>
                  {
                      fWorkers.Remove(a);
-                     LogString("Worker UnRegister", a.Tag.Id);
+                     LogString("Worker UnRegister", a.Tag.Key());
                  }
                 );
         }
@@ -161,11 +161,11 @@ namespace Actor.Server
                         fWorkers[worker].TTL = 0;
                         worker.SendMessage((IActor)this, requestStatus.Tag, t);
                         requestStatus.State = RequestState.Running;
-                        LogString("Processing Request {0} on worker {1}", requestStatus.Tag.Id, worker.Tag.Id);
+                        LogString("Processing Request {0} on worker {1}", requestStatus.Tag.Key(), worker.Tag.Key());
                     }
                     else
                     {
-                        LogString("No available worker for Request {0}", requestStatus.Tag.Id);
+                        LogString("No available worker for Request {0}", requestStatus.Tag.Key());
                     }
                 }));
             // worker refuse job
@@ -175,18 +175,18 @@ namespace Actor.Server
                  (a, s, t) =>
                  {
                      fWorkers[a].State = WorkerReadyState.Busy;
-                     LogString("Worker {0} can't process request {1}", a.Tag.Id, t.Id);
+                     LogString("Worker {0} can't process request {1}", a.Tag.Key(), t.Key());
                      var worker = FindWorker();
                      if (worker != null)
                      {
                          fWorkers[worker].State = WorkerReadyState.Busy;
                          fWorkers[worker].TTL = 0;
                          worker.SendMessage((IActor)this, t, fRequests[t]);
-                         LogString("ReProcessing Request {0} on worker {1}", a.Tag.Id, t.Id);
+                         LogString("ReProcessing Request {0} on worker {1}", a.Tag.Key(), t.Key());
                      }
                      else
                      {
-                         LogString("Wait for a worker for Request {0}", t.Id);
+                         LogString("Wait for a worker for Request {0}", t.Key());
                      }
                  }
                 ));
@@ -200,7 +200,7 @@ namespace Actor.Server
                      fRequests.Remove(t);
                      fWorkers[a].State = WorkerReadyState.Idle;
                      fWorkers[a].TTL = fTTL;
-                     LogString("Request {0} End on worker {1}",t.Id, a.Tag.Id);
+                     LogString("Request {0} End on worker {1}",t.Key(), a.Tag.Key());
                      // find a request
                      var tagRequest = fRequests.Values.FirstOrDefault(v => v.State == RequestState.Unprocessed);
                      if (tagRequest != null)
@@ -209,7 +209,7 @@ namespace Actor.Server
                          fWorkers[a].TTL = 0;
                          tagRequest.State = RequestState.Running;
                          a.SendMessage((IActor)this, tagRequest.Tag, tagRequest.Data);
-                         LogString("Processing Request {0} reusing worker {1}", tagRequest.Tag.Id, a.Tag.Id);
+                         LogString("Processing Request {0} reusing worker {1}", tagRequest.Tag.Key(), a.Tag.Key());
                      }
                  }
                 ));
@@ -232,7 +232,7 @@ namespace Actor.Server
                 {
                     var workerState = fWorkers[a];
                     workerState.TTL = fTTL;
-                    LogString("Answer To HeartBeat from Worker {0}",a.Tag.Id);
+                    LogString("Answer To HeartBeat from Worker {0}",a.Tag.Key());
                 }));
             // start heart beat
             SendMessage(BrokerAction.Start);
