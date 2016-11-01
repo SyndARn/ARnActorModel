@@ -37,7 +37,7 @@ namespace BrokerDemoApplication
                 fBroker.RegisterWorker(worker);
             }
             // launch client
-            foreach (var item in Enumerable.Range(1, 1000))
+            foreach (var item in Enumerable.Range(1, 10))
             {
                 var client = new DemoClient(fBroker);
             }

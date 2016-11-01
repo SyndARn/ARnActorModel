@@ -93,7 +93,7 @@ namespace Actor.Server
             foreach (string key in fDictionary.Keys)
             {
                 var value = fDictionary[key];
-                directory.Add(key,fullhost + value.Tag.Id);
+                directory.Add(key,fullhost + value.Tag.Key());
             }
             anActor.SendMessage(directory);
         }

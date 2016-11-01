@@ -22,6 +22,7 @@
 *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
@@ -35,32 +36,12 @@ namespace Actor.Base
     public static class ActorTagHelper
     {
         [ThreadStatic]
-        private static long fBaseId = 0 ;
-        [ThreadStatic]
-        private static int fBaseThread = 0 ;
+        private static long fBaseId ;
 
-        internal static Guid CastNewTagId()
+        internal static long CastNewTagId()
         {
 
-#if ! NETFX_CORE
-            if (fBaseThread == 0)
-            {
-                fBaseThread = Thread.CurrentThread.ManagedThreadId;                
-            }
-#endif
-            fBaseId++;
-            Guid guid = new Guid(fBaseThread, 0, 0, BitConverter.GetBytes(fBaseId));
-            return guid;
-        }
-
-        internal static Guid CastWithHash(long hash)
-        {
-            int lHash1 = (int)hash >> 4;
-            short lHash2 = (short)((hash << 4) >> 6);
-            short lHash3 = (short)((hash << 6) >> 6);
-            long baseId = Interlocked.Increment(ref fBaseId);
-            Guid guid = new Guid(lHash1, lHash2, lHash3, BitConverter.GetBytes(baseId));
-            return guid;
+            return fBaseId++;
         }
 
         private static string fFullHost = "";
@@ -85,28 +66,24 @@ namespace Actor.Base
         [DataMember]
         private bool fIsRemote;
         [DataMember]
-        private Guid fId;
-
-        public Guid Id { get { return fId; } }
+        private long fId;
+        [DataMember]
+        private int fUriHash;
 
         public string Uri
         {
             get
             {
-                if (String.IsNullOrEmpty(fUri))
-                {
-                    fUri = ActorTagHelper.GetFullHost();
-                }
                 return fUri;
             }
         }
 
-        private bool IsRemote { get { return fIsRemote; } }
-
         public ActorTag()
         {
             fId = ActorTagHelper.CastNewTagId();
+            fUri = ActorTagHelper.GetFullHost();
             fIsRemote = false;
+            fUriHash = fUri.GetHashCode();
         }
 
         public ActorTag(string lHostUri)
@@ -114,22 +91,12 @@ namespace Actor.Base
             fId = ActorTagHelper.CastNewTagId();
             fUri = lHostUri;
             fIsRemote = true;
+            fUriHash = fUri.GetHashCode();
         }
 
         public string Key()
         {
-            if (string.IsNullOrEmpty(fUri))
-            {
-                fUri = ActorTagHelper.GetFullHost();
-            }
-            if (IsRemote)
-            {
-                return Uri;
-            }
-            else
-            {
-                return Uri + Id.ToString();
-            }
+            return string.Format(CultureInfo.InvariantCulture, "{0}-{1}", fUriHash, fId);
         }
 
         public override int GetHashCode()
@@ -137,7 +104,7 @@ namespace Actor.Base
             return Key().GetHashCode();
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (obj == null) return false;
             ActorTag other = obj as ActorTag;

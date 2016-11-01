@@ -32,6 +32,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
+                ActorServer.Start("123", 80,null);
                 var tst1 = new Test1() { Name = "TestName1" };
                 var tst2 = new Test1() { Name = "TestName2" };
                 var lst = new List<IActor>();
@@ -59,12 +60,12 @@ namespace TestActor
                     var l1 = (RemoteSenderActor)(lst2.First());
                     var l2 = (RemoteSenderActor)(lst2.Last());
 
-                    Assert.AreEqual(so.Tag.Id, soread.Tag.Id);
+                    Assert.AreEqual(so.Tag.Key(), soread.Tag.Key());
 
-                    Assert.AreEqual(tst1.Tag.Id, l1.fRemoteTag.Id);
-                    Assert.AreEqual(tst2.Tag.Id, l2.fRemoteTag.Id);
+                    Assert.AreEqual(tst1.Tag.Key(), l1.fRemoteTag.Key());
+                    Assert.AreEqual(tst2.Tag.Key(), l2.fRemoteTag.Key());
                 }
-            });
+            },30000);
         }
     }
 }
