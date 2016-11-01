@@ -1,4 +1,9 @@
-﻿
+﻿recommended app settings to check
+
+    <runtime>
+      <gcServer enabled="true"/>
+      <gcConcurrent enabled="true"/>
+    </runtime>
 
 
 send message to remoteactor, older of real tag

@@ -54,7 +54,8 @@
             this.tbRingSize.Name = "tbRingSize";
             this.tbRingSize.Size = new System.Drawing.Size(100, 20);
             this.tbRingSize.TabIndex = 1;
-            this.tbRingSize.Text = "100";
+            this.tbRingSize.Text = "10000";
+            this.tbRingSize.TextChanged += new System.EventHandler(this.tbRingSize_TextChanged);
             // 
             // tbMessageQuantity
             // 
@@ -62,7 +63,7 @@
             this.tbMessageQuantity.Name = "tbMessageQuantity";
             this.tbMessageQuantity.Size = new System.Drawing.Size(100, 20);
             this.tbMessageQuantity.TabIndex = 3;
-            this.tbMessageQuantity.Text = "100";
+            this.tbMessageQuantity.Text = "10000";
             // 
             // label2
             // 

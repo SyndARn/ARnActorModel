@@ -19,7 +19,7 @@ namespace TestActor
 
         
         [TestMethod()]
-        [Ignore] // still a time out issue or else
+        [Ignore]
         public void RegisterUnregisterTest()
         {
             TestLauncherActor.Test(() =>

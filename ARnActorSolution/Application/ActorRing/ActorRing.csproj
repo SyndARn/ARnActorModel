@@ -118,9 +118,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Actor.Server\Actor.Server.csproj">
       <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
       <Name>Actor.Server</Name>
