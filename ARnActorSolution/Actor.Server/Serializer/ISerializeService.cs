@@ -10,6 +10,6 @@ namespace Actor.Server
     public interface ISerializeService
     {
         void Serialize(SerialObject so, Stream stream);
-        SerialObject DeSerialize(Stream stream);
+        SerialObject Deserialize(Stream stream);
     }
 }

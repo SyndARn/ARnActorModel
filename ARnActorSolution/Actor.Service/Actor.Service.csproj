@@ -84,9 +84,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="actParser.cs" />
+    <Compile Include="ParserActor.cs" />
     <Compile Include="ActorService.cs" />
-    <Compile Include="actRing.cs" />
+    <Compile Include="RingActor.cs" />
     <Compile Include="Logger\actTrace.cs" />
     <Compile Include="Logger\LoggerBehavior.cs" />
     <Compile Include="Persistent\PersistentService.cs" />

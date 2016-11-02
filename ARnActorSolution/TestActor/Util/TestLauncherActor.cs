@@ -39,7 +39,7 @@ namespace TestActor
             Test(action, 10000);
         }
 
-        public static void Test(Action action, int timeOutMs)
+        public static void Test(Action action, int timeOutMS)
         {
             var launcher = new TestLauncherActor();
             launcher.SendAction(
@@ -55,7 +55,7 @@ namespace TestActor
                         launcher.ExceptionCatched = e;
                     }
                 });
-            bool testResult = launcher.Wait(timeOutMs);
+            bool testResult = launcher.Wait(timeOutMS);
             if (launcher.ExceptionCatched != null)
             {
                 throw launcher.ExceptionCatched;

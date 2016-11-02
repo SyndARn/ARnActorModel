@@ -52,7 +52,7 @@ namespace Actor.Util
         private void DoInit(string aFilename)
         {
             fFileName = aFilename;
-            fStream = new StreamWriter(new FileStream(fFileName, FileMode.CreateNew));
+            fStream = new StreamWriter(new FileStream(fFileName, FileMode.Create));
             fStream.AutoFlush = true;
             Become(new Behavior<string>(DoWrite));
         }

@@ -3,15 +3,12 @@ using Actor.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
-using Actor.Util;
 
 namespace TestActor
 {
     [TestClass()]
-    public class actParserTests
+    public class ParserActorTests
     {
 
         public class ParserTest : BaseActor
