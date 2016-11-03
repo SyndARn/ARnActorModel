@@ -104,7 +104,6 @@
     <Compile Include="Broker\BrokerActor.cs" />
     <Compile Include="Broker\HeartBeatActor.cs" />
     <Compile Include="Broker\WorkerActor.cs" />
-    <Compile Include="ClientServer\OnBehalfActor.cs" />
     <Compile Include="ClientServer\ServerBehavior.cs" />
     <Compile Include="ClientServer\WebActor.cs" />
     <Compile Include="Directory\ConnectActor.cs" />

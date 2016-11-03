@@ -95,7 +95,7 @@ namespace Actor.Server
                     }
                 case "SendTo":
                     {
-                        actRemoteTest.SendString(lData);
+                        RemoteNetActor.SendString(lData);
                         break;
                     }
                 case "RPrint":
