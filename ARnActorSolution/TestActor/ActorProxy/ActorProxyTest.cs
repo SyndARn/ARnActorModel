@@ -50,6 +50,7 @@ namespace TestActor
             }
             public void AskData(IFuture<string> future)
             {
+                CheckArg.Future(future);
                 future.SendMessage(fData);
             }
         }

@@ -108,8 +108,7 @@
     <Compile Include="ActorBase\ReceiveActorTest.cs" />
     <Compile Include="ActorProxy\ActorProxyTest.cs" />
     <Compile Include="ActorServer\ShardListActorTests.cs" />
-    <Compile Include="actParserTests.cs" />
-    <Compile Include="actRemoteTest.cs" />
+    <Compile Include="Service\ParserActorTests.cs" />
     <Compile Include="Admin\ActorStatServerTests.cs" />
     <Compile Include="Admin\EchoActorTests.cs" />
     <Compile Include="Behavior\BasicBehaviorsTest.cs" />
@@ -137,9 +136,9 @@
     <Compile Include="RemoteServer\MemoryContextCommTests.cs" />
     <Compile Include="RemoteServer\MemoryListener\MemoryListenerServiceTests.cs" />
     <Compile Include="Serializer\NetDataContract\NetDataContractSerializeServiceTests.cs" />
-    <Compile Include="Service\actRingTests.cs" />
-    <Compile Include="StringParserActorTests.cs" />
-    <Compile Include="TextWriterActorTest.cs" />
+    <Compile Include="Service\RingActorTests.cs" />
+    <Compile Include="Service\StringParserActorTests.cs" />
+    <Compile Include="Util\TextWriterActorTest.cs" />
     <Compile Include="Util\TestLauncherActor.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />
     <Compile Include="Behavior\ForEachTests.cs" />
@@ -153,10 +152,10 @@
     <Compile Include="ProducerConsumer\ChainTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializer\SerializationTest.cs" />
-    <Compile Include="ShardDirectoryTest.cs" />
+    <Compile Include="ActorServer\ShardDirectoryTest.cs" />
     <Compile Include="Collection\StateBehaviorTest.cs" />
     <Compile Include="Serializer\JSonDataTest.cs" />
-    <Compile Include="SupervisorTest.cs" />
+    <Compile Include="ActorBase\SupervisorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Actor.MonteCarlo\Actor.MonteCarlo.csproj">

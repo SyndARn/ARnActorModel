@@ -22,11 +22,6 @@ namespace TestActor
             public string Name { get; set; }
         }
 
-        private class actRemoteActor : BaseActor 
-        {
-            public ActorTag remoteTag {get ;set ;}
-        }
-
         [TestMethod]
         public void TestSerializeActor()
         {

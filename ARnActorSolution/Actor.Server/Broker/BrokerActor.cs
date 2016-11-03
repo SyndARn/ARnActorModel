@@ -114,21 +114,21 @@ namespace Actor.Server
                 );
         }
 
-        public void LogString(string aString)
+        public void LogString(string message)
         {
-            Logger.SendMessage(aString);
+            Logger.SendMessage(message);
         }
-        public void LogString(string aString, object arg0)
+        public void LogString(string message, object arg0)
         {
-            Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, aString, arg0));
+            Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, arg0));
         }
-        public void LogString(string aString, object arg0, object arg1)
+        public void LogString(string message, object arg0, object arg1)
         {
-            Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, aString, arg0, arg1));
+            Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, arg0, arg1));
         }
-        public void LogString(string aString, object[] args)
+        public void LogString(string message, object[] args)
         {
-            Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, aString, args));
+            Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, args));
         }
 
         public BrokerActor() : base()

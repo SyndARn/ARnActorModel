@@ -14,7 +14,7 @@ namespace Actor.Server
             NetDataActorSerializer.Serialize(so, stream);
         }
 
-        public SerialObject DeSerialize(Stream stream)
+        public SerialObject Deserialize(Stream stream)
         {
             return NetDataActorSerializer.DeSerialize(stream);
         }

@@ -25,7 +25,7 @@ namespace TestActor
         }
 
         [TestMethod()]
-        public void actCrudeActorTest()
+        public void CrudeNewTest()
         {
             var act = new CrudTest();
             Assert.IsNotNull(act);

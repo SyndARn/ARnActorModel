@@ -44,7 +44,7 @@ namespace Actor.Server
 
                 ms.Seek(0, SeekOrigin.Begin);
 
-                SerialObject so = fSerializeService.DeSerialize(ms);
+                SerialObject so = fSerializeService.Deserialize(ms);
                 // send an ack
                 contextComm.Acknowledge();
 

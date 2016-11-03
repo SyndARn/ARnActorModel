@@ -66,6 +66,14 @@ namespace Actor.Base
             }
         }
 
+        public static void Future([ValidatedNotNullAttribute] IFuture aFuture)
+        {
+            if (aFuture == null)
+            {
+                throw new ActorException("future must exist");
+            }
+        }
+
         public static void Pattern(Func<object, bool> aPattern)
         {
             if (aPattern == null)

@@ -26,16 +26,16 @@ namespace Actor.Util
      * Workflow on a wfwMessage pattern election get a new status
      * GetStatus answer with the current status
     */
-    public class actWorkflow<T> : BaseActor
+    public class WorkflowActor<T> : BaseActor
     {
-        private IwfwStatus<T> fCurrent ;
-        public actWorkflow(IwfwStatus<T> startWith)
+        private IWfwStatus<T> fCurrent ;
+        public WorkflowActor(IWfwStatus<T> startWith)
             : base()
         {
             fCurrent = startWith;
-            Become(new Behavior<IwfwStatus<T>>(DoProcess));
+            Become(new Behavior<IWfwStatus<T>>(DoProcess));
         }
-        private void DoProcess(IwfwStatus<T> aStatus)
+        private void DoProcess(IWfwStatus<T> aStatus)
         {
             // find transition
             foreach(var tr in aStatus.TransitionList)
@@ -51,40 +51,40 @@ namespace Actor.Util
         }
     }
 
-    public class wfwTransition<T> : IwfwTransition<T>
+    public class WfwTransition<T> : IWfwTransition<T>
     {
 
-        public IwfwStatus<T> Destination {get; set;}
+        public IWfwStatus<T> Destination {get; set;}
 
-        public Behavior<IwfwStatus<T>> Action
+        public Behavior<IWfwStatus<T>> Action
         {
             get;
             set;
         }
     }
 
-    public class wfwStatus<T> : IwfwStatus<T>
+    public class WfwStatus<T> : IWfwStatus<T>
     {
-        public List<IwfwTransition<T>> TransitionList { get; private set; }
+        public List<IWfwTransition<T>> TransitionList { get; private set; }
         public string Current { get; protected set; }
-        public wfwStatus()
+        public WfwStatus()
         {
-            TransitionList = new List<IwfwTransition<T>>() ;
+            TransitionList = new List<IWfwTransition<T>>() ;
             Current = string.Empty;
         }
         public T Data { get; protected set; }
     }
 
-    public interface IwfwTransition<T>
+    public interface IWfwTransition<T>
     {
-        IwfwStatus<T> Destination { get; }
-        Behavior<IwfwStatus<T>> Action { get; }
+        IWfwStatus<T> Destination { get; }
+        Behavior<IWfwStatus<T>> Action { get; }
     }
 
-    public interface IwfwStatus<T>
+    public interface IWfwStatus<T>
     {
         string Current {get ;}
-        List<IwfwTransition<T>> TransitionList { get; }
+        List<IWfwTransition<T>> TransitionList { get; }
         T Data { get; }
     }
 

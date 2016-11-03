@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
+using System.Globalization;
 
 namespace TestActor
 {
@@ -41,7 +42,7 @@ namespace TestActor
             int sum = 0;
             foreach (var item in queryActor)
             {
-                sum = sum + int.Parse(item);
+                sum = sum + int.Parse(item,CultureInfo.InvariantCulture);
             }
 
             Assert.AreEqual(expected, sum);

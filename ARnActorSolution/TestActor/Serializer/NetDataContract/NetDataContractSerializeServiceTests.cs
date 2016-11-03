@@ -33,7 +33,7 @@ namespace Actor.Server.Tests
                 using (MemoryStream deserializeStream = new MemoryStream())
                 {
                     serializeStream.CopyTo(deserializeStream);
-                    var returnObject = service.DeSerialize(deserializeStream);
+                    var returnObject = service.Deserialize(deserializeStream);
                     Assert.IsNotNull(returnObject);
                     Assert.IsNotNull(returnObject.Data);
                     Assert.IsNotNull(returnObject.Tag);
