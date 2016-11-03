@@ -22,11 +22,19 @@ namespace TestActor
                     textWriter.SendMessage("3rd line");
                     textWriter.Flush();
                 }
-                using (StreamReader reader = new StreamReader("textwritertestfile.txt"))
+                using (var stream = new FileStream("textwritertestfile.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
-                    Assert.AreEqual(reader.ReadLine(), "1st line");
-                    Assert.AreEqual(reader.ReadLine(), "2nd line");
-                    Assert.AreEqual(reader.ReadLine(), "3rd line");
+                    StreamReader reader = new StreamReader(stream);
+                    try
+                    {
+                        Assert.AreEqual(reader.ReadLine(), "1st line");
+                        Assert.AreEqual(reader.ReadLine(), "2nd line");
+                        Assert.AreEqual(reader.ReadLine(), "3rd line");
+                    }
+                    finally
+                    {
+                        reader.Dispose();
+                    }
                 }
             },20000);
         }
