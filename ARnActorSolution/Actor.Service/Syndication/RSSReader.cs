@@ -9,25 +9,32 @@ using System.Xml;
 
 namespace Actor.Service
 {
-    public class RSSReaderActor : BaseActor
+    public class RssReaderActor : BaseActor
     {
-        string fUrl;
-        public RSSReaderActor(string anUrl, IActor target)
+        public RssReaderActor(string url, IActor target)
         {
-            fUrl = anUrl;
-            Become(new Behavior<Tuple<string, IActor>>(DoSyndication));
-            SendMessage(Tuple.Create(anUrl, target));
+            Become(new Behavior<string, IActor>(DoSyndication));
+            this.SendMessage(url, target);
         }
 
-        private void DoSyndication(Tuple<string, IActor> msg)
+        private void DoSyndication(string url, IActor target)
         {
-            using (XmlReader reader = XmlReader.Create(msg.Item1))
+            XmlReader reader = null;
+            try
             {
+                reader = XmlReader.Create(url);
                 SyndicationFeed feed = SyndicationFeed.Load(reader);
                 reader.Close();
                 foreach (SyndicationItem item in feed.Items)
                 {
-                    msg.Item2.SendMessage(item.Title.Text);
+                    target.SendMessage(item.Title.Text);
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Dispose();
                 }
             }
         }

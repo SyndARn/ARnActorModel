@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TestActor;
 using Actor.Util;
 using Actor.Base;
+using System.Globalization;
 
 namespace Actor.Server.Tests
 {
@@ -30,7 +31,7 @@ namespace Actor.Server.Tests
                         foreach(var item in Enumerable.Range(1,10))
                         {
                             IActor client = new BaseActor();
-                            string s = string.Format("Test range {0}", item);
+                            string s = string.Format(CultureInfo.InvariantCulture,"Test range {0}", item);
                             broker.SendMessage(s);
                         }
                         Task.Delay(5000).Wait();

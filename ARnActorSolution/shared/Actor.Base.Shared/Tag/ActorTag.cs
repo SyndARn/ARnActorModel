@@ -83,7 +83,7 @@ namespace Actor.Base
             fId = ActorTagHelper.CastNewTagId();
             fUri = ActorTagHelper.GetFullHost();
             fIsRemote = false;
-            fUriHash = fUri.GetHashCode();
+            fUriHash = string.IsNullOrEmpty(fUri) ? 0 : fUri.GetHashCode();
         }
 
         public ActorTag(string lHostUri)
@@ -91,7 +91,7 @@ namespace Actor.Base
             fId = ActorTagHelper.CastNewTagId();
             fUri = lHostUri;
             fIsRemote = true;
-            fUriHash = fUri.GetHashCode();
+            fUriHash = string.IsNullOrEmpty(fUri) ? 0 : fUri.GetHashCode();
         }
 
         public string Key()

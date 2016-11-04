@@ -7,56 +7,56 @@ using Actor.Base;
 
 namespace TestActor
 {
+    internal class ParserTest : BaseActor
+    {
+        public ParserTest()
+            : base()
+        {
+            Become(new Behavior<IActor>(DoParser));
+        }
+
+        private void DoParser(IActor anActor)
+        {
+            List<String> aList = new List<String>();
+            aList.Add(ActorTask.Stat());
+            var lParser = new ParserActor();
+            lParser.SendMessage(aList.AsEnumerable<String>(), anActor);
+        }
+    }
+
+    internal class TestReceiver : BaseActor
+    {
+        private List<string> fList = new List<string>();
+        public TestReceiver()
+        {
+            Become(new Behavior<IEnumerable<string>>(Receive));
+            AddBehavior(new Behavior<IActor>(Result));
+        }
+
+        public Future<IEnumerable<string>> GetResult()
+        {
+            var future = new Future<IEnumerable<string>>();
+            SendMessage((IActor)future);
+            return future;
+        }
+
+        private void Result(IActor aFuture)
+        {
+            aFuture.SendMessage(fList.AsEnumerable());
+        }
+
+        private void Receive(IEnumerable<string> list)
+        {
+            foreach (var item in list)
+            {
+                fList.Add(item);
+            }
+        }
+    }
+
     [TestClass()]
     public class ParserActorTests
     {
-
-        public class ParserTest : BaseActor
-        {
-            public ParserTest()
-                : base()
-            {
-                Become(new Behavior<IActor>(DoParser));
-            }
-
-            private void DoParser(IActor anActor)
-            {
-                List<String> aList = new List<String>();
-                aList.Add(ActorTask.Stat());
-                var lParser = new ParserActor();
-                lParser.SendMessage(aList.AsEnumerable<String>(), anActor);
-            }
-        }
-
-        public class TestReceiver : BaseActor
-        {
-            private List<string> fList = new List<string>();
-            public TestReceiver()
-            {
-                Become(new Behavior<IEnumerable<string>>(Receive));
-                AddBehavior(new Behavior<IActor>(Result));
-            }
-
-            public Future<IEnumerable<string>> GetResult()
-            {
-                var future = new Future<IEnumerable<string>>();
-                SendMessage((IActor)future);
-                return future;
-            }
-
-            private void Result(IActor aFuture)
-            {
-                aFuture.SendMessage(fList.AsEnumerable());
-            }
-
-            private void Receive(IEnumerable<string> list)
-            {
-                foreach (var item in list)
-                {
-                    fList.Add(item);
-                }
-            }
-        }
 
         [TestMethod()]
         [Ignore]

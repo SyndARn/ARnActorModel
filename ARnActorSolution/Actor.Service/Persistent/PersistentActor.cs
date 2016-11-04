@@ -52,6 +52,7 @@ namespace Actor.Service
             fCurrentState = anEvent.Apply(fCurrentState);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public Future<T> GetCurrent()
         {
             var future = new Future<T>();

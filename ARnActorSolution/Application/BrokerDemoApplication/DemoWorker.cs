@@ -7,6 +7,7 @@ using Actor.Base;
 using Actor.Util;
 using Actor.Server;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace BrokerDemoApplication
 {
@@ -28,10 +29,10 @@ namespace BrokerDemoApplication
             }
             var listStrings = sb.ToString().Select(t => t).OrderBy(t => t) ;
             fMemLogger.Add(
-                string.Format("Ticks {0} Count {1} String {2}", 
-                System.Environment.TickCount,
-                listStrings.Count(), 
-                new string(listStrings.ToArray())));
+                string.Format(CultureInfo.InvariantCulture,"Ticks {0} Count {1} String {2}", 
+                    System.Environment.TickCount,
+                    listStrings.Count(), 
+                    new string(listStrings.ToArray())));
             Task.Delay(rnd.Next(100)).Wait();
         }
     }

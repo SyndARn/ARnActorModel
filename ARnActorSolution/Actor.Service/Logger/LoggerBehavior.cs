@@ -72,7 +72,7 @@ namespace Actor.Service
             }
             if (msg != null)
             {
-                string s = String.Format("{0:o} - {1}", DateTimeOffset.UtcNow, msg);
+                string s = String.Format(CultureInfo.InvariantCulture,"{0:o} - {1}", DateTimeOffset.UtcNow, msg);
                 fMessageList.Add(s);
             }
         }

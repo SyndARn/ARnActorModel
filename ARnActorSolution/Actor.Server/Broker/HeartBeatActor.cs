@@ -7,14 +7,14 @@ namespace Actor.Server
 
     public class HeartBeatActor : BaseActor
     {
-        private int fTimeOutMs;
-        public HeartBeatActor(int timeOutMs)
+        private int fTimeOutMS;
+        public HeartBeatActor(int timeOutMS)
         {
-            fTimeOutMs = timeOutMs;
+            fTimeOutMS = timeOutMS;
             Become(new Behavior<IActor>((a) =>
             {
                 a.SendMessage(this, HeartBeatAction.Beat);
-                Task.Delay(fTimeOutMs).Wait();
+                Task.Delay(fTimeOutMS).Wait();
                 SendMessage(a);
             }));
         }
