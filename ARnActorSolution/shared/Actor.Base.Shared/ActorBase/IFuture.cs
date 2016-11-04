@@ -6,6 +6,7 @@ namespace Actor.Base
 
     public interface IFuture : IActor
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         Task<object> GetResultAsync();
     }
 

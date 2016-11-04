@@ -47,7 +47,7 @@ namespace Actor.Server.Tests
                Task.Delay(5000).Wait();
                Assert.IsTrue(actor.fHeartBeatReceive);
            }
-           , 10000);
+           , 20000);
             
         }
     }

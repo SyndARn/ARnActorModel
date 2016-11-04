@@ -7,11 +7,11 @@ using Actor.Base;
 namespace Actor.Server
 {
     // TODO to be completed
-    class actRemoteTest : BaseActor 
+    class RemoteNetActor : BaseActor 
     {
         public static void SendString(string aMsg)
         {
-            var actor = new actRemoteTest();
+            var actor = new RemoteNetActor();
             var localhost = System.Net.Dns.GetHostName();
 
             //actor.SendMessage(aMsg,new actTag(new Uri("http://"+localhost+"/ARnActorServer/",UriKind.Absolute),"1")) ;

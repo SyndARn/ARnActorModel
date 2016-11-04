@@ -34,16 +34,19 @@ namespace Actor.Util
     {
         public static void Store(this IActor actor, string aData)
         {
+            CheckArg.Actor(actor);
             actor.SendMessage(aData);
         }
         public static IFuture<string> Retrieve(this IActor actor)
         {
+            CheckArg.Actor(actor);
             IFuture<string> future = new Future<string>();
             actor.SendMessage(future);
             return future;
         }
         public static string RetrieveSync(this IActor actor)
         {
+            CheckArg.Actor(actor);
             IFuture<string> future = new Future<string>();
             actor.SendMessage(future);
             return future.Result();

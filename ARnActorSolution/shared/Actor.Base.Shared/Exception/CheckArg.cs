@@ -10,7 +10,7 @@ namespace Actor.Base
 {
     public static class CheckArg
     {
-        public static void Stream(Stream aStream)
+        public static void Stream([ValidatedNotNull]Stream aStream)
         {
             if (aStream == null)
             {
@@ -18,7 +18,7 @@ namespace Actor.Base
             }
         }
 
-        public static void Address(string anAddress)
+        public static void Address([ValidatedNotNull]string anAddress)
         {
             if (string.IsNullOrEmpty(anAddress))
             {
@@ -26,7 +26,7 @@ namespace Actor.Base
             }
         }
 
-        public static void Behavior(IBehavior aBehavior)
+        public static void Behavior([ValidatedNotNull]IBehavior aBehavior)
         {
             if (aBehavior == null)
             {
@@ -34,7 +34,7 @@ namespace Actor.Base
             }
         }
 
-        public static void BehaviorParam(params IBehavior[] someBehaviors)
+        public static void BehaviorParam([ValidatedNotNull]params IBehavior[] someBehaviors)
         {
             if (someBehaviors == null)
             {
@@ -42,7 +42,7 @@ namespace Actor.Base
             }
         }
 
-        public static void Behaviors(Behaviors someBehaviors)
+        public static void Behaviors([ValidatedNotNull]Behaviors someBehaviors)
         {
             if (someBehaviors == null)
             {
@@ -50,7 +50,7 @@ namespace Actor.Base
             }
         }
 
-        public static void IEnumerable([ValidatedNotNullAttribute] IEnumerable enumerables)
+        public static void IEnumerable([ValidatedNotNull] IEnumerable enumerables)
         {
             if (enumerables == null)
             {
@@ -58,7 +58,7 @@ namespace Actor.Base
             }
         }
 
-        public static void Actor([ValidatedNotNullAttribute] IActor anActor)
+        public static void Actor([ValidatedNotNull] IActor anActor)
         {
             if (anActor == null)
             {
@@ -66,7 +66,15 @@ namespace Actor.Base
             }
         }
 
-        public static void Pattern(Func<object, bool> aPattern)
+        public static void Future([ValidatedNotNull] IFuture aFuture)
+        {
+            if (aFuture == null)
+            {
+                throw new ActorException("future must exist");
+            }
+        }
+
+        public static void Pattern([ValidatedNotNull]Func<object, bool> aPattern)
         {
             if (aPattern == null)
             {

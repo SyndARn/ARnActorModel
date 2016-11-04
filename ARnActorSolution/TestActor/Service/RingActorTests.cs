@@ -1,17 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
 
 
 namespace TestActor
 {
     [TestClass()]
-    public class actRingTests
+    public class RingActorTests
     {
         TestLauncherActor fLauncher;
 
@@ -22,7 +17,7 @@ namespace TestActor
         }
 
         [TestMethod()]
-        public void actRingTest()
+        public void RingActorTest()
         {
             fLauncher.SendAction(() =>
             {

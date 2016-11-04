@@ -35,7 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\DataProxy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Workflow\actWorkflow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workflow\WorkflowActor.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Workflow\Image1.png" />

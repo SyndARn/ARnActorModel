@@ -1,8 +1,0 @@
-﻿
-
-
-
-|_x+n_|=|_x_|+n 
-\lfloor x \rfloor=\max\, \{m\in\mathbb{Z}\mid m\le x\},
-
-x \,\bmod\, y = x-y\left\lfloor \frac{x}{y}\right\rfloor.

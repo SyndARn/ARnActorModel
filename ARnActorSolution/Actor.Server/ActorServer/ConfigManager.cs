@@ -70,6 +70,7 @@ namespace Actor.Server
         }
 
         private ISerializeService fSerializeService;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public ISerializeService GetSerializeService()
         {
             if (fSerializeService == null)
@@ -137,7 +138,7 @@ namespace Actor.Server
             // Ne modifiez pas ce code. Placez le code de nettoyage dans Dispose(bool disposing) ci-dessus.
             Dispose(true);
             // TODO: supprimer les marques de commentaire pour la ligne suivante si le finaliseur est remplacé ci-dessus.
-            // GC.SuppressFinalize(this);
+             GC.SuppressFinalize(this);
         }
         #endregion
     }

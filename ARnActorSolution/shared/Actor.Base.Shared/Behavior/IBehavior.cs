@@ -32,35 +32,35 @@ namespace Actor.Base
     public interface IBehavior 
     {
         void LinkBehaviors(Behaviors someBehaviors);
-        void StandardApply(Object aT);
-        bool StandardPattern(Object aT);
-        TaskCompletionSource<Object> StandardCompletion {get;}
+        void StandardApply(object aT);
+        bool StandardPattern(object aT);
+        TaskCompletionSource<object> StandardCompletion {get;}
     }
 
     public interface IBehavior<T> : IBehavior 
     {
-        Func<T,Boolean> Pattern { get; }
+        Func<T, bool> Pattern { get; }
         Action<T> Apply { get; }
         TaskCompletionSource<T> Completion { get; }
     }
 
     public interface IBehavior<T1,T2> : IBehavior
     {
-        Func<T1, T2, Boolean> Pattern { get; }
+        Func<T1, T2, bool> Pattern { get; }
         Action<T1, T2> Apply { get; }
         TaskCompletionSource<Tuple<T1,T2>> Completion { get; }
     }
 
     public interface IBehavior<T1, T2, T3> : IBehavior
     {
-        Func<T1, T2, T3, Boolean> Pattern { get; }
+        Func<T1, T2, T3, bool> Pattern { get; }
         Action<T1, T2, T3> Apply { get; }
         TaskCompletionSource<Tuple<T1, T2, T3>> Completion { get; }
     }
 
     public interface IBehavior<T1, T2, T3, T4> : IBehavior
     {
-        Func<T1, T2, T3, T4, Boolean> Pattern { get; }
+        Func<T1, T2, T3, T4, bool> Pattern { get; }
         Action<T1, T2, T3, T4> Apply { get; }
         TaskCompletionSource<Tuple<T1, T2, T3, T4>> Completion { get; }
     }
