@@ -2,6 +2,7 @@
 using Actor.Server;
 using System;
 using Actor.Util;
+using System.Configuration;
 
 namespace TestActor
 {
@@ -19,11 +20,12 @@ namespace TestActor
 
         
         [TestMethod()]
-        [Ignore]
         public void RegisterUnregisterTest()
         {
             TestLauncherActor.Test(() =>
             {
+                ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
+                ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
                 var actor = new StateFullActor<string>();
                 HostDirectoryActor.Register(actor);
                 SerialObject so = new SerialObject(Tuple.Create(StateAction.Set,"Test"), actor.Tag);
