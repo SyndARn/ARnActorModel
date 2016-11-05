@@ -20,6 +20,7 @@ namespace TestActor
 
         
         [TestMethod()]
+        [Ignore]
         public void RegisterUnregisterTest()
         {
             TestLauncherActor.Test(() =>
@@ -38,7 +39,7 @@ namespace TestActor
                 HostDirectoryActor.GetInstance().SendMessage(so2);
                 var result2 = actor.GetAsync(5000).Result;
                 Assert.AreEqual("Test",result2,string.Format("Expected {0} Found {1}","Test",result2));
-            },15000);
+            });
         }
         
     }
