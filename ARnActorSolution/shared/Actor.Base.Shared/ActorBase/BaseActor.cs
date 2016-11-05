@@ -363,7 +363,7 @@ namespace Actor.Base
 #if DEBUG_MSG
             if (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
 #else
-            if (! fMailBox.IsEmpty)
+            if (!fMailBox.IsEmpty)
 #endif
             {
                 TrySetInTask();

@@ -2,6 +2,7 @@
 using Actor.Server;
 using System;
 using Actor.Util;
+using System.Configuration;
 
 namespace TestActor
 {
@@ -24,6 +25,8 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
+                ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
+                ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
                 var actor = new StateFullActor<string>();
                 HostDirectoryActor.Register(actor);
                 SerialObject so = new SerialObject(Tuple.Create(StateAction.Set,"Test"), actor.Tag);
@@ -36,7 +39,7 @@ namespace TestActor
                 HostDirectoryActor.GetInstance().SendMessage(so2);
                 var result2 = actor.GetAsync(5000).Result;
                 Assert.AreEqual("Test",result2,string.Format("Expected {0} Found {1}","Test",result2));
-            },15000);
+            });
         }
         
     }

@@ -53,7 +53,7 @@ namespace Actor.Server
                     // var serv = new HostService();
                 }
                 var serv = new HostService();
-                fHost =  serv.GetHostUri(name, int.Parse(port,CultureInfo.InvariantCulture));
+                fHost = serv.GetHostUri(name, int.Parse(port, CultureInfo.InvariantCulture));
             }
             return fHost;
         }
@@ -61,12 +61,37 @@ namespace Actor.Server
         private IListenerService fListenerService;
         public IListenerService GetListenerService()
         {
+
             if (fListenerService == null)
             {
-                fListenerService = new HttpListenerService();
+                string r = ConfigurationManager.AppSettings["ListenerService"];
+                if (string.IsNullOrEmpty(r))
+                {
+                    fListenerService = new HttpListenerService();
+                }
+                else
+                {
+                    switch (r)
+                    {
+                        case "HttpListenerService":
+                            {
+                                fListenerService = new HttpListenerService();
+                                break;
+                            }
+                        case "MemoryListenerService":
+                            {
+                                fListenerService = new MemoryListenerService();
+                                break;
+                            }
+                        default:
+                            {
+                                fListenerService = new HttpListenerService();
+                                break;
+                            }
+                    }
+                }
             }
             return fListenerService;
-
         }
 
         private ISerializeService fSerializeService;
@@ -97,7 +122,7 @@ namespace Actor.Server
                             }
                     }
                 }
-                
+
             }
             return fSerializeService;
         }
@@ -138,7 +163,7 @@ namespace Actor.Server
             // Ne modifiez pas ce code. Placez le code de nettoyage dans Dispose(bool disposing) ci-dessus.
             Dispose(true);
             // TODO: supprimer les marques de commentaire pour la ligne suivante si le finaliseur est remplacé ci-dessus.
-             GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
         #endregion
     }
