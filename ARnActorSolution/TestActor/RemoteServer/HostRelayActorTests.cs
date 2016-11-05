@@ -35,7 +35,7 @@ namespace TestActor
     public class HostRelayActorTests
     {
         [TestMethod()]
-        public void DiscoTest()
+        public void HostRelayDiscoTest()
         {
             TestLauncherActor.Test(() => DoDiscoTest());
         }
