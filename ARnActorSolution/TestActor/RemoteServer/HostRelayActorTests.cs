@@ -44,7 +44,7 @@ namespace TestActor
         {
             ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
             ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
-            ActorServer.Start("default", 80, new HostRelayActor()) ;
+            ActorServer.Start("localhost", 80, new HostRelayActor()) ;
             IActor actor1 = new TestHostRelayActor("TestActor1");
 
             DiscoCommand disco = new DiscoCommand(actor1);
