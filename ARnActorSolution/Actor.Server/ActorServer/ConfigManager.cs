@@ -63,32 +63,7 @@ namespace Actor.Server
         {
             if (fListenerService == null)
             {
-                string r = ConfigurationManager.AppSettings["ListenerService"];
-                if (string.IsNullOrEmpty(r))
-                {
-                    fListenerService = new HttpListenerService();
-                }
-                else
-                {
-                    switch (r)
-                    {
-                        case "HttpListenerService":
-                            {
-                                fListenerService = new HttpListenerService();
-                                break;
-                            }
-                        case "MemoryListenerService":
-                            {
-                                fListenerService = new MemoryListenerService();
-                                break;
-                            }
-                        default:
-                            {
-                                fListenerService = new HttpListenerService();
-                                break;
-                            }
-                    }
-                }
+                fListenerService = new HttpListenerService();
             }
             return fListenerService;
 
