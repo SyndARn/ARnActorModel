@@ -31,7 +31,6 @@ namespace Actor.Server
             return "Host entries " + fUri2Actor.Count.ToString(CultureInfo.InvariantCulture);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         internal void DoStat(IActor sender)
         {
             CheckArg.Actor(sender);
@@ -65,6 +64,8 @@ namespace Actor.Server
 
         public static async Task<string> Stat(IActor sender)
         {
+            CheckArg.Actor(sender);
+
             GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoStat, sender));
 
             var task = await HostDirectoryActor.GetInstance()
@@ -74,22 +75,22 @@ namespace Actor.Server
 
         public static void Register(IActor anActor)
         {
+            CheckArg.Actor(anActor);
             GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoRegister, anActor)); 
         }
 
         public static void Unregister(IActor anActor)
         {
+            CheckArg.Actor(anActor);
             GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoUnregister, anActor));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         internal void DoRegister(IActor anActor)
         {
             CheckArg.Actor(anActor);
             fUri2Actor[anActor.Tag.Key()] = new WeakReference<IActor>(anActor) ;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         internal void DoUnregister(IActor anActor)
         {
             CheckArg.Actor(anActor);
