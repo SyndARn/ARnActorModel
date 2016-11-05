@@ -83,6 +83,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -134,6 +135,7 @@
     <Compile Include="MapReduce\MapReduceTesting.cs" />
     <Compile Include="ProcessActor\ProcessActorTests.cs" />
     <Compile Include="QueueFactory\QueueFactoryTest.cs" />
+    <Compile Include="RemoteServer\HostRelayActorTests.cs" />
     <Compile Include="RemoteServer\MemoryContextCommTests.cs" />
     <Compile Include="RemoteServer\MemoryListener\MemoryListenerServiceTests.cs" />
     <Compile Include="Serializer\NetDataContract\NetDataContractSerializeServiceTests.cs" />

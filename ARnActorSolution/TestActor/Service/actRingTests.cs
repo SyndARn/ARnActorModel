@@ -11,7 +11,7 @@ using Actor.Base;
 namespace TestActor
 {
     [TestClass()]
-    public class actRingTests
+    public class RingActorTests
     {
         TestLauncherActor fLauncher;
 
