@@ -29,7 +29,7 @@ namespace Actor.Server
             MemoryStream clone = new MemoryStream();
             stream.CopyTo(clone);
             clone.Seek(0, SeekOrigin.Begin);
-            future.SendMessage(clone);
+            future.SendMessage((Stream)clone);
         }
     }
 }
