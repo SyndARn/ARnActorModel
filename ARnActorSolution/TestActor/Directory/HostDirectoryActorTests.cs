@@ -31,13 +31,13 @@ namespace TestActor
                 HostDirectoryActor.Register(actor);
                 SerialObject so = new SerialObject(Tuple.Create(StateAction.Set,"Test"), actor.Tag);
                 HostDirectoryActor.GetInstance().SendMessage(so);
-                var result = actor.GetAsync(5000).Result;
+                var result = actor.GetAsync(10000).Result;
                 Assert.AreEqual(result, "Test");
 
                 HostDirectoryActor.Unregister(actor);
                 SerialObject so2 = new SerialObject(Tuple.Create(StateAction.Set, "Test2"), actor.Tag);
                 HostDirectoryActor.GetInstance().SendMessage(so2);
-                var result2 = actor.GetAsync(5000).Result;
+                var result2 = actor.GetAsync(10000).Result;
                 Assert.AreEqual("Test",result2,string.Format("Expected {0} Found {1}","Test",result2));
             });
         }
