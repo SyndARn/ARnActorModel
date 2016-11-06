@@ -3,6 +3,8 @@ using Actor.Server;
 using System;
 using Actor.Util;
 using System.Configuration;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace TestActor
 {
@@ -18,8 +20,30 @@ namespace TestActor
             Assert.IsTrue(stat.Contains("Host entries"));
         }
 
-        
+
         [TestMethod()]
+        public void RegisterUnregisterTestV2()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
+                ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
+                ActorServer.Start("localhost", 80, new HostRelayActor());
+                var actor = new StateFullActor<string>();
+                HostDirectoryActor.Register(actor);
+                Task.Delay(5000).Wait();
+                var stat = HostDirectoryActor.GetInstance().GetEntries();
+                Assert.IsTrue(stat.Count(t => t == actor.Tag.Key()) == 1);
+
+                HostDirectoryActor.Unregister(actor);
+                Task.Delay(5000).Wait();
+                var stat2 = HostDirectoryActor.GetInstance().GetEntries();
+                Assert.IsTrue(stat2.Count(t => t == actor.Tag.Key()) == 0);
+            });
+        }
+
+        [TestMethod()]
+        [Ignore]
         public void RegisterUnregisterTest()
         {
             TestLauncherActor.Test(() =>
