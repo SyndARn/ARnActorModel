@@ -36,7 +36,7 @@ namespace TestActor
 
         public static void Test(Action action)
         {
-            Test(action, 10000);
+            Test(action, 20000);
         }
 
         public static void Test(Action action, int timeOutMS)
