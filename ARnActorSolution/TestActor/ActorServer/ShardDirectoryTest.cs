@@ -8,7 +8,6 @@ using Actor.Server;
 namespace TestActor
 {
     [TestClass]
-    [Ignore]
     public class ShardDirectoryTest
     {
 

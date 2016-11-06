@@ -18,10 +18,9 @@ namespace Actor.Server
     {
         public Uri GetHostUri(string name, int port)
         {
-            var localhost = Dns.GetHostName();
             var prefix = "http://";
             var suffix = ":" + port.ToString(CultureInfo.InvariantCulture);
-            var fullhost = prefix + localhost + suffix + "/" + name + "/";
+            var fullhost = prefix + name + suffix + "/" ;
 
             return new Uri(fullhost);
         }
@@ -36,24 +35,24 @@ namespace Actor.Server
         {
             if (fHost == null)
             {
-                string r = ConfigurationManager.AppSettings["HostService"];
-                string name = ConfigurationManager.AppSettings["HostName"];
-                string port = ConfigurationManager.AppSettings["HostPort"];
-                if (string.IsNullOrEmpty(name))
+                string hostService = ConfigurationManager.AppSettings["HostService"];
+                string hostName = ConfigurationManager.AppSettings["HostName"];
+                string hostPort = ConfigurationManager.AppSettings["HostPort"];
+                if (string.IsNullOrEmpty(hostName))
                 {
-                    name = "ARnActorServer";
+                    hostName = "ARnActorServer";
                 }
-                if (string.IsNullOrEmpty(port))
+                if (string.IsNullOrEmpty(hostPort))
                 {
-                    port = "80";
+                    hostPort = "80";
                 }
                 // parse r to get a better thing than this with reflection
-                if (string.IsNullOrEmpty(r))
+                if (string.IsNullOrEmpty(hostService))
                 {
                     // var serv = new HostService();
                 }
                 var serv = new HostService();
-                fHost =  serv.GetHostUri(name, int.Parse(port,CultureInfo.InvariantCulture));
+                fHost =  serv.GetHostUri(hostName, int.Parse(hostPort,CultureInfo.InvariantCulture));
             }
             return fHost;
         }
