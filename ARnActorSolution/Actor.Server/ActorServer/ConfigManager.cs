@@ -29,6 +29,13 @@ namespace Actor.Server
     public class ConfigManager : IDisposable
     {
 
+        public ConfigManager CastForTest()
+        {
+            ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
+            ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
+            return new ConfigManager();
+        }
+
         private Uri fHost;
 
         public Uri Host()
