@@ -37,6 +37,12 @@ namespace Actor.Server
             sender.SendMessage("Host entries " + fUri2Actor.Count.ToString(CultureInfo.InvariantCulture));
         }
 
+        public IEnumerable<string> GetEntries()
+        {
+            var entries = fUri2Actor.Keys.AsEnumerable<string>();
+            return entries;
+        }
+
         public HostDirectoryActor()
             : base()
         {
