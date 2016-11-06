@@ -8,7 +8,6 @@ using Actor.Server;
 namespace TestActor
 {
     [TestClass]
-    [Ignore]
     public class ShardDirectoryTest
     {
 
@@ -45,7 +44,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                ActorServer.Start(this.ToString(), 80, new HostRelayActor());
+                ActorServer.Start("localhost", 80, new HostRelayActor());
                 new actShardDirectoryClientTest(); 
             });
         }

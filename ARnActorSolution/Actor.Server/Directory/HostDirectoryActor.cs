@@ -18,7 +18,7 @@ namespace Actor.Server
 {
     public class HostDirectoryActor : BaseActor 
     {
-        private Dictionary<String, WeakReference<IActor>> fUri2Actor = new Dictionary<String, WeakReference<IActor>>(); // actor hosted
+        private Dictionary<String, IActor> fUri2Actor = new Dictionary<String, IActor>(); // actor hosted
         private static Lazy<HostDirectoryActor> fHostDirectory = new Lazy<HostDirectoryActor>();
 
         public static HostDirectoryActor GetInstance()
@@ -31,7 +31,6 @@ namespace Actor.Server
             return "Host entries " + fUri2Actor.Count.ToString(CultureInfo.InvariantCulture);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         internal void DoStat(IActor sender)
         {
             CheckArg.Actor(sender);
@@ -52,19 +51,19 @@ namespace Actor.Server
         private void DoRouting(SerialObject aMsg)
         {
             // find host in host directory
-            WeakReference<IActor> lWeakActor = null ;
+            IActor lActor = null ;
             // get id from uri
             var lKey = aMsg.Tag.Key();
-            if (fUri2Actor.TryGetValue(lKey, out lWeakActor))
+            if (fUri2Actor.TryGetValue(lKey, out lActor))
             {
-                IActor lActor = null;
-                if (lWeakActor.TryGetTarget(out lActor))
                   lActor.SendMessage(aMsg.Data);
             }
         }
 
         public static async Task<string> Stat(IActor sender)
         {
+            CheckArg.Actor(sender);
+
             GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoStat, sender));
 
             var task = await HostDirectoryActor.GetInstance()
@@ -74,22 +73,22 @@ namespace Actor.Server
 
         public static void Register(IActor anActor)
         {
+            CheckArg.Actor(anActor);
             GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoRegister, anActor)); 
         }
 
         public static void Unregister(IActor anActor)
         {
+            CheckArg.Actor(anActor);
             GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoUnregister, anActor));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         internal void DoRegister(IActor anActor)
         {
             CheckArg.Actor(anActor);
-            fUri2Actor[anActor.Tag.Key()] = new WeakReference<IActor>(anActor) ;
+            fUri2Actor[anActor.Tag.Key()] = anActor ;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         internal void DoUnregister(IActor anActor)
         {
             CheckArg.Actor(anActor);

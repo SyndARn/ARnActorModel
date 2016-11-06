@@ -18,10 +18,9 @@ namespace Actor.Server
     {
         public Uri GetHostUri(string name, int port)
         {
-            var localhost = Dns.GetHostName();
             var prefix = "http://";
             var suffix = ":" + port.ToString(CultureInfo.InvariantCulture);
-            var fullhost = prefix + localhost + suffix + "/" + name + "/";
+            var fullhost = prefix + name + suffix + "/" ;
 
             return new Uri(fullhost);
         }
@@ -30,30 +29,37 @@ namespace Actor.Server
     public class ConfigManager : IDisposable
     {
 
+        public ConfigManager CastForTest()
+        {
+            ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
+            ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
+            return new ConfigManager();
+        }
+
         private Uri fHost;
 
         public Uri Host()
         {
             if (fHost == null)
             {
-                string r = ConfigurationManager.AppSettings["HostService"];
-                string name = ConfigurationManager.AppSettings["HostName"];
-                string port = ConfigurationManager.AppSettings["HostPort"];
-                if (string.IsNullOrEmpty(name))
+                string hostService = ConfigurationManager.AppSettings["HostService"];
+                string hostName = ConfigurationManager.AppSettings["HostName"];
+                string hostPort = ConfigurationManager.AppSettings["HostPort"];
+                if (string.IsNullOrEmpty(hostName))
                 {
-                    name = "ARnActorServer";
+                    hostName = "ARnActorServer";
                 }
-                if (string.IsNullOrEmpty(port))
+                if (string.IsNullOrEmpty(hostPort))
                 {
-                    port = "80";
+                    hostPort = "80";
                 }
                 // parse r to get a better thing than this with reflection
-                if (string.IsNullOrEmpty(r))
+                if (string.IsNullOrEmpty(hostService))
                 {
                     // var serv = new HostService();
                 }
                 var serv = new HostService();
-                fHost =  serv.GetHostUri(name, int.Parse(port,CultureInfo.InvariantCulture));
+                fHost =  serv.GetHostUri(hostName, int.Parse(hostPort,CultureInfo.InvariantCulture));
             }
             return fHost;
         }
@@ -63,7 +69,32 @@ namespace Actor.Server
         {
             if (fListenerService == null)
             {
-                fListenerService = new HttpListenerService();
+                string r = ConfigurationManager.AppSettings["ListenerService"];
+                if (string.IsNullOrEmpty(r))
+                {
+                    fListenerService = new HttpListenerService();
+                }
+                else
+                {
+                    switch (r)
+                    {
+                        case "HttpListenerService":
+                            {
+                                fListenerService = new HttpListenerService();
+                                break;
+                            }
+                        case "MemoryListenerService":
+                            {
+                                fListenerService = new MemoryListenerService();
+                                break;
+                            }
+                        default:
+                            {
+                                fListenerService = new HttpListenerService();
+                                break;
+                            }
+                    }
+                }
             }
             return fListenerService;
 

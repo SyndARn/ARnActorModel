@@ -16,25 +16,17 @@ namespace Actor.Server
         public int Port { get; private set; }
         public ISerializeService SerializeService { get; private set; }
         public IListenerService ListenerService { get; private set; }
+        public IHostService HostService { get; private set; }
         private string fFullHost = "" ;
         private HostRelayActor fActHostRelay;
         public string FullHost { get 
         {
             if (string.IsNullOrEmpty(fFullHost))
             {
-                fFullHost = Fullhost();
+                    fFullHost = new ConfigManager().Host().Host;
             }
             return fFullHost;
         } }
-
-        private string Fullhost()
-        {
-            var localhost = Dns.GetHostName();
-            var prefix = "http://";
-            var suffix = ":" + Port.ToString(CultureInfo.InvariantCulture);
-            var fullhost = prefix + localhost + suffix + "/" + Name + "/";
-            return fullhost;
-        }
 
         private static ActorServer fServerInstance = null ;
 
@@ -55,7 +47,7 @@ namespace Actor.Server
             Port = lPort;
             SerializeService = new ConfigManager().GetSerializeService();
 
-            ActorTagHelper.SetFullHost(Fullhost());
+            ActorTagHelper.SetFullHost(new ConfigManager().Host().Host);
         }
 
         private void DoInit(HostRelayActor hostRelayActor) 

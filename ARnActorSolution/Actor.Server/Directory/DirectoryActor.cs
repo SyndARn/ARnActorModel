@@ -85,11 +85,7 @@ namespace Actor.Server
         private void DoDisco(IActor anActor)
         {
             Dictionary<string, string> directory = new Dictionary<string, string>();
-            var localhost = Dns.GetHostName();
-            var servername = ActorServer.GetInstance().Name;
-            var prefix = "http://";
-            var suffix = ":" + ActorServer.GetInstance().Port.ToString(CultureInfo.InvariantCulture);
-            var fullhost = prefix + localhost + suffix + "/" + servername + "/";
+            var fullhost = new ConfigManager().Host().Host;
             foreach (string key in fDictionary.Keys)
             {
                 var value = fDictionary[key];
