@@ -18,7 +18,7 @@ namespace Actor.Server
 {
     public class HostDirectoryActor : BaseActor 
     {
-        private Dictionary<String, WeakReference<IActor>> fUri2Actor = new Dictionary<String, WeakReference<IActor>>(); // actor hosted
+        private Dictionary<String, IActor> fUri2Actor = new Dictionary<String, IActor>(); // actor hosted
         private static Lazy<HostDirectoryActor> fHostDirectory = new Lazy<HostDirectoryActor>();
 
         public static HostDirectoryActor GetInstance()
@@ -51,13 +51,11 @@ namespace Actor.Server
         private void DoRouting(SerialObject aMsg)
         {
             // find host in host directory
-            WeakReference<IActor> lWeakActor = null ;
+            IActor lActor = null ;
             // get id from uri
             var lKey = aMsg.Tag.Key();
-            if (fUri2Actor.TryGetValue(lKey, out lWeakActor))
+            if (fUri2Actor.TryGetValue(lKey, out lActor))
             {
-                IActor lActor = null;
-                if (lWeakActor.TryGetTarget(out lActor))
                   lActor.SendMessage(aMsg.Data);
             }
         }
@@ -88,7 +86,7 @@ namespace Actor.Server
         internal void DoRegister(IActor anActor)
         {
             CheckArg.Actor(anActor);
-            fUri2Actor[anActor.Tag.Key()] = new WeakReference<IActor>(anActor) ;
+            fUri2Actor[anActor.Tag.Key()] = anActor ;
         }
 
         internal void DoUnregister(IActor anActor)
