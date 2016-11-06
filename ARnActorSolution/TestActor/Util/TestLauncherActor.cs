@@ -24,7 +24,7 @@ namespace TestActor
 
         public bool Wait()
         {
-            return Wait(10000);
+            return Wait(30000);
         }
 
         public bool Wait(int ms)
@@ -36,7 +36,7 @@ namespace TestActor
 
         public static void Test(Action action)
         {
-            Test(action, 20000);
+            Test(action, 30000);
         }
 
         public static void Test(Action action, int timeOutMS)
