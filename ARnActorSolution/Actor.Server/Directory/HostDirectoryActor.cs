@@ -39,8 +39,16 @@ namespace Actor.Server
 
         public IEnumerable<string> GetEntries()
         {
+            var future = new Future<IEnumerable<string>>();
+            GetEntries(future);
+            return future.Result();
+        }
+
+        private void GetEntries(IActor actor)
+        {
+            CheckArg.Actor(actor);
             var entries = fUri2Actor.Keys.AsEnumerable<string>();
-            return entries;
+            actor.SendMessage(entries);
         }
 
         public HostDirectoryActor()

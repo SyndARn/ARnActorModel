@@ -31,12 +31,12 @@ namespace TestActor
                 ActorServer.Start("localhost", 80, new HostRelayActor());
                 var actor = new StateFullActor<string>();
                 HostDirectoryActor.Register(actor);
-                Task.Delay(1000).Wait();
+                Task.Delay(5000).Wait();
                 var stat = HostDirectoryActor.GetInstance().GetEntries();
                 Assert.IsTrue(stat.Count(t => t == actor.Tag.Key()) == 1);
 
                 HostDirectoryActor.Unregister(actor);
-                Task.Delay(1000).Wait();
+                Task.Delay(5000).Wait();
                 var stat2 = HostDirectoryActor.GetInstance().GetEntries();
                 Assert.IsTrue(stat2.Count(t => t == actor.Tag.Key()) == 0);
             });
