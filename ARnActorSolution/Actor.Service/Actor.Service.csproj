@@ -96,7 +96,7 @@
     <Compile Include="ParserActor.cs" />
     <Compile Include="ActorService.cs" />
     <Compile Include="RingActor.cs" />
-    <Compile Include="Logger\actTrace.cs" />
+    <Compile Include="Logger\TraceActor.cs" />
     <Compile Include="Logger\LoggerBehavior.cs" />
     <Compile Include="Persistent\PersistentService.cs" />
     <Compile Include="Persistent\PersistentActor.cs" />

@@ -126,14 +126,14 @@
     <Compile Include="RemoteServer\RemoteReceiverActor.cs" />
     <Compile Include="RemoteServer\TcpServer\actTcpServer.cs" />
     <Compile Include="Rest\RestReaderActor.cs" />
-    <Compile Include="Serializer\ActorSurrogator.cs" />
+    <Compile Include="Serializer\NetDataContract\ActorSurrogator.cs" />
     <Compile Include="Serializer\DataContractObject.cs" />
     <Compile Include="Serializer\ISerializeService.cs" />
     <Compile Include="Serializer\JSON.cs" />
     <Compile Include="Serializer\NetDataContract\NetDataContractSerializeService.cs" />
     <Compile Include="Serializer\NetDataContract\NetDataActorSerializer.cs" />
-    <Compile Include="Serializer\SerializationHelper.cs" />
-    <Compile Include="Serializer\SerialObject.cs" />
+    <Compile Include="Serializer\NetDataContract\SerializationHelper.cs" />
+    <Compile Include="Serializer\NetDataContract\SerialObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ARnActorKey.snk" />

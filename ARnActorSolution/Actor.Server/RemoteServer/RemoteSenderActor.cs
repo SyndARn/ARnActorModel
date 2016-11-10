@@ -44,6 +44,7 @@ namespace Actor.Server
 
         private ISerializeService fSerializeService;
 
+        // Don't touch !
         public ActorTag fRemoteTag;
 
         public static void CompleteInitialize(RemoteSenderActor anActor)
@@ -81,7 +82,7 @@ namespace Actor.Server
                 ms.Seek(0, SeekOrigin.Begin);
 
                 IContextComm contextComm = ActorServer.GetInstance().ListenerService.GetCommunicationContext();
-                contextComm.SendStream(so.Tag.Uri,ms);
+                contextComm.SendStream(so.Tag.Host,ms);
 
             }
             finally

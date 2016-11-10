@@ -23,17 +23,19 @@ namespace Actor.Server.Tests
                     {
                         EnumerableActor<string> memLogger = new EnumerableActor<string>();
                         IActor broker = new BrokerActor<string>();
-                        foreach(var item in Enumerable.Range(1,10))
-                        {
-                            IActor worker = new WorkerActorTestString(memLogger);
-                            broker.SendMessage(BrokerAction.RegisterWorker, worker);
-                        }
-                        foreach(var item in Enumerable.Range(1,10))
-                        {
-                            IActor client = new BaseActor();
-                            string s = string.Format(CultureInfo.InvariantCulture,"Test range {0}", item);
-                            broker.SendMessage(s);
-                        }
+                        Enumerable.Range(1, 10).All((t) =>
+                         {
+                             IActor worker = new WorkerActorTestString(memLogger);
+                             broker.SendMessage(BrokerAction.RegisterWorker, worker);
+                             return true;
+                         });
+                        Enumerable.Range(1, 10).All(t =>
+                         {
+                             IActor client = new BaseActor();
+                             string s = string.Format(CultureInfo.InvariantCulture, "Test range {0}", t);
+                             broker.SendMessage(s);
+                             return true;
+                         });
                         Task.Delay(5000).Wait();
                         Assert.AreEqual(10, memLogger.Count);
                     });

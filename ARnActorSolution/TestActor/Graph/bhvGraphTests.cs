@@ -33,7 +33,7 @@ namespace TestActor
         }
 
         [TestMethod()]
-        public void bhvGraphTest()
+        public void BehaviorGraphTest()
         {
             fLauncher.SendAction(() =>
             {

@@ -28,9 +28,9 @@ namespace ActorWeather
             InitializeComponent();
         }
 
-        public StateFullStringCatcher fCatcher = new StateFullStringCatcher();
+        private StateFullStringCatcher fCatcher = new StateFullStringCatcher();
 
-        public RestReaderActor fReader = new RestReaderActor();
+        private RestReaderActor fReader = new RestReaderActor();
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {

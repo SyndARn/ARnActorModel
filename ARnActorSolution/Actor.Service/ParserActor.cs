@@ -77,7 +77,7 @@ namespace Actor.Service
                     }
                     else
                     {
-                        aServer = new ConnectActor(this, fParserServer.Uri, "ParserServer");
+                        aServer = new ConnectActor(this, fParserServer.Host, "ParserServer");
                     }
                     foreach (string s in t)
                     {

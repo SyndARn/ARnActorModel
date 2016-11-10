@@ -25,7 +25,7 @@ namespace TestActor
                 actor1.SendMessage("Test 3");
             });
 
-            var query = mts.GetMessages().ToList();
+            var query = mts.CopyAllMessages().ToList();
             string s = string.Empty;
             query.ForEach(item => s = s + item);
             Assert.AreEqual(3, query.Count(), s);

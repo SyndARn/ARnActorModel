@@ -41,16 +41,26 @@ namespace Actor.Base
         internal static long CastNewTagId()
         {
 
+#if !NETFX_CORE
+
+            if (fBaseId == 0)
+            {
+                fBaseId = (long)Thread.CurrentThread.ManagedThreadId << 32;
+            }
+#endif
             return fBaseId++;
         }
 
         private static string fFullHost = "";
 
-        public static string GetFullHost() { return fFullHost;  }
-
-        public static void SetFullHost(string aValue)
+        public static string FullHost
         {
-            fFullHost = aValue;
+            get
+            { return fFullHost; }
+            set
+            {
+                fFullHost = value;
+            }
         }
 
     }
@@ -62,7 +72,7 @@ namespace Actor.Base
     public class ActorTag : IEquatable<ActorTag>
     {
         [DataMember]
-        private string fUri;
+        private string fHost;
         [DataMember]
         private bool fIsRemote;
         [DataMember]
@@ -70,28 +80,28 @@ namespace Actor.Base
         [DataMember]
         private int fUriHash;
 
-        public string Uri
+        public string Host
         {
             get
             {
-                return fUri;
+                return fHost;
             }
         }
 
         public ActorTag()
         {
             fId = ActorTagHelper.CastNewTagId();
-            fUri = ActorTagHelper.GetFullHost();
+            fHost = ActorTagHelper.FullHost;
             fIsRemote = false;
-            fUriHash = string.IsNullOrEmpty(fUri) ? 0 : fUri.GetHashCode();
+            fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
         }
 
         public ActorTag(string lHostUri)
         {
             fId = ActorTagHelper.CastNewTagId();
-            fUri = lHostUri;
+            fHost = lHostUri;
             fIsRemote = true;
-            fUriHash = string.IsNullOrEmpty(fUri) ? 0 : fUri.GetHashCode();
+            fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
         }
 
         public string Key()
@@ -115,7 +125,7 @@ namespace Actor.Base
         public bool Equals(ActorTag other)
         {
             if (other == null) return false;
-            return fUri == other.fUri && fIsRemote == other.fIsRemote && fId == other.fId;
+            return fHost == other.fHost && fIsRemote == other.fIsRemote && fId == other.fId;
         }
     }
 }

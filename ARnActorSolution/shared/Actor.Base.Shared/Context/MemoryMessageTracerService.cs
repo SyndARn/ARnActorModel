@@ -12,7 +12,7 @@ namespace Actor.Base
         {
             fMessageTrace.Enqueue(message == null ? "null message" : message.ToString());
         }
-        public IReadOnlyList<string> GetMessages()
+        public IReadOnlyList<string> CopyAllMessages()
         {
             string aMessage;
             List<string> messages = new List<string>();

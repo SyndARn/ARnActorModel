@@ -29,7 +29,7 @@ namespace Actor.Server
     public class ConfigManager : IDisposable
     {
 
-        public ConfigManager CastForTest()
+        public static ConfigManager CastForTest()
         {
             ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
             ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
