@@ -7,6 +7,6 @@ namespace Actor.Base
     public interface IMessageTracerService
     {
         void TraceMessage(Object message);
-        IReadOnlyList<string> GetMessages();
+        IReadOnlyList<string> CopyAllMessages();
     }
 }

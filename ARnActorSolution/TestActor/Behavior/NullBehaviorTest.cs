@@ -19,7 +19,7 @@ namespace TestActor
         }
 
         [TestMethod]
-        public void TestNullBehaviorS()
+        public void TestNullBehaviors()
         {
             var nullBhvs = new NullBehaviors();
             Assert.IsTrue(nullBhvs.AllBehaviors().Count() == 1);

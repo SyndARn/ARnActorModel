@@ -117,6 +117,7 @@ namespace Actor.Base
             Completion = null;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public Behavior(Func<T1, T2, Boolean> aPattern, TaskCompletionSource<Tuple<T1, T2>> aCompletion)
         {
             Pattern = aPattern;
@@ -160,6 +161,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public class Behavior<T1, T2, T3> : IBehavior<T1, T2, T3>, IBehavior
     {
         public Func<T1, T2, T3, bool> Pattern { get; protected set; }
@@ -203,6 +205,7 @@ namespace Actor.Base
             Completion = null;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public Behavior(Func<T1, T2, T3, bool> aPattern, TaskCompletionSource<Tuple<T1, T2, T3>> aCompletion)
         {
             Pattern = aPattern;
@@ -341,6 +344,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public class Behavior<T1, T2, T3, T4> : IBehavior<T1, T2, T3, T4>, IBehavior
     {
         public Func<T1, T2, T3, T4, bool> Pattern { get; protected set; }
@@ -384,6 +388,7 @@ namespace Actor.Base
             Completion = null;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public Behavior(Func<T1, T2, T3, T4, bool> aPattern, TaskCompletionSource<Tuple<T1, T2, T3, T4>> aCompletion)
         {
             Pattern = aPattern;

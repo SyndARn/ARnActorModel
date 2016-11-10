@@ -75,6 +75,13 @@ namespace Actor.Server
             SendMessage(new Tuple<Action<IActor, string>, IActor, string>(DoFind, anActor, aKey));
         }
 
+        public IFuture<DirectoryRequest,IActor> FindActor(string aKey)
+        {
+            IFuture<DirectoryRequest,IActor> future = new Future<DirectoryRequest, IActor>();
+            this.SendMessage((Action<IActor,string>)DoFind, (IActor)future, aKey);
+            return future;
+        }
+
         public IActor GetActorByName(string actorName)
         {
             var future = new Future<Tuple<DirectoryRequest, IActor>>();

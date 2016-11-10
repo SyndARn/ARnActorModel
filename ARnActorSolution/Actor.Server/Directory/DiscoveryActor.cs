@@ -43,6 +43,22 @@ namespace Actor.Server
             SendMessage(hostAddress) ;
         }
 
+        public DiscoveryActor(string hostAddress, IActor sender)
+            : base()
+        {
+            Become(new Behavior<string,IActor>((t,a) => { return true; },
+                Disco));
+            this.SendMessage(hostAddress, sender);
+        }
+
+        private void Disco(string hostAddress, IActor actor)
+        {
+            Become(new Behavior<Dictionary<string, string>>(t => { return true; },
+                Found));
+            var rem = new RemoteSenderActor(new ActorTag(hostAddress));
+            rem.SendMessage(new DiscoCommand(actor));
+        }
+
         private void Disco(string hostAddress)
         {
             Become(new Behavior<Dictionary<string,string>>(t => {return true ;}, 
@@ -51,12 +67,12 @@ namespace Actor.Server
             rem.SendMessage(new DiscoCommand(this));
         }
 
-        private void Found(Dictionary<string,String> aList)
+        private void Found(Dictionary<string,string> dico)
         {
             Console.WriteLine("Disco found:");
-            foreach (string s in aList.Keys)
+            foreach (string s in dico.Keys)
             {
-                Console.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0} - {1}",s,aList[s]));
+                Console.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0} - {1}",s, dico[s]));
             }
             Become(new NullBehaviors());
         }

@@ -47,7 +47,7 @@ namespace Actor.Server
             Port = lPort;
             SerializeService = new ConfigManager().GetSerializeService();
 
-            ActorTagHelper.SetFullHost(new ConfigManager().Host().Host);
+            ActorTagHelper.FullHost = new ConfigManager().Host().Host;
         }
 
         private void DoInit(HostRelayActor hostRelayActor) 

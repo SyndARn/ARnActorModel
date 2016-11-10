@@ -5,6 +5,7 @@ using Actor.Util;
 using System.Configuration;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Globalization;
 
 namespace TestActor
 {
@@ -62,7 +63,7 @@ namespace TestActor
                 SerialObject so2 = new SerialObject(Tuple.Create(StateAction.Set, "Test2"), actor.Tag);
                 HostDirectoryActor.GetInstance().SendMessage(so2);
                 var result2 = actor.GetAsync(10000).Result;
-                Assert.AreEqual("Test",result2,string.Format("Expected {0} Found {1}","Test",result2));
+                Assert.AreEqual("Test",result2,string.Format(CultureInfo.InvariantCulture,"Expected {0} Found {1}","Test",result2));
             });
         }
         

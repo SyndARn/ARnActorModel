@@ -12,6 +12,7 @@ namespace Actor.Service
     public interface IPersistentService<T>
     {
         void Write(IEventSource<T> aT);
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         IEnumerable<IEventSource<T>> Load();
     }
 

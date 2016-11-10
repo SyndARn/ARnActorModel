@@ -43,6 +43,20 @@ namespace TestActor
         }
 
         [TestMethod()]
+        public void DirectoryFindActorTest()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var dirtest = new BaseActor();
+                DirectoryActor.GetDirectory().Register(dirtest, dirtest.Tag.Key());
+                var result = DirectoryActor.GetDirectory().FindActor(dirtest.Tag.Key()).Result(5000);
+                Assert.IsTrue(result.Item1 == DirectoryActor.DirectoryRequest.Find);
+                Assert.IsNotNull(result.Item2);
+                Assert.AreEqual(dirtest, result.Item2);
+            },-1);
+        }
+
+        [TestMethod()]
         public void DirectoryActorTest()
         {
             fLauncher.SendAction(() =>

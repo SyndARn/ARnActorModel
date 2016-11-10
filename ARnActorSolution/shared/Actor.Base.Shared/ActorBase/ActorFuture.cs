@@ -59,6 +59,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public class Future<T1, T2, T3> : BaseActor, IFuture<T1, T2, T3>
     {
         public Future()

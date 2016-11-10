@@ -28,6 +28,7 @@ namespace Actor.Base
         Task<Tuple<T1, T2>> ResultAsync(int timeOutMS);
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public interface IFuture<T1, T2, T3> : IFuture
     {
         Tuple<T1, T2, T3> Result();

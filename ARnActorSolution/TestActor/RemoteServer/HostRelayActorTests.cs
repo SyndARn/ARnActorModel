@@ -16,7 +16,7 @@ namespace TestActor
     {
         private List<string> Data = new List<string>();
 
-        public TestHostRelayActor(string name)
+        public TestHostRelayActor()
         {
             Become(new Behavior<Dictionary<string, string>>(
                 d =>
@@ -45,7 +45,7 @@ namespace TestActor
             ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
             ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
             ActorServer.Start("localhost", 80, new HostRelayActor()) ;
-            IActor actor1 = new TestHostRelayActor("TestActor1");
+            IActor actor1 = new TestHostRelayActor();
 
             DiscoCommand disco = new DiscoCommand(actor1);
             RemoteSenderActor remote = new RemoteSenderActor(actor1.Tag);

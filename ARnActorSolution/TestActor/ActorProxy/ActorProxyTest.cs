@@ -6,6 +6,28 @@ using Actor.Util;
 
 namespace TestActor
 {
+
+    public interface IDataTest
+    {
+        void SetData(string aString);
+        void AskData(IFuture<string> future);
+    }
+
+    public class DataTest : IDataTest
+    {
+        private string fData;
+        public void SetData(string aString)
+        {
+            fData = aString;
+        }
+        public void AskData(IFuture<string> future)
+        {
+            CheckArg.Future(future);
+            future.SendMessage(fData);
+        }
+    }
+
+
     [TestClass]
     public class ProxyTest
     {
@@ -33,26 +55,6 @@ namespace TestActor
                 IFuture<string> result = actorTest.Retrieve();
                 Assert.AreEqual(data, result.Result());
             });
-        }
-
-        public interface IDataTest
-        {
-            void SetData(string aString);
-            void AskData(IFuture<string> future);
-        }
-
-        public class DataTest : IDataTest
-        {
-            private string fData;
-            public void SetData(string aString)
-            {
-                fData = aString;
-            }
-            public void AskData(IFuture<string> future)
-            {
-                CheckArg.Future(future);
-                future.SendMessage(fData);
-            }
         }
 
         [TestMethod]
