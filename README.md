@@ -23,6 +23,7 @@ I was looking for an actor model thing with some requirements :
 -  behavior can be attached or removed from actor, (an actor can change it's own behavior ...)
 -  actor can send messages across servers, you just need to hold a reference (an IActor interface) to another actor on a server ...
 -  some actors can behave as public services, or be supervised
+-  ARnActorModel could also be used as a basis for active object, defining an object and casting an async interface around it as a facility. 
 
 [![GitHub version](https://badge.fury.io/gh/syndarn%2Farnactormodel.svg)](https://badge.fury.io/gh/syndarn%2Farnactormodel)
 
