@@ -9,6 +9,7 @@
     <Import_RootNamespace>Actor.Util</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\MarkBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graph\BhvGraph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadCastBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudBehavior.cs" />

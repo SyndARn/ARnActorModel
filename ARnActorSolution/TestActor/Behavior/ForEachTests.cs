@@ -14,28 +14,30 @@ namespace TestActor
     [TestClass()]
     public class ForEachTests
     {
-        TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
 
         [TestMethod()]
         public void ForEachBehaviorTest()
         {
-            ConcurrentBag<string> start = new ConcurrentBag<string>();
-            ConcurrentBag<string> end = new ConcurrentBag<string>();
-            for (int i = 0; i < 100; i++)
-                start.Add(i.ToString(CultureInfo.InvariantCulture)) ;
-            var actForeach = new BaseActor(new ForEachBehavior<string>());
-            actForeach.SendMessage(new Tuple<IEnumerable<string>, Action<String>>(start,t => end.Add(t)));
-            fLauncher.Wait(2000);
-            foreach(var item in start)
+            TestLauncherActor.Test(() =>
             {
-                Assert.IsTrue(end.Contains(item));
-            }
+                ConcurrentBag<string> start = new ConcurrentBag<string>();
+                ConcurrentBag<string> end = new ConcurrentBag<string>();
+                for (int i = 0; i < 100; i++)
+                {
+                    start.Add(i.ToString(CultureInfo.InvariantCulture));
+                }
+                var actForeach = new BaseActor(new IBehavior[] { new ForEachBehavior<string>(), new MarkBehavior() } );
+                actForeach.SendMessage(new Tuple<IEnumerable<string>, Action<string>>(start, t => end.Add(t)));
+                IFuture<BehaviorMark> future = new Future<BehaviorMark>();
+                actForeach.SendMessage(BehaviorMark.Ask, (IActor)future);
+                var result = future.Result();
+                Assert.IsNotNull(result);
+                Assert.AreEqual(BehaviorMark.Reached, result);
+                foreach (var item in start)
+                {
+                    Assert.IsTrue(end.Contains(item));
+                }
+            });
         }
     }
 }

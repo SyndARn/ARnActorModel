@@ -44,10 +44,9 @@ namespace Actor.Service.Tests
         {
             BehaviorReceiveLine brl = new BehaviorReceiveLine();
             TestParserActor receive = new TestParserActor();
-            var launcher = new TestLauncherActor();
             string testLine = "A B CD E F";
             var msg = Tuple.Create((IActor)receive, testLine);
-            launcher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                // call behavior directly
                if (brl.DefaultPattern()(msg))
@@ -58,9 +57,7 @@ namespace Actor.Service.Tests
                     Assert.IsTrue(result.Count() == 5);
                     Assert.IsTrue(result.Count(c => c == "CD") == 1);
                 }
-                launcher.Finish();
             });
-            Assert.IsTrue(launcher.Wait());
         }
     }
 
@@ -72,24 +69,18 @@ namespace Actor.Service.Tests
         {
             StringParserActor parser = new StringParserActor();
             TestParserActor receive = new TestParserActor();
-            var launcher = new TestLauncherActor();
-            launcher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 parser.SendMessage((IActor)receive, "A B C D E");
-                launcher.Finish();
             });
-            Assert.IsTrue(launcher.Wait());
 
-            var launcher2 = new TestLauncherActor();
-            launcher2.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var result = receive.GetList().Result;
                 Assert.IsTrue(result.Any());
                 Assert.IsTrue(result.Count() == 5);
                 Assert.IsTrue(result.Count(c => c == "C") == 1);
-                launcher2.Finish();
             });
-            Assert.IsTrue(launcher2.Wait());
         }
     }
 
