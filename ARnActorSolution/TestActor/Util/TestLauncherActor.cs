@@ -24,7 +24,7 @@ namespace TestActor
 
         public bool Wait()
         {
-            return Wait(30000);
+            return Wait(60000);
         }
 
         public bool Wait(int ms)
