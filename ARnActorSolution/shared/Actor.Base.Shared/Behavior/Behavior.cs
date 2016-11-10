@@ -42,6 +42,15 @@ namespace Actor.Base
         {
         }
 
+        public Behaviors(IBehavior[] someBehaviors)
+        {
+            foreach(var item in someBehaviors)
+            {
+                AddBehavior(item);
+            }
+        }
+
+
         public IEnumerable<IBehavior> AllBehaviors()
         {
             return fList.ToList(); // force clone
