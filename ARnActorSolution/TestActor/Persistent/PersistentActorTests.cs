@@ -12,14 +12,6 @@ namespace TestActor
     public class PersistentActorTests
     {
 
-        TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
-
         class EventSourceTest : EventSource<string>
         {
             public EventSourceTest(string aString) : base()
@@ -37,7 +29,7 @@ namespace TestActor
         [TestMethod()]
         public void PersistentActorTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var service = new MemoizePersistentService<string>();
                 var persistent = new PersistentActor<string>(service, "TestActor");
@@ -48,9 +40,7 @@ namespace TestActor
                 var persistent2 = new PersistentActor<string>(service, "TestActor");
                 persistent2.Reload();
                 Assert.AreEqual("C", persistent2.GetCurrent().Result());
-                fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait());
         }
 
     }

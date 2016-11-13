@@ -27,14 +27,14 @@ namespace Actor.Util
             if (!observers.Contains(observer))
                 observers.Add(observer);
             IDisposable dispo = new Unsubscriber(observers, observer);
-            SendMessage(new Tuple<IActor, IDisposable>(this, dispo));
+            this.SendMessage(this, dispo);
         }
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            Task<Object> res = Receive(t => { return t is Tuple<IActor, IDisposable>; });
+            Task<Object> res = Receive(t => { return t is IMessageParam<IActor, IDisposable>; });
             SendMessage(observer);
-            var resi = res.Result as Tuple<IActor, IDisposable>;
+            var resi = res.Result as IMessageParam<IActor, IDisposable>;
             return resi.Item2;
         }
 

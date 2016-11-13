@@ -1,0 +1,50 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Actor.Base
+{
+
+    [SerializableAttribute]
+    public sealed class MessageParam<T1,T2> : IMessageParam<T1, T2>
+    {
+        public T1 Item1 { get; private set; }
+        public T2 Item2 { get; private set; }
+        public MessageParam(T1 at1, T2 at2)
+        {
+            Item1 = at1;
+            Item2 = at2;
+        }
+    }
+
+    [SerializableAttribute]
+    public class MessageParam<T1, T2, T3> : IMessageParam<T1, T2, T3>
+    {
+        public T1 Item1 { get; private set; }
+        public T2 Item2 { get; private set; }
+        public T3 Item3 { get; private set; }
+        public MessageParam(T1 at1, T2 at2, T3 at3)
+        {
+            Item1 = at1;
+            Item2 = at2;
+            Item3 = at3;
+        }
+    }
+
+    [SerializableAttribute]
+    public class MessageParam<T1, T2, T3, T4> : IMessageParam<T1, T2, T3, T4>
+    {
+        public T1 Item1 { get; private set; }
+        public T2 Item2 { get; private set; }
+        public T3 Item3 { get; private set; }
+        public T4 Item4 { get; private set; }
+        public MessageParam(T1 at1, T2 at2, T3 at3, T4 at4)
+        {
+            Item1 = at1;
+            Item2 = at2;
+            Item3 = at3;
+            Item4 = at4;
+        }
+    }
+
+}

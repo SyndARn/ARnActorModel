@@ -43,7 +43,7 @@ namespace TestActor
                 graph.AddNode(nodeA);
                 graph.AddNode(nodeB);
                 nodeA.AddEdge(nodeB);
-                var act = new Receiver<Tuple<IActor, bool>>();
+                var act = new Receiver<IMessageParam<IActor, bool>>();
                 nodeA.Adjacent(nodeB, act);
                 Assert.IsTrue(act.Call().Item2);
 
@@ -51,7 +51,7 @@ namespace TestActor
                 graph.AddNode(nodeC);
                 nodeA.AddEdge(nodeC);
 
-                var act2 = new Receiver<Tuple<IActor, IEnumerable<NodeActor<string, int>>>>();
+                var act2 = new Receiver<IMessageParam<IActor, IEnumerable<NodeActor<string, int>>>>();
                 nodeA.Neighbors(act2);
                 var r = act2.Call().Item2;
                 Assert.IsNotNull(r);

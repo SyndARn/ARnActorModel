@@ -94,7 +94,7 @@ namespace Actor.Util
 
         public void Clear()
         {
-            this.SendMessage<Action>(() => fList.Clear());
+            this.SendMessage((Action)(() => fList.Clear()));
         }
 
         public bool Contains(T item)

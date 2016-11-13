@@ -36,7 +36,7 @@ namespace Actor.Util
         {
             InternalCurrentState = startState;
             Become(new Behavior<TState>(ProcessState));
-            AddBehavior(new Behavior<Tuple<IActor, TState>>(GetState));
+            AddBehavior(new Behavior<IActor, TState>(GetState));
             if (someBehaviors != null)
                 foreach (var item in someBehaviors)
                 {
@@ -44,9 +44,9 @@ namespace Actor.Util
                 }
         }
 
-        private void GetState(Tuple<IActor, TState> sender)
+        private void GetState(IActor actor, TState state)
         {
-            sender.Item1.SendMessage(InternalCurrentState);
+            actor.SendMessage(InternalCurrentState);
         }
 
         // TODO check this
@@ -58,7 +58,7 @@ namespace Actor.Util
         public Future<TState> GetCurrentState()
         {
             var future = new Future<TState>();
-            SendMessage(new Tuple<IActor, TState>(future,InternalCurrentState));
+            this.SendMessage(future,InternalCurrentState);
             return future;
         }
     }

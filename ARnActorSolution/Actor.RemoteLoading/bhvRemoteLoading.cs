@@ -99,37 +99,37 @@ namespace Actor.RemoteLoading
                 using (FileStream str = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 {
                     str.CopyTo(mem);
-                    up.SendMessage(new Tuple<IActor, MemoryStream>(down, mem));
+                    up.SendMessage(down, mem);
                 }
             }
         }
     }
 
-    public class bhvUpload : Behavior<Tuple<IActor, MemoryStream>>
+    public class bhvUpload : Behavior<IActor, MemoryStream>
     {
         public bhvUpload()
         {
             this.Apply = Behavior;
-            this.Pattern = t => true;
+            this.Pattern = (a,s) => true;
         }
 
-        public void Behavior(Tuple<IActor, MemoryStream> msg)
+        public void Behavior(IActor actor, MemoryStream stream)
         {
 
             // divide object in chunk
             int chunkSize = 2048;
-            int memSize = msg.Item2.Capacity;
+            int memSize = stream.Capacity;
             int pos = 0;
             int chunknumber = 0;
             List<chunk> chunkList = new List<chunk>();
-            msg.Item2.Seek(0, SeekOrigin.Begin);
+            stream.Seek(0, SeekOrigin.Begin);
             while (pos < memSize)
             {
                 chunk chk = new chunk();
                 int currChunkSize = Math.Min(chunkSize, memSize - pos + 1);
                 chk.chunkPart = chunknumber++;
                 chk.data = new byte[currChunkSize];
-                msg.Item2.Read(chk.data, 0, currChunkSize);
+                stream.Read(chk.data, 0, currChunkSize);
                 pos += currChunkSize;
                 chunkList.Add(chk);
             }
@@ -137,7 +137,7 @@ namespace Actor.RemoteLoading
 
             foreach (var item in chunkList)
             {
-                msg.Item1.SendMessage(item);
+                actor.SendMessage(item);
             }
 
         }

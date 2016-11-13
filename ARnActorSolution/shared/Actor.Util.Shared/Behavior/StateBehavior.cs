@@ -35,62 +35,74 @@ namespace Actor.Util
         public StateFullActor()
             : base()
         {
-            Become(new StateBehavior<T>());
+            Become(new StateBehaviors<T>());
         }
 
         public void Set(T aT)
         {
-            SendMessage(Tuple.Create(StateAction.Set, aT));
+            this.SendMessage(StateAction.Set, aT);
         }
 
         public T Get()
         {
-            SendMessage(Tuple.Create(StateAction.Get, default(T)));
+            SendMessage(StateAction.Get);
             var retVal = Receive(t => { return t is T; });
             return retVal == null ? default(T) : (T)retVal.Result ;
         }
 
         public async Task<T> GetAsync()
         {
-            SendMessage(Tuple.Create(StateAction.Get, default(T)));
+            this.SendMessage(StateAction.Get);
             return (T) await Receive(t => { return t is T; }) ;
         }
 
         public async Task<T> GetAsync(int timeOutMS)
         {
-            SendMessage(Tuple.Create(StateAction.Get, default(T)));
+            this.SendMessage(StateAction.Get);
             return (T)await Receive(t => { return t is T; }, timeOutMS);
         }
     }
 
     public enum StateAction { Set, Get } ;
 
-    public class StateBehavior<T> : Behavior<Tuple<StateAction, T>>
+    public class StateBehaviors<T> : Behaviors
     {
-        private T fValue;
+        internal T Value;
+        public StateBehaviors() : base()
+        {
+            AddBehavior(new SetStateBehavior<T>());
+            AddBehavior(new GetStateBehavior<T>());
+        }
+    }
 
-        public StateBehavior()
+    public class SetStateBehavior<T> : Behavior<StateAction, T>
+    {
+        public SetStateBehavior()
             : base()
         {
-            fValue = default(T);
-            Pattern = t => t is Tuple<StateAction, T>;
-            Apply = t => {
-                if (t.Item1 == StateAction.Get)
-                    GetValue();
-                else
-                if (t.Item1 == StateAction.Set)
-                    SetValue(t.Item2);
-                    };
+            Pattern = (s, t) => s == StateAction.Set;
+            Apply = (s, t) => SetValue(t);
         }
 
         public void SetValue(T msg)
         {
-            fValue = msg;
+            ((StateBehaviors<T>)LinkedTo).Value = msg;
+        }
+
+    }
+
+    public class GetStateBehavior<T> : Behavior<StateAction>
+    {
+        public GetStateBehavior()
+            : base()
+        {
+            Pattern = s => s == StateAction.Get ;
+            Apply = s => GetValue();
         }
 
         public void GetValue()
         {
-            LinkedActor.SendMessage(fValue);
+            LinkedActor.SendMessage(((StateBehaviors<T>)LinkedTo).Value);
         }
     }
 

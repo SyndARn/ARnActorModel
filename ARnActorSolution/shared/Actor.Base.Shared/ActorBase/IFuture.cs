@@ -20,22 +20,22 @@ namespace Actor.Base
 
     public interface IFuture<T1, T2> : IFuture
     {
-        Tuple<T1, T2> Result();
-        Tuple<T1, T2> Result(int timeOutMS);
+        IMessageParam<T1, T2> Result();
+        IMessageParam<T1, T2> Result(int timeOutMS);
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        Task<Tuple<T1, T2>> ResultAsync();
+        Task<IMessageParam<T1, T2>> ResultAsync();
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        Task<Tuple<T1, T2>> ResultAsync(int timeOutMS);
+        Task<IMessageParam<T1, T2>> ResultAsync(int timeOutMS);
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public interface IFuture<T1, T2, T3> : IFuture
     {
-        Tuple<T1, T2, T3> Result();
-        Tuple<T1, T2, T3> Result(int timeOutMS);
+        IMessageParam<T1, T2, T3> Result();
+        IMessageParam<T1, T2, T3> Result(int timeOutMS);
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        Task<Tuple<T1, T2, T3>> ResultAsync();
+        Task<IMessageParam<T1, T2, T3>> ResultAsync();
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        Task<Tuple<T1, T2, T3>> ResultAsync(int timeOutMS);
+        Task<IMessageParam<T1, T2, T3>> ResultAsync(int timeOutMS);
     }
 }

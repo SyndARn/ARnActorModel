@@ -10,6 +10,28 @@ namespace TestActor
     public class BasicBehaviorsTest
     {
         [TestMethod]
+        public void BehaviorAndInterfaceTest()
+        {
+            IBehavior bhv = new Behavior<BaseActor>(
+                a => { } );
+
+            IActor iBaseActor = new BaseActor();
+            Assert.IsTrue(bhv.StandardPattern(iBaseActor));
+
+            BaseActor baseActor = new BaseActor();
+            Assert.IsTrue(bhv.StandardPattern(baseActor));
+
+            ActionActor actionActor = new ActionActor();
+            Assert.IsTrue(bhv.StandardPattern(baseActor));
+
+            IFuture future = new Future<string>();
+            Assert.IsTrue(bhv.StandardPattern(future));
+
+            IBehavior<IActor, IActor> bhv2 = new Behavior<IActor, IActor>((a1, a2) => { });
+            Assert.IsTrue(bhv2.StandardPattern(new MessageParam<IActor,IActor>(new BaseActor(), new Future<string>()))) ;
+        }
+
+        [TestMethod]
         public void BehaviorsSimpleTest()
         {
             var actor = new BaseActor();

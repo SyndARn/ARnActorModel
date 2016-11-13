@@ -16,15 +16,15 @@ namespace TestActor
             public actShardDirectoryClientTest() : base()
             {
                 Become(new Behavior<string>(DoStart)) ;
-                SendMessage("Start");
+                this.SendMessage("Start");
             }
 
             private void DoStart(string msg)
             {
                 // find shard in directory
                 ConnectActor connect = new ConnectActor(this, ActorServer.GetInstance().FullHost, "KnownShards");
-                var data = Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; }) ;
-                var res = data.Result as Tuple<string, ActorTag, IActor>;
+                var data = Receive(ans => { return ans is IMessageParam<string, ActorTag, IActor>; }) ;
+                var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                 var shardDir = res.Item3 ;
                 Assert.IsNotNull(shardDir) ;
                 ShardRequest req = ShardRequest.CastRequest(this,this) ;

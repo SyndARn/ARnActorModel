@@ -23,14 +23,14 @@ namespace Actor.Service.Tests
              }));
             AddBehavior(new Behavior<IActor>(a =>
             {
-                IEnumerable<string> list = fList.AsEnumerable();
-                a.SendMessage(list);
+                IEnumerable<string> enumerable = fList.AsEnumerable();
+                a.SendMessage(enumerable);
             }
             ));
         }
         public async Task<IEnumerable<string>> GetList()
         {
-            var future = new Future<IEnumerable<string>>();
+            IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
             SendMessage((IActor)future);
             return await future.ResultAsync();
         }
@@ -45,11 +45,11 @@ namespace Actor.Service.Tests
             BehaviorReceiveLine brl = new BehaviorReceiveLine();
             TestParserActor receive = new TestParserActor();
             string testLine = "A B CD E F";
-            var msg = Tuple.Create((IActor)receive, testLine);
+            IMessageParam<IActor,string> msg = new MessageParam<IActor,string>(receive, testLine);
             TestLauncherActor.Test(() =>
             {
                // call behavior directly
-               if (brl.DefaultPattern()(msg))
+               if (brl.DefaultPattern()(msg.Item1,msg.Item2))
                 {
                     brl.StandardApply(msg);
                     var result = receive.GetList().Result;
@@ -85,7 +85,7 @@ namespace Actor.Service.Tests
     }
 
     [TestClass()]
-    [Ignore]
+    // [Ignore]
     public class ParserServerActorTest
     {
         [TestMethod()]

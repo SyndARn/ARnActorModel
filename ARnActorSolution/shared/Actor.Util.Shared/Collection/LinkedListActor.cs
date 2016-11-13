@@ -41,52 +41,52 @@ namespace Actor.Util
 
     public enum LinkedListOperation { Add, First, Next, Answer } ;
 
-    public class LinkedListAddbehavior<T> : Behavior<Tuple<LinkedListOperation, T>>
+    public class LinkedListAddbehavior<T> : Behavior<LinkedListOperation, T>
     {
         public LinkedListAddbehavior()
             : base()
         {
-            Pattern = t => { return LinkedListOperation.Add.Equals(t.Item1) ; };
+            Pattern = (l,t) => { return LinkedListOperation.Add.Equals(l) ; };
             Apply = Behavior;
         }
 
-        private void Behavior(Tuple<LinkedListOperation, T> data)
+        private void Behavior(LinkedListOperation operation, T data)
         {
-                ((LinkedListBehaviors<T>)LinkedTo).fList.AddLast(data.Item2);
+                ((LinkedListBehaviors<T>)LinkedTo).fList.AddLast(data);
         }
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvLinkedListFirst<T> : Behavior<Tuple<LinkedListOperation, IActor>>
+    public class bhvLinkedListFirst<T> : Behavior<LinkedListOperation, IActor>
     {
         public bhvLinkedListFirst() : base()
         {
-            Pattern = t => { return LinkedListOperation.First.Equals(t.Item1); };
+            Pattern = (l,t) => { return LinkedListOperation.First.Equals(l); };
             Apply = Behavior;
         }
-        private void Behavior(Tuple<LinkedListOperation, IActor> Sender)
+        private void Behavior(LinkedListOperation operation, IActor Sender)
         {
             var first = ((LinkedListBehaviors<T>)LinkedTo).fList.First.Value;
-            Sender.Item2.SendMessage(Tuple.Create(LinkedListOperation.Answer, first));
+            Sender.SendMessage(LinkedListOperation.Answer, first);
         }
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvLinkedListNext<T> : Behavior<Tuple<LinkedListOperation, IActor, T>>
+    public class bhvLinkedListNext<T> : Behavior<LinkedListOperation, IActor, T>
     {
         public bhvLinkedListNext()
             : base()
         {
-            Pattern = t => { return LinkedListOperation.Next.Equals(t.Item1); };
+            Pattern = (l,i,t) => { return LinkedListOperation.Next.Equals(l); };
             Apply = Behavior;
         }
-        private void Behavior(Tuple<LinkedListOperation, IActor, T> data)
+        private void Behavior(LinkedListOperation operation, IActor actor, T data)
         {
-            var find = ((LinkedListBehaviors<T>)LinkedTo).fList.Find(data.Item3);
+            var find = ((LinkedListBehaviors<T>)LinkedTo).fList.Find(data);
             if (find != null)
             {
                 var next = find.Next;
-                data.Item2.SendMessage(Tuple.Create(LinkedListOperation.Answer, next.Value));
+                actor.SendMessage(LinkedListOperation.Answer, next.Value);
             }
         }
     }

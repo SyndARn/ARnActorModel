@@ -8,27 +8,17 @@ namespace TestActor
     public class StateBehaviorTest
     {
 
-        private static TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
-
         [TestMethod]
         public void ActorStateTest()
         {
-            fLauncher.SendAction(
+            TestLauncherActor.Test(
                 () =>
                 {
                     var stateActor = new StateFullActor<string>();
                     string strTest = "Test actStateFullActor" ;
                     stateActor.Set(strTest);
                     Assert.AreEqual(strTest, stateActor.Get());
-                    fLauncher.Finish();
                 });
-            fLauncher.Wait();
         }
     }
 }

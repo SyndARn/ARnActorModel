@@ -26,17 +26,17 @@ namespace Actor.Util
                 (o, a) => o == GraphOperation.PickUpNode,
                 (o, a) => {
                     var node = fNodeCollection.FirstOrDefault();
-                    a.SendMessage(new Tuple<IActor, NodeActor<TNode, TEdge>>(this, node));
+                    a.SendMessage(this, node);
                 }));
         }
 
         public void AddNode(NodeActor<TNode, TEdge> node)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>>(GraphOperation.AddNode, node));
+            this.SendMessage(GraphOperation.AddNode, node);
         }
         public void RemoveNode(NodeActor<TNode, TEdge> node)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>>(GraphOperation.RemoveNode, node));
+            this.SendMessage(GraphOperation.RemoveNode, node);
         }
     }
 
@@ -59,7 +59,7 @@ namespace Actor.Util
                 (o, a) => o == GraphOperation.GetEdgeValue,
                 (o, a) =>
                     {
-                    a.SendMessage(new Tuple<IActor, TEdge>(this, fData));
+                    a.SendMessage(this, fData);
                     }));
             Become(new Behavior<GraphOperation, TEdge>(
                 (o, e) => o == GraphOperation.SetEdgeValue,
@@ -94,7 +94,7 @@ namespace Actor.Util
                 (o, n) => o == GraphOperation.GetNodeValue,
                 (o, n) =>
                 {
-                    n.SendMessage(new Tuple<IActor, TNode>(this, fData));
+                    n.SendMessage(this, fData);
                 }));
             AddBehavior(new Behavior<GraphOperation, TNode>(
                 (o, n) => o == GraphOperation.SetNodeValue,
@@ -106,41 +106,41 @@ namespace Actor.Util
                 (o, n, a) => o == GraphOperation.Adjacent,
                 (o, n, a) =>
                 {
-                    a.SendMessage(new Tuple<IActor, bool>(this, Links.ContainsKey(n)));
+                    a.SendMessage(this, Links.ContainsKey(n));
                 }));
             AddBehavior(new Behavior<GraphOperation, IActor>(
                 (o, a) => o == GraphOperation.Neighbors,
                 (o, a) =>
                 {
                     var list = Links.Select(t => t.Key);
-                    a.SendMessage(new Tuple<IActor, IEnumerable<NodeActor<TNode, TEdge>>>(this, list));
+                    a.SendMessage(this, list);
                 }));
         }
 
         public void AddEdge(NodeActor<TNode,TEdge> node)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>>(GraphOperation.AddEdge, node));
+            this.SendMessage(GraphOperation.AddEdge, node);
         }
 
         public void RemoveEdge(NodeActor<TNode, TEdge> node)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>>(GraphOperation.RemoveEdge, node));
+            this.SendMessage(GraphOperation.RemoveEdge, node);
         }
 
         public void Adjacent(NodeActor<TNode,TEdge> nodeA, IActor sender)
         {
-            SendMessage(new Tuple<GraphOperation, NodeActor<TNode, TEdge>, IActor>(GraphOperation.Adjacent, nodeA, sender));
+            this.SendMessage(GraphOperation.Adjacent, nodeA, sender);
         }
 
         public void Neighbors(IActor sender)
         {
-            SendMessage(new Tuple<GraphOperation, IActor>(GraphOperation.Neighbors, sender));
+            this.SendMessage(GraphOperation.Neighbors, sender);
         }
 
-        public Future<Tuple<IActor, IEnumerable<NodeActor<TNode, TEdge>>>> Neighbors()
+        public IFuture<IActor, IEnumerable<NodeActor<TNode, TEdge>>> Neighbors()
         {
-            var future = new Future<Tuple<IActor, IEnumerable<NodeActor<TNode, TEdge>>>>();
-            SendMessage(new Tuple<GraphOperation, IActor>(GraphOperation.Neighbors, future));
+            var future = new Future<IActor, IEnumerable<NodeActor<TNode, TEdge>>>();
+            this.SendMessage(GraphOperation.Neighbors, future);
             return future;
         }
     }

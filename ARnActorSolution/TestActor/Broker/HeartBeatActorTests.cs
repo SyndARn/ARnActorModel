@@ -37,7 +37,7 @@ namespace Actor.Server.Tests
             TestLauncherActor.Test(
            () =>
            {
-               heartBeat.SendMessage((IActor)actor);
+               heartBeat.SendMessage(actor);
                Task.Delay(1000).Wait();
                Assert.IsTrue(actor.fHeartBeatReceive);
                actor.fHeartBeatReceive = false;

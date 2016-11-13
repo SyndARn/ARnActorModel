@@ -36,7 +36,7 @@ namespace TestActor
                 receiver.SendMessage("test1","test2");
                 receiver.SendMessage("test1", "test2","test3");
                 receiver.SendMessage("test1", "test2", "test3", "test4");
-                receiver.SendMessage((IActor)future);
+                receiver.SendMessage(future);
                 var result = future.Result();
                 Assert.IsNotNull(result);
                 Assert.AreEqual(4, result.Count());

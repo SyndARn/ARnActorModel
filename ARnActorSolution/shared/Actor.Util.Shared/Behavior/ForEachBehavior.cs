@@ -24,7 +24,7 @@ namespace Actor.Util
         {
             foreach (T act in list)
             {
-                new BaseActor(new DoForEachbehavior<T>()).SendMessage(Tuple.Create(act, action));
+                new BaseActor(new DoForEachbehavior<T>()).SendMessage(act, action);
             }
         }
     }

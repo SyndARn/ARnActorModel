@@ -62,31 +62,31 @@ namespace Actor.Base
 
         public SupervisorBehavior() : base()
         {
-            this.AddBehavior(new Behavior<Tuple<SupervisorAction, ISupervisedActor>>(
+            this.AddBehavior(new Behavior<SupervisorAction, ISupervisedActor>(
                 DoSupervision
                 )) ;
         }
 
-        private void DoSupervision(Tuple<SupervisorAction, ISupervisedActor> msg)
+        private void DoSupervision(SupervisorAction action, ISupervisedActor actor)
         {
-            switch(msg.Item1)
+            switch(action)
             {
                 case SupervisorAction.Register: 
                     {
-                        fSupervised.Add(msg.Item2);
+                        fSupervised.Add(actor);
                         break; 
                     }
                 case SupervisorAction.Unregister:
                     {
-                        fSupervised.Remove(msg.Item2);
+                        fSupervised.Remove(actor);
                         break;
                     }
                 case SupervisorAction.Respawn:
                     {
                         // how to relaunch this actor ?
-                        fSupervised.Remove(msg.Item2);
+                        fSupervised.Remove(actor);
                         // create actor
-                        var newactor = msg.Item2.Respawn();
+                        var newactor = actor.Respawn();
                         fSupervised.Add(newactor);
                         break;
                     }

@@ -17,7 +17,6 @@ namespace Actor.Util
 
         public MapReduceActor
             (
-                // Func<D, IEnumerable<Tuple<Km, Vm>>> parserKV,
                 Action<IActor,TData> senderKV,
                 Action<IActor, TKeyMap, TValueMap> mapKV,
                 Func<TKeyReduce, IEnumerable<TValueReduce>, TValueReduce> reduceKV,

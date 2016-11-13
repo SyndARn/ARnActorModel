@@ -68,7 +68,7 @@ namespace Actor.TestApplication
                                 // try to enum
                                 var enumerable = collect.ToList();
                                 if (enumerable.Count != 100)
-                                    throw new Exception("failed");
+                                    throw new ActorException("failed");
                                 // try a query
                                 var query = from col in collect
                                             where col.Contains('1')

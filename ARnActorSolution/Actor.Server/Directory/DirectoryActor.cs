@@ -62,29 +62,29 @@ namespace Actor.Server
 
         public void Disco(IActor anActor)
         {
-            SendMessage(new Tuple<Action<IActor>,IActor>(DoDisco, anActor));
+            this.SendMessage((Action<IActor>)DoDisco, anActor);
         }
 
         public void Register(IActor anActor, string aKey)
         {
-            SendMessage(new Tuple<Action<IActor, string>, IActor, string>(DoRegister, anActor, aKey));
+            this.SendMessage((Action<IActor,string>)DoRegister, anActor, aKey);
         }
 
         public void Find(IActor anActor, string aKey)
         {
-            SendMessage(new Tuple<Action<IActor, string>, IActor, string>(DoFind, anActor, aKey));
+            this.SendMessage((Action<IActor, string>)DoFind, anActor, aKey);
         }
 
         public IFuture<DirectoryRequest,IActor> FindActor(string aKey)
         {
             IFuture<DirectoryRequest,IActor> future = new Future<DirectoryRequest, IActor>();
-            this.SendMessage((Action<IActor,string>)DoFind, (IActor)future, aKey);
+            this.SendMessage((Action<IActor, string>)DoFind, future, aKey);
             return future;
         }
 
         public IActor GetActorByName(string actorName)
         {
-            var future = new Future<Tuple<DirectoryRequest, IActor>>();
+            var future = new Future<DirectoryRequest, IActor>();
             Find(future, actorName);
             return future.Result().Item2;
         }
@@ -113,11 +113,11 @@ namespace Actor.Server
             IActor Relative = null;
             if (fDictionary.TryGetValue(msg, out Relative))
             {
-                anActor.SendMessage(Tuple.Create(DirectoryRequest.Find,Relative));
+                anActor.SendMessage(DirectoryRequest.Find,Relative);
             }
             else
             {
-                anActor.SendMessage(new Tuple<DirectoryRequest,IActor>(DirectoryRequest.Find, null));
+                anActor.SendMessage(DirectoryRequest.Find, (IActor)null);
             }
         }
 

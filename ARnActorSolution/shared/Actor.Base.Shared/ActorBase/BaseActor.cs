@@ -165,7 +165,7 @@ namespace Actor.Base
         public async Task<object> Receive(Func<object, bool> aPattern, int timeOutMS)
         {
             CheckArg.Pattern(aPattern);
-            var lTCS = new Behavior<object>(aPattern, new TaskCompletionSource<object>());
+            var lTCS = new Behavior(aPattern, new TaskCompletionSource<object>());
             Interlocked.Increment(ref fShared.fReceive);
             fCompletions.Add(lTCS);
             AddMissedMessages();

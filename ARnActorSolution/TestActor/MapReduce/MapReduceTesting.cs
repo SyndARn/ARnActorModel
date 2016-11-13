@@ -54,7 +54,6 @@ namespace TestActor
     {
 
         [TestMethod]
-        [Ignore]
         public void TestingSimpleMapReduce()
         {
             TestLauncherActor.Test(() =>

@@ -60,7 +60,7 @@ namespace MapReduceApplication
                     string[] stab = v.Split(' ');
                     foreach (var item in stab)
                     {
-                        a.SendMessage(new Tuple<string, int>(item, 1));
+                        a.SendMessage(item, 1);
                     }
 
                 },

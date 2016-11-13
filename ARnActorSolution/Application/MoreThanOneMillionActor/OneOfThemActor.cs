@@ -74,7 +74,7 @@ namespace MoreThanOneMillionActor
                 fCount++;
                 if (fCount >= qtt)
                 {
-                    fWait.SendMessage(new Tuple<IActor,string>(this,"Finish")) ;
+                    fWait.SendMessage(this,"Finish") ;
                 }
             }));
         }

@@ -27,7 +27,7 @@ using System;
 namespace Actor.Util
 {
 
-    public class FsmBehavior<TState, TEvent> : Behavior<Tuple<TState, TEvent>>
+    public class FsmBehavior<TState, TEvent> : Behavior<TState, TEvent>
     {
         public TState StartState { get; private set; }
         public TState EndState { get; private set; }
@@ -49,16 +49,16 @@ namespace Actor.Util
             Apply = DoApply;
         }
 
-        private bool DoPattern(Tuple<TState, TEvent> aStateEvent)
+        private bool DoPattern(TState state, TEvent anEvent)
         {
-            return StartState.Equals(aStateEvent.Item1) && (Condition != null && Condition(aStateEvent.Item2));
+            return StartState.Equals(state) && (Condition != null && Condition(anEvent));
         }
 
-        private void DoApply(Tuple<TState, TEvent> aStateEvent)
+        private void DoApply(TState state, TEvent anEvent)
         {
             // first change state
             ((FsmActor<TState, TEvent>)LinkedActor).ProcessState(EndState);
-            Action?.Invoke(aStateEvent.Item2);
+            Action?.Invoke(anEvent);
         }
     }
 

@@ -39,7 +39,7 @@ namespace Actor.Server
 
         public void SendRest(Uri anUri, IActor answer) 
         {
-            SendMessage(Tuple.Create(anUri, answer));
+            this.SendMessage(anUri, answer);
         }
     }
 

@@ -21,19 +21,19 @@ namespace Actor.Util
 #if !(NETFX_CORE) || WINDOWS_UWP
             AddBehavior(new Behavior<string>(DoInit));
 #endif
-            SendMessage(aFileName);
+            this.SendMessage(aFileName);
         }
 
         public TextWriterActor(Stream aStream)
         {
             Become(new Behavior<TextWriterActor>(DoFlush));
             AddBehavior(new Behavior<Stream>(DoInit));
-            SendMessage(aStream);
+            this.SendMessage(aStream);
         }
 
         public void Flush()
         {
-            SendMessage(this);
+            this.SendMessage(this);
         }
 
         private void DoFlush(TextWriterActor actor)

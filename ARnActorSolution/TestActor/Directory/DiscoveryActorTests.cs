@@ -25,7 +25,7 @@ namespace TestActor
             ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
             ActorServer.Start("localhost", 80, new HostRelayActor());
             var future = new Future<Dictionary<string, string>>();
-            var disco = new DiscoveryActor("localhost",(IActor)future);
+            var disco = new DiscoveryActor("localhost",future);
             var result = future.Result(5000);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count == 3);

@@ -18,9 +18,9 @@ namespace Actor.Base
             return await ResultAsync();
         }
 
-        public T Result() => (T)Receive(t => t is T).Result;
+        public T Result() => (T)Receive(t => t is T).Result ;
 
-        public T Result(int timeOutMS) => (T)Receive(t => t is T, timeOutMS).Result;
+        public T Result(int timeOutMS) => (T)Receive(t => t is T, timeOutMS).Result ;
 
         public async Task<T> ResultAsync()
         {
@@ -29,7 +29,7 @@ namespace Actor.Base
 
         public async Task<T> ResultAsync(int timeOutMS)
         {
-            return (T)await Receive(t => t is T, timeOutMS);
+            return (T)await Receive(t => t is T, timeOutMS) ;
         }
     }
 
@@ -44,18 +44,18 @@ namespace Actor.Base
             return await ResultAsync();
         }
 
-        public Tuple<T1,T2> Result() => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>).Result;
+        public IMessageParam<T1,T2> Result() => (IMessageParam<T1, T2>)Receive(t => t is IMessageParam<T1, T2>).Result;
 
-        public Tuple<T1, T2> Result(int timeOutMS) => (Tuple<T1, T2>)Receive(t => t is Tuple<T1, T2>, timeOutMS).Result;
+        public IMessageParam<T1, T2> Result(int timeOutMS) => (IMessageParam<T1, T2>)Receive(t => t is IMessageParam<T1, T2>, timeOutMS).Result;
 
-        public async Task<Tuple<T1, T2>> ResultAsync()
+        public async Task<IMessageParam<T1, T2>> ResultAsync()
         {
-            return (Tuple < T1, T2 >) await Receive(t => t is Tuple<T1, T2>);
+            return (IMessageParam < T1, T2 >) await Receive(t => t is IMessageParam<T1, T2>);
         }
 
-        public async Task<Tuple<T1, T2>> ResultAsync(int timeOutMS)
+        public async Task<IMessageParam<T1, T2>> ResultAsync(int timeOutMS)
         {
-            return (Tuple<T1, T2>)await Receive(t => t is Tuple<T1, T2>,timeOutMS);
+            return (IMessageParam<T1, T2>)await Receive(t => t is IMessageParam<T1, T2>,timeOutMS);
         }
     }
 
@@ -71,18 +71,18 @@ namespace Actor.Base
             return await ResultAsync();
         }
 
-        public Tuple<T1, T2, T3> Result() => (Tuple<T1, T2, T3>)Receive(t => t is Tuple<T1, T2, T3>).Result;
+        public IMessageParam<T1, T2, T3> Result() => (IMessageParam<T1, T2, T3>)Receive(t => t is IMessageParam<T1, T2, T3>).Result;
 
-        public Tuple<T1, T2, T3> Result(int timeOutMS) => (Tuple<T1, T2, T3>)Receive(t => t is Tuple<T1, T2, T3>, timeOutMS).Result;
+        public IMessageParam<T1, T2, T3> Result(int timeOutMS) => (IMessageParam<T1, T2, T3>)Receive(t => t is IMessageParam<T1, T2, T3>, timeOutMS).Result;
 
-        public async Task<Tuple<T1, T2, T3>> ResultAsync()
+        public async Task<IMessageParam<T1, T2, T3>> ResultAsync()
         {
-            return (Tuple<T1, T2, T3>)await Receive(t => t is Tuple<T1, T2, T3>);
+            return (IMessageParam<T1, T2, T3>)await Receive(t => t is IMessageParam<T1, T2, T3>);
         }
 
-        public async Task<Tuple<T1, T2, T3>> ResultAsync(int timeOutMS)
+        public async Task<IMessageParam<T1, T2, T3>> ResultAsync(int timeOutMS)
         {
-            return (Tuple<T1, T2, T3>)await Receive(t => t is Tuple<T1, T2, T3>, timeOutMS);
+            return (IMessageParam<T1, T2, T3>)await Receive(t => t is IMessageParam<T1, T2, T3>, timeOutMS);
         }
     }
 

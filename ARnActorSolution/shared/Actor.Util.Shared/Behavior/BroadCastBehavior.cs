@@ -18,26 +18,25 @@ namespace Actor.Util
 
         public void BroadCast(T at, IEnumerable<IActor> list)
         {
-            SendMessage(Tuple.Create(at, list));
+            this.SendMessage(at, list);
         }
 
     }
 
-    public class BroadCastBehavior<T> : Behavior<Tuple<T, IEnumerable<IActor>>>
+    public class BroadCastBehavior<T> : Behavior<T, IEnumerable<IActor>>
     {
 
         public BroadCastBehavior()
         {
+            this.Pattern = (t, en) => true;
             this.Apply = Behavior ;
-            this.Pattern = t => true ;
         }
 
-        private void Behavior(Tuple<T, IEnumerable<IActor>> msg)
+        private void Behavior(T at, IEnumerable<IActor> actors)
         {
-            foreach(IActor t in msg.Item2)            
+            foreach(IActor actor in actors)            
             {
-                T brd = msg.Item1 ;
-                t.SendMessage(brd);
+                actor.SendMessage(at);
             }             
         }
     }

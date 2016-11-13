@@ -46,27 +46,27 @@ namespace Actor.Util
         }
     }
 
-    public class AddOrRemoveBehavior<T> : Behavior<Tuple<CollectionRequest, T>>
+    public class AddOrRemoveBehavior<T> : Behavior<CollectionRequest, T>
     {
 
         public AddOrRemoveBehavior()
             : base()
         {
+            this.Pattern = DefaultPattern();
             this.Apply = DoApply;
-            this.Pattern = t => { return t is Tuple<CollectionRequest, T>; };
         }
 
-        private void DoApply(Tuple<CollectionRequest, T> Data)
+        private void DoApply(CollectionRequest request, T Data)
         {
             CollectionBehaviors<T> linkedBehavior = LinkedTo as CollectionBehaviors<T>;
-            switch (Data.Item1)
+            switch (request)
             {
                 case CollectionRequest.Add:
-                    linkedBehavior.List.Add(Data.Item2);
+                    linkedBehavior.List.Add(Data);
                     linkedBehavior.LinkedActor.SendMessage(CollectionRequest.OkAdd);
                     break;
                 case CollectionRequest.Remove:
-                    linkedBehavior.List.Remove(Data.Item2);
+                    linkedBehavior.List.Remove(Data);
                     linkedBehavior.LinkedActor.SendMessage(CollectionRequest.OkRemove);
                     break;
             }
@@ -75,42 +75,42 @@ namespace Actor.Util
 
     public enum IteratorMethod { MoveNext, Current, OkCurrent, OkMoveNext } ;
 
-    public class EnumeratorBehavior<T> : Behavior<Tuple<IteratorMethod, int, IActor>>
+    public class EnumeratorBehavior<T> : Behavior<IteratorMethod, int, IActor>
     {
         public EnumeratorBehavior()
             : base()
         {
+            this.Pattern = DefaultPattern();
             this.Apply = DoApply;
-            this.Pattern = t => { return t is Tuple<IteratorMethod, int, IActor>; };
         }
 
-        private void DoApply(Tuple<IteratorMethod, int, IActor> msg)
+        private void DoApply(IteratorMethod method, int i, IActor actor)
         {
             CollectionBehaviors<T> linkedBehavior = LinkedTo as CollectionBehaviors<T>;
-            switch (msg.Item1)
+            switch (method)
             {
                 case IteratorMethod.MoveNext:
                     {
 
-                        if ((msg.Item2 < linkedBehavior.List.Count) && (msg.Item2 >= 0))
+                        if ((i < linkedBehavior.List.Count) && (i >= 0))
                         {
-                            msg.Item3.SendMessage(Tuple.Create(IteratorMethod.OkMoveNext, true));
+                            actor.SendMessage(IteratorMethod.OkMoveNext, true);
                         }
                         else
                         {
-                            msg.Item3.SendMessage(Tuple.Create(IteratorMethod.OkMoveNext, false));
+                            actor.SendMessage(IteratorMethod.OkMoveNext, false);
                         }
                         break;
                     }
                 case IteratorMethod.Current:
                     {
-                        if ((msg.Item2 >= 0) && (msg.Item2 < linkedBehavior.List.Count))
-                            msg.Item3.SendMessage(Tuple.Create(IteratorMethod.OkCurrent, linkedBehavior.List[msg.Item2]));
+                        if ((i >= 0) && (i < linkedBehavior.List.Count))
+                            actor.SendMessage(IteratorMethod.OkCurrent, linkedBehavior.List[i]);
                         else
                             Debug.WriteLine("Bad current");
                         break;
                     }
-                default: throw new ActorException(string.Format(CultureInfo.InvariantCulture,"Bad IteratorMethod call {0}", msg.Item1));
+                default: throw new ActorException(string.Format(CultureInfo.InvariantCulture,"Bad IteratorMethod call {0}", method));
             }
         }
     }
@@ -133,13 +133,13 @@ namespace Actor.Util
             Interlocked.Increment(ref fIndex);
             var task = Receive(t =>
             {
-                var tuple = t as Tuple<IteratorMethod, bool>;
-                return tuple != null && tuple.Item1 == IteratorMethod.OkMoveNext; 
+                var messageParam = t as MessageParam<IteratorMethod, bool>;
+                return messageParam != null && messageParam.Item1 == IteratorMethod.OkMoveNext; 
             }
                 ) ;
-            fCollection.SendMessage(Tuple.Create(IteratorMethod.MoveNext, fIndex, (IActor)this));
+            fCollection.SendMessage(IteratorMethod.MoveNext, fIndex, this);
             
-           return (task.Result as Tuple<IteratorMethod, bool>).Item2;
+           return (task.Result as MessageParam<IteratorMethod, bool>).Item2;
         }
 
         // better than this ?
@@ -166,11 +166,11 @@ namespace Actor.Util
             {
                 var task = Receive(t =>
                 {
-                    var tuple = t as Tuple<IteratorMethod, T>;
-                    return tuple != null &&  tuple.Item1 == IteratorMethod.OkCurrent;
+                    var messageParam = t as IMessageParam<IteratorMethod, T>;
+                    return messageParam != null && messageParam.Item1 == IteratorMethod.OkCurrent;
                 });
-                fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
-                return (task.Result as Tuple<IteratorMethod, T>).Item2;
+                fCollection.SendMessage(IteratorMethod.Current, fIndex, this);
+                return (task.Result as IMessageParam<IteratorMethod, T>).Item2;
             }
         }
 
@@ -180,11 +180,11 @@ namespace Actor.Util
             {
                 var task = Receive(t =>
                 {
-                    var tu = (Tuple<IteratorMethod, T>)t;
+                    var tu = (MessageParam<IteratorMethod, T>)t;
                     return (tu != null) && (tu.Item1 == IteratorMethod.OkCurrent) ;
                 });
-                fCollection.SendMessage(Tuple.Create(IteratorMethod.Current, fIndex, (IActor)this));
-                return (task.Result as Tuple<IteratorMethod, T>).Item2;
+                fCollection.SendMessage(IteratorMethod.Current, fIndex, (IActor)this);
+                return (task.Result as MessageParam<IteratorMethod, T>).Item2;
                 ;
             }
         }
@@ -211,7 +211,7 @@ namespace Actor.Util
 
         public async void Add(T aData)
         {
-            SendMessage(Tuple.Create(CollectionRequest.Add, aData));
+            this.SendMessage(CollectionRequest.Add, aData);
             await Receive(t =>
             {
                 var val = t is CollectionRequest;
@@ -221,7 +221,7 @@ namespace Actor.Util
 
         public async void Remove(T aData)
         {
-            SendMessage(Tuple.Create(CollectionRequest.Remove, aData));
+            this.SendMessage(CollectionRequest.Remove, aData);
             await Receive(t =>
             {
                 var val = t is CollectionRequest;

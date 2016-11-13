@@ -55,7 +55,7 @@ namespace Actor.MonteCarlo
                 var act = new actPrice();
                 List<double> list = new List<double>();
                 list.Add(i);
-                act.ConsoleWrite(Tuple.Create((IActor)this, list.AsEnumerable()));
+                act.ConsoleWrite((IActor)this, list.AsEnumerable());
             }
         }
     }
@@ -66,22 +66,22 @@ namespace Actor.MonteCarlo
 
 
 
-    public class actPrice : ActionActor<Tuple<IActor,IEnumerable<double>>>
+    public class actPrice : ActionActor<IActor,IEnumerable<double>>
     {
-        public void ConsoleWrite(Tuple<IActor,IEnumerable<double>> someDoubles)
+        public void ConsoleWrite(IActor actor, IEnumerable<double> someDoubles)
         {
-            SendAction(DoConsoleWrite, someDoubles);
+            SendAction(DoConsoleWrite, actor, someDoubles);
         }
 
-        private void DoConsoleWrite(Tuple<IActor,IEnumerable<double>> someDoubles)
+        private void DoConsoleWrite(IActor actor, IEnumerable<double> someDoubles)
         {
             double accumulator = 0 ;
-            foreach(var dbl in someDoubles.Item2)
+            foreach(var dbl in someDoubles)
             {
                 accumulator = Math.Sin(dbl);
             }
             // Console.WriteLine("action receiver " + accumulator);
-            someDoubles.Item1.SendMessage(accumulator);
+            actor.SendMessage(accumulator);
         }
     }
 }

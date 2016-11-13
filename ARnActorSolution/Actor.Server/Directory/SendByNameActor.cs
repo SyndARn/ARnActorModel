@@ -35,7 +35,7 @@ namespace Actor.Server
         public static void Send(T aData, string anActor)
         {
             var act = new SendByNameActor<T>();
-            act.SendMessage(Tuple.Create(anActor, aData));
+            act.SendMessage(anActor, aData);
         }
     }
 
@@ -52,31 +52,26 @@ namespace Actor.Server
 
         public SendByNameActor()
         {
-            Become(
-                new Behavior<Tuple<String, T>>(msg => { return msg is Tuple<string, T>; },
-                    FindBehavior));
+            Become(new Behavior<String, T>(FindBehavior));
         }
 
         // FindBehavior to find the alias in directory
-        private void FindBehavior(Tuple<String, T> msg)
+        private void FindBehavior(string msg1, T msg2)
         {
             // find in directory
-            origMessage = msg.Item2;
-            Become(new Behavior<Tuple<DirectoryActor.DirectoryRequest, IActor>>(ask => { return ask is Tuple<DirectoryActor.DirectoryRequest, IActor>; },
-                SendBehavior));
-            DirectoryActor.GetDirectory().Find(this, msg.Item1);
+            origMessage = msg2;
+            Become(new Behavior<DirectoryActor.DirectoryRequest, IActor>(SendBehavior));
+            DirectoryActor.GetDirectory().Find(this, msg1);
         }
 
         // SendBehavior to send message to actor found in directory
-        private void SendBehavior(Tuple<DirectoryActor.DirectoryRequest, IActor> ans)
+        private void SendBehavior(DirectoryActor.DirectoryRequest request, IActor actor)
         {
-            if (ans.Item2 != null)
+            if (actor != null)
             {
-                ans.Item2.SendMessage(origMessage);
+                actor.SendMessage(origMessage);
             }
-            Become(
-                new Behavior<Tuple<String, T>>(msg => { return msg is Tuple<string, T>; },
-                    FindBehavior));
+            Become(new Behavior<string, T>(FindBehavior));
         }
 
     }

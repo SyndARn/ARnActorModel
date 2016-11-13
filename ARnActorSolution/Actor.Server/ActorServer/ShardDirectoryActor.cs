@@ -104,7 +104,7 @@ namespace Actor.Server
         public async Task<IEnumerable<string>> GetAll()
         {
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
-            SendMessage(future);
+            this.SendMessage(future);
             return await future.ResultAsync();
         }
         private void DoGetAll(IFuture future)

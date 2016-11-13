@@ -78,7 +78,7 @@ namespace Actor.Server
         {
             CheckArg.Actor(sender);
 
-            GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoStat, sender));
+            GetInstance().SendMessage((Action<IActor>) GetInstance().DoStat, sender);
 
             var task = await HostDirectoryActor.GetInstance()
                 .Receive(ans => { return (ans is IActor) && (sender.Equals(((IActor)ans))); }) ;
@@ -88,13 +88,13 @@ namespace Actor.Server
         public static void Register(IActor anActor)
         {
             CheckArg.Actor(anActor);
-            GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoRegister, anActor)); 
+            GetInstance().SendMessage((Action<IActor>)GetInstance().DoRegister, anActor); 
         }
 
         public static void Unregister(IActor anActor)
         {
             CheckArg.Actor(anActor);
-            GetInstance().SendMessage(new Tuple<Action<IActor>, IActor>(GetInstance().DoUnregister, anActor));
+            GetInstance().SendMessage((Action<IActor>)GetInstance().DoUnregister, anActor);
         }
 
         internal void DoRegister(IActor anActor)
