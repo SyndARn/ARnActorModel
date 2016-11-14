@@ -8,20 +8,10 @@ namespace TestActor
     [TestClass]
     public class ActorQueueTest
     {
-        TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
-
-
-
         [TestMethod]
         public void TestActorQueue()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
                 {
                     var actorqueue = new QueueActor<string>();
                     actorqueue.Queue("a");
@@ -38,9 +28,7 @@ namespace TestActor
                     Assert.IsTrue(s.Contains("a"));
                     Assert.IsTrue(s.Contains("b"));
                     Assert.IsTrue(s.Contains("c"));
-                    fLauncher.Finish();
                 });
-            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }

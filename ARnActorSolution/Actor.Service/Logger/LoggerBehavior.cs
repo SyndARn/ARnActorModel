@@ -58,7 +58,7 @@ namespace Actor.Service
         private void DoLog(object msg)
         {
             // heartbeat
-            if (msg is Tuple<HeartBeatActor,HeartBeatAction>)
+            if (msg is IMessageParam<HeartBeatActor,HeartBeatAction>)
             {
                 if (fMessageList.Count > 0)
                 {

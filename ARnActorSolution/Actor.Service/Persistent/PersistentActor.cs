@@ -43,7 +43,7 @@ namespace Actor.Service
             AddBehavior(new Behavior<IEventSource<T>>(Transact));
             AddBehavior(new Behavior<PersistentCommand,IActor>(                
                 (c,a) => c == PersistentCommand.GetCurrent,
-                (c,a) => a.SendMessage<T>(fCurrentState)));
+                (c,a) => a.SendMessage(fCurrentState)));
         }
 
         private void Transact(IEventSource<T> anEvent)
@@ -92,7 +92,7 @@ namespace Actor.Service
         private void DoApply(PersistentCommand command, IActor sender)
         {
             var load = fService.Load();
-            sender.SendMessage<IEnumerable<IEventSource<T>>>(load);
+            sender.SendMessage(load);
         }
     }
 

@@ -22,18 +22,18 @@ namespace Actor.Service
         int fTestRun = 0;
         public RingNode()
         {
-            Become(new Behavior<Tuple<State,IActor>>(msg => 
+            Become(new Behavior<State,IActor>((s,a) => 
             {
-              return msg.Item1 == State.Start ;
+              return s == State.Start ;
             }, Behavior)) ;
         }
 
-        private void Behavior(Tuple<State, IActor> msg)
+        private void Behavior(State s, IActor a)
         {
-            fNextNode = msg.Item2;
+            fNextNode = a;
             Become(
                 new Behavior<ActorTag>(t =>
-                { return (ActorTag)t != null; }, Running));
+                { return t != null; }, Running));
         }
 
         private void Running(ActorTag msg)
@@ -96,11 +96,11 @@ namespace Actor.Service
                     firstNode = act;
                 else
                     prevNode.SendMessage(
-                        Tuple.Create(State.Start, act));
+                        State.Start, act);
                 prevNode = act;
             }
             prevNode.SendMessage(
-                Tuple.Create(State.Start, (IActor)null));
+                State.Start, (IActor)null);
             lastNode = prevNode;
             Become(new Behavior<bool>(msg => { return msg; }, Test));
             SendMessage(true);

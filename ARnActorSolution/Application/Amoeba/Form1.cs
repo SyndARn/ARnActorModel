@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Actor.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -29,7 +30,7 @@ namespace Amoeba
         {
             if (resultActor != null)
             {
-                Tuple<long, long> data = await resultActor.GetResult().ResultAsync();
+                IMessageParam<long, long> data = await resultActor.GetResult().ResultAsync();
                 textBox1.AppendText(string.Format("Somme {0} Quantité {1} \n", data.Item1, data.Item2)) ;
             }
         }

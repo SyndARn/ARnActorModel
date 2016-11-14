@@ -44,12 +44,12 @@ namespace Actor.Base
         TaskCompletionSource<T> Completion { get; }
     }
 
-    public interface IBehavior<T1,T2> : IBehavior
+    public interface IBehavior<T1, T2> : IBehavior
     {
         Func<T1, T2, bool> Pattern { get; }
         Action<T1, T2> Apply { get; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        TaskCompletionSource<Tuple<T1,T2>> Completion { get; }
+        TaskCompletionSource<IMessageParam<T1,T2>> Completion { get; }
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
@@ -58,7 +58,7 @@ namespace Actor.Base
         Func<T1, T2, T3, bool> Pattern { get; }
         Action<T1, T2, T3> Apply { get; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        TaskCompletionSource<Tuple<T1, T2, T3>> Completion { get; }
+        TaskCompletionSource<IMessageParam<T1, T2, T3>> Completion { get; }
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
@@ -67,6 +67,6 @@ namespace Actor.Base
         Func<T1, T2, T3, T4, bool> Pattern { get; }
         Action<T1, T2, T3, T4> Apply { get; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        TaskCompletionSource<Tuple<T1, T2, T3, T4>> Completion { get; }
+        TaskCompletionSource<IMessageParam<T1, T2, T3, T4>> Completion { get; }
     }
 }

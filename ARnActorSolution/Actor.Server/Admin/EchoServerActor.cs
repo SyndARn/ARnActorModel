@@ -51,18 +51,18 @@ namespace Actor.Server
 
         public void Connect(string aServerName)
         {
-            Become(new Behavior<Tuple<string, string>>(t => { return t.Item1 == "Connect"; }, DoConnect));
-            SendMessage(Tuple.Create("Connect", aServerName));
+            Become(new Behavior<string, string>((s1,s2) => { return s1 == "Connect"; }, DoConnect));
+            this.SendMessage("Connect", aServerName);
         }
 
-        protected void DoConnect(Tuple<string, string> msgcon)
+        protected void DoConnect(string order, string host)
         {
             // find in directory
-            DirectoryActor.GetDirectory().Find(this, msgcon.Item2);
-            Receive(ask => { return (ask is Tuple<DirectoryActor.DirectoryRequest, IActor>); }).ContinueWith(
+            DirectoryActor.GetDirectory().Find(this, host);
+            Receive(ask => { return (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>); }).ContinueWith(
                 r =>
                 {
-                    Tuple<DirectoryActor.DirectoryRequest, IActor> ans = (Tuple<DirectoryActor.DirectoryRequest, IActor>)(r.Result);
+                    IMessageParam<DirectoryActor.DirectoryRequest, IActor> ans = (IMessageParam<DirectoryActor.DirectoryRequest, IActor>)(r.Result);
                     if (ans.Item2 != null)
                     {
                         SendByName<string>.Send("Server found", "Console");
@@ -82,7 +82,7 @@ namespace Actor.Server
                     else
                     {
                         // Console.WriteLine("Retry");
-                        SendMessage(msgcon);
+                        this.SendMessage(order,host);
                         // Become(null);
                     }
                 });

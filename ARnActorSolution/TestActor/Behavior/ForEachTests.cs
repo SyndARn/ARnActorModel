@@ -27,9 +27,9 @@ namespace TestActor
                     start.Add(i.ToString(CultureInfo.InvariantCulture));
                 }
                 var actForeach = new BaseActor(new IBehavior[] { new ForEachBehavior<string>(), new MarkBehavior() } );
-                actForeach.SendMessage(new Tuple<IEnumerable<string>, Action<string>>(start, t => end.Add(t)));
+                actForeach.SendMessage((IEnumerable<string> )start, (Action<string>) end.Add);
                 IFuture<BehaviorMark> future = new Future<BehaviorMark>();
-                actForeach.SendMessage(BehaviorMark.Ask, (IActor)future);
+                actForeach.SendMessage(BehaviorMark.Ask, future);
                 var result = future.Result();
                 Assert.IsNotNull(result);
                 Assert.AreEqual(BehaviorMark.Reached, result);

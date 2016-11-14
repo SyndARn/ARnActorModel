@@ -40,28 +40,28 @@ namespace Actor.Base
         public ActionBehavior()
             : base()
         {
-            Pattern = t => { return t is Action ;} ;
+            Pattern = DefaultPattern();
             Apply = t => t.Invoke() ;
         }
     }
 
-    public class ActionBehavior<T> : Behavior<Tuple<Action<T>, T>>
+    public class ActionBehavior<T> : Behavior<Action<T>, T>
     {
         public ActionBehavior()
             : base()
         {
-            Pattern = t => { return t is Tuple<Action<T>, T> ; };
-            Apply = t => { t.Item1.Invoke(t.Item2); };
+            Pattern = DefaultPattern();
+            Apply = (a,t) => { a.Invoke(t); };
         }
     }
 
-    public class ActionBehavior<T1,T2> : Behavior<Tuple<Action<T1,T2>, T1,T2>>
+    public class ActionBehavior<T1,T2> : Behavior<Action<T1,T2>, T1,T2>
     {
         public ActionBehavior()
             : base()
         {
-            Pattern = t => { return t is Tuple<Action<T1,T2>, T1,T2>; };
-            Apply = t => { t.Item1.Invoke(t.Item2,t.Item3); };
+            Pattern = DefaultPattern();
+            Apply = (a,t1,t2) => { a.Invoke(t1,t2); };
         }
     }
 
@@ -71,6 +71,15 @@ namespace Actor.Base
         {
             AddBehavior(new ActionBehavior());
             AddBehavior(new ActionBehavior<T>());
+        }
+    }
+
+    public class ActionBehaviors<T1,T2> : Behaviors
+    {
+        public ActionBehaviors() : base()
+        {
+            AddBehavior(new ActionBehavior());
+            AddBehavior(new ActionBehavior<T1,T2>());
         }
     }
 
@@ -87,7 +96,7 @@ namespace Actor.Base
             Become(new ActionBehavior());
         }
 
-        public void SendAction(Action anAction) => SendMessage(anAction);
+        public void SendAction(Action anAction) => this.SendMessage(anAction);
 
     }
 
@@ -104,10 +113,23 @@ namespace Actor.Base
             Become(new ActionBehaviors<T>());
         }
 
-        public void SendAction(Action anAction) => SendMessage(anAction);
+        public void SendAction(Action anAction) => this.SendMessage(anAction);
 
-        public void SendAction(Action<T> anAction, T aT) => SendMessage(Tuple.Create(anAction, aT));
+        public void SendAction(Action<T> anAction, T aT) => this.SendMessage(anAction, aT);
 
     }
 
+    public class ActionActor<T1,T2> : BaseActor
+    {
+        public ActionActor()
+            : base()
+        {
+            Become(new ActionBehaviors<T1,T2>());
+        }
+
+        public void SendAction(Action anAction) => this.SendMessage(anAction);
+
+        public void SendAction(Action<T1,T2> anAction, T1 aT1, T2 aT2) => this.SendMessage(anAction, aT1, aT2);
+
+    }
 }

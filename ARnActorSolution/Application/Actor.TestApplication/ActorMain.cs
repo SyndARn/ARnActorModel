@@ -43,8 +43,8 @@ namespace Actor.TestApplication
             }
 
             var actForeach = new BaseActor(new ForEachBehavior<string>());
-            actForeach.SendMessage(new Tuple<IEnumerable<string>, Action<String>>(list,
-                t => Console.WriteLine("list " + t)));
+            actForeach.SendMessage<IEnumerable<string>, Action<String>>(list,
+                t => Console.WriteLine("list " + t));
 
 
             Console.WriteLine("Should have work");
@@ -52,7 +52,7 @@ namespace Actor.TestApplication
             var linkedlist = new LinkedListActor<string>();
             for (int i = 0; i < 100; i++)
             {
-                linkedlist.SendMessage(Tuple.Create(LinkedListOperation.Add, i.ToString()));
+                linkedlist.SendMessage(LinkedListOperation.Add, i.ToString());
             }
 
             new EchoActor<Tuple<LinkedListOperation, string>>(linkedlist, Tuple.Create(LinkedListOperation.First, "5"));

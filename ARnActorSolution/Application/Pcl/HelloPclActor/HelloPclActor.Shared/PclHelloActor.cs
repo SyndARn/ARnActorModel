@@ -23,8 +23,8 @@ namespace HelloPclActor
 
         public async Task<string> GetState()
         {
-            var future = new Future<string>();
-            SendMessage((IActor)future);
+            IFuture<string> future = new Future<string>();
+            this.SendMessage(future);
             return await future.ResultAsync();
         }
     }

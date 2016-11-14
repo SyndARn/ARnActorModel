@@ -11,33 +11,33 @@ namespace Actor.Server
     {
         public ActorAdminServer()
         {
-            Become(new Behavior<Tuple<IActor, String>>(
+            Become(new Behavior<IActor, string>(
                 Behavior));
         }
 
-        private void Behavior(Tuple<IActor, String> Data)
+        private void Behavior(IActor asker, string Data)
         {
             char[] separ = { ' ' };
-            var lStrings = Data.Item2.Split(separ, StringSplitOptions.RemoveEmptyEntries);
+            var lStrings = Data.Split(separ, StringSplitOptions.RemoveEmptyEntries);
             var lOrder = lStrings[0];
-            var lData = Data.Item2.Replace(lOrder, "").TrimStart();
+            var lData = Data.Replace(lOrder, "").TrimStart();
             switch (lOrder)
             {
                 case "Shard":
                     {
                         if (string.IsNullOrEmpty(lData))
                         {
-                            ShardRequest req = ShardRequest.CastRequest(this, Data.Item1);
+                            ShardRequest req = ShardRequest.CastRequest(this, asker);
                             SendByName<ShardRequest>.Send(req, "KnownShards");
                         }
                         else
                         {
                             ConnectActor.Connect(this, lData, "KnownShards");
-                            Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; }).ContinueWith(
+                            Receive(ans => { return ans is IMessageParam<string, ActorTag, IActor>; }).ContinueWith(
                                 ans =>
                                 {
-                                    var res = ans.Result as Tuple<string, ActorTag, IActor>;
-                                    ShardRequest req = ShardRequest.CastRequest(this, Data.Item1);
+                                    var res = ans.Result as IMessageParam<string, ActorTag, IActor>;
+                                    ShardRequest req = ShardRequest.CastRequest(this, asker);
                                     res.Item3.SendMessage(req);
                                 });
                         }
@@ -46,7 +46,7 @@ namespace Actor.Server
                 case "Stat":
                     {
                         ActorStatServer sa = new ActorStatServer();
-                        sa.SendMessage(Data.Item1);
+                        sa.SendMessage(asker);
                         break;
                     }
                 case "GC":
@@ -68,8 +68,8 @@ namespace Actor.Server
                         string lHost = lData.Split(separ2)[0] ;
                         string lService = lData.Split(separ2)[1] ;
                         ConnectActor.Connect(this, lHost, lService);
-                        var data = Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; }) ;
-                        var res = data.Result as Tuple<string, ActorTag, IActor>;
+                        var data = Receive(ans => { return ans is IMessageParam<string, ActorTag, IActor>; }) ;
+                        var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                         // we got remote server adress
                         EchoClientActor aClient = new EchoClientActor();
                         aClient.Connect(res.Item1);
@@ -82,7 +82,7 @@ namespace Actor.Server
                         // local disco ?
                         if (String.IsNullOrEmpty(lData))
                         {
-                            DirectoryActor.GetDirectory().Disco(Data.Item1);
+                            DirectoryActor.GetDirectory().Disco(asker);
                         }
                         else
                         {
@@ -104,8 +104,8 @@ namespace Actor.Server
                         string lHost = lData.Split(separ2)[0];
                         string lMsg = lData.Split(separ2)[1];
                         ConnectActor.Connect(this, lHost, "RPrint");
-                        var data = Receive(ans => { return ans is Tuple<string, ActorTag, IActor>; });
-                        var res = data.Result as Tuple<string, ActorTag, IActor>;
+                        var data = Receive(ans => { return ans is IMessageParam<string, ActorTag, IActor>; });
+                        var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                         res.Item3.SendMessage("call  from " + this.Tag.Key());
                         // SendMessageTo("call from " + this.Tag.Id,res.Item3);
                         break;

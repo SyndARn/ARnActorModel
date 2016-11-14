@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Actor.Base;
+using System.Configuration;
+using Actor.Server;
 
 namespace TestActor
 {
@@ -64,10 +66,13 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
            {
+               ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
+               ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
+               ActorServer.Start("localhost", 80, new HostRelayActor());
                var parserTest = new ParserTest();
                var receiver = new TestReceiver();
                parserTest.SendMessage((IActor)receiver);
-               var future = receiver.GetResult().ResultAsync().Result;
+               var future = receiver.GetResult().Result();
                Assert.IsTrue(future.Any());
                Assert.IsTrue(future.Contains("Max"));
            });

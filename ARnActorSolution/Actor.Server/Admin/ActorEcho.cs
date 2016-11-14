@@ -13,7 +13,7 @@ namespace Actor.Server
         {
             CheckArg.Actor(dest);
             Become(new ConsoleBehavior<string>());
-            dest.SendMessage(new Tuple<IActor, T>(this, aT));
+            dest.SendMessage(this, aT);
         }
     }
 
@@ -23,7 +23,7 @@ namespace Actor.Server
         {
             CheckArg.Actor(dest);
             Become(new ConsoleBehavior());
-            dest.SendMessage((IActor)this,value);
+            dest.SendMessage(this,value);
         }
     }
 }

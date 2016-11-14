@@ -9,15 +9,15 @@ using Actor.Server ;
 namespace Actor.Service
 {
 
-    public class BehaviorReceiveLine : Behavior<Tuple<IActor, string>>
+    public class BehaviorReceiveLine : Behavior<IActor, string>
     {
         public BehaviorReceiveLine() : base()
         {
-            Pattern = t => t is Tuple<IActor,String> ;
-            Apply = t =>
+            Pattern = DefaultPattern();
+            Apply = (a,s) =>
                 {
                     IActor parser = new StringParserActor();
-                    parser.SendMessage(t);
+                    parser.SendMessage(a,s);
                 };
         }
     }
@@ -27,14 +27,14 @@ namespace Actor.Service
         public StringParserActor()
             : base()
         {
-            Become(new Behavior<Tuple<IActor,string>>(
-                t => 
+            Become(new Behavior<IActor,string>(
+                (a,s) => 
                     {
                         char[] chr = {' '} ;
-                        var stringtoparse = t.Item2.Trim().Split(chr) ;
-                        foreach (string s in stringtoparse)
+                        var stringtoparse = s.Trim().Split(chr) ;
+                        foreach (string item in stringtoparse)
                         {
-                            t.Item1.SendMessage(new Tuple<IActor,string>(this,s));
+                            a.SendMessage(this,item);
                         }
                     } 
                 )) ;
@@ -81,7 +81,7 @@ namespace Actor.Service
                     }
                     foreach (string s in t)
                     {
-                        aServer.SendMessage(new Tuple<IActor, string>(this, s));
+                        aServer.SendMessage(this, s);
                     }
                 }
             );

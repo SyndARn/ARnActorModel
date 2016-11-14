@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace TestActor
 {
     public class TestLauncherActor : ActionActor
     {
-        public Exception ExceptionCatched { get; set; }
+        public const int DefaultWait = 30000;
 
         public TestLauncherActor()
             : base()
@@ -24,7 +25,7 @@ namespace TestActor
 
         public bool Wait()
         {
-            return Wait(30000);
+            return Wait(DefaultWait);
         }
 
         public bool Wait(int ms)
@@ -36,7 +37,7 @@ namespace TestActor
 
         public static void Test(Action action)
         {
-            Test(action, 30000);
+            Test(action, DefaultWait);
         }
 
         public static void Test(Action action, int timeOutMS)
@@ -51,16 +52,14 @@ namespace TestActor
                         launcher.Finish();
                     }
                     catch (Exception e)
-                    {
-                        launcher.ExceptionCatched = e;
+                    {                        
+                        Debug.WriteLine(e.Message);
+                        Debug.WriteLine(e.StackTrace);
+                        throw ;
                     }
                 });
-            bool testResult = launcher.Wait(timeOutMS);
-            if (launcher.ExceptionCatched != null)
-            {
-                throw launcher.ExceptionCatched;
-            }
-            Assert.IsTrue(testResult, "Test Time Out");
+                bool testResult = launcher.Wait(timeOutMS);
+                Assert.IsTrue(testResult, "Test Time Out");
         }
     }
 }

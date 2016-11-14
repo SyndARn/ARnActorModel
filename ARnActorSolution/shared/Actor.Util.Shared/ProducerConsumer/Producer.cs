@@ -47,7 +47,7 @@ namespace Actor.Util
             AddBehavior(new Behavior<Work<T>>(
             t =>
             {
-                SendMessage(new Tuple<string, Work<T>>(InternalCurrentState, t));
+                this.SendMessage(InternalCurrentState, t);
             }));
         }
 
@@ -86,7 +86,7 @@ namespace Actor.Util
 
             AddBehavior(new Behavior<Work<T>>( t =>
             {
-                SendMessage(new Tuple<string, Work<T>>(this.InternalCurrentState, t));
+                this.SendMessage(InternalCurrentState, t);
             }
                 )) ;
 
@@ -137,24 +137,24 @@ namespace Actor.Util
     {
         public Chain() : base()
         {
-            Become(new Behavior<Tuple<int,int,int>>(Start));
+            Become(new Behavior<int,int,int>(Start));
         }
 
-        private void Start(Tuple<int, int, int> msg)
+        private void Start(int mi, int mj, int mk)
         {
             List<Consumer<long>> list = new List<Consumer<long>>();
 
-            for (int i = 0; i < msg.Item2; i++)
+            for (int i = 0; i < mj; i++)
                 list.Add(new Consumer<long>());
 
             Buffer<long> buffer = new Buffer<long>(list);
 
             List<Producer<long>> list2 = new List<Producer<long>>();
 
-            for (int i = 0; i < msg.Item1; i++)
+            for (int i = 0; i < mi; i++)
                 list2.Add(new Producer<long>(buffer));
 
-            for(long i = 0; i<= msg.Item3;i++)
+            for(long i = 0; i<= mk;i++)
             {
                 foreach (var prod in list2)
                     prod.SendMessage(i);

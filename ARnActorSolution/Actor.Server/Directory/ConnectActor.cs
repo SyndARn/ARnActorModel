@@ -44,7 +44,7 @@ namespace Actor.Server
             fServiceName = serviceName;
             fSender = lSender;
             Become(new Behavior<string>(DoDisco));
-            SendMessage("DoConnect");
+            this.SendMessage("DoConnect");
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "Actor.Server.ConnectActor")]
@@ -87,7 +87,7 @@ namespace Actor.Server
         private void DoConnect(ActorTag tag)
         {
             IActor remoteSend = new RemoteSenderActor(tag);
-            fSender.SendMessage(new Tuple<string, ActorTag, IActor>(fServiceName, tag, remoteSend));
+            fSender.SendMessage(fServiceName, tag, remoteSend);
         }
 
     }

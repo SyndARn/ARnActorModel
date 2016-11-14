@@ -7,6 +7,7 @@ using Actor.Base;
 
 namespace Actor.Server
 {
+    [Serializable]
     public class DiscoCommand
     {
         public IActor Sender { get; set; }

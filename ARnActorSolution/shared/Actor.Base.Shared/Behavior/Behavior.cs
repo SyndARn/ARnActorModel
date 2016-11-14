@@ -83,11 +83,68 @@ namespace Actor.Base
 
     }
 
+    public class Behavior : IBehavior
+    {
+        private Behaviors fLinkedBehaviors;
+        public void LinkBehaviors(Behaviors someBehaviors)
+        {
+            fLinkedBehaviors = someBehaviors;
+        }
+        public BaseActor LinkedActor
+        {
+            get
+            {
+                return fLinkedBehaviors != null ? fLinkedBehaviors.LinkedActor : null;
+            }
+        }
+
+        public Behavior(Func<object,bool> aPattern, TaskCompletionSource<object> aCompletion)
+        {
+            Pattern = aPattern;
+            Apply = null;
+            Completion = aCompletion;
+        }
+
+        public Behaviors LinkedTo
+        {
+            get
+            {
+                return fLinkedBehaviors;
+            }
+        }
+
+        public Func<object, bool> Pattern { get; protected set; }
+        public Action<object> Apply { get; protected set; }
+        public TaskCompletionSource<object> Completion { get; protected set; }
+        public TaskCompletionSource<object> StandardCompletion
+        {
+            get
+            {
+                return Completion;
+            }
+        }
+
+        public void StandardApply(object aT)
+        {
+            Apply?.Invoke(aT);
+        }
+
+        public bool StandardPattern(object aT)
+        {
+            if (Pattern == null)
+            {
+                return false;
+            }
+            return Pattern(aT);
+        }
+
+    }
+
     public class Behavior<T1, T2> : IBehavior<T1, T2>, IBehavior
     {
         public Func<T1, T2, bool> Pattern { get; protected set; }
         public Action<T1, T2> Apply { get; protected set; }
-        public TaskCompletionSource<Tuple<T1, T2>> Completion { get; protected set; }
+        public TaskCompletionSource<IMessageParam<T1,T2>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -127,25 +184,25 @@ namespace Actor.Base
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public Behavior(Func<T1, T2, Boolean> aPattern, TaskCompletionSource<Tuple<T1, T2>> aCompletion)
+        public Behavior(Func<T1, T2, Boolean> aPattern, TaskCompletionSource<IMessageParam<T1, T2>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
-            Completion = aCompletion;
+            Completion = aCompletion ; 
         }
 
         public Behavior()
         {
         }
 
-        public Func<T1, T2, Boolean> DefaultPattern()
+        public Func<T1, T2, bool> DefaultPattern()
         {
             return (t1,t2) => { return t1 is T1 && t2 is T2; };
         }
 
         public Behavior(Action<T1, T2> anApply)
         {
-            Pattern = (a, t) => { return a is T1 && t is T2; };
+            Pattern = (t1, t2) => { return t1 is T1 && t2 is T2; };
             Apply = anApply;
             Completion = null;
         }
@@ -154,18 +211,16 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            Tuple<T1, T2> tupleT = aT as Tuple<T1, T2>;
-            if (tupleT != null)
-                return Pattern(tupleT.Item1, tupleT.Item2);
-            else return false;
+            IMessageParam<T1, T2> MessageParamT = aT as IMessageParam<T1, T2>;
+            return MessageParamT == null ? false : Pattern(MessageParamT.Item1, MessageParamT.Item2);
         }
 
         public void StandardApply(object aT)
         {
             if (Apply != null)
             {
-                Tuple<T1, T2> tupleT = (Tuple<T1, T2>)aT;
-                Apply(tupleT.Item1, tupleT.Item2);
+                IMessageParam<T1, T2> MessageParamT = (IMessageParam<T1, T2>)aT;
+                Apply(MessageParamT.Item1, MessageParamT.Item2);
             }
         }
     }
@@ -175,7 +230,7 @@ namespace Actor.Base
     {
         public Func<T1, T2, T3, bool> Pattern { get; protected set; }
         public Action<T1, T2, T3> Apply { get; protected set; }
-        public TaskCompletionSource<Tuple<T1, T2, T3>> Completion { get; protected set; }
+        public TaskCompletionSource<IMessageParam<T1, T2, T3>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -215,7 +270,7 @@ namespace Actor.Base
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public Behavior(Func<T1, T2, T3, bool> aPattern, TaskCompletionSource<Tuple<T1, T2, T3>> aCompletion)
+        public Behavior(Func<T1, T2, T3, bool> aPattern, TaskCompletionSource<IMessageParam<T1, T2, T3>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -242,9 +297,9 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            Tuple<T1, T2, T3> tupleT = aT as Tuple<T1, T2, T3>;
-            if (tupleT != null)
-                return Pattern(tupleT.Item1, tupleT.Item2, tupleT.Item3);
+            IMessageParam<T1, T2, T3> MessageParamT = aT as IMessageParam<T1, T2, T3>;
+            if (MessageParamT != null)
+                return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
             else return false;
         }
 
@@ -252,8 +307,8 @@ namespace Actor.Base
         {
             if (Apply != null)
             {
-                Tuple<T1, T2, T3> tupleT = (Tuple<T1, T2, T3>)aT;
-                Apply(tupleT.Item1, tupleT.Item2, tupleT.Item3);
+                IMessageParam<T1, T2, T3> MessageParamT = (IMessageParam<T1, T2, T3>)aT;
+                Apply(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
             }
         }
     }
@@ -329,7 +384,7 @@ namespace Actor.Base
 
         public Behavior(Action<T> anApply)
         {
-            Pattern = t => { return t is T; };
+            Pattern = DefaultPattern();
             Apply = anApply;
             Completion = null;
         }
@@ -358,7 +413,7 @@ namespace Actor.Base
     {
         public Func<T1, T2, T3, T4, bool> Pattern { get; protected set; }
         public Action<T1, T2, T3,T4> Apply { get; protected set; }
-        public TaskCompletionSource<Tuple<T1, T2, T3, T4>> Completion { get; protected set; }
+        public TaskCompletionSource<IMessageParam<T1, T2, T3, T4>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -398,7 +453,7 @@ namespace Actor.Base
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public Behavior(Func<T1, T2, T3, T4, bool> aPattern, TaskCompletionSource<Tuple<T1, T2, T3, T4>> aCompletion)
+        public Behavior(Func<T1, T2, T3, T4, bool> aPattern, TaskCompletionSource<IMessageParam<T1, T2, T3, T4>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -416,7 +471,7 @@ namespace Actor.Base
 
         public Behavior(Action<T1, T2, T3, T4> anApply)
         {
-            Pattern = (o, d, a, r) => { return o is T1 && d is T2 && a is T3 && r is T4; };
+            Pattern = DefaultPattern();
             Apply = anApply;
             Completion = null;
         }
@@ -425,9 +480,9 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            Tuple<T1, T2, T3, T4> tupleT = aT as Tuple<T1, T2, T3, T4>;
-            if (tupleT != null)
-                return Pattern(tupleT.Item1, tupleT.Item2, tupleT.Item3, tupleT.Item4);
+            IMessageParam<T1, T2, T3, T4> MessageParamT = aT as IMessageParam<T1, T2, T3, T4>;
+            if (MessageParamT != null)
+                return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3, MessageParamT.Item4);
             else return false;
         }
 
@@ -435,8 +490,8 @@ namespace Actor.Base
         {
             if (Apply != null)
             {
-                Tuple<T1, T2, T3, T4> tupleT = (Tuple<T1, T2, T3, T4>)aT;
-                Apply(tupleT.Item1, tupleT.Item2, tupleT.Item3, tupleT.Item4);
+                IMessageParam<T1, T2, T3, T4> MessageParamT = (IMessageParam<T1, T2, T3, T4>)aT;
+                Apply(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3, MessageParamT.Item4);
             }
         }
     }

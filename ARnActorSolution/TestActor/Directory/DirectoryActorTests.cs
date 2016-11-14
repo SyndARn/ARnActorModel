@@ -34,8 +34,8 @@ namespace TestActor
             private void DoIt(IActor caller, IActor lookup, string name)
             {
                 DirectoryActor.GetDirectory().Find(this, name);
-                var task = Receive(ask => { return (ask is Tuple<DirectoryActor.DirectoryRequest, IActor>); });
-                if ((task.Result as Tuple<DirectoryActor.DirectoryRequest, IActor>).Item2 == lookup)
+                var task = Receive(ask => { return (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>); });
+                if ((task.Result as IMessageParam<DirectoryActor.DirectoryRequest, IActor>).Item2 == lookup)
                 {
                     caller.SendMessage(true);
                 }
@@ -62,7 +62,7 @@ namespace TestActor
             fLauncher.SendAction(() =>
             {
                 IActor act = new DirectoryTestActor();
-                act.SendMessage((IActor)fLauncher, (IActor)DirectoryActor.GetDirectory(), "Directory");
+                act.SendMessage(fLauncher, DirectoryActor.GetDirectory(), "Directory");
             });
             Assert.IsTrue(fLauncher.Wait(100000));
         }
