@@ -133,13 +133,13 @@ namespace Actor.Util
             Interlocked.Increment(ref fIndex);
             var task = Receive(t =>
             {
-                var messageParam = t as MessageParam<IteratorMethod, bool>;
+                var messageParam = t as IMessageParam<IteratorMethod, bool>;
                 return messageParam != null && messageParam.Item1 == IteratorMethod.OkMoveNext; 
             }
                 ) ;
             fCollection.SendMessage(IteratorMethod.MoveNext, fIndex, this);
             
-           return (task.Result as MessageParam<IteratorMethod, bool>).Item2;
+           return (task.Result as IMessageParam<IteratorMethod, bool>).Item2;
         }
 
         // better than this ?
@@ -180,11 +180,11 @@ namespace Actor.Util
             {
                 var task = Receive(t =>
                 {
-                    var tu = (MessageParam<IteratorMethod, T>)t;
+                    var tu = (IMessageParam<IteratorMethod, T>)t;
                     return (tu != null) && (tu.Item1 == IteratorMethod.OkCurrent) ;
                 });
                 fCollection.SendMessage(IteratorMethod.Current, fIndex, (IActor)this);
-                return (task.Result as MessageParam<IteratorMethod, T>).Item2;
+                return (task.Result as IMessageParam<IteratorMethod, T>).Item2;
                 ;
             }
         }

@@ -45,7 +45,7 @@ namespace TestActor
         }
 
         [TestMethod()]
-        // [Ignore]
+        [Ignore]
         public void RegisterUnregisterTest()
         {
             TestLauncherActor.Test(() =>
