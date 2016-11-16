@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Actor.Base
 {
     public static class IActorExtension
     {
-        //public static void SendMessage<T1>(this IActor anActor, T1 t1)
-        //{
-        //    CheckArg.Actor(anActor);
-        //    anActor.SendMessage(t1);
-        //}
         public static void SendMessage<T1, T2>(this IActor anActor, T1 t1, T2 t2)
         {
             CheckArg.Actor(anActor);
@@ -33,11 +24,6 @@ namespace Actor.Base
 
     public static class BaseActorExtension
     {
-        //public static void SendMessage<T1>(this BaseActor anActor, T1 t1)
-        //{
-        //    CheckArg.Actor(anActor);
-        //    anActor.SendMessage(t1);
-        //}
         public static void SendMessage<T1, T2>(this BaseActor anActor, T1 t1, T2 t2)
         {
             CheckArg.Actor(anActor);
@@ -53,7 +39,7 @@ namespace Actor.Base
             CheckArg.Actor(anActor);
             anActor.SendMessage(new MessageParam<T1, T2, T3, T4>(t1, t2, t3, t4));
         }
-        public static async Task<Object> Receive<T1, T2>(this BaseActor anActor, Func<T1, T2, bool> aPattern)
+        public static async Task<object> Receive<T1, T2>(this BaseActor anActor, Func<T1, T2, bool> aPattern)
         {
             CheckArg.Actor(anActor);
             return await anActor.Receive((o) =>
@@ -62,7 +48,7 @@ namespace Actor.Base
                 return t != null ? aPattern(t.Item1, t.Item2) : false;
             });
         }
-        public static async Task<Object> Receive<T1, T2, T3>(this BaseActor anActor, Func<T1, T2, T3, bool> aPattern)
+        public static async Task<object> Receive<T1, T2, T3>(this BaseActor anActor, Func<T1, T2, T3, bool> aPattern)
         {
             CheckArg.Actor(anActor);
             return await anActor.Receive((o) =>
@@ -71,7 +57,7 @@ namespace Actor.Base
                 return t != null ? aPattern(t.Item1, t.Item2, t.Item3) : false;
             });
         }
-        public static async Task<Object> Receive<T1, T2, T3, T4>(this BaseActor anActor, Func<T1, T2, T3, T4, bool> aPattern)
+        public static async Task<object> Receive<T1, T2, T3, T4>(this BaseActor anActor, Func<T1, T2, T3, T4, bool> aPattern)
         {
             CheckArg.Actor(anActor);
             return await anActor.Receive((o) =>

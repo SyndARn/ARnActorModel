@@ -44,7 +44,7 @@ namespace TestActor
             var behavior2 = new Behavior<int>();
             behaviors.AddBehavior(behavior1);
             behaviors.AddBehavior(behavior2);
-            behaviors.AddBehavior(null);
+            // behaviors.AddBehavior(null);
             var allBehaviors = behaviors.AllBehaviors();
             Assert.AreEqual(2, allBehaviors.Count());
             Assert.IsTrue(allBehaviors.Contains(behavior1));
@@ -54,7 +54,7 @@ namespace TestActor
             Assert.IsTrue(behaviors.FindBehavior(behavior2));
             var behavior3 = new Behavior<object>();
             Assert.IsFalse(behaviors.FindBehavior(behavior3));
-            Assert.IsFalse(behaviors.FindBehavior(null));
+            // Assert.IsFalse(behaviors.FindBehavior(null));
 
             Assert.IsTrue(behavior1.LinkedTo == behaviors);
             Assert.IsTrue(behavior2.LinkedTo == behaviors);
@@ -66,6 +66,38 @@ namespace TestActor
 
             Assert.IsTrue(behavior1.LinkedActor == actor);
             Assert.IsTrue(behavior2.LinkedActor == null);
+
+        }
+
+        [TestMethod]
+        public void BehaviorsFunctionalTest()
+        {
+            IActor actor = new BaseActor();
+            IBehaviors behaviors = new Behaviors();
+
+            behaviors.LinkToActor(actor);
+            Assert.AreEqual(actor, behaviors.LinkedActor);
+
+            behaviors
+                .AddBehavior(new Behavior<string>())
+                .AddBehavior(new Behavior<int>());
+
+            Assert.AreEqual(2, behaviors.AllBehaviors().Count());
+            Assert.IsTrue(behaviors.AllBehaviors().Any(b => b is IBehavior<string>));
+            Assert.IsTrue(behaviors.AllBehaviors().Any(b => b is IBehavior<int>));
+
+            foreach(var bhv in behaviors.AllBehaviors())
+            {
+                Assert.IsTrue(bhv.LinkedTo == behaviors) ;
+            }
+
+            IBehavior bhvString = behaviors.AllBehaviors().First(b => b is IBehavior<string>);
+            behaviors.RemoveBehavior(bhvString);
+            Assert.IsFalse(behaviors.FindBehavior(bhvString));
+            Assert.IsTrue(behaviors.AllBehaviors().Count() == 1);
+            Assert.IsFalse(bhvString.LinkedTo == behaviors);
+
+            Assert.IsTrue(bhvString.LinkedActor == null);
 
         }
     }
