@@ -52,7 +52,7 @@ namespace Actor.Server
 
         public SendByNameActor()
         {
-            Become(new Behavior<String, T>(FindBehavior));
+            Become(new Behavior<string, T>(FindBehavior));
         }
 
         // FindBehavior to find the alias in directory

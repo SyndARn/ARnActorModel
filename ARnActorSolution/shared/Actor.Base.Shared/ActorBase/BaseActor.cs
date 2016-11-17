@@ -223,7 +223,7 @@ namespace Actor.Base
             return msg;
         }
 
-        protected void Become(Behaviors someBehaviors)
+        protected void Become(IBehaviors someBehaviors)
         {
             CheckArg.Behaviors(someBehaviors);
             fListBehaviors.Clear();
@@ -250,7 +250,7 @@ namespace Actor.Base
             TrySetInTask();
         }
 
-        protected void AddBehavior(Behaviors someBehaviors)
+        protected void AddBehavior(IBehaviors someBehaviors)
         {
             CheckArg.Behaviors(someBehaviors);
             someBehaviors.LinkToActor(this);

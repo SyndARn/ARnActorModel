@@ -50,6 +50,14 @@ namespace Actor.Base
             }
         }
 
+        public static void Behaviors([ValidatedNotNull]IBehaviors someBehaviors)
+        {
+            if (someBehaviors == null)
+            {
+                throw new ActorException("Null someBehaviors");
+            }
+        }
+
         public static void IEnumerable([ValidatedNotNull] IEnumerable enumerables)
         {
             if (enumerables == null)
