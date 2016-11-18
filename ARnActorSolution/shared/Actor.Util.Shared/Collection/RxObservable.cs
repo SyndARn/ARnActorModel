@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
 
@@ -32,7 +30,7 @@ namespace Actor.Util
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            Task<Object> res = Receive(t => { return t is IMessageParam<IActor, IDisposable>; });
+            Task<object> res = Receive(t => { return t is IMessageParam<IActor, IDisposable>; });
             SendMessage(observer);
             var resi = res.Result as IMessageParam<IActor, IDisposable>;
             return resi.Item2;

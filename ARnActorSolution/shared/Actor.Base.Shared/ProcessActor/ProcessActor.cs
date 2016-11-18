@@ -13,6 +13,7 @@ namespace Actor.Base
     {
         public ProcessActor(Action<T> anAction)
         {
+            
             Become(new Behavior<T>(anAction));
         }
     }

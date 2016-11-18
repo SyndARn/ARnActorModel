@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Actor.Base.Properties {
+namespace Actor.Base{
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

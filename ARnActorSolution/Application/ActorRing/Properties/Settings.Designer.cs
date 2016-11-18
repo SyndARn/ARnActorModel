@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ActorRing.Properties {
+namespace ActorRing {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

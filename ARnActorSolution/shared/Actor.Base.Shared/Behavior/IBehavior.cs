@@ -31,10 +31,12 @@ namespace Actor.Base
 
     public interface IBehavior 
     {
-        void LinkBehaviors(Behaviors someBehaviors);
+        void LinkBehaviors(IBehaviors someBehaviors);
         void StandardApply(object aT);
         bool StandardPattern(object aT);
         TaskCompletionSource<object> StandardCompletion {get;}
+        IBehaviors LinkedTo { get; }
+        IActor LinkedActor { get; }
     }
 
     public interface IBehavior<T> : IBehavior 

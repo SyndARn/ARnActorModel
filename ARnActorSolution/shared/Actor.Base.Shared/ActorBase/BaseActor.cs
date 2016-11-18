@@ -26,12 +26,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-
+using System.Runtime.Serialization;
 
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
 {
-
+    [Serializable]
+    [DataContract]
     public enum SystemMessage { NullBehavior };
 
     internal struct SharingStruct
@@ -47,7 +48,9 @@ namespace Actor.Base
     public class BaseActor : IActor
     {
         public ActorTag Tag { get { return fShared.fTag; } private set { fShared.fTag = value; } } // unique identifier, and host
+
         private List<IBehavior> fListBehaviors = new List<IBehavior>(); // our behavior
+
         private IMessageQueue<IBehavior> fCompletions = QueueFactory<IBehavior>.Cast(); // receive behaviors
         private IActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
         private SharingStruct fShared = new SharingStruct();
@@ -203,14 +206,14 @@ namespace Actor.Base
             }
         }
 
-        public async Task<Object> Receive(Func<Object, bool> aPattern)
+        public async Task<object> Receive(Func<object, bool> aPattern)
         {
             return await Receive(aPattern, Timeout.Infinite);
         }
 
-        private Object ReceiveMessage()
+        private object ReceiveMessage()
         {
-            Object msg = fMailBox.GetMessage();
+            object msg = fMailBox.GetMessage();
 #if DEBUG_MSG
             if (msg != null)
             {
@@ -220,7 +223,7 @@ namespace Actor.Base
             return msg;
         }
 
-        protected void Become(Behaviors someBehaviors)
+        protected void Become(IBehaviors someBehaviors)
         {
             CheckArg.Behaviors(someBehaviors);
             fListBehaviors.Clear();
@@ -247,7 +250,7 @@ namespace Actor.Base
             TrySetInTask();
         }
 
-        protected void AddBehavior(Behaviors someBehaviors)
+        protected void AddBehavior(IBehaviors someBehaviors)
         {
             CheckArg.Behaviors(someBehaviors);
             someBehaviors.LinkToActor(this);

@@ -32,11 +32,11 @@ namespace Actor.Base
     /// Behaviors are actor brain.
     /// Behaviors when null in an actor means this actor is dead (it can't change anymore his own behavior from this point)
     /// </summary>
-    public class Behaviors
+    public class Behaviors : IBehaviors
     {
         private List<IBehavior> fList = new List<IBehavior>();
 
-        public BaseActor LinkedActor { get; private set; }
+        public IActor LinkedActor { get; private set; }
 
         public Behaviors()
         {
@@ -50,13 +50,12 @@ namespace Actor.Base
             }
         }
 
-
         public IEnumerable<IBehavior> AllBehaviors()
         {
             return fList.ToList(); // force clone
         }
 
-        public void LinkToActor(BaseActor anActor)
+        public void LinkToActor(IActor anActor)
         {
             LinkedActor = anActor;
         }
@@ -66,36 +65,53 @@ namespace Actor.Base
             return fList.Contains(aBehavior);
         }
 
-        public void AddBehavior(IBehavior aBehavior)
+        public IBehaviors AddBehavior(IBehavior aBehavior)
         {
-            if (aBehavior != null)
-            {
-                aBehavior.LinkBehaviors(this);
-                fList.Add(aBehavior);
-            }
+            CheckArg.Behavior(aBehavior);
+            aBehavior.LinkBehaviors(this);
+            fList.Add(aBehavior);
+            return this;
         }
-        public void RemoveBehavior(IBehavior aBehavior)
+
+        public IBehaviors BecomeBehavior(IBehavior aBehavior)
+        {
+            CheckArg.Behavior(aBehavior);
+            fList.Clear();
+            aBehavior.LinkBehaviors(this);
+            fList.Add(aBehavior);
+            return this;
+        }
+
+        public IBehaviors RemoveBehavior(IBehavior aBehavior)
         {
             CheckArg.Behavior(aBehavior);
             aBehavior.LinkBehaviors(null);
             fList.Remove(aBehavior);
+            return this;
         }
 
     }
 
     public class Behavior : IBehavior
     {
-        private Behaviors fLinkedBehaviors;
-        public void LinkBehaviors(Behaviors someBehaviors)
+        private IBehaviors fLinkedBehaviors;
+        public void LinkBehaviors(IBehaviors someBehaviors)
         {
             fLinkedBehaviors = someBehaviors;
         }
-        public BaseActor LinkedActor
+        public IActor LinkedActor
         {
             get
             {
                 return fLinkedBehaviors != null ? fLinkedBehaviors.LinkedActor : null;
             }
+        }
+
+        public Behavior(Func<object,bool> aPattern, Action<object> anApply)
+        {
+            Pattern = aPattern;
+            Apply = anApply;
+            Completion = null;
         }
 
         public Behavior(Func<object,bool> aPattern, TaskCompletionSource<object> aCompletion)
@@ -105,7 +121,7 @@ namespace Actor.Base
             Completion = aCompletion;
         }
 
-        public Behaviors LinkedTo
+        public IBehaviors LinkedTo
         {
             get
             {
@@ -153,9 +169,9 @@ namespace Actor.Base
             }
         }
 
-        private Behaviors fLinkedBehaviors;
+        private IBehaviors fLinkedBehaviors;
 
-        public BaseActor LinkedActor
+        public IActor LinkedActor
         {
             get
             {
@@ -163,7 +179,7 @@ namespace Actor.Base
             }
         }
 
-        public Behaviors LinkedTo
+        public IBehaviors LinkedTo
         {
             get
             {
@@ -171,12 +187,12 @@ namespace Actor.Base
             }
         }
 
-        public void LinkBehaviors(Behaviors someBehaviors)
+        public void LinkBehaviors(IBehaviors someBehaviors)
         {
             fLinkedBehaviors = someBehaviors;
         }
 
-        public Behavior(Func<T1, T2, Boolean> aPattern, Action<T1, T2> anApply)
+        public Behavior(Func<T1, T2, bool> aPattern, Action<T1, T2> anApply)
         {
             Pattern = aPattern;
             Apply = anApply;
@@ -184,7 +200,7 @@ namespace Actor.Base
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public Behavior(Func<T1, T2, Boolean> aPattern, TaskCompletionSource<IMessageParam<T1, T2>> aCompletion)
+        public Behavior(Func<T1, T2, bool> aPattern, TaskCompletionSource<IMessageParam<T1, T2>> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -207,7 +223,7 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public Boolean StandardPattern(object aT)
+        public bool StandardPattern(object aT)
         {
             if (Pattern == null)
                 return false;
@@ -239,9 +255,9 @@ namespace Actor.Base
             }
         }
 
-        private Behaviors fLinkedBehaviors;
+        private IBehaviors fLinkedBehaviors;
 
-        public BaseActor LinkedActor
+        public IActor LinkedActor
         {
             get
             {
@@ -249,7 +265,7 @@ namespace Actor.Base
             }
         }
 
-        public Behaviors LinkedTo
+        public IBehaviors LinkedTo
         {
             get
             {
@@ -257,7 +273,7 @@ namespace Actor.Base
             }
         }
 
-        public void LinkBehaviors(Behaviors someBehaviors)
+        public void LinkBehaviors(IBehaviors someBehaviors)
         {
             fLinkedBehaviors = someBehaviors;
         }
@@ -281,7 +297,7 @@ namespace Actor.Base
         {
         }
 
-        public Func<T1, T2, T3, Boolean> DefaultPattern()
+        public Func<T1, T2, T3, bool> DefaultPattern()
         {
             return (t1,t2,t3) => { return t1 is T1 && t2 is T2 && t3 is T3; };
         }
@@ -336,9 +352,9 @@ namespace Actor.Base
             }
         }
 
-        private Behaviors fLinkedBehaviors;
+        private IBehaviors fLinkedBehaviors;
 
-        public BaseActor LinkedActor
+        public IActor LinkedActor
         {
             get
             {
@@ -346,7 +362,7 @@ namespace Actor.Base
             }
         }
 
-        public Behaviors LinkedTo
+        public IBehaviors LinkedTo
         {
             get
             {
@@ -354,7 +370,7 @@ namespace Actor.Base
             }
         }
 
-        public void LinkBehaviors(Behaviors someBehaviors)
+        public void LinkBehaviors(IBehaviors someBehaviors)
         {
             fLinkedBehaviors = someBehaviors;
         }
@@ -422,9 +438,9 @@ namespace Actor.Base
             }
         }
 
-        private Behaviors fLinkedBehaviors;
+        private IBehaviors fLinkedBehaviors;
 
-        public BaseActor LinkedActor
+        public IActor LinkedActor
         {
             get
             {
@@ -432,7 +448,7 @@ namespace Actor.Base
             }
         }
 
-        public Behaviors LinkedTo
+        public IBehaviors LinkedTo
         {
             get
             {
@@ -440,7 +456,7 @@ namespace Actor.Base
             }
         }
 
-        public void LinkBehaviors(Behaviors someBehaviors)
+        public void LinkBehaviors(IBehaviors someBehaviors)
         {
             fLinkedBehaviors = someBehaviors;
         }
@@ -464,7 +480,7 @@ namespace Actor.Base
         {
         }
 
-        public Func<T1, T2, T3, T4, Boolean> DefaultPattern()
+        public Func<T1, T2, T3, T4, bool> DefaultPattern()
         {
             return (o, d, a, r) => { return o is T1 && d is T2 && a is T3 && r is T4; };
         }
@@ -476,7 +492,7 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public Boolean StandardPattern(Object aT)
+        public bool StandardPattern(Object aT)
         {
             if (Pattern == null)
                 return false;
