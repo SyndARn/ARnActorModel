@@ -23,5 +23,5 @@
 *.RTF	 diff=astextplain
 
 #vendor files
-/ARnActorSolution/packages/* linguist-vendored
-/ARnActorSolution/Doc/* linguist-vendored
+ARnActorSolution/packages/* linguist-vendored
+ARnActorSolution/Doc/* linguist-vendored
