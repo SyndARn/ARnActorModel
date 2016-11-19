@@ -1,3 +1,4 @@
+
 # Auto detect text files and perform LF normalization
 * text=auto
 
@@ -20,3 +21,6 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+#vendor files
+ARnActorSolution/packages/* linguist-vendored
