@@ -35,13 +35,11 @@ namespace TestActor
            () =>
            {
                heartBeat.SendMessage(actor);
-               Task.Delay(500).Wait();
+               Task.Delay(5100).Wait();
                Assert.IsTrue(actor.fHeartBeatReceive);
                actor.fHeartBeatReceive = false;
-               heartBeat.SendMessage(actor);
-               Task.Delay(500).Wait();
                Assert.IsFalse(actor.fHeartBeatReceive);
-               Task.Delay(5000).Wait();
+               Task.Delay(5100).Wait();
                Assert.IsTrue(actor.fHeartBeatReceive);
            });
             
