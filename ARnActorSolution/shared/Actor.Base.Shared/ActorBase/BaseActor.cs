@@ -142,7 +142,7 @@ namespace Actor.Base
             return Add(anActor, aMessage);
         }
 
-        public BaseActor(Behaviors someBehaviors)
+        public BaseActor(IBehaviors someBehaviors)
         {
             Tag = new ActorTag();
             Become(someBehaviors);

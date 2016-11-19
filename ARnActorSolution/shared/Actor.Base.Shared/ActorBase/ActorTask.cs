@@ -76,6 +76,7 @@ namespace Actor.Base
                 {
                     Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, "Task fault on {0}", item.Message), "[Task Actor Fault]");
                 }
+                throw t.Exception;
             },
             TaskContinuationOptions.OnlyOnFaulted);
         }

@@ -13,6 +13,8 @@ namespace TestActor
     {
         public const int DefaultWait = 30000;
 
+        private Exception fLauncherException ;
+
         public TestLauncherActor()
             : base()
         {
@@ -23,16 +25,16 @@ namespace TestActor
             SendMessage(true);
         }
 
-        public bool Wait()
+        public async Task<bool> Wait()
         {
-            return Wait(DefaultWait);
+            return await Wait(DefaultWait);
         }
 
-        public bool Wait(int ms)
+        public async Task<bool> Wait(int ms)
         {
-            var val = Receive(t => t is bool);
-            var inTime = val.Wait(ms);
-            return inTime && (bool)val.Result;
+            var val = await Receive(t => t is bool, ms);
+            var inTime = val != null;
+            return inTime && (bool)val;
         }
 
         public static void Test(Action action)
@@ -52,14 +54,20 @@ namespace TestActor
                         launcher.Finish();
                     }
                     catch (Exception e)
-                    {                        
+                    {
+                        launcher.fLauncherException = e;
                         Debug.WriteLine(e.Message);
                         Debug.WriteLine(e.StackTrace);
                         throw ;
                     }
                 });
-                bool testResult = launcher.Wait(timeOutMS);
-                Assert.IsTrue(testResult, "Test Time Out");
+            Task<bool> testResult = launcher.Wait(timeOutMS);
+            if (launcher.fLauncherException != null)
+            {
+                throw new Exception(launcher.fLauncherException.Message, launcher.fLauncherException);
+            }
+            var result = testResult.Result;
+            Assert.IsTrue(result, "Test Time Out");
         }
     }
 }

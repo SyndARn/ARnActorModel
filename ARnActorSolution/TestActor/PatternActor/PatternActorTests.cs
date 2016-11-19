@@ -8,38 +8,32 @@ using System.Threading.Tasks;
 
 namespace TestActor
 {
+
+    internal class TestStringPatternActor : StringPatternActor
+    {
+        protected override void DoApply(string msg)
+        {
+            if (msg == "Start")
+            {
+
+            }
+            else
+                if (msg == "End")
+            {
+
+            }
+        }
+    }
+
+
     [TestClass()]
     public class PatternActorTests
     {
 
-        TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
-
-        class TestStringPatternActor : StringPatternActor
-        {
-            protected override void DoApply(string msg)
-            {
-                if (msg == "Start")
-                {
-
-                }
-                else
-                    if (msg == "End")
-                {
-
-                }
-            }
-        }
-
         [TestMethod()]
         public void PatternActorTest()
         {
-            fLauncher.SendAction(
+            TestLauncherActor.Test(
                 () =>
                 {
                     var act = new TestStringPatternActor();
@@ -47,9 +41,7 @@ namespace TestActor
                     act.SendMessage("Start");
                     act.SendMessage("End");
 
-                    fLauncher.Finish();
                 });
-            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }

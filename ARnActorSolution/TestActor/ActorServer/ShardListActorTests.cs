@@ -15,8 +15,7 @@ namespace TestActor
         [TestMethod()]
         public void ShardAddTest()
         {
-            var launcher = new TestLauncherActor();
-            launcher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 string Shard1 = "Test Shard 1";
                 string Shard2 = "Test Shard 2";
@@ -31,16 +30,13 @@ namespace TestActor
                 Assert.IsTrue(resultList.Contains(Shard1));
                 Assert.IsTrue(resultList.Contains(Shard2));
                 Assert.IsTrue(resultList.Contains(Shard3));
-                launcher.Finish();
             });
-            Assert.IsTrue(launcher.Wait());
         }
 
         [TestMethod()]
         public void ShardAddRemoveTest()
         {
-            var launcher = new TestLauncherActor();
-            launcher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 string Shard1 = "Test Shard 1";
                 string Shard2 = "Test Shard 2";
@@ -56,9 +52,7 @@ namespace TestActor
                 Assert.IsTrue(resultList.Contains(Shard1));
                 Assert.IsFalse(resultList.Contains(Shard2));
                 Assert.IsTrue(resultList.Contains(Shard3));
-                launcher.Finish();
             });
-            Assert.IsTrue(launcher.Wait());
         }
 
     }

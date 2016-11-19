@@ -31,7 +31,6 @@ namespace Actor.Server.Tests
                          });
                         Enumerable.Range(1, 10).All(t =>
                          {
-                             IActor client = new BaseActor();
                              string s = string.Format(CultureInfo.InvariantCulture, "Test range {0}", t);
                              broker.SendMessage(s);
                              return true;

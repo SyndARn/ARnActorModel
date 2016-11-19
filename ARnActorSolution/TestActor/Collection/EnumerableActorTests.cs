@@ -14,14 +14,6 @@ namespace TestActor
     public class EnumerableActorTests
     {
 
-        private TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
-
         [TestMethod()]
         public void QueryiableTest()
         {
@@ -51,44 +43,38 @@ namespace TestActor
         [TestMethod()]
         public void EnumerableActorTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new EnumerableActor<string>();
                 Assert.IsNotNull(act);
-                fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void AddElementTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new EnumerableActor<string>();
                 act.Add("test");
-                fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void RemoveElementTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new EnumerableActor<string>();
                 act.Add("test");
                 act.Remove("test");
-                fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void GetEnumeratorTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new EnumerableActor<string>();
                 act.Add("test1");
@@ -100,9 +86,7 @@ namespace TestActor
                 }
                 Assert.AreEqual(2, list.Count);
                 Assert.AreEqual(2, act.Count());
-                fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]

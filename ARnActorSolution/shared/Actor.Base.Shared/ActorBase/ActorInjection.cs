@@ -24,7 +24,7 @@ namespace Actor.Base
     {
         BaseActor realActor = null;
 
-        public static ActorInjection Cast(Behaviors bhvs)
+        public static ActorInjection Cast(IBehaviors bhvs)
         {
             ActorInjection inject = new ActorInjection();
             inject.realActor = new BaseActor(bhvs);

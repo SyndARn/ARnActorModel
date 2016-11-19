@@ -1,5 +1,4 @@
-﻿using Actor.Server;
-/*****************************************************************************
+﻿/*****************************************************************************
 		               ARnActor Actor Model Library .Net
      
 	 Copyright (C) {2015}  {ARn/SyndARn} 
@@ -25,10 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Actor.Base ;
+using Actor.Base;
 
 namespace Actor.Server
 {
@@ -124,6 +120,3 @@ namespace Actor.Server
     }
 
 }
-
-
-

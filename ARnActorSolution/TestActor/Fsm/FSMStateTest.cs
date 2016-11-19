@@ -11,15 +11,54 @@ namespace TestActor
     public class FSMStateTest
     {
 
+
+        [TestMethod]
+        public void FSMBehaviorsTest()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var behaviors = new FsmBehaviors<string, int>();
+                behaviors
+                  .AddRule("StartState", i => i == 1, i => { }, "MidState")
+                  .AddRule("MidState", i => i == 2, i => { }, "EndState");
+
+                var fsmActor = new BaseActor(behaviors);
+
+                var currentState1 = new Future<string>();
+                fsmActor.SendMessage(currentState1);
+                Assert.IsTrue(currentState1.Result() == "StartState");
+
+                fsmActor.SendMessage("StartState", 1);
+
+                var currentState2 = new Future<string>();
+                fsmActor.SendMessage(currentState2);
+                Assert.IsTrue(currentState2.Result() == "MidState");
+
+                fsmActor.SendMessage("MidState", 2);
+
+                var currentState3 = new Future<string>();
+                fsmActor.SendMessage(currentState3);
+                Assert.IsTrue(currentState3.Result() == "EndState");
+
+                fsmActor.SendMessage("MidState", 3);
+
+                // unchanged shoud be
+                var currentState4 = new Future<string>();
+                fsmActor.SendMessage(currentState4);
+                Assert.IsTrue(currentState4.Result() == "EndState");
+            });
+        }
+
         [TestMethod]
         public void FiniteStateMachineTest()
         {
             TestLauncherActor.Test(() =>
             {
-                var behaviors = new List<FsmBehavior<string, int>>();
-                behaviors.Add(new FsmBehavior<string, int>("StartState", "MidState", i => { }, i => i == 1));
-                behaviors.Add(new FsmBehavior<string, int>("MidState", "EndState", i => { }, i => i == 2));
-                var fsmActor = new FsmActor<string, int>("StartState", behaviors);
+                var behaviors = new FsmBehaviors<string, int>();
+                behaviors
+                  .AddRule("StartState",  i => i == 1, i => { },"MidState")
+                  .AddRule("MidState",  i => i == 2, i => { },"EndState");
+                var fsmActor = new FsmActor<string, int>(behaviors);
 
                 var currentState1 = fsmActor.GetCurrentState();
                 Assert.IsTrue(currentState1.Result() == "StartState");

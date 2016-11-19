@@ -22,7 +22,6 @@
 *****************************************************************************/
 
 using Actor.Base;
-using System;
 using System.Collections.Generic;
 
 namespace Actor.Util
@@ -30,35 +29,20 @@ namespace Actor.Util
 
     public class FsmActor<TState, TEvent> : BaseActor
     {
-        protected TState InternalCurrentState { get; set; }
 
-        public FsmActor(TState startState, IEnumerable<FsmBehavior<TState, TEvent>> someBehaviors) : base()
+        public FsmActor() : base()
         {
-            InternalCurrentState = startState;
-            Become(new Behavior<TState>(ProcessState));
-            AddBehavior(new Behavior<IActor, TState>(GetState));
-            if (someBehaviors != null)
-                foreach (var item in someBehaviors)
-                {
-                    AddBehavior(item);
-                }
         }
 
-        private void GetState(IActor actor, TState state)
+        public FsmActor(FsmBehaviors<TState, TEvent> someBehaviors) : base()
         {
-            actor.SendMessage(InternalCurrentState);
-        }
-
-        // TODO check this
-        internal void ProcessState(TState newState)
-        {
-            InternalCurrentState = newState;
+            Become(someBehaviors);
         }
 
         public Future<TState> GetCurrentState()
         {
             var future = new Future<TState>();
-            this.SendMessage(future,InternalCurrentState);
+            SendMessage(future);
             return future;
         }
     }
