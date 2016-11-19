@@ -1,33 +1,30 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
-using TestActor;
 
-namespace Actor.Server.Tests
+namespace TestActor
 {
+
+    internal class TestHeartBeatActor : BaseActor
+    {
+        public bool fHeartBeatReceive = false;
+        public TestHeartBeatActor()
+        {
+            Become(new Behavior<HeartBeatActor, HeartBeatAction>
+                (
+                (a, h) =>
+                {
+                    fHeartBeatReceive = true;
+                }
+                ));
+        }
+    }
+
+
     [TestClass()]
     public class HeartBeatActorTests
     {
-
-        class TestHeartBeatActor : BaseActor
-        {
-            public bool fHeartBeatReceive = false;
-            public TestHeartBeatActor()
-            {
-                Become(new Behavior<HeartBeatActor, HeartBeatAction>
-                    (
-                    (a,h) =>
-                    {
-                        fHeartBeatReceive = true;
-                    }
-                    ));
-            }
-        }
 
         [TestMethod()]
         public void HeartBeatActorTest()
@@ -38,16 +35,15 @@ namespace Actor.Server.Tests
            () =>
            {
                heartBeat.SendMessage(actor);
-               Task.Delay(1000).Wait();
+               Task.Delay(500).Wait();
                Assert.IsTrue(actor.fHeartBeatReceive);
                actor.fHeartBeatReceive = false;
                heartBeat.SendMessage(actor);
-               Task.Delay(1000).Wait();
+               Task.Delay(500).Wait();
                Assert.IsFalse(actor.fHeartBeatReceive);
                Task.Delay(5000).Wait();
                Assert.IsTrue(actor.fHeartBeatReceive);
-           }
-           , 20000);
+           });
             
         }
     }
