@@ -24,3 +24,4 @@
 
 #vendor files
 /ARnActorSolution/packages/* linguist-vendored
+/ARnActorSolution/Doc/* linguist-vendored
