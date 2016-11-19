@@ -14,3 +14,6 @@
 
 2016 10 20 0.4.3.0
   Adding Broker and Test
+
+2016 11 19 0.4.4.0
+  Replacing tuple with IMessageParam
