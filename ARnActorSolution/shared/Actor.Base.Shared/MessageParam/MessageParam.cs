@@ -39,6 +39,7 @@ namespace Actor.Base
         }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     [Serializable]
     [DataContract]
     public sealed class MessageParam<T1, T2, T3, T4> : IMessageParam<T1, T2, T3, T4>

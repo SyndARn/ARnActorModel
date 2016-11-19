@@ -26,6 +26,45 @@ using System;
 
 namespace Actor.Util
 {
+    public class FsmBehaviors<TState, TEvent> : Behaviors
+    {
+        private TState current { get; set; }
+
+        private bool fBehaviorSet;
+
+        public FsmBehaviors() : base()
+        {
+        }
+
+        internal void ChangeState(TState aState)
+        {
+            current = aState;
+        }
+
+        private void GetCurrentState(IFuture<TState> future)
+        {
+            var state = current;
+            future.SendMessage(current);
+        }
+
+        public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState)
+        {
+            if (!fBehaviorSet)
+            {
+                current = startState;
+                BecomeBehavior(new Behavior<IFuture<TState>>(GetCurrentState)) ;
+                fBehaviorSet = true;
+            }
+            AddBehavior(new FsmBehavior<TState, TEvent>
+                (
+                    startState,
+                    reachedState,
+                    anAction,
+                    aCondition
+                ));
+            return this;
+        }
+    }
 
     public class FsmBehavior<TState, TEvent> : Behavior<TState, TEvent>
     {
@@ -51,14 +90,18 @@ namespace Actor.Util
 
         private bool DoPattern(TState state, TEvent anEvent)
         {
-            return StartState.Equals(state) && (Condition != null && Condition(anEvent));
+            return StartState.Equals(state) && (Condition == null || Condition(anEvent));
         }
 
         private void DoApply(TState state, TEvent anEvent)
         {
-            // first change state
-            ((FsmActor<TState, TEvent>)LinkedActor).ProcessState(EndState);
-            Action?.Invoke(anEvent);
+            var parent = LinkedTo as FsmBehaviors<TState, TEvent>;
+            if (parent != null)
+            {
+                // first change state in parent behaviors
+                parent.ChangeState(EndState);
+                Action?.Invoke(anEvent);
+            }
         }
     }
 

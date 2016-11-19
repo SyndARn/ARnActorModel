@@ -19,7 +19,6 @@ namespace Actor.Util
             Become(new Behavior<IActor>(DoIt));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Valider les arguments de méthodes publiques", MessageId = "0")]
         protected void DoIt(IActor anActor)
         {
             CheckArg.Actor(anActor);
@@ -30,25 +29,20 @@ namespace Actor.Util
 
     public class Consumer<T> : FsmActor<string, Work<T>>
     {
-        public Consumer() : base("SleepState", null)
+        public Consumer() : base()
         {
-            AddBehavior(new FsmBehavior<string, Work<T>>("SleepState", "BusyState", t =>
-            {
-                t.SendMessage(this);
-            }, t => true));
+            var bhv = new FsmBehaviors<string, Work<T>>();
 
-            AddBehavior(new FsmBehavior<string, Work<T>>("BusyState", "SleepState", t =>
-            {
-                Buffer.SendMessage(this);
-            }, t => true));
+            bhv
+                .AddRule("SleepState", null, t => t.SendMessage(this), "BusyState")
+                .AddRule("BusyState", null, t => Buffer.SendMessage(this), "SleepState")
+                .AddBehavior(new Behavior<Work<T>>(
+                    t =>
+                    {
+                        this.SendMessage(GetCurrentState().Result(), t);
+                    }));
 
-            
-
-            AddBehavior(new Behavior<Work<T>>(
-            t =>
-            {
-                this.SendMessage(InternalCurrentState, t);
-            }));
+            Become(bhv);
         }
 
         public Buffer<T> Buffer { get; set; }
@@ -75,7 +69,7 @@ namespace Actor.Util
         Queue<Consumer<T>> ConsList = new Queue<Consumer<T>>();
         Queue<Work<T>> WorkList = new Queue<Work<T>>();
 
-        public Buffer(IEnumerable<Consumer<T>> someConsumers) : base("BufferEmpty", null)
+        public Buffer(IEnumerable<Consumer<T>> someConsumers) : base()
         {
             CheckArg.IEnumerable(someConsumers);
             foreach (var item in someConsumers)
@@ -84,13 +78,10 @@ namespace Actor.Util
                 item.Buffer = this;
             }
 
-            AddBehavior(new Behavior<Work<T>>( t =>
-            {
-                this.SendMessage(InternalCurrentState, t);
-            }
-                )) ;
+            var bhv = new FsmBehaviors<string, Work<T>>();
 
-            AddBehavior(new FsmBehavior<string, Work<T>>("BufferEmpty", "BufferNotEmpty",
+            bhv
+                .AddRule("BufferEmpty", null,
                 t =>
                 {
                     if (ConsList.Count != 0)
@@ -100,9 +91,8 @@ namespace Actor.Util
                     }
                     else
                         WorkList.Enqueue(t);
-                }, t => true ));
-
-            AddBehavior(new FsmBehavior<string, Work<T>>("BufferNotEmpty", "BufferNotEmpty",
+                }, "BufferNotEmpty")
+                .AddRule("BufferNotEmpty", t => WorkList.Count != 0,
                 t =>
                 {
                     if (ConsList.Count != 0)
@@ -113,20 +103,7 @@ namespace Actor.Util
                     else
                         WorkList.Enqueue(t);
                 },
-                t => WorkList.Count != 0));
-
-            AddBehavior(new Behavior<Consumer<T>>(t =>
-            {
-                if (WorkList.Count == 0)
-                {
-                    ConsList.Enqueue(t);
-                    InternalCurrentState = "BufferEmpty";
-                }
-                else
-                {
-                    t.SendMessage(WorkList.Dequeue());
-                }
-            }));
+                "BufferNotEmpty");
         }
     }
 

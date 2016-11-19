@@ -27,8 +27,7 @@ namespace TestActor
         [TestMethod]
         public void TestActorExtension()
         {
-            var launcher = new TestLauncherActor();
-            launcher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var receiver = new ExtensionTestActor();
                 var future = new Future<IEnumerable<string>>();
@@ -41,9 +40,7 @@ namespace TestActor
                 Assert.IsNotNull(result);
                 Assert.AreEqual(4, result.Count());
                 Assert.IsTrue(result.Contains("test4"));
-                launcher.Finish();
             });
-            Assert.IsTrue(launcher.Wait());
         }
     }
 }

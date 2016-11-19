@@ -8,18 +8,10 @@ namespace TestActor
     [TestClass()]
     public class RingActorTests
     {
-        TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
-
         [TestMethod()]
         public void RingActorTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var future = new Future<string>();
                 new RingActor(100, 100, future); // 10 sec
@@ -32,9 +24,7 @@ namespace TestActor
 
                 Assert.IsTrue(result.Contains("Elapsed"));
 
-                fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait(20000));
         }
     }
 }

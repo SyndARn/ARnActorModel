@@ -9,33 +9,25 @@ using Actor.Util;
 
 namespace TestActor
 {
+    internal class Receiver<T> : BaseActor
+    {
+        public T Call()
+        {
+            var r = Receive(t => t is T);
+
+            return (T)r.Result;
+
+        }
+    }
+
     [TestClass()]
     public class bhvGraphTests
     {
-        TestLauncherActor fLauncher;
-
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
-
-
-        class Receiver<T> : BaseActor
-        {
-            public T Call()
-            {
-                var r = Receive(t => t is T);
-
-                return (T)r.Result;
-
-            }
-        }
 
         [TestMethod()]
         public void BehaviorGraphTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var graph = new BehaviorGraph<string, int>();
                 var nodeA = new NodeActor<string, int>();
@@ -64,9 +56,7 @@ namespace TestActor
                 Assert.IsNotNull(future);
                 Assert.IsTrue(future.Result().Item2.Count() == 2);
 
-                fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }

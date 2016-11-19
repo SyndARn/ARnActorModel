@@ -44,6 +44,7 @@ namespace Actor.Base
 
         public Behaviors(IBehavior[] someBehaviors)
         {
+            CheckArg.BehaviorParam(someBehaviors);
             foreach(var item in someBehaviors)
             {
                 AddBehavior(item);

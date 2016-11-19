@@ -11,15 +11,8 @@ namespace TestActor
     [TestClass()]
     public class CrudeActorTests
     {
-        TestLauncherActor fLauncher;
 
-        [TestInitialize]
-        public void Setup()
-        {
-            fLauncher = new TestLauncherActor();
-        }
-
-        class CrudTest : CrudActor<int,string>
+        internal class CrudTest : CrudActor<int,string>
         {
 
         }
@@ -34,37 +27,33 @@ namespace TestActor
         [TestMethod()]
         public void SetTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new CrudTest();
                 act.Set(1, "1");
                 act.Set(2, "2");
-                fLauncher.Finish();
             }
             );
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void GetSetTest()
         {
-            fLauncher.SendAction( () =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new CrudTest();
                 act.Set(1, "1");
                 act.Set(2, "2");
                 string s = act.Get(1).Result();
                 Assert.AreEqual("1", s);
-                fLauncher.Finish();
             }
             ) ;
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new CrudTest();
                 act.Set(1, "1");
@@ -72,16 +61,14 @@ namespace TestActor
                 act.Delete(1);
                 string s = act.Get(1).Result(2000) ;
                 Assert.IsNull(s);
-                fLauncher.Finish();
             }
             );
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void UpdateTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new CrudTest();
                 act.Set(1, "1");
@@ -90,10 +77,8 @@ namespace TestActor
                 Assert.AreEqual("1", s);
                 act.Update(1, "11");
                 Assert.AreEqual("11", act.Get(1).Result());
-                fLauncher.Finish();
             }
             );
-            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }

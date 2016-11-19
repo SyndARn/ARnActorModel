@@ -1,16 +1,47 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
 using Actor.Server;
-using Actor.Util;
 
 namespace TestActor
 {
+
+    internal class DiscoTestActor : BaseActor
+    {
+        private IActor fLauncher;
+
+        public DiscoTestActor(IActor aLauncher)
+        {
+            fLauncher = aLauncher;
+            Become(new Behavior<Dictionary<string, string>>(ReceiveDisco));
+        }
+
+        private void ReceiveDisco(Dictionary<string, string> msg)
+        {
+            Assert.IsNotNull(msg);
+            fLauncher.SendMessage(true);
+        }
+    }
+
+    internal class DirectoryTestActor : BaseActor
+    {
+        public DirectoryTestActor()
+        {
+            Become(new Behavior<IActor, IActor, string>(DoIt));
+        }
+
+        private void DoIt(IActor caller, IActor lookup, string name)
+        {
+            DirectoryActor.GetDirectory().Find(this, name);
+            var task = Receive(ask => { return (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>); });
+            if ((task.Result as IMessageParam<DirectoryActor.DirectoryRequest, IActor>).Item2 == lookup)
+            {
+                caller.SendMessage(true);
+            }
+        }
+    }
+
+
     [TestClass()]
     public class DirectoryActorTests
     {
@@ -22,24 +53,6 @@ namespace TestActor
             fLauncher = new TestLauncherActor();
             var act = new DirectoryActor();
             Assert.IsNotNull(act, "Can't create Directory Actor");
-        }
-
-        internal class DirectoryTestActor : BaseActor
-        {
-            public DirectoryTestActor()
-            {
-                Become(new Behavior<IActor,IActor,string>(DoIt));
-            }
-
-            private void DoIt(IActor caller, IActor lookup, string name)
-            {
-                DirectoryActor.GetDirectory().Find(this, name);
-                var task = Receive(ask => { return (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>); });
-                if ((task.Result as IMessageParam<DirectoryActor.DirectoryRequest, IActor>).Item2 == lookup)
-                {
-                    caller.SendMessage(true);
-                }
-            }
         }
 
         [TestMethod()]
@@ -64,7 +77,7 @@ namespace TestActor
                 IActor act = new DirectoryTestActor();
                 act.SendMessage(fLauncher, DirectoryActor.GetDirectory(), "Directory");
             });
-            Assert.IsTrue(fLauncher.Wait(100000));
+            Assert.IsTrue(fLauncher.Wait(100000).Result);
         }
 
         [TestMethod()]
@@ -79,60 +92,37 @@ namespace TestActor
             Assert.IsTrue(DirectoryActor.GetDirectory().Stat().StartsWith("Directory entries "));
         }
 
-        internal class DiscoTestActor : BaseActor
-        {
-            private IActor fLauncher;
-
-            public DiscoTestActor(IActor aLauncher)
-            {
-                fLauncher = aLauncher;
-                Become(new Behavior<Dictionary<string, string>>(ReceiveDisco));
-            }
-
-            private void ReceiveDisco(Dictionary<string, string> msg)
-            {
-                Assert.IsNotNull(msg);
-                fLauncher.SendMessage(true);
-            }
-        }
-
         [TestMethod()]
         public void DiscoTest()
         {
-            ActorServer.Start("localhost", 80,null);
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
+                ActorServer.Start("localhost", 80, null);
                 var act = new DiscoTestActor(fLauncher);
                 DirectoryActor.GetDirectory().Disco(act);
-                fLauncher.Finish();
             }
             );
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void RegisterTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var act = new DirectoryTestActor();
                 DirectoryActor.GetDirectory().Register(act, act.Tag.Key());
                 act.SendMessage(fLauncher, act, act.Tag.Key());
-                fLauncher.Finish();
             });
-            Assert.IsTrue(fLauncher.Wait());
         }
 
         [TestMethod()]
         public void FindTest()
         {
-            fLauncher.SendAction(() =>
+            TestLauncherActor.Test(() =>
                 {
                 var dirtest = new DirectoryTestActor();
                 DirectoryActor.GetDirectory().Register(dirtest, dirtest.Tag.Key());
-                    fLauncher.Finish();
                 });
-            Assert.IsTrue(fLauncher.Wait());
         }
     }
 }

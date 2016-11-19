@@ -33,17 +33,14 @@ namespace Actor.Server.Tests
         [TestMethod()]
         public void EchoActorTest()
         {
-            var launcher = new TestLauncherActor();
-            launcher.SendAction(() =>
+            TestLauncherActor.Test(() =>
             {
                 var actor = new EchoTest();
                 new EchoActor(actor, "Test Echo");
                 IFuture<string> future = new Future<string>();
                 actor.SendMessage(future);
                 Assert.AreEqual("Test Echo", future.ResultAsync().Result);
-                launcher.Finish();
             });
-            Assert.IsTrue(launcher.Wait());
         }
     }
 }
