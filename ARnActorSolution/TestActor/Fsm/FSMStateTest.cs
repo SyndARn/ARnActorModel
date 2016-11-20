@@ -28,19 +28,19 @@ namespace TestActor
                 fsmActor.SendMessage(currentState1);
                 Assert.IsTrue(currentState1.Result() == "StartState");
 
-                fsmActor.SendMessage("StartState", 1);
+                fsmActor.SendMessage(1);
 
                 var currentState2 = new Future<string>();
                 fsmActor.SendMessage(currentState2);
                 Assert.IsTrue(currentState2.Result() == "MidState");
 
-                fsmActor.SendMessage("MidState", 2);
+                fsmActor.SendMessage(2);
 
                 var currentState3 = new Future<string>();
                 fsmActor.SendMessage(currentState3);
                 Assert.IsTrue(currentState3.Result() == "EndState");
 
-                fsmActor.SendMessage("MidState", 3);
+                fsmActor.SendMessage(3);
 
                 // unchanged shoud be
                 var currentState4 = new Future<string>();
@@ -63,17 +63,17 @@ namespace TestActor
                 var currentState1 = fsmActor.GetCurrentState();
                 Assert.IsTrue(currentState1.Result() == "StartState");
 
-                fsmActor.SendMessage("StartState", 1);
+                fsmActor.SendMessage(1);
 
                 var currentState2 = fsmActor.GetCurrentState();
                 Assert.IsTrue(currentState2.Result() == "MidState");
 
-                fsmActor.SendMessage("MidState", 2);
+                fsmActor.SendMessage(2);
 
                 var currentState3 = fsmActor.GetCurrentState();
                 Assert.IsTrue(currentState3.Result() == "EndState");
 
-                fsmActor.SendMessage("MidState", 3);
+                fsmActor.SendMessage(3);
 
                 // unchanged shoud be
                 var currentState4 = fsmActor.GetCurrentState();

@@ -36,6 +36,11 @@ namespace Actor.Util
         {
         }
 
+        internal TState GetCurrentState()
+        {
+            return current;
+        }
+
         internal void ChangeState(TState aState)
         {
             current = aState;
@@ -47,7 +52,7 @@ namespace Actor.Util
             future.SendMessage(current);
         }
 
-        public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState)
+        public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState, IActor traceActor = null)
         {
             if (!fBehaviorSet)
             {
@@ -60,18 +65,38 @@ namespace Actor.Util
                     startState,
                     reachedState,
                     anAction,
-                    aCondition
+                    aCondition,
+                    traceActor
                 ));
             return this;
         }
     }
 
-    public class FsmBehavior<TState, TEvent> : Behavior<TState, TEvent>
+    public class FsmBehavior<TState, TEvent> : Behavior<TEvent>
     {
         public TState StartState { get; private set; }
         public TState EndState { get; private set; }
         public Action<TEvent> Action { get; private set; }
         public Func<TEvent, bool> Condition { get; private set; }
+
+        public IActor TraceActor { get; private set; }
+
+        public FsmBehavior(
+            TState origState,
+            TState endState,
+            Action<TEvent> anAction,
+            Func<TEvent, bool> aCondition,
+            IActor traceActor)
+        {
+            StartState = origState;
+            EndState = endState;
+            Action = anAction;
+            Condition = aCondition;
+            TraceActor = traceActor;
+
+            Pattern = DoPattern;
+            Apply = DoApply;
+        }
 
         public FsmBehavior(
             TState origState,
@@ -83,17 +108,26 @@ namespace Actor.Util
             EndState = endState;
             Action = anAction;
             Condition = aCondition;
+            TraceActor = null;
 
             Pattern = DoPattern;
             Apply = DoApply;
         }
 
-        private bool DoPattern(TState state, TEvent anEvent)
+        private bool DoPattern(TEvent anEvent)
         {
-            return StartState.Equals(state) && (Condition == null || Condition(anEvent));
+            var parent = LinkedTo as FsmBehaviors<TState, TEvent>;
+            var result = parent == null ? 
+                false :
+                parent.GetCurrentState().Equals(StartState) && (Condition == null || Condition(anEvent));
+            if (TraceActor != null)
+            {
+                TraceActor.SendMessage(StartState, EndState, anEvent.ToString());
+            }
+            return result;
         }
 
-        private void DoApply(TState state, TEvent anEvent)
+        private void DoApply(TEvent anEvent)
         {
             var parent = LinkedTo as FsmBehaviors<TState, TEvent>;
             if (parent != null)
