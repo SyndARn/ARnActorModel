@@ -11,25 +11,25 @@ using Actor.Base;
 
 namespace Actor.Server.Tests
 {
+    internal class EchoTest : BaseActor
+    {
+        private string fData;
+        public EchoTest() : base()
+        {
+            Become(new Behavior<IActor, string>((a, s) =>
+            {
+                fData = s;
+            }));
+            AddBehavior(new Behavior<IFuture<string>>(a =>
+            {
+                a.SendMessage(fData);
+            }));
+        }
+    }
+
     [TestClass()]
     public class EchoActorTests
     {
-        class EchoTest : BaseActor
-        {
-            private string fData;
-            public EchoTest() : base()
-            {
-                Become(new Behavior<IActor, string>((a, s) =>
-                 {
-                     fData = s;
-                 }));
-                AddBehavior(new Behavior<IFuture<string>>(a =>
-                {
-                    a.SendMessage(fData);
-                }));
-            }
-        }
-
         [TestMethod()]
         public void EchoActorTest()
         {

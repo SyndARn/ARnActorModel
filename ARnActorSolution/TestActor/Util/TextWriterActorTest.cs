@@ -37,7 +37,7 @@ namespace TestActor
                         reader.Dispose();
                     }
                 }
-            },20000);
+            });
         }
     }
 }
