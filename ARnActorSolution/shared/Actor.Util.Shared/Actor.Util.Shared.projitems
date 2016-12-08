@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\MarkBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\DistributedDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graph\BhvGraph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadCastBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudBehavior.cs" />
@@ -31,6 +32,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)IO\TextWriterActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MapReduce\MapReduceActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Monadic\actMonad.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\HashKey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerAgent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerBehaviors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Producer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyGenerator.cs" />
