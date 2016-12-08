@@ -110,6 +110,7 @@
     <Compile Include="ActorProxy\ActorProxyTest.cs" />
     <Compile Include="ActorServer\ShardListActorTests.cs" />
     <Compile Include="Directory\DiscoveryActorTests.cs" />
+    <Compile Include="Peer\PeerBehaviorsTest.cs" />
     <Compile Include="Serializer\DataContractObjectTests.cs" />
     <Compile Include="Service\ParserActorTests.cs" />
     <Compile Include="Admin\ActorStatServerTests.cs" />

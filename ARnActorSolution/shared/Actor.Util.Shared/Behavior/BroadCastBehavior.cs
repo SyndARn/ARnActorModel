@@ -8,7 +8,12 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-    public class BroadCastActor<T> : BaseActor
+    public interface IBroadCastActor<T>
+    {
+        void BroadCast(T at, IEnumerable<IActor> list);
+    }
+
+    public class BroadCastActor<T> : BaseActor, IBroadCastActor<T>
     {
         public BroadCastActor()
             : base()

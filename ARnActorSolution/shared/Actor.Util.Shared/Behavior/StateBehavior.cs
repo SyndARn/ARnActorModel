@@ -30,7 +30,15 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-    public class StateFullActor<T> : BaseActor
+    public interface IStateFullActor<T>
+    {
+        void Set(T aT);
+        IFuture<T> Get();
+        Task<T> GetAsync();
+        Task<T> GetAsync(int timeOutMS);
+    }
+
+    public class StateFullActor<T> : BaseActor, IStateFullActor<T>
     {
         public StateFullActor()
             : base()
@@ -43,11 +51,11 @@ namespace Actor.Util
             this.SendMessage(StateAction.Set, aT);
         }
 
-        public T Get()
+        public IFuture<T> Get()
         {
-            SendMessage(StateAction.Get);
-            var retVal = Receive(t => { return t is T; });
-            return retVal == null ? default(T) : (T)retVal.Result ;
+            IFuture<T> future = new Future<T>();
+            this.SendMessage(StateAction.Get, future);
+            return future;
         }
 
         public async Task<T> GetAsync()
@@ -67,11 +75,12 @@ namespace Actor.Util
 
     public class StateBehaviors<T> : Behaviors
     {
-        internal T Value;
+        internal T Value { get; set; }
         public StateBehaviors() : base()
         {
             AddBehavior(new SetStateBehavior<T>());
             AddBehavior(new GetStateBehavior<T>());
+            AddBehavior(new GetStateBehaviorFuture<T>());
         }
     }
 
@@ -84,11 +93,26 @@ namespace Actor.Util
             Apply = (s, t) => SetValue(t);
         }
 
-        public void SetValue(T msg)
+        private void SetValue(T msg)
         {
             ((StateBehaviors<T>)LinkedTo).Value = msg;
         }
 
+    }
+
+    public class GetStateBehaviorFuture<T> : Behavior<StateAction, IFuture<T>>
+    {
+        public GetStateBehaviorFuture()
+            : base()
+        {
+            Pattern = (s,f) => s == StateAction.Get;
+            Apply = (s,f) => GetValue(f);
+        }
+
+        private void GetValue(IFuture<T> future)
+        {
+            future.SendMessage(((StateBehaviors<T>)LinkedTo).Value);
+        }
     }
 
     public class GetStateBehavior<T> : Behavior<StateAction>
@@ -100,7 +124,7 @@ namespace Actor.Util
             Apply = s => GetValue();
         }
 
-        public void GetValue()
+        private void GetValue()
         {
             LinkedActor.SendMessage(((StateBehaviors<T>)LinkedTo).Value);
         }

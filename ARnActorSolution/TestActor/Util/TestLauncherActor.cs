@@ -25,6 +25,11 @@ namespace TestActor
             SendMessage(true);
         }
 
+        public void Fail()
+        {
+            SendMessage(false);
+        }
+
         public async Task<bool> Wait()
         {
             return await Wait(DefaultWait);
@@ -39,10 +44,20 @@ namespace TestActor
 
         public static void Test(Action action)
         {
-            Test(action, DefaultWait);
+            Test( null, action, DefaultWait);
         }
 
         public static void Test(Action action, int timeOutMS)
+        {
+            Test(null, action, timeOutMS);
+        }
+
+        public static void Test(TestContext testContext, Action action)
+        {
+            Test(testContext, action, DefaultWait);
+        }
+
+        public static void Test(TestContext testContext, Action action, int timeOutMS)
         {
             var launcher = new TestLauncherActor();
             launcher.SendAction(
@@ -56,9 +71,13 @@ namespace TestActor
                     catch (Exception e)
                     {
                         launcher.fLauncherException = e;
-                        Debug.WriteLine(e.Message);
-                        Debug.WriteLine(e.StackTrace);
-                        throw ;
+                        launcher.Fail();
+                        if (testContext != null)
+                        {
+                            testContext.WriteLine(e.Message);
+                            testContext.WriteLine(e.StackTrace);
+                            throw;
+                        }
                     }
                 });
             Task<bool> testResult = launcher.Wait(timeOutMS);
