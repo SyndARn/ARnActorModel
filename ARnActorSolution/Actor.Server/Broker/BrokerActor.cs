@@ -22,13 +22,13 @@ namespace Actor.Server
     /// 
     public enum BrokerAction { RegisterWorker, UnregisterWorker, Hearbeat, Start };
     public enum WorkerReadyState { Unknown, Idle, Busy, Transient };
-    public enum RequestState { Unprocessed,Processed,Running};
+    public enum RequestState { Unprocessed, Processed, Running };
 
     public class RequestStatus<T>
     {
         public ActorTag Tag { get; set; }
         public RequestState State { get; set; }
-        public T Data { get; set; } 
+        public T Data { get; set; }
     }
     public class WorkerStatus
     {
@@ -39,7 +39,6 @@ namespace Actor.Server
     public class BrokerActor<T> : BaseActor
     {
         private Dictionary<IActor, WorkerStatus> fWorkers = new Dictionary<IActor, WorkerStatus>();
-        // private Dictionary<ActorTag, RequestStatus<T>> fRequests = new Dictionary<ActorTag, RequestStatus<T>>();
         private Dictionary<ActorTag, RequestStatus<T>> fRequests = new Dictionary<ActorTag, RequestStatus<T>>();
         private int fLastWorkerUsed = 0;
         private int fTTL = 0;
@@ -85,7 +84,7 @@ namespace Actor.Server
                 });
         }
 
-        private Behavior<BrokerAction,IActor> BehaviorRegisterWorker()
+        private Behavior<BrokerAction, IActor> BehaviorRegisterWorker()
         {
             return new Behavior<BrokerAction, IActor>
                 (
@@ -101,7 +100,7 @@ namespace Actor.Server
                 );
         }
 
-        private Behavior<BrokerAction,IActor> BehaviorUnregisterWorker()
+        private Behavior<BrokerAction, IActor> BehaviorUnregisterWorker()
         {
             return new Behavior<BrokerAction, IActor>
                 (
@@ -131,28 +130,16 @@ namespace Actor.Server
             Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, args));
         }
 
-        public BrokerActor() : base()
+        private Behavior<T> BehaviorProcessClientRequest()
         {
-
-            // heartbeat actor
-            Become(BehaviorBrokerStart());
-
-            // register worker
-            AddBehavior(BehaviorRegisterWorker());
-
-            // unregister worker
-            AddBehavior(BehaviorUnregisterWorker());
-
-            // process client request
-            AddBehavior(new Behavior<T>(
-                (t) => true,
+            return new Behavior<T>(
                 (t) =>
                 {
                     var requestStatus = new RequestStatus<T>();
                     requestStatus.Data = t;
                     requestStatus.State = RequestState.Unprocessed;
                     requestStatus.Tag = new ActorTag();
-                    fRequests[requestStatus.Tag] = requestStatus ;
+                    fRequests[requestStatus.Tag] = requestStatus;
 
                     var worker = FindWorker();
                     if (worker != null)
@@ -167,7 +154,24 @@ namespace Actor.Server
                     {
                         LogString("No available worker for Request {0}", requestStatus.Tag.Key());
                     }
-                }));
+                });
+        }
+
+        public BrokerActor() : base()
+        {
+
+            // heartbeat actor
+            Become(BehaviorBrokerStart());
+
+            // register worker
+            AddBehavior(BehaviorRegisterWorker());
+
+            // unregister worker
+            AddBehavior(BehaviorUnregisterWorker());
+
+            // process client request
+            AddBehavior(BehaviorProcessClientRequest());
+
             // worker refuse job
             AddBehavior(new Behavior<IActor, WorkerReadyState, ActorTag>
                 (
@@ -200,7 +204,7 @@ namespace Actor.Server
                      fRequests.Remove(t);
                      fWorkers[a].State = WorkerReadyState.Idle;
                      fWorkers[a].TTL = fTTL;
-                     LogString("Request {0} End on worker {1}",t.Key(), a.Tag.Key());
+                     LogString("Request {0} End on worker {1}", t.Key(), a.Tag.Key());
                      // find a request
                      var tagRequest = fRequests.Values.FirstOrDefault(v => v.State == RequestState.Unprocessed);
                      if (tagRequest != null)
@@ -216,14 +220,14 @@ namespace Actor.Server
             // heartbeatactor
             AddBehavior(new Behavior<HeartBeatActor, HeartBeatAction>
                 (
-                (a,h) =>
+                (a, h) =>
                 {
                     foreach (var worker in fWorkers.Where(w => w.Value.TTL < fTTL))
                     {
                         worker.Key.SendMessage((IActor)this, BrokerAction.Hearbeat);
                     }
                     fTTL++;
-                    LogString("Heart Beat Signal, Request Processed {0}",fRequestProcessed);
+                    LogString("Heart Beat Signal, Request Processed {0}", fRequestProcessed);
                 }
                 ));
             // heartbeat answer
@@ -232,7 +236,7 @@ namespace Actor.Server
                 {
                     var workerState = fWorkers[a];
                     workerState.TTL = fTTL;
-                    LogString("Answer To HeartBeat from Worker {0}",a.Tag.Key());
+                    LogString("Answer To HeartBeat from Worker {0}", a.Tag.Key());
                 }));
             // start heart beat
             SendMessage(BrokerAction.Start);

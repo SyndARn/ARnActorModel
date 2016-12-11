@@ -13,14 +13,14 @@ using System.Threading.Tasks;
 
 namespace TestActor
 {
+    internal class Test1 : ActionActor
+    {
+        public string Name { get; set; }
+    }
+
     [TestClass]
     public class SerializationTest
     {
-
-        public class Test1 : ActionActor
-        {
-            public string Name { get; set; }
-        }
 
         [TestMethod]
         public void TestSerializeActor()

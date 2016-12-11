@@ -6,10 +6,10 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-    public class RxObservable<T> : BaseActor, IObservable<T>
+    public class RXObservable<T> : BaseActor, IObservable<T>
     {
         private List<IObserver<T>> observers;
-        public RxObservable()
+        public RXObservable()
         {
             observers = new List<IObserver<T>>();
             var bhv1 = new Behavior<IObserver<T>>(DoSubscribe);
@@ -19,7 +19,6 @@ namespace Actor.Util
             AddBehavior(bhv2);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée",Justification = "IDispo is sent as message")]
         private void DoSubscribe(IObserver<T> observer)
         {
             if (!observers.Contains(observer))

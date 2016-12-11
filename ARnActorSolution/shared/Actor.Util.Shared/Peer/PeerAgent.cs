@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Actor.Base;
+using System.Linq;
 
 namespace Actor.Util
 {
@@ -22,11 +23,57 @@ namespace Actor.Util
 
     // calc at least 2 key value, peer / 4 for redundancy with different hash seeding
 
+    public static class Centroid<K>
+    {
+        public static K Calc(IEnumerable<K> keys)
+        {
+            CheckArg.IEnumerable(keys);
+            var dic = new Dictionary<HashKey, K>();
+            foreach (var k in keys)
+            {
+                dic[HashKey.ComputeHash(k.ToString())] = k;
+            }
+            var elected = dic.Keys.OrderBy(h => h.ToString()).FirstOrDefault();
+            return dic[elected];
+        }
+    }
+
+    public enum AgentStatus { Start, PeekKey, NearestNode, AddKey }
+
     public class AgentActor<K, V> : BaseActor
     {
-        // peek a key
-        // go to nearest node
-        // add key with prob ? // deposit evap 
+        public AgentActor()
+        {
+            Become(new Behavior<IPeerActor<K, V>>(
+            a =>
+            {
+                var keys = a.AskKeys();
+                var peers = a.AskPeers();
+                // peek key out of centroid
+                var key = Centroid<K>.Calc(keys.Result());
+                // calc nearest peer
+                var orderedPeers = peers.Result().OrderBy(n => n.Item1.ToString());
+                var hashKey = HashKey.ComputeHash(key.ToString());
+
+                foreach (var peer in orderedPeers)
+                {
+                    if (hashKey.CompareTo(peer.Item1) > 0)
+                    {
+                        // deposit
+                        // get current K V
+                        var future = new Future<V>();
+                        a.GetNode(key, future);
+                        var result = future.Result();
+                        if (result != null)
+                        {
+                            // set current K V
+                            (peer.Item2 as IPeerActor<K, V>).StoreNode(key, future.Result());
+                        }
+                        break;
+                    }
+                }
+            }));
+        }
     }
 
     public class AgentPeerActor<K, V> : BaseActor
@@ -36,7 +83,21 @@ namespace Actor.Util
 
     public class AgentDiscoActor<K, V> : BaseActor
     {
+        private int sygmergy = 10;
+
         // go to another host, ask prev and succ, update this
+        public AgentDiscoActor() : base()
+        {
+            Become(new Behavior<IPeerActor<K, V>>(a =>
+            {               
+                // get current nodes
+                var peers = a.AskPeers();
+                // take one of them (lower than your reference node)
+                // deposit sygmergy
+                // go to this one
+                // until sygmergy is down
+            }));
+        }
     }
 
     public class AgentCleanHost<K, V> : BaseActor

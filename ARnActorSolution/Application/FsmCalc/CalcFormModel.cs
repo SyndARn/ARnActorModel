@@ -54,7 +54,7 @@ namespace FsmCalc
                 case "Clear": CalcActor.Clear(); break;
                 case "+/-": CalcActor.Sign();break;
             }
-            var accumulators = await Observer.GetAsync();
+            var accumulators = await Observer.GetStateAsync();
             Form.lblAccumulator.Text = accumulators.Accumulator.ToString();
             Form.lblPlusAcc.Text = accumulators.PlusAcc.ToString();
             Form.lblMoinsAcc.Text = accumulators.MoinsAcc.ToString();

@@ -15,7 +15,7 @@ namespace TestActor
         [TestMethod()]
         public void RxObservableTest()
         {
-            var rx = new RxObservable<string>();
+            var rx = new RXObservable<string>();
             Assert.IsTrue(rx is IObservable<string>);
             Assert.IsTrue(rx is IActor);
         }
@@ -63,7 +63,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                var rx = new RxObservable<string>();
+                var rx = new RXObservable<string>();
                 var dsp = rx.Subscribe(new Observer());
                 Assert.IsTrue(dsp is IDisposable);
             });
@@ -74,7 +74,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                var rx = new RxObservable<string>();
+                var rx = new RXObservable<string>();
                 var obs = new Observer();
                 var dsp = rx.Subscribe(obs);
                 rx.Track("Test Message");

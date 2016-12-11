@@ -13,7 +13,7 @@ namespace Actor.Util
      * unit
      * bind
      * */
-    public class actMonad : BaseActor
+    public class ModadActor : BaseActor
     {
     }
 

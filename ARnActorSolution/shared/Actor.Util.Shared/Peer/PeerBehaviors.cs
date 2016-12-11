@@ -4,10 +4,12 @@ using System.Text;
 using Actor.Base;
 using System.Linq;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace Actor.Util
 {
-    public class PeerBehaviors<K, V> : Behaviors
+
+    public class PeerBehaviors<K, V> : Behaviors, INodeBehavior<K, V>
     {
         internal Dictionary<K, V> Nodes = new Dictionary<K, V>();
         internal Dictionary<HashKey, IPeerActor<K,V>> Peers = new Dictionary<HashKey, IPeerActor<K,V>>();
@@ -30,10 +32,34 @@ namespace Actor.Util
                 .AddBehavior(new PeerFindPeer<K, V>())
                 .AddBehavior(new PeerNewPeer<K, V>())
                 .AddBehavior(new PeerDeleteNode<K, V>())
-                .AddBehavior(new Behavior<IFuture<HashKey>>(f => f.SendMessage(this.CurrentPeer)));
+                .AddBehavior(new Behavior<IFuture<HashKey>>(f => f.SendMessage(this.CurrentPeer)))
+                .AddBehavior(new Behavior<IFuture<IEnumerable<K>>>())// AskKeys();
+                .AddBehavior(new Behavior<IFuture<IEnumerable<Tuple<HashKey, IActor>>>>()); // AskNodes();
         }
-    }
 
+        public void DeleteNode(K k)
+        {
+            LinkedActor.SendMessage("PeerDeleteNode", k);
+        }
+
+        public void GetNode(K k, IActor actor)
+        {
+            LinkedActor.SendMessage("PeerGetNode", k, actor);
+        }
+
+        public IFuture<HashKey> GetHashKey()
+        {
+            var future = new Future<HashKey>();
+            LinkedActor.SendMessage(future);
+            return future;
+        }
+
+        public void StoreNode(K k, V v)
+        {
+            LinkedActor.SendMessage("PeerStoreNode", k, v);
+        }
+
+    }
 
     public class PeerDeleteNode<K, V> : Behavior<string, K>
     {
@@ -73,7 +99,7 @@ namespace Actor.Util
             this.Pattern = (s, i, h) => s == "PeerNewPeer";
             this.Apply = (s, i, h) =>
             {
-                Debug.WriteLine(String.Format("New peer : {0}", h.ToString()),"PeerBehavior");
+                Debug.WriteLine(String.Format(CultureInfo.InvariantCulture,"New peer : {0}", h.ToString()),"PeerBehavior");
                 (LinkedTo as PeerBehaviors<K, V>).Peers[h] = i;
             };
         }
@@ -88,7 +114,7 @@ namespace Actor.Util
             {
                 var key = HashKey.ComputeHash(k.ToString());
                 var current = (LinkedTo as PeerBehaviors<K, V>).CurrentPeer;
-                Debug.WriteLine(string.Format("Search Key {0} in {1}", key.ToString(), current.ToString()) , "PeerBehavior");
+                Debug.WriteLine(string.Format(CultureInfo.InvariantCulture,"Search Key {0} in {1}", key.ToString(), current.ToString()) , "PeerBehavior");
                 if (key.CompareTo(current) <= 0)
                 {
                     // Store here
@@ -127,46 +153,67 @@ namespace Actor.Util
         IFuture<HashKey> GetHashKey();
     }
 
-    public interface IPeerActor<K,V> : IActor, IPeerBehavior<K,V>, INodeBehavior<K,V>
+    public interface IAgentBehavior<K>
+    {
+        IFuture<IEnumerable<K>> AskKeys();
+        IFuture<IEnumerable<Tuple<HashKey,IActor>>> AskPeers();
+    }
+
+    public interface IPeerActor<K,V> : IActor, IPeerBehavior<K,V>, IAgentBehavior<K>, INodeBehavior<K, V>
     { }
 
-    public class PeerActor<K, V> : BaseActor, IPeerActor<K,V>
+    public class PeerActor<K, V> : BaseActor, IPeerActor<K,V>, INodeBehavior<K, V>
     {
+        private INodeBehavior<K, V> fNodeBehaviorService;
         public PeerActor() : base()
         {
-            Become(new PeerBehaviors<K, V>());
-        }
-
-        public IFuture<HashKey> GetHashKey()
-        {
-            var future = new Future<HashKey>();
-            this.SendMessage(future);
-            return future;
-        }
-
-        public void DeleteNode(K k)
-        {
-            this.SendMessage("PeerDeleteNode", k);
+            var bhv = new PeerBehaviors<K, V>();
+            fNodeBehaviorService = bhv;
+            Become(bhv);
         }
 
         public void FindPeer(K k, IFuture<IPeerActor<K,V>> actor)
         {
             this.SendMessage("PeerFindPeer", k, actor);
         }
-
-        public void GetNode(K k, IActor actor)
-        {
-            this.SendMessage("PeerGetNode", k, actor);
-        }
-
         public void NewPeer(IPeerActor<K,V> actor, HashKey hash)
         {
             this.SendMessage("PeerNewPeer", actor, hash);
         }
 
+
+        public IFuture<IEnumerable<K>> AskKeys()
+        {
+            var future = new Future<IEnumerable<K>>();
+            this.SendMessage("AgentAskKeys",future);
+            return future;
+        }
+
+        public IFuture<IEnumerable<Tuple<HashKey, IActor>>> AskPeers()
+        {
+            var future = new Future<IEnumerable<Tuple<HashKey, IActor>>>();
+            this.SendMessage("AgentAskNodes",future);
+            return future;
+        }
+
         public void StoreNode(K k, V v)
         {
-            this.SendMessage("PeerStoreNode", k, v);
+            fNodeBehaviorService.StoreNode(k, v);
+        }
+
+        public void GetNode(K k, IActor actor)
+        {
+            fNodeBehaviorService.GetNode(k, actor);
+        }
+
+        public void DeleteNode(K k)
+        {
+            fNodeBehaviorService.DeleteNode(k);
+        }
+
+        public IFuture<HashKey> GetHashKey()
+        {
+            return fNodeBehaviorService.GetHashKey();
         }
         // kv behaviors
         // store kv

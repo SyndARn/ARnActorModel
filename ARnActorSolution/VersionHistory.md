@@ -17,3 +17,6 @@
 
 2016 11 19 0.4.4.0
   Replacing tuple with IMessageParam
+
+2016 11 19 0.4.5.0
+  Fixing issues in 0.4.4.0 package

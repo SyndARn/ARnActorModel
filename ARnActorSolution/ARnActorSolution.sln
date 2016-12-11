@@ -37,7 +37,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapReduceApplication", "App
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{8C30EA8E-BA75-424B-A9BE-9BF7FA766723}"
 	ProjectSection(SolutionItems) = preProject
-		Doc\ARnActorDoc.html = Doc\ARnActorDoc.html
 		Doc\ARnActorKey.snk = Doc\ARnActorKey.snk
 		Doc\ARnActorModelVersion.cs = Doc\ARnActorModelVersion.cs
 		Doc\Licence.cs = Doc\Licence.cs
