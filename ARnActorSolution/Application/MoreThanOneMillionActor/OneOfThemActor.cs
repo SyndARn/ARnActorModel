@@ -40,13 +40,13 @@ namespace MoreThanOneMillionActor
         public OneOfThemActor(int i) : base()
         {
             AddBehavior(new Behavior<IActor>(Observe));
-            Set(i);
+            SetState(i);
             // SendMessage(observer);
         }
 
         private void Observe(IActor observer)
         {
-            observer.SendMessage(Get()) ;
+            observer.SendMessage(GetState()) ;
         }
     }
 

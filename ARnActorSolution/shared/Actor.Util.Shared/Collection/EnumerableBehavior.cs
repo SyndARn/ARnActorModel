@@ -37,12 +37,7 @@ namespace Actor.Util
             get
             {
                 return false;
-                //var future = new Future<bool>();
-                //this.SendMessage<Action<IActor>, IActor>((a) =>
-                //{
-                //    a.SendMessage(false);
-                //}, future);
-                //return future.Result();
+
             }
         }
 

@@ -81,11 +81,6 @@ namespace Actor.TestApplication
             middle.SendMessage("Bonjour");
 
 
-            // dynamic use DLR to handle the send / dispatch business ...
-            dynamic test = new ExpandoObject();
-            dynamic dyn = new DynamicActor(test);
-            test.PrintSomething = (Action<string>)((t) => Console.WriteLine(t));
-            dyn.PrintSomething("Got it !");
         }
    }
 

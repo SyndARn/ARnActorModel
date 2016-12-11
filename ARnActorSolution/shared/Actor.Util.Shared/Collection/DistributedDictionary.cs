@@ -7,29 +7,29 @@ using System.Linq;
 namespace Actor.Util
 {
 
-    public class DistributedDictionaryBehaviors<K, V> : Behaviors
+    public class DistributedDictionaryBehaviors<TKey, TValue> : Behaviors
     {
-        internal Dictionary<int,HashActor<K, V>> HashActorList = new Dictionary<int,HashActor<K, V>>();
+        internal Dictionary<int,HashActor<TKey, TValue>> HashActorList = new Dictionary<int,HashActor<TKey, TValue>>();
         public DistributedDictionaryBehaviors() : base()
         {
-            BecomeBehavior(new DistributedDictionaryGetBehavior<K, V>());
-            AddBehavior(new DistributedDictionarySetBehavior<K, V>());
+            BecomeBehavior(new DistributedDictionaryGetBehavior<TKey, TValue>());
+            AddBehavior(new DistributedDictionarySetBehavior<TKey, TValue>());
         }
     }
 
-    public class KVActor<K, V> : BaseActor
+    public class KVActor<TKey, TValue> : BaseActor
     {
-        K key;
-        V value;
+        TKey key;
+        TValue value;
         public KVActor() : base()
         {
-            Become(new Behavior<K, V>((k, v) =>
+            Become(new Behavior<TKey, TValue>((k, v) =>
             {
                 key = k;
                 value = v;
             }
             ));
-            AddBehavior(new Behavior<IActor, K>(
+            AddBehavior(new Behavior<IActor, TKey>(
              (i, k) =>
                 {
                     i.SendMessage(k);
@@ -37,20 +37,20 @@ namespace Actor.Util
         }
     }
 
-    public class HashActor<K, V> : BaseActor
+    public class HashActor<TKey, TValue> : BaseActor
     {
         private string HashKey;
-        private List<K> KeyList = new List<K>();
+        private List<TKey> KeyList = new List<TKey>();
         public HashActor() : base()
         {
             Become(new Behavior<string>(s =>
             {
                 HashKey = s;
-                Become(new Behavior<K>(k =>
+                Become(new Behavior<TKey>(k =>
                 {
                     KeyList.Add(k);
                 }));
-                AddBehavior(new Behavior<IActor, K>((i, k) =>
+                AddBehavior(new Behavior<IActor, TKey>((i, k) =>
                  {
                      i.SendMessage(k);
                  }
@@ -59,7 +59,7 @@ namespace Actor.Util
         }
     }
 
-    public class DistributedDictionaryGetHashActor<K> : Behavior<IActor, K>
+    public class DistributedDictionaryGetHashActor<TKey> : Behavior<IActor, TKey>
     {
         public DistributedDictionaryGetHashActor() : base()
         {
@@ -68,11 +68,11 @@ namespace Actor.Util
         }
     }
 
-    public class DistributedDictionarySetBehavior<K, V> : Behavior<K, V>
+    public class DistributedDictionarySetBehavior<TKey, TValue> : Behavior<TKey, TValue>
     {
-        private DistributedDictionaryBehaviors<K, V> parent()
+        private DistributedDictionaryBehaviors<TKey, TValue> parent()
         {
-            return this.LinkedTo as DistributedDictionaryBehaviors<K, V>;
+            return this.LinkedTo as DistributedDictionaryBehaviors<TKey, TValue>;
         }
         public DistributedDictionarySetBehavior() : base()
         {
@@ -80,7 +80,7 @@ namespace Actor.Util
             Apply = (k, v) => 
             {
                 var hashKey = k.GetHashCode();
-                HashActor<K, V> hashActor = null;
+                HashActor<TKey, TValue> hashActor = null;
                 if (parent().HashActorList.TryGetValue(hashKey,out hashActor))
                     {
                     hashActor.SendMessage(k,v);
@@ -89,7 +89,7 @@ namespace Actor.Util
         }
     }
 
-    public class DistributedDictionaryGetBehavior<K, V> : Behavior<IActor, V>
+    public class DistributedDictionaryGetBehavior<TKey, TValue> : Behavior<IActor, TValue>
     {
         public DistributedDictionaryGetBehavior() : base()
         {

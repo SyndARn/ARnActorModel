@@ -6,10 +6,10 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-    public class RxObservable<T> : BaseActor, IObservable<T>
+    public class RXObservable<T> : BaseActor, IObservable<T>
     {
         private List<IObserver<T>> observers;
-        public RxObservable()
+        public RXObservable()
         {
             observers = new List<IObserver<T>>();
             var bhv1 = new Behavior<IObserver<T>>(DoSubscribe);

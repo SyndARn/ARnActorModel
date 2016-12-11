@@ -31,7 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Fsm\FsmBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\TextWriterActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MapReduce\MapReduceActor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Monadic\actMonad.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Monadic\MonadActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\HashKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerAgent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerBehaviors.cs" />

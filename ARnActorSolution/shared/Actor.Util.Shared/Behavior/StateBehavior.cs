@@ -32,10 +32,10 @@ namespace Actor.Util
 
     public interface IStateFullActor<T>
     {
-        void Set(T aT);
-        IFuture<T> Get();
-        Task<T> GetAsync();
-        Task<T> GetAsync(int timeOutMS);
+        void SetState(T aT);
+        IFuture<T> GetState();
+        Task<T> GetStateAsync();
+        Task<T> GetStateAsync(int timeOutMS);
     }
 
     public class StateFullActor<T> : BaseActor, IStateFullActor<T>
@@ -46,25 +46,25 @@ namespace Actor.Util
             Become(new StateBehaviors<T>());
         }
 
-        public void Set(T aT)
+        public void SetState(T aT)
         {
             this.SendMessage(StateAction.Set, aT);
         }
 
-        public IFuture<T> Get()
+        public IFuture<T> GetState()
         {
             IFuture<T> future = new Future<T>();
             this.SendMessage(StateAction.Get, future);
             return future;
         }
 
-        public async Task<T> GetAsync()
+        public async Task<T> GetStateAsync()
         {
             this.SendMessage(StateAction.Get);
             return (T) await Receive(t => { return t is T; }) ;
         }
 
-        public async Task<T> GetAsync(int timeOutMS)
+        public async Task<T> GetStateAsync(int timeOutMS)
         {
             this.SendMessage(StateAction.Get);
             return (T)await Receive(t => { return t is T; }, timeOutMS);

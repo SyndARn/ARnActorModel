@@ -33,29 +33,6 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class bhvRemoteActor
-    {
-        private byte[] AssemblyBinaries;
-        private string ActorClass;
-    }
-
-    public class bhvRemoteLoading : Behavior<bhvRemoteActor>
-    {
-        public bhvRemoteLoading()
-        {
-            this.Apply = Behavior;
-            this.Pattern = t => true;
-        }
-
-        private void Behavior(bhvRemoteActor msg)
-        {
-            // download binaries
-            // load assembly
-            // start actor
-            // send back actor name
-        }
-    }
-
     public class chunk
     {
         public int chunkPart;

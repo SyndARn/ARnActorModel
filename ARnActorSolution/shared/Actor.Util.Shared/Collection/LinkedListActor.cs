@@ -52,10 +52,9 @@ namespace Actor.Util
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvLinkedListFirst<T> : Behavior<LinkedListOperation, IActor>
+    public class BehaviorLinkedListFirst<T> : Behavior<LinkedListOperation, IActor>
     {
-        public bhvLinkedListFirst() : base()
+        public BehaviorLinkedListFirst() : base()
         {
             Pattern = (l,t) => { return LinkedListOperation.First.Equals(l); };
             Apply = Behavior;
@@ -67,10 +66,9 @@ namespace Actor.Util
         }
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "bhv")]
-    public class bhvLinkedListNext<T> : Behavior<LinkedListOperation, IActor, T>
+    public class BehaviorLinkedListNext<T> : Behavior<LinkedListOperation, IActor, T>
     {
-        public bhvLinkedListNext()
+        public BehaviorLinkedListNext()
             : base()
         {
             Pattern = (l,i,t) => { return LinkedListOperation.Next.Equals(l); };
@@ -93,8 +91,8 @@ namespace Actor.Util
         public LinkedListBehaviors()
             : base()
         {
-            this.AddBehavior(new bhvLinkedListFirst<T>());
-            this.AddBehavior(new bhvLinkedListNext<T>());
+            this.AddBehavior(new BehaviorLinkedListFirst<T>());
+            this.AddBehavior(new BehaviorLinkedListNext<T>());
             this.AddBehavior(new LinkedListAddbehavior<T>());
         }
     }

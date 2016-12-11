@@ -16,8 +16,8 @@ namespace TestActor
                 {
                     var stateActor = new StateFullActor<string>();
                     string strTest = "Test actStateFullActor" ;
-                    stateActor.Set(strTest);
-                    Assert.AreEqual(strTest, stateActor.Get().Result());
+                    stateActor.SetState(strTest);
+                    Assert.AreEqual(strTest, stateActor.GetState().Result());
                 });
         }
     }
