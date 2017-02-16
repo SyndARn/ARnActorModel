@@ -7,5 +7,6 @@ namespace Actor.Util
     {
         void AddKeyValue(TKey key, TValue value);
         Future<bool, TKey, TValue> GetKeyValue(TKey key);
+        void RemoveKey(TKey key);
     }
 }
