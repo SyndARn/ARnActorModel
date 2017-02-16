@@ -54,5 +54,20 @@ namespace TestActor
                 Assert.IsFalse(r3.Result().Item1);
             });
         }
+
+        [TestMethod()]
+        public void RemoveKTest()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var act = new DictionaryActor<string, int>();
+                Assert.IsNotNull(act);
+                act.AddKeyValue("1", 1);
+                act.AddKeyValue("2", 2);
+                act.RemoveKey("1");
+                var r1 = act.GetKeyValue("2");
+                Assert.AreEqual(2, r1.Result().Item3);
+            });
+        }
     }
 }

@@ -21,8 +21,10 @@ namespace Actor.Util
                     bool result = fDico.TryGetValue(k, out v);
                     a.SendMessage(result, k, v);
                 });
+            var bhv3 = new Behavior<TKey>(k => fDico.Remove(k));
             AddBehavior(bhv1);
             AddBehavior(bhv2);
+            AddBehavior(bhv3);
         }
 
         public void AddKeyValue(TKey key, TValue value)
@@ -35,6 +37,11 @@ namespace Actor.Util
             var future = new Future<bool, TKey, TValue>();
             LinkedActor.SendMessage((IActor)future, key);
             return future;
+        }
+
+        public void RemoveKey(TKey key)
+        {
+            LinkedActor.SendMessage(key);
         }
     }
 
@@ -58,6 +65,11 @@ namespace Actor.Util
         public Future<bool, TKey, TValue> GetKeyValue(TKey key)
         {
             return fServiceDictionary.GetKeyValue(key);
+        }
+
+        public void RemoveKey(TKey key)
+        {
+            fServiceDictionary.RemoveKey(key);
         }
     }
 }
