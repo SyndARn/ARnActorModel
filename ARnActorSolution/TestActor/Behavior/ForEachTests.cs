@@ -35,7 +35,7 @@ namespace TestActor
                 Assert.AreEqual(BehaviorMark.Reached, result);
                 foreach (var item in start)
                 {
-                    Assert.IsTrue(end.Contains(item));
+                    Assert.IsTrue(end.Contains(item),"missing item {0}",item);
                 }
             });
         }
