@@ -92,7 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Doc\ARnActorModelVersion.cs">
+    <Compile Include="..\..\..\Doc\ARnActorModelVersion.cs">
       <Link>Properties\ARnActorModelVersion.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,12 +101,12 @@
     <None Include="ARnActorKey.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Window\Actor.Base\Actor.Base.csproj">
+    <ProjectReference Include="..\Actor.Base\Actor.Base.csproj">
       <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>
       <Name>Actor.Base</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\shared\Actor.Util.Shared\Actor.Util.Shared.projitems" Label="Shared" />
+  <Import Project="..\..\shared\Actor.Util.Shared\Actor.Util.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

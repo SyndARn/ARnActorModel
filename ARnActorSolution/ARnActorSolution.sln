@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Plugin", "Actor.Plugi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.MonteCarlo", "Actor.MonteCarlo\Actor.MonteCarlo.csproj", "{7405DD75-D19C-4C80-8107-6492A9583802}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Util", "Actor.Util\Actor.Util.csproj", "{ED9F44AF-4154-4F52-8B71-7C2148B631AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Util", "src\Window\Actor.Util\Actor.Util.csproj", "{ED9F44AF-4154-4F52-8B71-7C2148B631AB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{8AD7AC78-DC22-406A-9A22-478E06F655B2}"
 EndProject
@@ -48,7 +48,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amoeba", "Application\Amoeb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeApplication", "Application\TreeApplication\TreeApplication.csproj", "{B807DBCF-DDC0-47B5-AECE-ACFACC50E7A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Base.Pcl", "Pcl\Actor.Base.Pcl\Actor.Base.Pcl.csproj", "{2D5BFE8E-954E-4919-8C08-EDD6CF69A3E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Base.Pcl", "src\Pcl\Actor.Base.Pcl\Actor.Base.Pcl.csproj", "{2D5BFE8E-954E-4919-8C08-EDD6CF69A3E7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pcl", "pcl", "{137E31C0-B3D2-48D7-9A11-17607B8BF6CE}"
 EndProject
@@ -56,7 +56,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Universal", "Universal", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Window", "Window", "{A93D581F-CEB2-4804-A38D-F8E6CDC8C9A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Base", "Window\Actor.Base\Actor.Base.csproj", "{6CA2469F-3839-4404-BBFD-A959AD2FD95E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Base", "src\Window\Actor.Base\Actor.Base.csproj", "{6CA2469F-3839-4404-BBFD-A959AD2FD95E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Universal", "Universal", "{D31165FA-912F-481A-AF7E-6CE7E4D6E94F}"
 EndProject
@@ -76,17 +76,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebQuote", "Application\Web
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{ACCDE58D-C50C-4821-B984-C06314BF6BD3}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Actor.Util.Shared", "shared\Actor.Util.Shared\Actor.Util.Shared.shproj", "{73609681-BCE2-42EA-88F2-B377225453EC}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Actor.Util.Shared", "src\shared\Actor.Util.Shared\Actor.Util.Shared.shproj", "{73609681-BCE2-42EA-88F2-B377225453EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Util.Pcl", "Pcl\Actor.Util.Pcl\Actor.Util.Pcl.csproj", "{33A9E4E2-0A90-4573-B4A8-2AADC2030FA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Util.Pcl", "src\Pcl\Actor.Util.Pcl\Actor.Util.Pcl.csproj", "{33A9E4E2-0A90-4573-B4A8-2AADC2030FA6}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Actor.Base.Shared", "shared\Actor.Base.Shared\Actor.Base.Shared.shproj", "{E107486F-A9B7-429C-81AC-E6CCEE4177B2}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Actor.Base.Shared", "src\shared\Actor.Base.Shared\Actor.Base.Shared.shproj", "{E107486F-A9B7-429C-81AC-E6CCEE4177B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Windows", "Window\Actor.Windows\Actor.Windows.csproj", "{746FAD75-4A24-44EE-84A4-9B509CAB4D30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Windows", "src\Window\Actor.Windows\Actor.Windows.csproj", "{746FAD75-4A24-44EE-84A4-9B509CAB4D30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Base.Universal", "Universal\Actor.Base.Universal\Actor.Base.Universal.csproj", "{38AC7DF9-AE84-4500-A5B2-3F777F4C85B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Base.Universal", "src\Universal\Actor.Base.Universal\Actor.Base.Universal.csproj", "{38AC7DF9-AE84-4500-A5B2-3F777F4C85B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Util.Universal", "Universal\Actor.Util.Universal\Actor.Util.Universal.csproj", "{505366AF-6ECB-4675-93C9-75D55D829F2D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Util.Universal", "src\Universal\Actor.Util.Universal\Actor.Util.Universal.csproj", "{505366AF-6ECB-4675-93C9-75D55D829F2D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokerDemoApplication", "Application\BrokerDemoApplication\BrokerDemoApplication.csproj", "{7C2D44B2-CCE6-4998-AB03-5220AF3EAAA9}"
 EndProject
@@ -97,16 +97,16 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{1095564c-f31b-468a-adb5-97d4f4502ff6}*SharedItemsImports = 4
-		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{2d5bfe8e-954e-4919-8c08-edd6cf69a3e7}*SharedItemsImports = 4
-		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{33a9e4e2-0a90-4573-b4a8-2aadc2030fa6}*SharedItemsImports = 4
-		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{38ac7df9-ae84-4500-a5b2-3f777f4c85b2}*SharedItemsImports = 4
-		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{505366af-6ecb-4675-93c9-75d55d829f2d}*SharedItemsImports = 4
-		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{6ca2469f-3839-4404-bbfd-a959ad2fd95e}*SharedItemsImports = 4
-		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{73609681-bce2-42ea-88f2-b377225453ec}*SharedItemsImports = 13
+		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{2d5bfe8e-954e-4919-8c08-edd6cf69a3e7}*SharedItemsImports = 4
+		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{33a9e4e2-0a90-4573-b4a8-2aadc2030fa6}*SharedItemsImports = 4
+		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{38ac7df9-ae84-4500-a5b2-3f777f4c85b2}*SharedItemsImports = 4
+		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{505366af-6ecb-4675-93c9-75d55d829f2d}*SharedItemsImports = 4
+		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{6ca2469f-3839-4404-bbfd-a959ad2fd95e}*SharedItemsImports = 4
+		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{73609681-bce2-42ea-88f2-b377225453ec}*SharedItemsImports = 13
 		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{75d9639e-e043-41d5-926b-65b0c459f868}*SharedItemsImports = 4
 		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{aeae49ec-d5f6-448d-a098-f479bbdc69d2}*SharedItemsImports = 13
-		shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{e107486f-a9b7-429c-81ac-e6ccee4177b2}*SharedItemsImports = 13
-		shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{ed9f44af-4154-4f52-8b71-7c2148b631ab}*SharedItemsImports = 4
+		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{e107486f-a9b7-429c-81ac-e6ccee4177b2}*SharedItemsImports = 13
+		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{ed9f44af-4154-4f52-8b71-7c2148b631ab}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppVeyor|Any CPU = AppVeyor|Any CPU
