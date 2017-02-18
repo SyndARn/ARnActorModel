@@ -61,7 +61,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Window\Actor.Base\Actor.Base.csproj">
+    <ProjectReference Include="..\..\src\Window\Actor.Base\Actor.Base.csproj">
       <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>
       <Name>Actor.Base</Name>
     </ProjectReference>

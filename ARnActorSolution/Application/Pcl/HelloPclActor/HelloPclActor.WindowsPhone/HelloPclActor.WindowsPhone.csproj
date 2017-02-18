@@ -82,7 +82,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <ProjectReference Include="..\..\..\..\Pcl\Actor.Base.Pcl\Actor.Base.Pcl.csproj">
+    <ProjectReference Include="..\..\..\..\src\Pcl\Actor.Base.Pcl\Actor.Base.Pcl.csproj">
       <Project>{2d5bfe8e-954e-4919-8c08-edd6cf69a3e7}</Project>
       <Name>Actor.Base.Pcl</Name>
     </ProjectReference>
