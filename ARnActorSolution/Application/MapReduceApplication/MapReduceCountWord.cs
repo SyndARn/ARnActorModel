@@ -12,8 +12,8 @@ namespace MapReduceApplication
 {
     public class TextBoxActor : BaseActor
     {
-        public delegate void AddText(string aString);
-        public AddText myDelegate;
+        private delegate void AddText(string aString);
+        private AddText myDelegate;
 
         public TextBoxActor(TextBox textBox) : base()
         {

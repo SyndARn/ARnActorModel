@@ -18,8 +18,8 @@ namespace Actor.Util
         public MapReduceActor
             (
                 Action<IActor,TData> senderKV,
-                Action<IActor, TKeyMap, TValueMap> mapKV,
-                Func<TKeyReduce, IEnumerable<TValueReduce>, TValueReduce> reduceKV,
+                MapAction<TKeyMap, TValueMap> mapKV,
+                ReduceFunction<TKeyReduce, TValueReduce> reduceKV,
                 IActor outputActor
             ) : base()
         {
@@ -100,11 +100,13 @@ namespace Actor.Util
         }
     }
 
+    public delegate void MapAction<TKeyMap,TValueMap>(IActor actor, TKeyMap keyMap, TValueMap valueMap) ;
+
     public class MapActor<TKeyMap, TValueMap> : BaseActor
     {
         IActor fSender;
-        Action<IActor, TKeyMap, TValueMap> fMapAction;
-        public MapActor(IActor sender, Action<IActor, TKeyMap, TValueMap> mapAction) : base()
+        MapAction<TKeyMap, TValueMap> fMapAction;
+        public MapActor(IActor sender, MapAction<TKeyMap, TValueMap> mapAction) : base()
         {
             fSender = sender;
             fMapAction = mapAction;
@@ -119,21 +121,23 @@ namespace Actor.Util
         }
     }
 
+    public delegate TValue ReduceFunction<TKey, TValue>(TKey key, IEnumerable<TValue> values); 
+
     public class ReduceActor<TKey, TValue> : BaseActor
     {
         IActor fSender;
-        Func<TKey, IEnumerable<TValue>, TValue> fReduceAction;
+        ReduceFunction<TKey, TValue> fReduceFunction;
 
-        public ReduceActor(IActor sender, Func<TKey, IEnumerable<TValue>, TValue> reduceAction) : base()
+        public ReduceActor(IActor sender, ReduceFunction<TKey, TValue> reduceFunction) : base()
         {
-            fReduceAction = reduceAction;
+            fReduceFunction = reduceFunction;
             fSender = sender;
-            Become(new Behavior<TKey, IEnumerable<TValue>>(DoReduceAction));
+            Become(new Behavior<TKey, IEnumerable<TValue>>(DoReduceFunction));
         }
 
-        private void DoReduceAction(TKey key, IEnumerable<TValue> someValues)
+        private void DoReduceFunction(TKey key, IEnumerable<TValue> someValues)
         {
-            TValue value = fReduceAction(key, someValues);
+            TValue value = fReduceFunction(key, someValues);
             fSender.SendMessage(this, key, value);
         }
     }

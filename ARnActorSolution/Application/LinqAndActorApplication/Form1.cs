@@ -21,10 +21,11 @@ namespace LinqAndActorApplication
         }
 
 
+        public delegate void AddText(string value);
+
         public class TextBoxActor : BaseActor
         {
-            public delegate void AddText(string value);
-            public AddText myDelegate;
+            private AddText myDelegate;
 
             public TextBoxActor(TextBox textBox) : base()
             {

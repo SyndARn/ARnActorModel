@@ -36,6 +36,10 @@ namespace Actor.Util
 
         public static Identity<B> Bind<A, B>(this Identity<A> a, Func<A, Identity<B>> func)
         {
+            if (func == null)
+            {
+                throw new ActorException("func can't be null");
+            }
             return func(a.Value);
         }
 

@@ -48,11 +48,15 @@ namespace Actor.Util
 
         private void GetCurrentState(IFuture<TState> future)
         {
-            var state = current;
             future.SendMessage(current);
         }
 
-        public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState, IActor traceActor = null)
+        public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState)
+        {
+            return AddRule(startState, aCondition, anAction, reachedState, null);
+        }
+
+        public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState, IActor traceActor)
         {
             if (!fBehaviorSet)
             {
