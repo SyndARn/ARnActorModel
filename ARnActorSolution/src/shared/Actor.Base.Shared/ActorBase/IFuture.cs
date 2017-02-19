@@ -16,6 +16,9 @@ namespace Actor.Base
         T Result(int timeOutMS);
         Task<T> ResultAsync();
         Task<T> ResultAsync(int timeOutMS);
+        T Result(Func<object, bool> aPattern);
+        Task<T> ResultAsync(Func<object, bool> aPattern);
+        Task<T> ResultAsync(Func<object, bool> aPattern, int timeOutMS);
     }
 
     public interface IFuture<T1, T2> : IFuture

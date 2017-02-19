@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Actor.Base
 {
@@ -33,6 +34,22 @@ namespace Actor.Base
         {
             return (T)await Receive(t => t is T, timeOutMS) ;
         }
+
+        public T Result(Func<object, bool> aPattern)
+        {
+            return (T)Receive(aPattern).Result;
+        }
+
+        public async Task<T> ResultAsync(Func<object, bool> aPattern)
+        {
+            return (T)await Receive(aPattern);
+        }
+
+        public async Task<T> ResultAsync(Func<object, bool> aPattern, int timeOutMS)
+        {
+            return (T)await Receive(aPattern, timeOutMS);
+        }
+
     }
 
     public class Future<T1,T2> : BaseActor, IFuture<T1, T2>

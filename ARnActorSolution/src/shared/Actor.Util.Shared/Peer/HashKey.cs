@@ -51,8 +51,11 @@ public class HashKey : IComparable
 
         public static HashKey ComputeHash(string key)
         {
-            var sha1 = SHA1.Create();
-            var tab = sha1.ComputeHash(Encoding.Unicode.GetBytes(key));
+            byte[] tab;
+            using (var sha1 = SHA1.Create())
+            {
+                tab = sha1.ComputeHash(Encoding.Unicode.GetBytes(key));
+            }
             return new HashKey(tab);
         }
 

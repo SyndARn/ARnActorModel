@@ -7,26 +7,28 @@ using System.Linq;
 namespace Actor.Util
 {
 
-    public class DistributedDictionaryActor<K,V> : BaseActor
+    public class DistributedDictionaryActor<K,V> : BaseActor, IDictionaryActor<K,V>
     {
         public DistributedDictionaryActor() : base()
         {
             Become(new DistributedDictionaryBehaviors<K, V>());
         }
-        // proxy
-        public void Add(K k, V v)
+
+        public void AddKeyValue(K key, V value)
         {
-            this.SendMessage(k, v);
+            this.SendMessage(key, value);
         }
-        public void Get(K k, IActor i)
+
+        public Future<bool, K, V> GetKeyValue(K key)
         {
-            this.SendMessage(k, i);
-        }
-        public IFuture<K,V> Get(K k)
-        {
-            var future = new Future<K, V>();
-            this.SendMessage(future, k);
+            var future = new Future<bool, K, V>();
+            this.SendMessage(future, key);
             return future;
+        }
+
+        public void RemoveKey(K key)
+        {
+            this.SendMessage(key);
         }
     }
 
@@ -37,6 +39,7 @@ namespace Actor.Util
         {
             BecomeBehavior(new DistributedDictionaryGetBehavior<TKey, TValue>());
             AddBehavior(new DistributedDictionarySetBehavior<TKey, TValue>());
+            AddBehavior(new DistributedDictionaryDeleteBehavior<TKey,TValue>());
         }
         internal HashActor<TKey,TValue> GetHashActor(TKey key)
         {
@@ -48,6 +51,23 @@ namespace Actor.Util
             HashActor<TKey, TValue> hashActor = new HashActor<TKey, TValue>();
             HashActorList[hashKey] = hashActor;
             return hashActor;
+        }
+    }
+
+    public class DistributedDictionaryDeleteBehavior<TKey,TValue> : Behavior<TKey>
+    {
+        private DistributedDictionaryBehaviors<TKey,TValue> parent()
+        {
+            return this.LinkedTo as DistributedDictionaryBehaviors<TKey, TValue>;
+        }
+        public DistributedDictionaryDeleteBehavior() : base()
+        {
+            Pattern = (k) => true;
+            Apply = (k) =>
+            {
+                var hashActor = parent().GetHashActor(k);
+                hashActor.SendMessage(k);
+            };
         }
     }
 
@@ -96,7 +116,9 @@ namespace Actor.Util
                 }));
                 AddBehavior(new Behavior<IActor, TKey>((i, k) =>
                  {
-                     i.SendMessage(k,KeyList[k]);
+                     TValue v;
+                     bool found = KeyList.TryGetValue(k, out v);
+                     i.SendMessage(found,k,v);
                  }
                 ));
         }

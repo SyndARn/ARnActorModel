@@ -31,10 +31,12 @@ namespace Actor.Server
             return hash;
         }
 
+        private IActorFactory fActorFactory;
         private ConcurrentDictionary<string, IActor> fDico = new ConcurrentDictionary<string, IActor>() ;
 
-        public ActorAddressFactory()
+        public ActorAddressFactory(IActorFactory actorFactory)
         {
+            fActorFactory = actorFactory;
         }
 
         public IActor GetActor(string actorAddress)
@@ -42,9 +44,9 @@ namespace Actor.Server
             return fDico[actorAddress];
         }
 
-        public void CreateActorAddress(string actorAddress, IActorFactory factory)
+        public void CreateActorAddress(string actorAddress)
         {
-            fDico[actorAddress] = factory.CastNewActor(actorAddress);
+            fDico[actorAddress] = fActorFactory.CastNewActor(actorAddress);
         }
     }
 

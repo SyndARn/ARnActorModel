@@ -46,5 +46,33 @@ namespace TestActor
                 Assert.AreEqual("Test Data", result.Result);
             });
         }
+
+        [TestMethod]
+        public void FutureFilteredTest()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var future = new Future<string>();
+                var actor = new FutureAsyncActorTest();
+                actor.SendMessage("Test Data");
+                actor.SendMessage(future);
+                var result = future.Result(o => (string)o == "Test Data");
+                Assert.AreEqual("Test Data", result);
+            });
+        }
+
+        [TestMethod]
+        public void FutureFilteredAsyncTest()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var future = new Future<string>();
+                var actor = new FutureAsyncActorTest();
+                actor.SendMessage("Test Data");
+                var result = future.ResultAsync(o => (string)o == "Test Data");
+                actor.SendMessage(future);
+                Assert.AreEqual("Test Data", result.Result);
+            });
+        }
     }
 }

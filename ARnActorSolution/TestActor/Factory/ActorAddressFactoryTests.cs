@@ -15,9 +15,9 @@ namespace Actor.Server.Tests
         public void HashAddressTest()
         {
             var address = @"arnactorserver/test";
-            var addressFactory = new ActorAddressFactory();
             var actorFactory = new ActorFactory();
-            addressFactory.CreateActorAddress(address, actorFactory);
+            var addressFactory = new ActorAddressFactory(actorFactory);
+            addressFactory.CreateActorAddress(address);
             var actor = addressFactory.GetActor(address);
             Assert.IsNotNull(actor);
         }

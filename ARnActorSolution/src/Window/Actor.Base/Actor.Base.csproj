@@ -114,9 +114,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ActorBase\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="..\..\shared\Actor.Base.Shared\Actor.Base.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

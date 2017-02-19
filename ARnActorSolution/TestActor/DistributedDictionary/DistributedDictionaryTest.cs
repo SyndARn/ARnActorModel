@@ -31,17 +31,19 @@ namespace TestActor
                     var dic = new DistributedDictionaryActor<int, string>();
                     foreach(var i in Enumerable.Range(1,1000))
                     {
-                        dic.Add(i, i.ToString() + " Test");
+                        dic.AddKeyValue(i, i.ToString() + " Test");
                     }
                     // find key 3
-                    var future = dic.Get(3);
+                    var future = dic.GetKeyValue(3);
                     var result = future.Result();
-                    Assert.AreEqual(result.Item1 ,3);
-                    Assert.AreEqual(result.Item2, "3 Test");
+                    Assert.AreEqual(result.Item1, true);
+                    Assert.AreEqual(result.Item2 ,3);
+                    Assert.AreEqual(result.Item3, "3 Test");
                     // don't find key -1
-                    var noFuture = dic.Get(-1);
+                    var noFuture = dic.GetKeyValue(-1);
                     var noResult = noFuture.Result(1000);
-                    Assert.IsNull(noResult);
+                    Assert.IsNotNull(noResult);
+                    Assert.AreEqual(noResult.Item1,false);
                 });
         }
     }
