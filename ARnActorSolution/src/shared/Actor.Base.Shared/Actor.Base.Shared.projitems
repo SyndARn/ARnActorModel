@@ -23,7 +23,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\IBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\IBehaviors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\NullBehavior.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Composition\ActorComposition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Composition\RedirectorActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Context\GlobalContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Context\IMessageTracerService.cs" />

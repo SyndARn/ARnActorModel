@@ -14,67 +14,60 @@ namespace Actor.Service
     {
         public LoggerActor(string aFileName) : base()
         {
-            Become(LoggerBehavior.CastLogger(aFileName));
+            Become(new LoggerBehaviors(aFileName));
+            var heartBeat = new HeartBeatActor(500);
+            heartBeat.SendMessage(this);
             SendMessage("Logging start");
         }
     }
 
-    public class LoggerBehavior : Behavior<object>
+    public class LogHeartBeatBehavior : Behavior<IMessageParam<HeartBeatActor, HeartBeatAction>>
     {
-        private string fFilename;
-        private List<Object> fMessageList = new List<object>();
+        public LogHeartBeatBehavior() : base()
+        {
+            Apply = msgprm =>
+            {
+                var parent = LinkedTo as LoggerBehaviors;
+                if (parent.fMessageList.Count > 0)
+                {
+                    using (var fStream = new StreamWriter(parent.fFilename, true))
+                    {
+                        parent.fMessageList.ForEach(o => fStream.WriteLine(o));
+                    }
+                    parent.fMessageList.Clear();
+                }
+            };
+        }
+    }
 
-        public LoggerBehavior() : base()
+
+
+    public class LoggerBehaviors : Behaviors
+    {
+        public string fFilename { get; private set; }
+        public List<object> fMessageList = new List<object>();
+
+
+        public LoggerBehaviors() : base()
         {
             DoInit(ActorServer.GetInstance().Name);
         }
-
-        private LoggerBehavior(string aFileName) : base()
+        public LoggerBehaviors(string aFilename) : base()
         {
-            DoInit(aFileName);
+            DoInit(aFilename);
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
-        public static LoggerBehavior CastLogger(string aFileName)
-        {
-            LoggerBehavior lLogger = new LoggerBehavior(aFileName);
-            return lLogger;
-        }
-
         private void DoInit(string aFilename)
         {
             fFilename = Environment.CurrentDirectory + aFilename;
-            Pattern = t => true;
-            Apply = StartHeartBeat;
-        }
-
-        private void StartHeartBeat(object msg)
-        {
-            Apply = DoLog;
-            var heartBeat = new HeartBeatActor(500);
-            heartBeat.SendMessage(LinkedActor);
-        }
-
-        private void DoLog(object msg)
-        {
-            // heartbeat
-            if (msg is IMessageParam<HeartBeatActor,HeartBeatAction>)
+            this.BecomeBehavior(new LogHeartBeatBehavior());
+            AddBehavior(new Behavior<object>(msg =>
             {
-                if (fMessageList.Count > 0)
+                if (msg != null)
                 {
-                    using (var fStream = new StreamWriter(fFilename, true))
-                    {
-                        fMessageList.ForEach(o => fStream.WriteLine(o));
-                    }
-                    fMessageList.Clear();
+                    string s = String.Format(CultureInfo.InvariantCulture, "{0:o} - {1}", DateTimeOffset.UtcNow, msg);
+                    fMessageList.Add(s);
                 }
-                return;
-            }
-            if (msg != null)
-            {
-                string s = String.Format(CultureInfo.InvariantCulture,"{0:o} - {1}", DateTimeOffset.UtcNow, msg);
-                fMessageList.Add(s);
-            }
+            }));
         }
     }
 }

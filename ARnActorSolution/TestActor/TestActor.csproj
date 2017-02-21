@@ -111,6 +111,7 @@
     <Compile Include="ActorServer\ShardListActorTests.cs" />
     <Compile Include="Directory\DiscoveryActorTests.cs" />
     <Compile Include="DistributedDictionary\DistributedDictionaryTest.cs" />
+    <Compile Include="Logger\LoggerActorTests.cs" />
     <Compile Include="Peer\PeerBehaviorsTest.cs" />
     <Compile Include="Serializer\DataContractObjectTests.cs" />
     <Compile Include="Service\ParserActorTests.cs" />

@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
-using System.Globalization;
 
-[assembly: CLSCompliant(true)]
 namespace Actor.Server
 {
     public class ActorServer : BaseActor, IDisposable
@@ -19,11 +12,12 @@ namespace Actor.Server
         public IHostService HostService { get; private set; }
         private string fFullHost = "" ;
         private HostRelayActor fActHostRelay;
+        private ConfigManager fConfigManager;
         public string FullHost { get 
         {
             if (string.IsNullOrEmpty(fFullHost))
             {
-                    fFullHost = new ConfigManager().Host().Host;
+                    fFullHost = fConfigManager.Host().Host;
             }
             return fFullHost;
         } }
@@ -43,11 +37,11 @@ namespace Actor.Server
 
         public ActorServer(string lName, int lPort)
         {
+            fConfigManager = new ConfigManager();
             Name = lName;
             Port = lPort;
-            SerializeService = new ConfigManager().GetSerializeService();
-
-            ActorTagHelper.FullHost = new ConfigManager().Host().Host;
+            SerializeService = fConfigManager.GetSerializeService();
+            ActorTagHelper.FullHost = fConfigManager.Host().Host;
         }
 
         private void DoInit(HostRelayActor hostRelayActor) 
@@ -59,7 +53,7 @@ namespace Actor.Server
             Become(new NullBehavior());
             if (hostRelayActor != null)
             {
-                ListenerService = new ConfigManager().GetListenerService();
+                ListenerService = fConfigManager.GetListenerService();
                 new ShardDirectoryActor(); // start shard directory
                 fActHostRelay = hostRelayActor;
                 fActHostRelay.SendMessage("Listen");
@@ -67,7 +61,6 @@ namespace Actor.Server
             // new actTcpServer();
         }
 
-        //Implement IDisposable.
         public void Dispose()
         {
             Dispose(true);
@@ -78,19 +71,21 @@ namespace Actor.Server
         {
             if (disposing)
             {
-                // Free other state (managed objects).
-                // fEvent.Dispose();
-                fActHostRelay.Dispose();
+                if (fActHostRelay != null)
+                {
+                    fActHostRelay.Dispose();
+                    fActHostRelay = null;
+                }
+                if (fConfigManager != null)
+                {
+                    fConfigManager.Dispose();
+                    fConfigManager = null;
+                }
             }
-            // Free your own state (unmanaged objects).
-            // Set large fields to null.
         }
 
-        // Use C# destructor syntax for finalization code.
         ~ActorServer()
         {
-            // Simply call Dispose(false).
-
             Dispose(false);
         }
     }
