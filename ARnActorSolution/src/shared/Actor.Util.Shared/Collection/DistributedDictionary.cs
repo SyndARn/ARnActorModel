@@ -7,26 +7,26 @@ using System.Linq;
 namespace Actor.Util
 {
 
-    public class DistributedDictionaryActor<K,V> : BaseActor, IDictionaryActor<K,V>
+    public class DistributedDictionaryActor<TKey,TValue> : BaseActor, IDictionaryActor<TKey, TValue>
     {
         public DistributedDictionaryActor() : base()
         {
-            Become(new DistributedDictionaryBehaviors<K, V>());
+            Become(new DistributedDictionaryBehaviors<TKey, TValue>());
         }
 
-        public void AddKeyValue(K key, V value)
+        public void AddKeyValue(TKey key, TValue value)
         {
             this.SendMessage(key, value);
         }
 
-        public Future<bool, K, V> GetKeyValue(K key)
+        public Future<bool, TKey, TValue> GetKeyValue(TKey key)
         {
-            var future = new Future<bool, K, V>();
+            var future = new Future<bool, TKey, TValue>();
             this.SendMessage(future, key);
             return future;
         }
 
-        public void RemoveKey(K key)
+        public void RemoveKey(TKey key)
         {
             this.SendMessage(key);
         }

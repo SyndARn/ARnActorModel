@@ -35,20 +35,20 @@ namespace Actor.Util
         }
     }
 
-    public enum LinkedListOperation { Add, First, Next, Answer } ;
+    public enum LinkedListOperation { Add, First, Next, Answer };
 
     public class LinkedListAddbehavior<T> : Behavior<LinkedListOperation, T>
     {
         public LinkedListAddbehavior()
             : base()
         {
-            Pattern = (l,t) => { return LinkedListOperation.Add.Equals(l) ; };
+            Pattern = (l, t) => { return LinkedListOperation.Add.Equals(l); };
             Apply = Behavior;
         }
 
         private void Behavior(LinkedListOperation operation, T data)
         {
-                ((LinkedListBehaviors<T>)LinkedTo).fList.AddLast(data);
+            ((LinkedListBehaviors<T>)LinkedTo).fList.AddLast(data);
         }
     }
 
@@ -56,7 +56,7 @@ namespace Actor.Util
     {
         public BehaviorLinkedListFirst() : base()
         {
-            Pattern = (l,t) => { return LinkedListOperation.First.Equals(l); };
+            Pattern = (l, t) => { return LinkedListOperation.First.Equals(l); };
             Apply = Behavior;
         }
         private void Behavior(LinkedListOperation operation, IActor Sender)
@@ -71,7 +71,7 @@ namespace Actor.Util
         public BehaviorLinkedListNext()
             : base()
         {
-            Pattern = (l,i,t) => { return LinkedListOperation.Next.Equals(l); };
+            Pattern = (l, i, t) => { return LinkedListOperation.Next.Equals(l); };
             Apply = Behavior;
         }
         private void Behavior(LinkedListOperation operation, IActor actor, T data)

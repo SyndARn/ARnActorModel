@@ -21,14 +21,9 @@
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Net;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Actor.Base
 {
@@ -65,8 +60,6 @@ namespace Actor.Base
 
     }
 
-
-
     [Serializable]
     [DataContract]
     public class ActorTag : IEquatable<ActorTag>
@@ -96,10 +89,10 @@ namespace Actor.Base
             fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
         }
 
-        public ActorTag(string lHostUri)
+        public ActorTag(string urlAddress)
         {
             fId = ActorTagHelper.CastNewTagId();
-            fHost = lHostUri;
+            fHost = urlAddress;
             fIsRemote = true;
             fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
         }

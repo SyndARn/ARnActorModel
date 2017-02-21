@@ -36,18 +36,18 @@ namespace Actor.Util
     public class MsgQueue<T> : IMsgQueue<T>
     {
         public bool Result { get; }
-        public T Data{ get; }
+        public T Data { get; }
         public MsgQueue(bool aResult, T aData)
         {
             Result = aResult;
             Data = aData;
         }
-}
+    }
 
     public class QueueActor<T> : ActionActor<T>
     {
         private Queue<T> fQueue = new Queue<T>();
-        
+
         public QueueActor()
             : base()
         {
@@ -61,7 +61,7 @@ namespace Actor.Util
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<IMsgQueue<T>> TryDequeue()
         {
-            var retVal = Receive(t => { return t is IMsgQueue<T>; }) ;
+            var retVal = Receive(t => { return t is IMsgQueue<T>; });
             SendAction(DoDequeue);
             return await retVal as IMsgQueue<T>;
         }
@@ -75,11 +75,11 @@ namespace Actor.Util
         {
             if (fQueue.Count > 0)
             {
-                SendMessage(new MsgQueue<T>(true,fQueue.Dequeue()));
+                SendMessage(new MsgQueue<T>(true, fQueue.Dequeue()));
             }
             else
             {
-                SendMessage(new MsgQueue<T>(false,default(T)));
+                SendMessage(new MsgQueue<T>(false, default(T)));
             }
         }
 

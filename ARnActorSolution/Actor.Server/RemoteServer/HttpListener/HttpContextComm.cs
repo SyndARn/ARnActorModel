@@ -51,7 +51,6 @@ namespace Actor.Server
                 {
                     using (var hc = new StreamContent(stream))
                     {
-                        Uri lUri = new Uri(uri);
                         client.PostAsync(uri, hc).Wait();
                     }
                 }
