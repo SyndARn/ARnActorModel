@@ -13,28 +13,29 @@ namespace Actor.Util
 #endif
         public TextWriterActor(string aFileName)
         {
-            Become(new Behavior<TextWriterActor>(DoFlush));
 #if !(NETFX_CORE) || WINDOWS_UWP
-            AddBehavior(new Behavior<string>(DoInit));
+            Become(new Behavior<string>(DoInit));
 #endif
             this.SendMessage(aFileName);
         }
 
         public TextWriterActor(Stream aStream)
         {
-            Become(new Behavior<TextWriterActor>(DoFlush));
-            AddBehavior(new Behavior<Stream>(DoInit));
+            Become(new Behavior<Stream>(DoInit));
             this.SendMessage(aStream);
         }
 
         public void Flush()
         {
-            this.SendMessage(this);
+            IFuture<bool> future = new Future<bool>();
+            this.SendMessage(this,future);
+            future.Result();
         }
 
-        private void DoFlush(TextWriterActor actor)
+        private void DoFlush(TextWriterActor actor, IFuture<bool> future)
         {
             fStream.Flush();
+            future.SendMessage(true);
         }
 
         private void DoInit(Stream aStream)
@@ -42,6 +43,7 @@ namespace Actor.Util
             fStream = new StreamWriter(aStream);
             fStream.AutoFlush = true;
             Become(new Behavior<string>(DoWrite));
+            AddBehavior(new Behavior<TextWriterActor, IFuture<bool>>(DoFlush));
         }
 
 #if !(NETFX_CORE) || WINDOWS_UWP
@@ -51,6 +53,7 @@ namespace Actor.Util
             fStream = new StreamWriter(new FileStream(fFileName, FileMode.Create,FileAccess.ReadWrite,FileShare.Read));
             fStream.AutoFlush = true;
             Become(new Behavior<string>(DoWrite));
+            AddBehavior(new Behavior<TextWriterActor, IFuture<bool>>(DoFlush));
         }
 #endif
 

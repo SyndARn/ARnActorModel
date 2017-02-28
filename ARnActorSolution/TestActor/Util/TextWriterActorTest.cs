@@ -4,26 +4,33 @@ using Actor.Base;
 using Actor.Util;
 using System.IO;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace TestActor
 {
     [TestClass]
-    [Ignore] // app veyor fail
+    // [Ignore] // app veyor fail
     public class TextWriterActorTest
     {
+        public TestContext TestContext { get; set; }
         [TestMethod]
         public void TestTextWriter()
         {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(TestContext.TestRunDirectory);
+            sb.Append(@"\");
+            sb.Append("testwritertestfile.txt");
+            string fullPath = sb.ToString();
             TestLauncherActor.Test(() =>
             {
-                using (var textWriter = new TextWriterActor("textwritertestfile.txt"))
+                using (var textWriter = new TextWriterActor(fullPath))
                 {
                     textWriter.SendMessage("1st line");
                     textWriter.SendMessage("2nd line");
                     textWriter.SendMessage("3rd line");
                     textWriter.Flush();
                 }
-                using (var stream = new FileStream("textwritertestfile.txt", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     StreamReader reader = new StreamReader(stream);
                     try

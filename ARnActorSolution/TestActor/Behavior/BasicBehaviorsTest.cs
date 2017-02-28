@@ -44,7 +44,6 @@ namespace TestActor
             var behavior2 = new Behavior<int>();
             behaviors.AddBehavior(behavior1);
             behaviors.AddBehavior(behavior2);
-            // behaviors.AddBehavior(null);
             var allBehaviors = behaviors.AllBehaviors();
             Assert.AreEqual(2, allBehaviors.Count());
             Assert.IsTrue(allBehaviors.Contains(behavior1));
@@ -54,7 +53,6 @@ namespace TestActor
             Assert.IsTrue(behaviors.FindBehavior(behavior2));
             var behavior3 = new Behavior<object>();
             Assert.IsFalse(behaviors.FindBehavior(behavior3));
-            // Assert.IsFalse(behaviors.FindBehavior(null));
 
             Assert.IsTrue(behavior1.LinkedTo == behaviors);
             Assert.IsTrue(behavior2.LinkedTo == behaviors);
@@ -67,6 +65,27 @@ namespace TestActor
             Assert.IsTrue(behavior1.LinkedActor == actor);
             Assert.IsTrue(behavior2.LinkedActor == null);
 
+        }
+
+        [TestMethod]
+        public void BehaviorsTest()
+        {
+            var behaviors = new Behaviors();
+            Assert.IsFalse(behaviors.AllBehaviors().Any());
+
+            var bhv1 = new Behavior(a => a != null, a => { });
+            behaviors = new Behaviors(new IBehavior[] { bhv1 });
+            Assert.IsTrue(behaviors.AllBehaviors().Count() == 1);
+            Assert.IsTrue(behaviors.FindBehavior(bhv1));
+            Assert.IsTrue(bhv1.LinkedTo == behaviors);
+
+            var bhv2 = new Behavior<string>();
+            behaviors.AddBehavior(bhv2);
+            Assert.IsTrue(behaviors.AllBehaviors().Count() == 2);
+            Assert.IsTrue(behaviors.FindBehavior(bhv2));
+
+            var actor = new BaseActor(behaviors);
+            Assert.IsTrue(behaviors.LinkedActor == actor);
         }
 
         [TestMethod]

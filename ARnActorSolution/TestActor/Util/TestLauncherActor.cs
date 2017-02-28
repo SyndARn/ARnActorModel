@@ -9,6 +9,13 @@ using System.Threading.Tasks;
 
 namespace TestActor
 {
+    public class TestLauncherException : Exception
+    {
+        public TestLauncherException(string message,Exception inner)
+            : base(message,inner)
+        { }
+    }
+
     public class TestLauncherActor : ActionActor
     {
         public const int DefaultWait = 30000;
@@ -83,7 +90,7 @@ namespace TestActor
             Task<bool> testResult = launcher.Wait(timeOutMS);
             if (launcher.fLauncherException != null)
             {
-                throw new Exception(launcher.fLauncherException.Message, launcher.fLauncherException);
+                throw new TestLauncherException(launcher.fLauncherException.Message, launcher.fLauncherException);
             }
             var result = testResult.Result;
             Assert.IsTrue(result, "Test Time Out");

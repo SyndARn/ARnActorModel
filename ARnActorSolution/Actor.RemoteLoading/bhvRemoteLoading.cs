@@ -92,7 +92,7 @@ namespace Actor.RemoteLoading
 
         public void Behavior(IActor actor, MemoryStream stream)
         {
-
+            CheckArg.Actor(actor);
             // divide object in chunk
             int chunkSize = 2048;
             int memSize = stream.Capacity;
