@@ -23,7 +23,7 @@ namespace Actor.Util
 
     // calc at least 2 key value, peer / 4 for redundancy with different hash seeding
 
-    public static class Centroid<K>
+    public static class CenterKey<K>
     {
         public static K Calc(IEnumerable<K> keys)
         {
@@ -50,7 +50,7 @@ namespace Actor.Util
                 var keys = a.AskKeys();
                 var peers = a.AskPeers();
                 // peek key out of centroid
-                var key = Centroid<K>.Calc(keys.Result());
+                var key = CenterKey<K>.Calc(keys.Result());
                 // calc nearest peer
                 var orderedPeers = peers.Result().OrderBy(n => n.Item1.ToString());
                 var hashKey = HashKey.ComputeHash(key.ToString());

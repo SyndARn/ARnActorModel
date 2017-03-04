@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Util;
 using Actor.Base;
+using System.Globalization;
 
 namespace TestActor
 {
@@ -19,7 +20,7 @@ namespace TestActor
         }
 
         [TestMethod]
-        public void TestPeerInterface()
+        public void PeerInterfaceTest()
         {
             TestLauncherActor.Test(TestContext, () =>
             {
@@ -39,7 +40,25 @@ namespace TestActor
         }
 
         [TestMethod]
-        public void TestPeerNewNode()
+        public void PeerAgentTest()
+        {
+
+        }
+
+        [TestMethod]
+        public void CenterKeyTest()
+        {
+            var keyList = new List<string>();
+            for(int i = 0;i<100;i++)
+            {
+                keyList.Add(string.Format(CultureInfo.InvariantCulture, "testKey{0}", i)) ;
+            }
+            var keyTest = CenterKey<string>.Calc(keyList);
+            Assert.AreEqual("testKey96", keyTest);
+        }
+
+        [TestMethod]
+        public void PeerNewNodeTest()
         {
             TestLauncherActor.Test(TestContext, () =>
             {
