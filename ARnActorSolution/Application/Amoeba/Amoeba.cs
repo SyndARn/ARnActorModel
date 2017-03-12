@@ -38,6 +38,7 @@ namespace Amoeba
         }
     }
 
+    // main class actor
     public class AmoebaActor
     {
         MonteCarloActor<long> fMonteCarlo = new MonteCarloActor<long>();
