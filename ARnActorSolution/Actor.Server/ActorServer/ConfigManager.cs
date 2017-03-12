@@ -38,6 +38,7 @@ namespace Actor.Server
 
         private Uri fHost;
 
+        private IHostService fHostService;
         public Uri Host()
         {
             if (fHost == null)
@@ -58,8 +59,8 @@ namespace Actor.Server
                 {
                     // var serv = new HostService();
                 }
-                var serv = new HostService();
-                fHost =  serv.GetHostUri(hostName, int.Parse(hostPort,CultureInfo.InvariantCulture));
+                fHostService = new HostService();
+                fHost = fHostService.GetHostUri(hostName, int.Parse(hostPort,CultureInfo.InvariantCulture));
             }
             return fHost;
         }

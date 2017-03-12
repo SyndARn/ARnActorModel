@@ -7,10 +7,21 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 #if NETFX_CORE
-    [AttributeUsage(AttributeTargets.All)]
-    public sealed class SerializableAttribute : Attribute
+    public class SerializableAttribute : Attribute
     {
         public SerializableAttribute()
+        {
+        }
+    }
+    public class DataContractAttribute : Attribute
+    {
+        public DataContractAttribute()
+        {
+        }
+    }
+    public class DataMemberAttribute : Attribute
+    {
+        public DataMemberAttribute()
         {
         }
     }

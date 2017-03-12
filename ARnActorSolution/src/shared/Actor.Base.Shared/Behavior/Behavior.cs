@@ -104,7 +104,7 @@ namespace Actor.Base
         {
             get
             {
-                return fLinkedBehaviors != null ? fLinkedBehaviors.LinkedActor : null;
+                return fLinkedBehaviors?.LinkedActor;
             }
         }
 
@@ -359,7 +359,7 @@ namespace Actor.Base
         {
             get
             {
-                return fLinkedBehaviors != null ? fLinkedBehaviors.LinkedActor : null;
+                return fLinkedBehaviors?.LinkedActor;
             }
         }
 

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Actor.Server</RootNamespace>
     <AssemblyName>Actor.Server</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -104,6 +104,7 @@
     <Compile Include="Broker\BrokerActor.cs" />
     <Compile Include="Broker\HeartBeatActor.cs" />
     <Compile Include="Broker\WorkerActor.cs" />
+    <Compile Include="ClientServer\ClientBehavior.cs" />
     <Compile Include="ClientServer\ServerBehavior.cs" />
     <Compile Include="ClientServer\WebActor.cs" />
     <Compile Include="Directory\ConnectActor.cs" />

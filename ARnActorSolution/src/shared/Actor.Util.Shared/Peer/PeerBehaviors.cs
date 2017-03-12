@@ -9,10 +9,10 @@ using System.Globalization;
 namespace Actor.Util
 {
 
-    public class PeerBehaviors<K, V> : Behaviors, INodeBehavior<K, V>
+    public class PeerBehaviors<TKey, TValue> : Behaviors, INodeBehavior<TKey, TValue>
     {
-        internal Dictionary<K, V> Nodes = new Dictionary<K, V>();
-        internal Dictionary<HashKey, IPeerActor<K,V>> Peers = new Dictionary<HashKey, IPeerActor<K,V>>();
+        internal Dictionary<TKey, TValue> Nodes = new Dictionary<TKey, TValue>();
+        internal Dictionary<HashKey, IPeerActor<TKey,TValue>> Peers = new Dictionary<HashKey, IPeerActor<TKey,TValue>>();
         private HashKey fCurrentPeer;
         internal HashKey CurrentPeer
         {
@@ -27,22 +27,22 @@ namespace Actor.Util
         }
         public PeerBehaviors() : base()
         {
-            BecomeBehavior(new PeerStoreNode<K, V>())
-                .AddBehavior(new PeerGetNode<K, V>())
-                .AddBehavior(new PeerFindPeer<K, V>())
-                .AddBehavior(new PeerNewPeer<K, V>())
-                .AddBehavior(new PeerDeleteNode<K, V>())
+            BecomeBehavior(new PeerStoreNode<TKey, TValue>())
+                .AddBehavior(new PeerGetNode<TKey, TValue>())
+                .AddBehavior(new PeerFindPeer<TKey, TValue>())
+                .AddBehavior(new PeerNewPeer<TKey, TValue>())
+                .AddBehavior(new PeerDeleteNode<TKey, TValue>())
                 .AddBehavior(new Behavior<IFuture<HashKey>>(f => f.SendMessage(this.CurrentPeer)))
-                .AddBehavior(new Behavior<IFuture<IEnumerable<K>>>())// AskKeys();
+                .AddBehavior(new Behavior<IFuture<IEnumerable<TKey>>>())// AskKeys();
                 .AddBehavior(new Behavior<IFuture<IEnumerable<Tuple<HashKey, IActor>>>>()); // AskNodes();
         }
 
-        public void DeleteNode(K k)
+        public void DeleteNode(TKey k)
         {
             LinkedActor.SendMessage("PeerDeleteNode", k);
         }
 
-        public void GetNode(K k, IActor actor)
+        public void GetNode(TKey k, IActor actor)
         {
             LinkedActor.SendMessage("PeerGetNode", k, actor);
         }
@@ -54,45 +54,45 @@ namespace Actor.Util
             return future;
         }
 
-        public void StoreNode(K k, V v)
+        public void StoreNode(TKey k, TValue v)
         {
             LinkedActor.SendMessage("PeerStoreNode", k, v);
         }
 
     }
 
-    public class PeerDeleteNode<K, V> : Behavior<string, K>
+    public class PeerDeleteNode<TKey, TValue> : Behavior<string, TKey>
     {
         public PeerDeleteNode() : base()
         {
             this.Pattern = (s, k) => s == "PeerDeleteNode";
-            this.Apply = (s, k) => (LinkedTo as PeerBehaviors<K, V>).Nodes.Remove(k);
+            this.Apply = (s, k) => (LinkedTo as PeerBehaviors<TKey, TValue>).Nodes.Remove(k);
         }
     }
 
-    public class PeerStoreNode<K, V> : Behavior<string, K, V>
+    public class PeerStoreNode<TKey, TValue> : Behavior<string, TKey, TValue>
     {
         public PeerStoreNode() : base()
         {
             this.Pattern = (s, k, v) => s == "PeerStoreNode";
             this.Apply = (s, k, v) =>
             {
-                (LinkedTo as PeerBehaviors<K, V>).Nodes[k] = v;
-                Debug.WriteLine(string.Format("New node in : {0}", (LinkedTo as PeerBehaviors<K, V>).CurrentPeer.ToString()), "PeerBehavior");
+                (LinkedTo as PeerBehaviors<TKey, TValue>).Nodes[k] = v;
+                Debug.WriteLine(string.Format("New node in : {0}", (LinkedTo as PeerBehaviors<TKey, TValue>).CurrentPeer.ToString()), "PeerBehavior");
             };
         }
     }
 
-    public class PeerGetNode<K, V> : Behavior<string, K, IActor>
+    public class PeerGetNode<TKey, TValue> : Behavior<string, TKey, IActor>
     {
         public PeerGetNode() : base()
         {
             this.Pattern = (s, k, i) => s == "PeerGetNode";
-            this.Apply = (s, k, i) => i.SendMessage((LinkedTo as PeerBehaviors<K, V>).Nodes[k]);
+            this.Apply = (s, k, i) => i.SendMessage((LinkedTo as PeerBehaviors<TKey, TValue>).Nodes[k]);
         }
     }
 
-    public class PeerNewPeer<K, V> : Behavior<string, IPeerActor<K,V>, HashKey>
+    public class PeerNewPeer<TKey, TValue> : Behavior<string, IPeerActor<TKey, TValue>, HashKey>
     {
         public PeerNewPeer() : base()
         {
@@ -100,12 +100,12 @@ namespace Actor.Util
             this.Apply = (s, i, h) =>
             {
                 Debug.WriteLine(String.Format(CultureInfo.InvariantCulture,"New peer : {0}", h.ToString()),"PeerBehavior");
-                (LinkedTo as PeerBehaviors<K, V>).Peers[h] = i;
+                (LinkedTo as PeerBehaviors<TKey, TValue>).Peers[h] = i;
             };
         }
     }
 
-    public class PeerFindPeer<K, V> : Behavior<string, K, IFuture<IPeerActor<K, V>>>
+    public class PeerFindPeer<TKey, TValue> : Behavior<string, TKey, IFuture<IPeerActor<TKey, TValue>>>
     {
         public PeerFindPeer() : base()
         {
@@ -113,17 +113,17 @@ namespace Actor.Util
             this.Apply = (s, k, i) =>
             {
                 var key = HashKey.ComputeHash(k.ToString());
-                var current = (LinkedTo as PeerBehaviors<K, V>).CurrentPeer;
+                var current = (LinkedTo as PeerBehaviors<TKey, TValue>).CurrentPeer;
                 Debug.WriteLine(string.Format(CultureInfo.InvariantCulture,"Search Key {0} in {1}", key.ToString(), current.ToString()) , "PeerBehavior");
                 if (key.CompareTo(current) <= 0)
                 {
                     // Store here
-                    i.SendMessage(LinkedActor as IPeerActor<K,V>);
+                    i.SendMessage(LinkedActor as IPeerActor<TKey, TValue>);
                 }
                 else
                 {
                     // find best peer
-                    var nextPeer = (LinkedTo as PeerBehaviors<K, V>).Peers
+                    var nextPeer = (LinkedTo as PeerBehaviors<TKey, TValue>).Peers
                       .Where(n => n.Key.CompareTo(current) > 0).OrderBy(n => n.Key).FirstOrDefault();
                     if (nextPeer.Key != null)
                     {
@@ -131,7 +131,7 @@ namespace Actor.Util
                     }
                     else
                     {
-                        i.SendMessage(LinkedActor as IPeerActor<K, V>);
+                        i.SendMessage(LinkedActor as IPeerActor<TKey, TValue>);
                     }
 
                 }
@@ -139,52 +139,52 @@ namespace Actor.Util
         }
     }
 
-    public interface IPeerBehavior<K,V>
+    public interface IPeerBehavior<TKey, TValue>
     {
-        void FindPeer(K k, IFuture<IPeerActor<K,V>> actor);
-        void NewPeer(IPeerActor<K,V> actor, HashKey hash);
+        void FindPeer(TKey k, IFuture<IPeerActor<TKey, TValue>> actor);
+        void NewPeer(IPeerActor<TKey, TValue> actor, HashKey hash);
     }
 
-    public interface INodeBehavior<K, V>
+    public interface INodeBehavior<TKey, TValue>
     {
-        void StoreNode(K k, V v);
-        void GetNode(K k, IActor actor);
-        void DeleteNode(K k);
+        void StoreNode(TKey k, TValue v);
+        void GetNode(TKey k, IActor actor);
+        void DeleteNode(TKey k);
         IFuture<HashKey> GetHashKey();
     }
 
-    public interface IAgentBehavior<K>
+    public interface IAgentBehavior<TKey>
     {
-        IFuture<IEnumerable<K>> AskKeys();
+        IFuture<IEnumerable<TKey>> AskKeys();
         IFuture<IEnumerable<Tuple<HashKey,IActor>>> AskPeers();
     }
 
-    public interface IPeerActor<K,V> : IActor, IPeerBehavior<K,V>, IAgentBehavior<K>, INodeBehavior<K, V>
+    public interface IPeerActor<TKey, TValue> : IActor, IPeerBehavior<TKey,TValue>, IAgentBehavior<TKey>, INodeBehavior<TKey, TValue>
     { }
 
-    public class PeerActor<K, V> : BaseActor, IPeerActor<K,V>, INodeBehavior<K, V>
+    public class PeerActor<TKey, TValue> : BaseActor, IPeerActor<TKey, TValue>, INodeBehavior<TKey, TValue>
     {
-        private INodeBehavior<K, V> fNodeBehaviorService;
+        private INodeBehavior<TKey, TValue> fNodeBehaviorService;
         public PeerActor() : base()
         {
-            var bhv = new PeerBehaviors<K, V>();
+            var bhv = new PeerBehaviors<TKey, TValue>();
             fNodeBehaviorService = bhv;
             Become(bhv);
         }
 
-        public void FindPeer(K k, IFuture<IPeerActor<K,V>> actor)
+        public void FindPeer(TKey k, IFuture<IPeerActor<TKey, TValue>> actor)
         {
             this.SendMessage("PeerFindPeer", k, actor);
         }
-        public void NewPeer(IPeerActor<K,V> actor, HashKey hash)
+        public void NewPeer(IPeerActor<TKey, TValue> actor, HashKey hash)
         {
             this.SendMessage("PeerNewPeer", actor, hash);
         }
 
 
-        public IFuture<IEnumerable<K>> AskKeys()
+        public IFuture<IEnumerable<TKey>> AskKeys()
         {
-            var future = new Future<IEnumerable<K>>();
+            var future = new Future<IEnumerable<TKey>>();
             this.SendMessage("AgentAskKeys",future);
             return future;
         }
@@ -196,17 +196,17 @@ namespace Actor.Util
             return future;
         }
 
-        public void StoreNode(K k, V v)
+        public void StoreNode(TKey k, TValue v)
         {
             fNodeBehaviorService.StoreNode(k, v);
         }
 
-        public void GetNode(K k, IActor actor)
+        public void GetNode(TKey k, IActor actor)
         {
             fNodeBehaviorService.GetNode(k, actor);
         }
 
-        public void DeleteNode(K k)
+        public void DeleteNode(TKey k)
         {
             fNodeBehaviorService.DeleteNode(k);
         }

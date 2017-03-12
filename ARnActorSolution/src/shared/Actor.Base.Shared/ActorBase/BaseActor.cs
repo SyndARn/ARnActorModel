@@ -26,14 +26,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
 {
-    [Serializable]
-    [DataContract]
-    public enum SystemMessage { NullBehavior };
 
     internal struct SharingStruct
     {

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+#if NETCOREAPP1_1
+using System.Runtime.Serialization.Json ;
+#endif
 
 namespace Actor.Base
 {

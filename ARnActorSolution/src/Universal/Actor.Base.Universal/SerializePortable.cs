@@ -13,5 +13,17 @@ namespace Actor.Base
         {
         }
     }
+    public class DataContractAttribute : Attribute
+    {
+        public DataContractAttribute()
+        {
+        }
+    }
+    public class DataMemberAttribute : Attribute
+    {
+        public DataMemberAttribute()
+        {
+        }
+    }
 #endif
 }

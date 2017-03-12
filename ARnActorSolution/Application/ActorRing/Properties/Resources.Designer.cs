@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ActorRing {
+namespace ActorRing.Properties {
     using System;
     
     

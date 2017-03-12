@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\IActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\IActorMailBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\IFuture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActorBase\SystemMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\Behavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\IBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\IBehaviors.cs" />
@@ -35,6 +36,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\LockFreeQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\LockQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\QueueFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\RingQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PatternActor\PatternActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessActor\ProcessActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tag\ActorTag.cs" />
