@@ -12,8 +12,7 @@ namespace Actor.Base
     public class ProcessActor<T> : BaseActor
     {
         public ProcessActor(Action<T> anAction)
-        {
-            
+        {            
             Become(new Behavior<T>(anAction));
         }
     }

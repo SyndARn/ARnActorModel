@@ -18,8 +18,10 @@ namespace TestActor
 
             TestLauncherActor.Test(() =>
             {
-                BaseActor actor1 = new BaseActor();
-                actor1.MessageTracerService = mts;
+                BaseActor actor1 = new BaseActor()
+                {
+                    MessageTracerService = mts
+                };
                 actor1.SendMessage("Test 1");
                 actor1.SendMessage("Test 2");
                 actor1.SendMessage("Test 3");

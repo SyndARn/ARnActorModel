@@ -40,11 +40,13 @@ namespace Actor.Util
 
     public class StateFullActor<T> : BaseActor, IStateFullActor<T>
     {
-        public StateFullActor()
-            : base()
+        public StateFullActor() : base()
         {
             Become(new StateBehaviors<T>());
         }
+
+
+
 
         public void SetState(T aT)
         {

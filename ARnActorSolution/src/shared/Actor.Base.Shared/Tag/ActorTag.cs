@@ -22,7 +22,9 @@
 *****************************************************************************/
 using System;
 using System.Globalization;
+#if !NETFX_CORE
 using System.Runtime.Serialization;
+#endif
 using System.Threading;
 
 namespace Actor.Base

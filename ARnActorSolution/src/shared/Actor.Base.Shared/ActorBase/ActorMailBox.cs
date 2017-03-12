@@ -39,10 +39,7 @@ namespace Actor.Base
             fMissed = QueueFactory<T>.Cast();
         }
 
-        public bool IsEmpty
-        {
-            get { return fQueue.Count() == 0 ; }
-        }
+        public bool IsEmpty => fQueue.Count() == 0;
 
         public void AddMiss(T aMessage)
         {

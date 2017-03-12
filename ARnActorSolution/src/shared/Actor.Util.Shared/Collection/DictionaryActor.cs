@@ -32,7 +32,7 @@ namespace Actor.Util
             LinkedActor.SendMessage(key, value);
         }
 
-        public Future<bool, TKey, TValue> GetKeyValue(TKey key)
+        public IFuture<bool, TKey, TValue> GetKeyValue(TKey key)
         {
             var future = new Future<bool, TKey, TValue>();
             LinkedActor.SendMessage((IActor)future, key);
@@ -62,7 +62,7 @@ namespace Actor.Util
             fServiceDictionary.AddKeyValue(key, value);
         }
 
-        public Future<bool, TKey, TValue> GetKeyValue(TKey key)
+        public IFuture<bool, TKey, TValue> GetKeyValue(TKey key)
         {
             return fServiceDictionary.GetKeyValue(key);
         }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Actor.Base
 {
-    public enum QueueStyle { None, LockFree, Locking }
+    public enum QueueStyle { None, LockFree, Locking, Ring }
 
     public static class QueueFactory<T>
     {
@@ -15,6 +15,7 @@ namespace Actor.Base
             {
                 case QueueStyle.LockFree: return new LockFreeQueue<T>();
                 case QueueStyle.Locking: return new LockQueue<T>();
+                case QueueStyle.Ring: return new RingQueue<T>();
                 default: return new LockFreeQueue<T>();
             }
         }

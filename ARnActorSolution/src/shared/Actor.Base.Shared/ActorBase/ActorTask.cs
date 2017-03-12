@@ -41,13 +41,13 @@ namespace Actor.Base
 
         public static string Stat()
         {
-#if ! NETFX_CORE
+#if ! NETFX_CORE && ! NETCOREAPP1_1
             int workerThread;
             int ioThread;
             ThreadPool.GetAvailableThreads(out workerThread, out ioThread);
 #endif
             StringBuilder sb = new StringBuilder();
-#if ! NETFX_CORE
+#if ! NETFX_CORE && ! NETCOREAPP1_1
             sb.AppendLine("Max Active Threads " + workerThread.ToString(CultureInfo.InvariantCulture) + " " + ioThread.ToString(CultureInfo.InvariantCulture));
 #endif
             sb.AppendLine("Task processed " + numAddTask.ToString(CultureInfo.InvariantCulture));

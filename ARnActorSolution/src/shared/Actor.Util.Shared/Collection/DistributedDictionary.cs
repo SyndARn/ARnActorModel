@@ -19,7 +19,7 @@ namespace Actor.Util
             this.SendMessage(key, value);
         }
 
-        public Future<bool, TKey, TValue> GetKeyValue(TKey key)
+        public IFuture<bool, TKey, TValue> GetKeyValue(TKey key)
         {
             var future = new Future<bool, TKey, TValue>();
             this.SendMessage(future, key);

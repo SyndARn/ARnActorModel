@@ -11,7 +11,7 @@ namespace Actor.Base
 
     public class Trait<T> : Behavior<ITrait<T>,T>, ITrait<T>
     {
-        T fData;
+        private T fData;
         public Trait() : base()
         {
             Pattern = DefaultPattern();

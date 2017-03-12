@@ -28,13 +28,13 @@ namespace Actor.Service
             Apply = msgprm =>
             {
                 var parent = LinkedTo as LoggerBehaviors;
-                if (parent.fMessageList.Count > 0)
+                if (parent.MessageList.Count > 0)
                 {
-                    using (var fStream = new StreamWriter(parent.fFilename, true))
+                    using (var fStream = new StreamWriter(parent.FileName, true))
                     {
-                        parent.fMessageList.ForEach(o => fStream.WriteLine(o));
+                        parent.MessageList.ForEach(o => fStream.WriteLine(o));
                     }
-                    parent.fMessageList.Clear();
+                    parent.MessageList.Clear();
                 }
             };
         }
@@ -44,8 +44,9 @@ namespace Actor.Service
 
     public class LoggerBehaviors : Behaviors
     {
-        public string fFilename { get; private set; }
-        public List<object> fMessageList = new List<object>();
+        public string FileName { get; private set; }
+        private List<object> fMessageList = new List<object>();
+        public List<object> MessageList { get { return fMessageList; } }
 
 
         public LoggerBehaviors() : base()
@@ -58,14 +59,14 @@ namespace Actor.Service
         }
         private void DoInit(string aFilename)
         {
-            fFilename = Environment.CurrentDirectory + aFilename;
+            FileName = Environment.CurrentDirectory + aFilename;
             this.BecomeBehavior(new LogHeartBeatBehavior());
             AddBehavior(new Behavior<object>(msg =>
             {
                 if (msg != null)
                 {
                     string s = String.Format(CultureInfo.InvariantCulture, "{0:o} - {1}", DateTimeOffset.UtcNow, msg);
-                    fMessageList.Add(s);
+                    MessageList.Add(s);
                 }
             }));
         }
