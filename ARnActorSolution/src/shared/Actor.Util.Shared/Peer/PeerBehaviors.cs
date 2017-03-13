@@ -89,7 +89,7 @@ namespace Actor.Util
             this.Apply = (s, k, v) =>
             {
                 (LinkedTo as PeerBehaviors<TKey, TValue>).Nodes[k] = v;
-                Debug.WriteLine(string.Format("New node in : {0}", (LinkedTo as PeerBehaviors<TKey, TValue>).CurrentPeer.ToString()), "PeerBehavior");
+                Debug.WriteLine(string.Format(CultureInfo.InvariantCulture,"New node in : {0}", (LinkedTo as PeerBehaviors<TKey, TValue>).CurrentPeer.ToString()), "PeerBehavior");
             };
         }
     }
@@ -150,17 +150,18 @@ namespace Actor.Util
         }
     }
 
-    public interface IPeerBehavior<K,V>
+    public interface IPeerBehavior<TKey,TValue>
     {
-        void FindPeer(K k, IFuture<IPeerActor<K,V>> actor);
-        void NewPeer(IPeerActor<K,V> actor, HashKey hash);
+        void FindPeer(TKey key, IFuture<IPeerActor<TKey,TValue>> actor);
+        void NewPeer(IPeerActor<TKey,TValue> actor, HashKey hash);
     }
 
     public interface INodeBehavior<TKey, TValue>
     {
-        void StoreNode(TKey k, TValue v);
-        void GetNode(TKey k, IActor actor);
-        void DeleteNode(TKey k);
+        void StoreNode(TKey key, TValue value);
+        void GetNode(TKey key, IActor actor);
+        void DeleteNode(TKey key);
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         IFuture<HashKey> GetHashKey();
     }
 
@@ -170,7 +171,7 @@ namespace Actor.Util
         IFuture<IEnumerable<Tuple<HashKey,IActor>>> AskPeers();
     }
 
-    public interface IPeerActor<K,V> : IActor, IPeerBehavior<K,V>, IAgentBehavior<K>, INodeBehavior<K, V>
+    public interface IPeerActor<TKey,TValue> : IActor, IPeerBehavior<TKey,TValue>, IAgentBehavior<TKey>, INodeBehavior<TKey, TValue>
     { }
 
     public class PeerActor<TKey, TValue> : BaseActor, IPeerActor<TKey,TValue>, INodeBehavior<TKey, TValue>
@@ -196,7 +197,7 @@ namespace Actor.Util
         public IFuture<IEnumerable<TKey>> AskKeys()
         {
             var future = new Future<IEnumerable<TKey>>();
-            this.SendMessage("AgentAskKeys",future);
+            this.SendMessage(PeerOrder.PeerAgentAskKeys,future);
             return future;
         }
 

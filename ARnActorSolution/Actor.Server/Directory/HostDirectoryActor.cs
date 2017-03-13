@@ -67,10 +67,9 @@ namespace Actor.Server
         private void DoRouting(SerialObject aMsg)
         {
             // find host in host directory
-            IActor lActor = null ;
             // get id from uri
             var lKey = aMsg.Tag.Key();
-            if (fUri2Actor.TryGetValue(lKey, out lActor))
+            if (fUri2Actor.TryGetValue(lKey, out IActor lActor))
             {
                   lActor.SendMessage(aMsg.Data);
             }

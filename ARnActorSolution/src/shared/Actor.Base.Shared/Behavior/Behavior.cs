@@ -341,13 +341,7 @@ namespace Actor.Base
 
         private IBehaviors fLinkedBehaviors;
 
-        public IActor LinkedActor
-        {
-            get
-            {
-                return fLinkedBehaviors != null ? fLinkedBehaviors.LinkedActor : null;
-            }
-        }
+        public IActor LinkedActor => fLinkedBehaviors?.LinkedActor; 
 
         public IBehaviors LinkedTo => fLinkedBehaviors;
 

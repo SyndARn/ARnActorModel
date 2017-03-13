@@ -24,6 +24,7 @@ namespace FsmCalc
 
         public string Enter { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public async Task<CalcState> GetCurrentState()
         {
             return await CalcActor.GetCurrentState().ResultAsync();

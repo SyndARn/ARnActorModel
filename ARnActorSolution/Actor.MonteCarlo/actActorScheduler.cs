@@ -18,15 +18,14 @@ namespace Actor.MonteCarlo
      */
 
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actScheduler : ActionActor
+    public class ActorScheduler : ActionActor
     {
         static IActor fActor;
         ShardList shardList;
         /* find pricer on shard */
         /* send pricer */
         /* await result */
-        public actScheduler() : base()
+        public ActorScheduler() : base()
         {
             fActor = this;
             shardList = new ShardList();
@@ -52,7 +51,7 @@ namespace Actor.MonteCarlo
 
             for (int i = 0; i < 1000; i++)
             {
-                var act = new actPrice();
+                var act = new ActorPrice();
                 List<double> list = new List<double>();
                 list.Add(i);
                 act.ConsoleWrite((IActor)this, list.AsEnumerable());
@@ -66,7 +65,7 @@ namespace Actor.MonteCarlo
 
 
 
-    public class actPrice : ActionActor<IActor,IEnumerable<double>>
+    public class ActorPrice : ActionActor<IActor,IEnumerable<double>>
     {
         public void ConsoleWrite(IActor actor, IEnumerable<double> someDoubles)
         {

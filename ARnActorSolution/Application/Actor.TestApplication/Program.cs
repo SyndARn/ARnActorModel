@@ -118,7 +118,7 @@ namespace Actor.TestApplication
                     case "Download":
                         {
                             Console.WriteLine("trying Download");
-                            IActor down = new actActorDownloadTest();
+                            IActor down = new ActorDownloadTest();
                             break;
                         }
                     //case "Brain":
@@ -142,7 +142,7 @@ namespace Actor.TestApplication
                     //    }
                     case "Pricing" :
                         {
-                            new actScheduler();
+                            new ActorScheduler();
                             break;
                         }
                     case "ParserTest":

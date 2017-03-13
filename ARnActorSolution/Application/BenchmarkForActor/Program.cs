@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace BenchmarkForActor
 {
@@ -32,7 +33,7 @@ namespace BenchmarkForActor
                     lastElapsed = stopwatch.ElapsedMilliseconds;
                     accumulator.SendMessage(future);
                     double speed = future.Result() / lastElapsed *1000.0;
-                    Console.WriteLine(string.Format("Speed {0}", speed));
+                    Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Speed {0}", speed));
                     twenysecbench--;
                 }
             }
