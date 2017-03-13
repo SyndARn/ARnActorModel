@@ -104,9 +104,11 @@ namespace Actor.Base
         {
             get
             {
-                return fLinkedBehaviors?.LinkedActor;
+                return fLinkedBehaviors != null ? fLinkedBehaviors.LinkedActor : null;
             }
         }
+
+        public IActor LinkedActor => fLinkedBehaviors?.LinkedActor;
 
         public Behavior(Func<object,bool> aPattern, Action<object> anApply)
         {
@@ -122,24 +124,12 @@ namespace Actor.Base
             Completion = aCompletion;
         }
 
-        public IBehaviors LinkedTo
-        {
-            get
-            {
-                return fLinkedBehaviors;
-            }
-        }
+        public IBehaviors LinkedTo => fLinkedBehaviors;
 
         public Func<object, bool> Pattern { get; protected set; }
         public Action<object> Apply { get; protected set; }
         public TaskCompletionSource<object> Completion { get; protected set; }
-        public TaskCompletionSource<object> StandardCompletion
-        {
-            get
-            {
-                return Completion;
-            }
-        }
+        public TaskCompletionSource<object> StandardCompletion => Completion;
 
         public void StandardApply(object aT)
         {
@@ -313,11 +303,14 @@ namespace Actor.Base
         public bool StandardPattern(object aT)
         {
             if (Pattern == null)
+            {
                 return false;
-            IMessageParam<T1, T2, T3> MessageParamT = aT as IMessageParam<T1, T2, T3>;
-            if (MessageParamT != null)
+            }
+            if (aT is IMessageParam<T1, T2, T3> MessageParamT)
+            {
                 return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
-            else return false;
+            }
+            return false;
         }
 
         public void StandardApply(object aT)
@@ -359,17 +352,11 @@ namespace Actor.Base
         {
             get
             {
-                return fLinkedBehaviors?.LinkedActor;
+                return fLinkedBehaviors != null ? fLinkedBehaviors.LinkedActor : null;
             }
         }
 
-        public IBehaviors LinkedTo
-        {
-            get
-            {
-                return fLinkedBehaviors;
-            }
-        }
+        public IBehaviors LinkedTo => fLinkedBehaviors;
 
         public void LinkBehaviors(IBehaviors someBehaviors)
         {
@@ -496,11 +483,14 @@ namespace Actor.Base
         public bool StandardPattern(Object aT)
         {
             if (Pattern == null)
+            {
                 return false;
-            IMessageParam<T1, T2, T3, T4> MessageParamT = aT as IMessageParam<T1, T2, T3, T4>;
-            if (MessageParamT != null)
+            }
+            if (aT is IMessageParam<T1, T2, T3, T4> MessageParamT)
+            {
                 return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3, MessageParamT.Item4);
-            else return false;
+            }
+            return false;
         }
 
         public void StandardApply(Object aT)

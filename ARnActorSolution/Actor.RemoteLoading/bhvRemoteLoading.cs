@@ -44,7 +44,7 @@ namespace Actor.RemoteLoading
     public class actActorUpload : BaseActor
     {
         public actActorUpload()
-            : base(new bhvUpload())
+            : base(new BehaviorUpload())
         {
         }
     }
@@ -52,7 +52,7 @@ namespace Actor.RemoteLoading
     public class actActorDownload : BaseActor
     {
         public actActorDownload()
-            : base(new bhvDownload())
+            : base(new BehaviorDownload())
         {
         }
     }
@@ -82,9 +82,9 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class bhvUpload : Behavior<IActor, MemoryStream>
+    public class BehaviorUpload : Behavior<IActor, MemoryStream>
     {
-        public bhvUpload()
+        public BehaviorUpload()
         {
             this.Apply = Behavior;
             this.Pattern = (a,s) => true;
@@ -120,11 +120,11 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class bhvDownload : Behavior<chunk>
+    public class BehaviorDownload : Behavior<chunk>
     {
         private List<chunk> fChunkList = new List<chunk>();
 
-        public bhvDownload()
+        public BehaviorDownload()
         {
             this.Apply = Behavior;
             this.Pattern = t => true;

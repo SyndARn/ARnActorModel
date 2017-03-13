@@ -181,8 +181,7 @@ namespace Actor.Base
                 {
                     // remove this lTCS
                     Queue<IBehavior> lQueue = new Queue<IBehavior>();
-                    IBehavior bhv;
-                    while (fCompletions.TryTake(out bhv))
+                    while (fCompletions.TryTake(out IBehavior bhv))
                     {
                         if (bhv != lTCS)
                             lQueue.Enqueue(bhv);

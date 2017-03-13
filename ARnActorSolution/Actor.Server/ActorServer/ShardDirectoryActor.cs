@@ -101,6 +101,7 @@ namespace Actor.Server
         {
             fShardList.Remove(aShardName);
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public async Task<IEnumerable<string>> GetAll()
         {
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();

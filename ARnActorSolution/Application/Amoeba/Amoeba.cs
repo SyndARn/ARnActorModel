@@ -30,6 +30,7 @@ namespace Amoeba
             aFuture.SendMessage(total, qtt);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public Future<long,long> GetResult()
         {
             Future<long, long> future = new Future<long, long>();

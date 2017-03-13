@@ -91,9 +91,11 @@ namespace Actor.Server
                 (b, a) => b == BrokerAction.RegisterWorker,
                  (b, a) =>
                  {
-                     WorkerStatus workerStatus = new WorkerStatus();
-                     workerStatus.TTL = 0;
-                     workerStatus.State = WorkerReadyState.Idle;
+                     WorkerStatus workerStatus = new WorkerStatus()
+                     {
+                         TTL = 0,
+                         State = WorkerReadyState.Idle
+                     };
                      fWorkers.Add(a, workerStatus);
                      LogString("Worker Register", a.Tag.Key());
                  }
@@ -135,10 +137,12 @@ namespace Actor.Server
             return new Behavior<T>(
                 (t) =>
                 {
-                    var requestStatus = new RequestStatus<T>();
-                    requestStatus.Data = t;
-                    requestStatus.State = RequestState.Unprocessed;
-                    requestStatus.Tag = new ActorTag();
+                    var requestStatus = new RequestStatus<T>()
+                    {
+                        Data = t,
+                        State = RequestState.Unprocessed,
+                        Tag = new ActorTag()
+                    };
                     fRequests[requestStatus.Tag] = requestStatus;
 
                     var worker = FindWorker();
