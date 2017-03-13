@@ -24,6 +24,7 @@ I was looking for an actor model thing with some requirements :
 -  actor can send messages across servers, you just need to hold a reference (an IActor interface) to another actor on a server ...
 -  some actors can behave as public services, or be supervised
 -  ARnActorModel could also be used as a basis for active object, defining an object and casting an async interface around it as a facility. 
+-  You need VS2017 to compile ARnActorModel
 
 [![GitHub version](https://badge.fury.io/gh/syndarn%2Farnactormodel.svg)](https://badge.fury.io/gh/syndarn%2Farnactormodel)
 
@@ -40,7 +41,7 @@ For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](http
 #### Current works
 
 - more coverage
-- moving to PCL/Universal/Shared model
+- moving to NetCore/Shared model
 - focus on future vs actor
  
 
