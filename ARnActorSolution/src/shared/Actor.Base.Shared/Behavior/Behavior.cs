@@ -100,13 +100,6 @@ namespace Actor.Base
         {
             fLinkedBehaviors = someBehaviors;
         }
-        public IActor LinkedActor
-        {
-            get
-            {
-                return fLinkedBehaviors != null ? fLinkedBehaviors.LinkedActor : null;
-            }
-        }
 
         public IActor LinkedActor => fLinkedBehaviors?.LinkedActor;
 

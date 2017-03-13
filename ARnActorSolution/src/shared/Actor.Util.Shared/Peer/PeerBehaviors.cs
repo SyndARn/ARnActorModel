@@ -48,12 +48,12 @@ namespace Actor.Util
                 .AddBehavior(new Behavior<IFuture<IEnumerable<Tuple<HashKey, IActor>>>>()); // AskNodes();
         }
 
-        public void DeleteNode(K k)
+        public void DeleteNode(TKey key)
         {
             LinkedActor.SendMessage(PeerOrder.PeerDeleteNode, key);
         }
 
-        public void GetNode(K k, IActor actor)
+        public void GetNode(TKey key, IActor actor)
         {
             LinkedActor.SendMessage(PeerOrder.PeerGetNode, key, actor);
         }
@@ -65,7 +65,7 @@ namespace Actor.Util
             return future;
         }
 
-        public void StoreNode(K k, V v)
+        public void StoreNode(TKey key, TValue value)
         {
             LinkedActor.SendMessage(PeerOrder.PeerStoreNode, key, value);
         }
@@ -76,8 +76,8 @@ namespace Actor.Util
     {
         public PeerDeleteNode() : base()
         {
-            this.Pattern = (s, k) => s == "PeerDeleteNode";
-            this.Apply = (s, k) => (LinkedTo as PeerBehaviors<K, V>).Nodes.Remove(k);
+            this.Pattern = (s, k) => s == PeerOrder.PeerDeleteNode ;
+            this.Apply = (s, k) => (LinkedTo as PeerBehaviors<TKey, TValue>).Nodes.Remove(k);
         }
     }
 
@@ -98,12 +98,12 @@ namespace Actor.Util
     {
         public PeerGetNode() : base()
         {
-            this.Pattern = (s, k, i) => s == "PeerGetNode";
-            this.Apply = (s, k, i) => i.SendMessage((LinkedTo as PeerBehaviors<K, V>).Nodes[k]);
+            this.Pattern = (s, k, i) => s == PeerOrder.PeerGetNode;
+            this.Apply = (s, k, i) => i.SendMessage((LinkedTo as PeerBehaviors<TKey, TValue>).Nodes[k]);
         }
     }
 
-    public class PeerNewPeer<K, V> : Behavior<string, IPeerActor<K,V>, HashKey>
+    public class PeerNewPeer<TKey, TValue> : Behavior<string, IPeerActor<TKey,TValue>, HashKey>
     {
         public PeerNewPeer() : base()
         {
@@ -129,7 +129,7 @@ namespace Actor.Util
                 if (key.CompareTo(current) <= 0)
                 {
                     // Store here
-                    i.SendMessage(LinkedActor as IPeerActor<K,V>);
+                    i.SendMessage(LinkedActor as IPeerActor<TKey,TValue>);
                 }
                 else
                 {
@@ -158,9 +158,9 @@ namespace Actor.Util
 
     public interface INodeBehavior<TKey, TValue>
     {
-        void StoreNode(K k, V v);
-        void GetNode(K k, IActor actor);
-        void DeleteNode(K k);
+        void StoreNode(TKey k, TValue v);
+        void GetNode(TKey k, IActor actor);
+        void DeleteNode(TKey k);
         IFuture<HashKey> GetHashKey();
     }
 
@@ -173,7 +173,7 @@ namespace Actor.Util
     public interface IPeerActor<K,V> : IActor, IPeerBehavior<K,V>, IAgentBehavior<K>, INodeBehavior<K, V>
     { }
 
-    public class PeerActor<K, V> : BaseActor, IPeerActor<K,V>, INodeBehavior<K, V>
+    public class PeerActor<TKey, TValue> : BaseActor, IPeerActor<TKey,TValue>, INodeBehavior<TKey, TValue>
     {
         private INodeBehavior<TKey, TValue> fNodeBehaviorService;
         public PeerActor() : base()
@@ -183,11 +183,11 @@ namespace Actor.Util
             Become(bhv);
         }
 
-        public void FindPeer(K k, IFuture<IPeerActor<K,V>> actor)
+        public void FindPeer(TKey key, IFuture<IPeerActor<TKey,TValue>> actor)
         {
             this.SendMessage(PeerOrder.PeerFindPeer, key, actor);
         }
-        public void NewPeer(IPeerActor<K,V> actor, HashKey hash)
+        public void NewPeer(IPeerActor<TKey,TValue> actor, HashKey hash)
         {
             this.SendMessage(PeerOrder.PeerNewPeer, actor, hash);
         }
@@ -195,7 +195,7 @@ namespace Actor.Util
 
         public IFuture<IEnumerable<TKey>> AskKeys()
         {
-            var future = new Future<IEnumerable<K>>();
+            var future = new Future<IEnumerable<TKey>>();
             this.SendMessage("AgentAskKeys",future);
             return future;
         }
@@ -207,17 +207,17 @@ namespace Actor.Util
             return future;
         }
 
-        public void StoreNode(K k, V v)
+        public void StoreNode(TKey key, TValue value)
         {
             fNodeBehaviorService.StoreNode(key, value);
         }
 
-        public void GetNode(K k, IActor actor)
+        public void GetNode(TKey key, IActor actor)
         {
             fNodeBehaviorService.GetNode(key, actor);
         }
 
-        public void DeleteNode(K k)
+        public void DeleteNode(TKey key)
         {
             fNodeBehaviorService.DeleteNode(key);
         }
