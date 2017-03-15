@@ -28,7 +28,7 @@ namespace Actor.Util
 {
     public class FsmBehaviors<TState, TEvent> : Behaviors
     {
-        private TState current { get; set; }
+        private TState fCurrent { get; set; }
 
         private bool fBehaviorSet;
 
@@ -38,17 +38,17 @@ namespace Actor.Util
 
         internal TState GetCurrentState()
         {
-            return current;
+            return fCurrent;
         }
 
         internal void ChangeState(TState aState)
         {
-            current = aState;
+            fCurrent = aState;
         }
 
         private void GetCurrentState(IFuture<TState> future)
         {
-            future.SendMessage(current);
+            future.SendMessage(fCurrent);
         }
 
         public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState)
@@ -60,7 +60,7 @@ namespace Actor.Util
         {
             if (!fBehaviorSet)
             {
-                current = startState;
+                fCurrent = startState;
                 BecomeBehavior(new Behavior<IFuture<TState>>(GetCurrentState)) ;
                 fBehaviorSet = true;
             }
@@ -133,8 +133,7 @@ namespace Actor.Util
 
         private void DoApply(TEvent anEvent)
         {
-            var parent = LinkedTo as FsmBehaviors<TState, TEvent>;
-            if (parent != null)
+            if (LinkedTo is FsmBehaviors<TState, TEvent> parent)
             {
                 // first change state in parent behaviors
                 parent.ChangeState(EndState);

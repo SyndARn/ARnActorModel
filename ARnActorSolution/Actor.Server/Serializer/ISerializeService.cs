@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using Actor.Base;
 
 namespace Actor.Server
 {
     public interface ISerializeService
     {
-        void Serialize(SerialObject so, Stream stream);
-        SerialObject Deserialize(Stream stream);
+        void Serialize(Object so, ActorTag tag, Stream stream);
+        Object Deserialize(Stream stream);
     }
 }

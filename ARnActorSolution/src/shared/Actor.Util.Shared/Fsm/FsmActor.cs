@@ -22,7 +22,6 @@
 *****************************************************************************/
 
 using Actor.Base;
-using System.Collections.Generic;
 
 namespace Actor.Util
 {

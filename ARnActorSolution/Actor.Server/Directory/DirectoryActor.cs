@@ -41,8 +41,8 @@ namespace Actor.Server
             fDictionary.Add("Directory", this);
 
             Behaviors bhvs = new Behaviors();
-            bhvs.AddBehavior(new ActionBehavior<IActor>()) ;
-            bhvs.AddBehavior(new ActionBehavior<IActor,string>());
+            bhvs.AddBehavior(new ActionBehavior<IActor>())
+                .AddBehavior(new ActionBehavior<IActor,string>());
             Become(bhvs);
         }
 
@@ -99,17 +99,18 @@ namespace Actor.Server
 
         private void DoRegister(IActor anActor,string msg)
         {
-            if (fDictionary.Keys.Any(t => t == msg) == false )
-                fDictionary.Add(msg,anActor);
+            if (fDictionary.Keys.Any(t => t == msg) == false)
+            {
+                fDictionary.Add(msg, anActor);
+            }
         }
 
         private void DoFind(IActor anActor,string msg)
         {
             // Exists
-            IActor Relative = null;
-            if (fDictionary.TryGetValue(msg, out Relative))
+            if (fDictionary.TryGetValue(msg, out IActor Relative))
             {
-                anActor.SendMessage(DirectoryRequest.Find,Relative);
+                anActor.SendMessage(DirectoryRequest.Find, Relative);
             }
             else
             {

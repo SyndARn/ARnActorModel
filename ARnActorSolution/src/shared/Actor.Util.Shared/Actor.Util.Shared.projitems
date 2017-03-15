@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collection\RxObservable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Fsm\FsmActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Fsm\FsmBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Graph\GraphOperation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IO\TextWriterActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MapReduce\MapReduceActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Monadic\MonadActor.cs" />

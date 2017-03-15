@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
-using Actor.Util;
 
 namespace Actor.Util
 {
@@ -52,8 +49,7 @@ namespace Actor.Util
                 (
                 (k, v) =>
                 {
-                    List<TValueReduce> someValue;
-                    if (!fDict.TryGetValue(k, out someValue))
+                    if (!fDict.TryGetValue(k, out List<TValueReduce> someValue))
                     {
                         fDict[k] = new List<TValueReduce>();
                     }

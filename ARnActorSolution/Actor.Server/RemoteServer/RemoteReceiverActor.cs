@@ -39,20 +39,27 @@ namespace Actor.Server
 
                 ms.Seek(0, SeekOrigin.Begin);
 
-                SerialObject so = fSerializeService.Deserialize(ms);
+                object so = fSerializeService.Deserialize(ms);
                 // send an ack
                 contextComm.Acknowledge();
 
                 // find hosted actor directory
                 // forward msg to hostedactordirectory
-                Become(new Behavior<SerialObject>(t => { return true; }, ProcessMessage));
+                Become(new Behavior<object>(t => { return true; }, ProcessMessage));
                 SendMessage(so);
             }
 
         }
 
-        private void ProcessMessage(SerialObject aSerial)
+        private void ProcessMessage(object tobeSerial)
         {
+
+            SerialObject aSerial = tobeSerial as SerialObject;
+                if (tobeSerial is DataContractObject)
+                {
+                aSerial = new SerialObject(((DataContractObject)tobeSerial).Data, ((DataContractObject)tobeSerial).Tag);
+                }
+
             // disco ?
             if ((aSerial.Data != null) && (aSerial.Data.GetType().Equals(typeof(DiscoCommand))))
             {
