@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Actor.Base
 {
@@ -14,9 +12,8 @@ namespace Actor.Base
         }
         public IReadOnlyList<string> CopyAllMessages()
         {
-            string aMessage;
             List<string> messages = new List<string>();
-            while (fMessageTrace.TryDequeue(out aMessage))
+            while (fMessageTrace.TryDequeue(out string aMessage))
             {
                 messages.Add(aMessage);
             }

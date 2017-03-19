@@ -99,6 +99,7 @@ namespace Actor.Server
         public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
         {
             // Reset the property value using the GetValue method.
+
             // force misc init
             if (obj is RemoteSenderActor remoteActor)
             {

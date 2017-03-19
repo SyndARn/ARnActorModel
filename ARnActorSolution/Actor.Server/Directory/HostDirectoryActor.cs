@@ -21,11 +21,13 @@ namespace Actor.Server
         private Dictionary<String, IActor> fUri2Actor = new Dictionary<String, IActor>(); // actor hosted
         private static Lazy<HostDirectoryActor> fHostDirectory = new Lazy<HostDirectoryActor>();
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static HostDirectoryActor GetInstance()
         {
             return fHostDirectory.Value;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public string GetStat()
         {
             return "Host entries " + fUri2Actor.Count.ToString(CultureInfo.InvariantCulture);
@@ -65,10 +67,9 @@ namespace Actor.Server
         private void DoRouting(SerialObject aMsg)
         {
             // find host in host directory
-            IActor lActor = null ;
             // get id from uri
             var lKey = aMsg.Tag.Key();
-            if (fUri2Actor.TryGetValue(lKey, out lActor))
+            if (fUri2Actor.TryGetValue(lKey, out IActor lActor))
             {
                   lActor.SendMessage(aMsg.Data);
             }

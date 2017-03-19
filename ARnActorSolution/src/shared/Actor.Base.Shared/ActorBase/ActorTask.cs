@@ -64,6 +64,8 @@ namespace Actor.Base
                 throw new ActorException(string.Format(CultureInfo.InvariantCulture,"bad, no actor should be null at this point {0}", nameof(messageLoop)));
             }
 
+
+            // handling here a max active task
             Task.Factory.StartNew(() =>
             {
                 Interlocked.Increment(ref numAddTask);
