@@ -37,7 +37,7 @@ namespace Actor.Server
             : base()
         {
             AddBehavior(new ConsoleBehavior<string>());
-            AddBehavior(new ConsoleStringListbehavior());
+            AddBehavior(new ConsoleStringEnumerablebehavior());
             AddBehavior(new ConsoleDictionaryBehavior());
             AddBehavior(new ConsoleBehavior<int>());
             AddBehavior(new ConsoleBehavior<double>());
@@ -77,9 +77,9 @@ namespace Actor.Server
         }
     }
 
-    public class ConsoleStringListbehavior : Behavior<IEnumerable<string>>
+    public class ConsoleStringEnumerablebehavior : Behavior<IEnumerable<string>>
     {
-        public ConsoleStringListbehavior()
+        public ConsoleStringEnumerablebehavior()
             : base()
         {
             Pattern = t => t is IEnumerable<string>; ;

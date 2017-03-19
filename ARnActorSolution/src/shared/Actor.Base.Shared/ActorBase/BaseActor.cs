@@ -382,9 +382,8 @@ namespace Actor.Base
 
         private IBehavior ReceiveMatching(Object msg)
         {
-            IBehavior tcs = null ;
             Queue<IBehavior> lQueue = null;
-            while (fCompletions.TryTake(out tcs))
+            while (fCompletions.TryTake(out IBehavior tcs))
             {
                 if (lQueue == null)
                 {
@@ -393,17 +392,19 @@ namespace Actor.Base
                 if (!tcs.StandardPattern(msg))
                 {
                     lQueue.Enqueue(tcs);
-                    tcs = null;
                 }
                 else
                 {
                     if (tcs.StandardCompletion != null)
                     {
-                        break;
-                    }
-                    else
-                    {
-                        tcs = null;
+                        if (lQueue != null)
+                        {
+                            while (lQueue.Count > 0)
+                            {
+                                fCompletions.Add(lQueue.Dequeue());
+                            }
+                        }
+                        return tcs;
                     }
                 }
             }
@@ -414,7 +415,7 @@ namespace Actor.Base
                     fCompletions.Add(lQueue.Dequeue());
                 }
             }
-            return tcs;
+            return null ;
         }
     }
 
