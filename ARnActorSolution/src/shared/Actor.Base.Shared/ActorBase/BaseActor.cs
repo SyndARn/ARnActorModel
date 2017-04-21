@@ -173,9 +173,10 @@ namespace Actor.Base
             if (timeOutMS != Timeout.Infinite)
             {
                 var noTimeOut = lTCS.Completion.Task.Wait(timeOutMS) ;
+                
                 if (noTimeOut)
                 {
-                    return await lTCS.Completion.Task;
+                    return await lTCS.Completion.Task.ConfigureAwait(false);
                 }
                 else
                 {
@@ -197,7 +198,7 @@ namespace Actor.Base
             }
             else
             {
-                return await lTCS.Completion.Task;
+                return await lTCS.Completion.Task.ConfigureAwait(false);
             }
         }
 

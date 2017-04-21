@@ -80,7 +80,7 @@ namespace Actor.Base
                 }
                 throw t.Exception;
             },
-            TaskContinuationOptions.OnlyOnFaulted);
+            TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
         }
     }
 }
