@@ -22,7 +22,7 @@ namespace Actor.Server
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]        
-        public void SendStream(string uri, Stream stream)
+        public void SendStream(string host, Stream stream)
         {
             CheckArg.Stream(stream);
             stream.Seek(0, SeekOrigin.Begin);

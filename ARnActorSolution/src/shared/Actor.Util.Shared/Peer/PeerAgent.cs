@@ -52,22 +52,20 @@ namespace Actor.Util
                 // peek key out of centroid
                 var key = CenterKey<TKey>.Calc(keys.Result());
                 // calc nearest peer
-                var orderedPeers = peers.Result().OrderBy(n => n.Item1.ToString());
+                var orderedPeers = peers.Result().OrderBy(n => n.GetPeerHashKey().ToString());
                 var hashKey = HashKey.ComputeHash(key.ToString());
 
                 foreach (var peer in orderedPeers)
                 {
-                    if (hashKey.CompareTo(peer.Item1) > 0)
+                    if (hashKey.CompareTo(peer.GetPeerHashKey()) > 0)
                     {
                         // deposit
                         // get current K V
-                        var future = new Future<TValue>();
-                        a.GetNode(key, future);
-                        var result = future.Result();
+                        var result = a.GetNode(key).Result();
                         if (result != null)
                         {
                             // set current K V
-                            (peer.Item2 as IPeerActor<TKey, TValue>).StoreNode(key, future.Result());
+                            (peer as IPeerActor<TKey, TValue>).StoreNode(key, result);
                         }
                         break;
                     }

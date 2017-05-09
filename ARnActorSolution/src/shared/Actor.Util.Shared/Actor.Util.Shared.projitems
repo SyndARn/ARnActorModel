@@ -33,8 +33,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)MapReduce\MapReduceActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Monadic\MonadActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\HashKey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\IAgentBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\INodeBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\IPeerBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerAgent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerBehaviors.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerDeleteNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerFindPeer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerGetNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerNewPeer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerStoreNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Producer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyGenerator.cs" />
