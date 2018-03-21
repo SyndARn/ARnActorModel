@@ -33,7 +33,7 @@ namespace Actor.Server
     public class WorkerStatus
     {
         public WorkerReadyState State { get; set; }
-        public int TTL { get; set; }
+        public int TimeToLive { get; set; }
     }
 
     public class BrokerActor<T> : BaseActor
@@ -93,7 +93,7 @@ namespace Actor.Server
                  {
                      WorkerStatus workerStatus = new WorkerStatus()
                      {
-                         TTL = 0,
+                         TimeToLive = 0,
                          State = WorkerReadyState.Idle
                      };
                      fWorkers.Add(a, workerStatus);
@@ -149,7 +149,7 @@ namespace Actor.Server
                     if (worker != null)
                     {
                         fWorkers[worker].State = WorkerReadyState.Busy;
-                        fWorkers[worker].TTL = 0;
+                        fWorkers[worker].TimeToLive = 0;
                         worker.SendMessage((IActor)this, requestStatus.Tag, t);
                         requestStatus.State = RequestState.Running;
                         LogString("Processing Request {0} on worker {1}", requestStatus.Tag.Key(), worker.Tag.Key());
@@ -188,7 +188,7 @@ namespace Actor.Server
                      if (worker != null)
                      {
                          fWorkers[worker].State = WorkerReadyState.Busy;
-                         fWorkers[worker].TTL = 0;
+                         fWorkers[worker].TimeToLive = 0;
                          worker.SendMessage((IActor)this, t, fRequests[t]);
                          LogString("ReProcessing Request {0} on worker {1}", a.Tag.Key(), t.Key());
                      }
@@ -207,14 +207,14 @@ namespace Actor.Server
                      fRequestProcessed++;
                      fRequests.Remove(t);
                      fWorkers[a].State = WorkerReadyState.Idle;
-                     fWorkers[a].TTL = fTTL;
+                     fWorkers[a].TimeToLive = fTTL;
                      LogString("Request {0} End on worker {1}", t.Key(), a.Tag.Key());
                      // find a request
                      var tagRequest = fRequests.Values.FirstOrDefault(v => v.State == RequestState.Unprocessed);
                      if (tagRequest != null)
                      {
                          fWorkers[a].State = WorkerReadyState.Busy;
-                         fWorkers[a].TTL = 0;
+                         fWorkers[a].TimeToLive = 0;
                          tagRequest.State = RequestState.Running;
                          a.SendMessage((IActor)this, tagRequest.Tag, tagRequest.Data);
                          LogString("Processing Request {0} reusing worker {1}", tagRequest.Tag.Key(), a.Tag.Key());
@@ -226,7 +226,7 @@ namespace Actor.Server
                 (
                 (a, h) =>
                 {
-                    foreach (var worker in fWorkers.Where(w => w.Value.TTL < fTTL))
+                    foreach (var worker in fWorkers.Where(w => w.Value.TimeToLive < fTTL))
                     {
                         worker.Key.SendMessage((IActor)this, BrokerAction.Hearbeat);
                     }
@@ -239,7 +239,7 @@ namespace Actor.Server
                 (a, w) =>
                 {
                     var workerState = fWorkers[a];
-                    workerState.TTL = fTTL;
+                    workerState.TimeToLive = fTTL;
                     LogString("Answer To HeartBeat from Worker {0}", a.Tag.Key());
                 }));
             // start heart beat

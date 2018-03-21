@@ -106,6 +106,9 @@
       <Name>Actor.Base</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Peer\" />
+  </ItemGroup>
   <Import Project="..\..\shared\Actor.Util.Shared\Actor.Util.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
