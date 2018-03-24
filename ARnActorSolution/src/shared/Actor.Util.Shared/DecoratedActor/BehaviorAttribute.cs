@@ -5,7 +5,7 @@ using System.Text;
 namespace Actor.Util
 {
 #if !(NETFX_CORE) 
-    public class DecoratedAttribute : Attribute
+    public class BehaviorAttribute : Attribute
     {
     }
 #endif

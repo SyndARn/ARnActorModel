@@ -10,12 +10,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TestActor
 {
 
-    internal class TestActor : DecoratedActor
+    internal class TestActor : BehaviorDecoratedActor
     {
         private string fAnswer;
         private IFuture<string> future;
 
-        [Decorated]
+        [Behavior]
         public void DecoratedMessage(string s)
         {
             fAnswer = s;
