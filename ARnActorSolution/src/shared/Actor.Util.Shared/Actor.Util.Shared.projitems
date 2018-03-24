@@ -11,6 +11,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\MarkBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\DistributedDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DecoratedActor\BehaviorDecoratedActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DecoratedActor\BehaviorAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graph\BhvGraph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadCastBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudBehavior.cs" />
