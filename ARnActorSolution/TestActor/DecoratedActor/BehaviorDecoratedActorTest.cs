@@ -15,7 +15,7 @@ namespace TestActor
         private string fAnswer;
         private IFuture<string> future;
 
-        [Behavior]
+        [BehaviorAttribute]
         public void DecoratedMessage(string s)
         {
             fAnswer = s;

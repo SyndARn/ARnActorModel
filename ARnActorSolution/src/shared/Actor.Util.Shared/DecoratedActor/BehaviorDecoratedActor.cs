@@ -24,7 +24,7 @@ namespace Actor.Util
             MemberInfo[] memberInfo = GetType().GetMethods();
             foreach(var mi in memberInfo)
             {
-                BehaviorAttribute deco = (BehaviorAttribute)Attribute.GetCustomAttribute(mi, typeof(Behavior));
+                BehaviorAttribute deco = (BehaviorAttribute)Attribute.GetCustomAttribute(mi, typeof(BehaviorAttribute));
                 if (deco != null)
                 {
                     // add behavior if we can read this method
