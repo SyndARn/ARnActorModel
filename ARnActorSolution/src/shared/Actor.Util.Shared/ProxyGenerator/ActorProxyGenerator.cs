@@ -30,11 +30,13 @@ namespace Actor.Util
         Type type = typeof(I);
         // Get the current application domain for the current thread.
         AppDomain myCurrentDomain = AppDomain.CurrentDomain;
-        AssemblyName myAssemblyName = new AssemblyName();
-        myAssemblyName.Name = "TempAssembly";
+            AssemblyName myAssemblyName = new AssemblyName()
+            {
+                Name = "TempAssembly"
+            };
 
-        // Define a dynamic assembly in the current application domain.
-        AssemblyBuilder myAssemblyBuilder = myCurrentDomain.DefineDynamicAssembly(myAssemblyName, AssemblyBuilderAccess.Run);
+            // Define a dynamic assembly in the current application domain.
+            AssemblyBuilder myAssemblyBuilder = myCurrentDomain.DefineDynamicAssembly(myAssemblyName, AssemblyBuilderAccess.Run);
 
         // Define a dynamic module in this assembly.
         ModuleBuilder myModuleBuilder = myAssemblyBuilder.DefineDynamicModule("TempModule");

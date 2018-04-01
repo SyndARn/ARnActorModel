@@ -7,19 +7,25 @@ using System.Threading.Tasks;
 namespace Actor.Base
 {
 #if NETFX_CORE
-    public class SerializableAttribute : Attribute
+    [AttributeUsageAttribute(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Delegate,
+    Inherited = false)]
+    public sealed class SerializableAttribute : Attribute
     {
         public SerializableAttribute()
         {
         }
     }
-    public class DataContractAttribute : Attribute
+    [AttributeUsageAttribute(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum,
+    Inherited = false, AllowMultiple = false)]
+    public sealed class DataContractAttribute : Attribute
     {
         public DataContractAttribute()
         {
         }
     }
-    public class DataMemberAttribute : Attribute
+    [AttributeUsageAttribute(AttributeTargets.Property | AttributeTargets.Field,
+    Inherited = false, AllowMultiple = false)]
+    public sealed class DataMemberAttribute : Attribute
     {
         public DataMemberAttribute()
         {

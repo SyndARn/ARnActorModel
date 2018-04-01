@@ -9,8 +9,14 @@
     <Import_RootNamespace>Actor.Util</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\IBroadCastActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\IStateFullActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\MarkBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\DistributedDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\HashActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\IMsgQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\LinkedListOperation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graph\BhvGraph.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadCastBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudBehavior.cs" />
@@ -20,7 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\StateBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\CollectionBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\DictionaryActor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Collection\EnumerableBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collection\EnumerableActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\IDictionaryActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\LinkedListActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\ObservableActor.cs" />
@@ -40,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\DataProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\IActorProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workflow\WorkflowActor.cs" />
   </ItemGroup>
   <ItemGroup>

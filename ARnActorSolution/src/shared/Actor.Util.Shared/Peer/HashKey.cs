@@ -7,8 +7,8 @@ using System.Security.Cryptography;
 
 namespace Actor.Util
 {
-public class HashKey : IComparable
-{
+    public class HashKey : IComparable
+    {
 #if NETFX_CORE || WINDOWS_UWP
         int fTab;
         public HashKey(int tab)
@@ -40,7 +40,7 @@ public class HashKey : IComparable
 
         public int CompareTo(object obj)
         {
-            for(int i=0;i<fTab.Length; i++)
+            for (int i = 0; i < fTab.Length; i++)
             {
                 var r = fTab[i] - ((HashKey)obj).fTab[i];
                 if (r != 0)
@@ -85,7 +85,7 @@ public class HashKey : IComparable
 
         public static bool operator ==(HashKey left, HashKey right)
         {
-            if (object.ReferenceEquals(left,null))
+            if (object.ReferenceEquals(left, null))
             {
                 return object.ReferenceEquals(right, null);
             }
@@ -103,7 +103,7 @@ public class HashKey : IComparable
         {
             return (Compare(left, right) > 0);
         }
-        
+
         public override bool Equals(object obj)
         {
             HashKey other = obj as HashKey; //avoid double casting

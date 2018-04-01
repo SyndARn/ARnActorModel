@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ActionActor\ActionActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionActor\ActionBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\ActorExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\ActorFuture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\ActorInjection.cs" />

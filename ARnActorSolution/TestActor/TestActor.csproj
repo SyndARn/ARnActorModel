@@ -145,6 +145,7 @@
     <Compile Include="Serializer\NetDataContract\NetDataContractSerializeServiceTests.cs" />
     <Compile Include="Service\RingActorTests.cs" />
     <Compile Include="Service\StringParserActorTests.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="Util\TextWriterActorTest.cs" />
     <Compile Include="Util\TestLauncherActor.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />

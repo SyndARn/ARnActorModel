@@ -17,8 +17,7 @@ namespace Actor.Util
             var bhv1 = new Behavior<TKey, TValue>( (k, v) => fDico[k] = v);
             var bhv2 = new Behavior<IActor, TKey>((a, k) =>
                 {
-                    TValue v ;
-                    bool result = fDico.TryGetValue(k, out v);
+                    bool result = fDico.TryGetValue(k, out TValue v);
                     a.SendMessage(result, k, v);
                 });
             var bhv3 = new Behavior<TKey>(k => fDico.Remove(k));

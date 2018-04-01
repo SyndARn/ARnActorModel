@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Actor.Base
 {
+
     public class LockFreeQueue<T> : IMessageQueue<T>
     {
         private ConcurrentQueue<T> fQueue = new ConcurrentQueue<T>();
@@ -25,4 +26,5 @@ namespace Actor.Base
             return fQueue.TryDequeue(out item);
         }
     }
+
 }

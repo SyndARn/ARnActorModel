@@ -30,15 +30,6 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-    public interface IStateFullActor<T>
-    {
-        void SetState(T aT);
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        IFuture<T> GetState();
-        Task<T> GetStateAsync();
-        Task<T> GetStateAsync(int timeOutMS);
-    }
-
     public class StateFullActor<T> : BaseActor, IStateFullActor<T>
     {
         public StateFullActor() : base()

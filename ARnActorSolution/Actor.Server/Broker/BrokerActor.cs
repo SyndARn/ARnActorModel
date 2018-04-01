@@ -30,6 +30,7 @@ namespace Actor.Server
         public RequestState State { get; set; }
         public T Data { get; set; }
     }
+
     public class WorkerStatus
     {
         public WorkerReadyState State { get; set; }
