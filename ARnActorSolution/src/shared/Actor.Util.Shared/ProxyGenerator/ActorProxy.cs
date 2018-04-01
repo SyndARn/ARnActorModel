@@ -24,12 +24,6 @@ namespace Actor.Util
         }
     }
 
-    public interface IActorProxy
-    {
-        void Store(string aData);
-        IFuture<string> Retrieve();
-    }
-
     public static class ActorHelper
     {
         public static void Store(this IActor actor, string aData)

@@ -106,10 +106,7 @@ namespace Actor.Util
                 "BufferNotEmpty");
         }
     }
-
-
-
-
+    
     public class Chain : BaseActor
     {
         public Chain() : base()

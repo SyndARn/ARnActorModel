@@ -2,7 +2,9 @@
 
 namespace Actor.Base
 {
-    public class SerializableAttribute : Attribute
+    [AttributeUsageAttribute(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum | AttributeTargets.Delegate,
+    Inherited = false)]
+    public sealed class SerializableAttribute : Attribute
     {
         public SerializableAttribute()
         {

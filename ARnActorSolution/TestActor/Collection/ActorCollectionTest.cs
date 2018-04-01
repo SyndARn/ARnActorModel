@@ -13,10 +13,12 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
                 {
-                    var collect = new CollectionActor<string>();
-                    collect.Add("Test1");
-                    collect.Add("Test2");
-                    collect.Add("Test3");
+                    var collect = new CollectionActor<string>
+                    {
+                        "Test1",
+                        "Test2",
+                        "Test3"
+                    };
                     Assert.IsTrue(collect.Any(t => t == "Test1"));
                     Assert.IsTrue(collect.Contains("Test2"));
                     Assert.IsTrue(collect.Where(t => t == "Test3").First() != null);

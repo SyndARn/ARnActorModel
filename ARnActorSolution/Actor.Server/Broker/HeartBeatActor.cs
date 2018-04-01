@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace Actor.Server
 {
+
     public enum HeartBeatAction { Beat }
 
     public class HeartBeatActor : BaseActor
@@ -19,4 +20,5 @@ namespace Actor.Server
             }));
         }
     }
+
 }

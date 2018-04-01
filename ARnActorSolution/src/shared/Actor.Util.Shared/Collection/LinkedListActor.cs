@@ -35,8 +35,6 @@ namespace Actor.Util
         }
     }
 
-    public enum LinkedListOperation { Add, First, Next, Answer };
-
     public class LinkedListAddbehavior<T> : Behavior<LinkedListOperation, T>
     {
         public LinkedListAddbehavior()

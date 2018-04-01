@@ -42,9 +42,8 @@ namespace Actor.Base
         public static string Stat()
         {
 #if ! NETFX_CORE && ! NETCOREAPP1_1
-            int workerThread;
-            int ioThread;
-            ThreadPool.GetAvailableThreads(out workerThread, out ioThread);
+
+            ThreadPool.GetAvailableThreads(out int workerThread, out int ioThread);
 #endif
             StringBuilder sb = new StringBuilder();
 #if ! NETFX_CORE && ! NETCOREAPP1_1
@@ -63,8 +62,7 @@ namespace Actor.Base
             {
                 throw new ActorException(string.Format(CultureInfo.InvariantCulture,"bad, no actor should be null at this point {0}", nameof(messageLoop)));
             }
-
-
+            
             // handling here a max active task
             Task.Factory.StartNew(() =>
             {
@@ -80,7 +78,7 @@ namespace Actor.Base
                 }
                 throw t.Exception;
             },
-            TaskContinuationOptions.OnlyOnFaulted);
+            TaskContinuationOptions.OnlyOnFaulted).ConfigureAwait(false);
         }
     }
 }

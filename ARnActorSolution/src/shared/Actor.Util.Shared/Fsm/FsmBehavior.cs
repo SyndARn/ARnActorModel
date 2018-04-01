@@ -26,11 +26,12 @@ using System;
 
 namespace Actor.Util
 {
+
     public class FsmBehaviors<TState, TEvent> : Behaviors
     {
-        private TState fCurrent { get; set; }
+        private TState _current { get; set; }
 
-        private bool fBehaviorSet;
+        private bool _behaviorSet;
 
         public FsmBehaviors() : base()
         {
@@ -38,17 +39,17 @@ namespace Actor.Util
 
         internal TState GetCurrentState()
         {
-            return fCurrent;
+            return _current;
         }
 
         internal void ChangeState(TState aState)
         {
-            fCurrent = aState;
+            _current = aState;
         }
 
         private void GetCurrentState(IFuture<TState> future)
         {
-            future.SendMessage(fCurrent);
+            future.SendMessage(_current);
         }
 
         public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState)
@@ -58,11 +59,11 @@ namespace Actor.Util
 
         public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState, IActor traceActor)
         {
-            if (!fBehaviorSet)
+            if (!_behaviorSet)
             {
-                fCurrent = startState;
+                _current = startState;
                 BecomeBehavior(new Behavior<IFuture<TState>>(GetCurrentState)) ;
-                fBehaviorSet = true;
+                _behaviorSet = true;
             }
             AddBehavior(new FsmBehavior<TState, TEvent>
                 (
