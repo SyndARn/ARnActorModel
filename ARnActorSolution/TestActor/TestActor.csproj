@@ -109,6 +109,7 @@
     <Compile Include="ActorBase\ReceiveActorTest.cs" />
     <Compile Include="ActorProxy\ActorProxyTest.cs" />
     <Compile Include="ActorServer\ShardListActorTests.cs" />
+    <Compile Include="BehaviorDecorated\BehaviorDecoratedTest.cs" />
     <Compile Include="Directory\DiscoveryActorTests.cs" />
     <Compile Include="DistributedDictionary\DistributedDictionaryTest.cs" />
     <Compile Include="Logger\LoggerActorTests.cs" />
