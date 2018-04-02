@@ -47,6 +47,7 @@ Temporary Items
 [Dd]ebug/
 [Bb]in/
 [Oo]bj/
+!project.assets.json
 *.csproj.user
 *.Cache
 *.pdb
@@ -77,3 +78,5 @@ Build/
 /ARnActorSolution/TestActor/Report/pic_branch10.png
 /ARnActorSolution/TestActor/Report/pic_branch0.png
 /ARnActorSolution/TestResults/
+/.vs/slnx.sqlite
+
