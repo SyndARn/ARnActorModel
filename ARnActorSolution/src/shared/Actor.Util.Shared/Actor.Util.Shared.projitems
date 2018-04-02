@@ -43,6 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerGetNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerNewPeer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerStoreNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Consumer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Producer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyGenerator.cs" />
