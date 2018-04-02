@@ -109,6 +109,7 @@
     <Compile Include="ActorBase\ReceiveActorTest.cs" />
     <Compile Include="ActorProxy\ActorProxyTest.cs" />
     <Compile Include="ActorServer\ShardListActorTests.cs" />
+    <Compile Include="BehaviorDecorated\BehaviorDecoratedTest.cs" />
     <Compile Include="Directory\DiscoveryActorTests.cs" />
     <Compile Include="DistributedDictionary\DistributedDictionaryTest.cs" />
     <Compile Include="Logger\LoggerActorTests.cs" />
@@ -169,13 +170,13 @@
       <Project>{7405dd75-d19c-4c80-8107-6492a9583802}</Project>
       <Name>Actor.MonteCarlo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Actor.Server\Actor.Server.csproj">
-      <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
-      <Name>Actor.Server</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Actor.Service\Actor.Service.csproj">
       <Project>{7FED180B-B123-4668-9C2D-7F3F0C692E1E}</Project>
       <Name>Actor.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\Actor.Server\Actor.Server.csproj">
+      <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
+      <Name>Actor.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\src\Window\Actor.Base\Actor.Base.csproj">
       <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>

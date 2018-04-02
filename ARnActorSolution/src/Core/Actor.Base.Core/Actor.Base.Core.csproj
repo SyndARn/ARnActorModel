@@ -11,12 +11,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;DEBUG;NETCOREAPP1_1</DefineConstants>
   </PropertyGroup>
-
-  <Import Project="..\..\src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems" Label="Shared" />
-
+  
   <ItemGroup>
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
   </ItemGroup>
+  
+   <Import Project="..\..\shared\Actor.Base.Shared\Actor.Base.Shared.projitems" Label="Shared" />
 
 </Project>
