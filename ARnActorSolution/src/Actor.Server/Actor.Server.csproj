@@ -88,9 +88,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Doc\ARnActorModelVersion.cs">
-      <Link>Properties\ARnActorModelVersion.cs</Link>
-    </Compile>
     <Compile Include="ActorConsole\ActorConsole.cs" />
     <Compile Include="ActorConsole\ConsoleBehavior.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
@@ -112,6 +109,7 @@
     <Compile Include="Directory\DiscoveryActor.cs" />
     <Compile Include="Directory\HostDirectoryActor.cs" />
     <Compile Include="Factory\ActorAddressFactory.cs" />
+    <Compile Include="Properties\ARnActorModelVersion.cs" />
     <Compile Include="RemoteServer\HttpListener\HttpContextComm.cs" />
     <Compile Include="RemoteServer\HttpListener\HttpListenerService.cs" />
     <Compile Include="RemoteServer\IContextComm.cs" />
@@ -140,7 +138,7 @@
     <None Include="ARnActorKey.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Window\Actor.Base\Actor.Base.csproj">
+    <ProjectReference Include="..\Window\Actor.Base\Actor.Base.csproj">
       <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>
       <Name>Actor.Base</Name>
     </ProjectReference>
