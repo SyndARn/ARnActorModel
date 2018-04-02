@@ -18420,7 +18420,7 @@
       ]
     },
     "Microsoft.NETCore.UniversalWindowsPlatform/5.3.1": {
-      "sha512": "pYCI0GC3pt29yFzhboHYnWmTIjaJ2K/L/aPNOHshrM1yQojxIp8cYdcDDd27r4GCSrSnkELVJ/x38OF06jqdmQ==",
+      "sha512": "j4QdwqcrgAdLIuO+Fbf2DrDYWc0WM4lYSSeoeWXNSu1hr4sYcL+YbIq/TDg7nktest7nVtG09TjCItpczOgjuA==",
       "type": "package",
       "path": "microsoft.netcore.universalwindowsplatform/5.3.1",
       "files": [
