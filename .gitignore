@@ -25,6 +25,7 @@ $RECYCLE.BIN/
 .AppleDouble
 .LSOverride
 
+
 # Icon must end with two \r
 Icon
 
@@ -79,4 +80,3 @@ Build/
 /ARnActorSolution/TestActor/Report/pic_branch0.png
 /ARnActorSolution/TestResults/
 /.vs/slnx.sqlite
-
