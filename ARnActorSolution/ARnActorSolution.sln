@@ -102,7 +102,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{17A02D6C-0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleCoreDemo", "Application\Core\ConsoleCoreDemo\ConsoleCoreDemo.csproj", "{E21691B4-D172-4CF2-8CB0-DF3C9A7E48E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Util.Core", "Core\Actor.Util.Core\Actor.Util.Core.csproj", "{91E2F9BE-84BB-4DB4-8E8F-08DDB4AF33EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actor.Util.Core", "Core\Actor.Util.Core\Actor.Util.Core.csproj", "{91E2F9BE-84BB-4DB4-8E8F-08DDB4AF33EC}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -1462,7 +1462,6 @@ Global
 		{E21691B4-D172-4CF2-8CB0-DF3C9A7E48E0}.x64|x86.ActiveCfg = Debug|Any CPU
 		{E21691B4-D172-4CF2-8CB0-DF3C9A7E48E0}.x64|x86.Build.0 = Debug|Any CPU
 		{91E2F9BE-84BB-4DB4-8E8F-08DDB4AF33EC}.AppVeyor|Any CPU.ActiveCfg = Debug|Any CPU
-		{91E2F9BE-84BB-4DB4-8E8F-08DDB4AF33EC}.AppVeyor|Any CPU.Build.0 = Debug|Any CPU
 		{91E2F9BE-84BB-4DB4-8E8F-08DDB4AF33EC}.AppVeyor|ARM.ActiveCfg = Debug|Any CPU
 		{91E2F9BE-84BB-4DB4-8E8F-08DDB4AF33EC}.AppVeyor|ARM.Build.0 = Debug|Any CPU
 		{91E2F9BE-84BB-4DB4-8E8F-08DDB4AF33EC}.AppVeyor|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1540,5 +1539,8 @@ Global
 		{17A02D6C-0B72-4CB8-9931-B5C8FA9DF936} = {8AD7AC78-DC22-406A-9A22-478E06F655B2}
 		{E21691B4-D172-4CF2-8CB0-DF3C9A7E48E0} = {17A02D6C-0B72-4CB8-9931-B5C8FA9DF936}
 		{91E2F9BE-84BB-4DB4-8E8F-08DDB4AF33EC} = {32E81CE6-D994-43C8-AC00-E1B80C79112E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2E4FB2F-E57F-46F5-95CE-129B8F1ED980}
 	EndGlobalSection
 EndGlobal
