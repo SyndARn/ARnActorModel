@@ -33,9 +33,11 @@ namespace TestActor
                 peerActor.FindPeer(key, finder);
                 var result = finder.Result();
                 Assert.IsTrue(result != null);
-                result.GetNode(key, result);
+                var future = result.GetNode(key);
                 result.DeleteNode(key);
                 result.StoreNode(key, value);
+                future = result.GetNode(key);
+                Assert.AreEqual(value, future.Result());
             });
         }
 

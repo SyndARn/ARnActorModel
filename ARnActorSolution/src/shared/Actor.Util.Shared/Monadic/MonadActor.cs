@@ -50,7 +50,7 @@ namespace Actor.Util
 
     }
 
-    interface MayBe<T> { }
+    interface IMayBe<T> { }
 
 
 

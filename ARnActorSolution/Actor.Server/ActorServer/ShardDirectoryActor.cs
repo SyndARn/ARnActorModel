@@ -19,19 +19,23 @@ namespace Actor.Server
         public ShardRequest() { }
         public static ShardRequest CastRequest(IActor aSender, IActor aTarget)
         {
-            var req = new ShardRequest();
-            req.RequestType = "Ask";
-            req.Sender = aSender;
-            req.Target = aTarget;
+            var req = new ShardRequest()
+            {
+                RequestType = "Ask",
+                Sender = aSender,
+                Target = aTarget
+            };
             return req;
         }
         public ShardRequest CastAnswer(IEnumerable<string> someData)
         {
-            var req = new ShardRequest();
-            req.RequestType = "Answer";
-            req.Sender = this.Sender;
-            req.Target = this.Target;
-            req.Data = new List<string>(someData);
+            var req = new ShardRequest()
+            {
+                RequestType = "Answer",
+                Sender = this.Sender,
+                Target = this.Target,
+                Data = new List<string>(someData)
+            };
             return req;
         }
         public override string ToString()
@@ -49,8 +53,10 @@ namespace Actor.Server
         public ShardDirectoryActor()
             : base()
         {
-            fShardList = new Dictionary<string, string>();
-            fShardList.Add("LocalHost", ActorServer.GetInstance().FullHost);
+            fShardList = new Dictionary<string, string>
+            {
+                { "LocalHost", ActorServer.GetInstance().FullHost }
+            };
             DirectoryActor.GetDirectory().Register(this, "KnownShards");
             HostDirectoryActor.Register(this);
             Become(new Behavior<ShardRequest>(
@@ -101,6 +107,7 @@ namespace Actor.Server
         {
             fShardList.Remove(aShardName);
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public async Task<IEnumerable<string>> GetAll()
         {
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();

@@ -27,13 +27,13 @@ namespace Actor.Server.Tests
             using (MemoryStream serializeStream = new MemoryStream())
             {
 
-                service.Serialize(serialObject, serializeStream);
+                service.Serialize(serialObject.Data,serialObject.Tag, serializeStream);
                 serializeStream.Seek(0, SeekOrigin.Begin); // rewind
 
                 using (MemoryStream deserializeStream = new MemoryStream())
                 {
                     serializeStream.CopyTo(deserializeStream);
-                    var returnObject = service.Deserialize(deserializeStream);
+                    SerialObject returnObject = service.Deserialize(deserializeStream) as SerialObject;
                     Assert.IsNotNull(returnObject);
                     Assert.IsNotNull(returnObject.Data);
                     Assert.IsNotNull(returnObject.Tag);

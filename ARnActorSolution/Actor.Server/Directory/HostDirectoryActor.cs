@@ -21,11 +21,13 @@ namespace Actor.Server
         private Dictionary<String, IActor> fUri2Actor = new Dictionary<String, IActor>(); // actor hosted
         private static Lazy<HostDirectoryActor> fHostDirectory = new Lazy<HostDirectoryActor>();
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static HostDirectoryActor GetInstance()
         {
             return fHostDirectory.Value;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public string GetStat()
         {
             return "Host entries " + fUri2Actor.Count.ToString(CultureInfo.InvariantCulture);

@@ -100,13 +100,8 @@ namespace Actor.Base
         {
             fLinkedBehaviors = someBehaviors;
         }
-        public IActor LinkedActor
-        {
-            get
-            {
-                return fLinkedBehaviors?.LinkedActor;
-            }
-        }
+
+        public IActor LinkedActor => fLinkedBehaviors?.LinkedActor;
 
         public Behavior(Func<object, bool> aPattern, Action<object> anApply)
         {
@@ -122,24 +117,12 @@ namespace Actor.Base
             Completion = aCompletion;
         }
 
-        public IBehaviors LinkedTo
-        {
-            get
-            {
-                return fLinkedBehaviors;
-            }
-        }
+        public IBehaviors LinkedTo => fLinkedBehaviors;
 
         public Func<object, bool> Pattern { get; protected set; }
         public Action<object> Apply { get; protected set; }
         public TaskCompletionSource<object> Completion { get; protected set; }
-        public TaskCompletionSource<object> StandardCompletion
-        {
-            get
-            {
-                return Completion;
-            }
-        }
+        public TaskCompletionSource<object> StandardCompletion => Completion;
 
         public void StandardApply(object aT)
         {
@@ -313,7 +296,9 @@ namespace Actor.Base
         public bool StandardPattern(object aT)
         {
             if (Pattern == null)
+            {
                 return false;
+            }
             if (aT is IMessageParam<T1, T2, T3> MessageParamT)
             {
                 return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
@@ -356,21 +341,9 @@ namespace Actor.Base
 
         private IBehaviors fLinkedBehaviors;
 
-        public IActor LinkedActor
-        {
-            get
-            {
-                return fLinkedBehaviors?.LinkedActor;
-            }
-        }
+        public IActor LinkedActor => fLinkedBehaviors?.LinkedActor; 
 
-        public IBehaviors LinkedTo
-        {
-            get
-            {
-                return fLinkedBehaviors;
-            }
-        }
+        public IBehaviors LinkedTo => fLinkedBehaviors;
 
         public void LinkBehaviors(IBehaviors someBehaviors)
         {

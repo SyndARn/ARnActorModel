@@ -8,7 +8,6 @@ using Actor.Base;
 namespace Actor.Util
 {
 
-
     public class BehaviorGraph<TNode, TEdge> : BaseActor
     {
         private List<NodeActor<TNode, TEdge>> fNodeCollection;
@@ -143,12 +142,6 @@ namespace Actor.Util
             this.SendMessage(GraphOperation.Neighbors, future);
             return future;
         }
-    }
-
-    public enum GraphOperation
-    {
-        None, AddNode, RemoveNode, AddEdge, RemoveEdge, GetNodeValue, SetNodeValue, GetEdgeValue, SetEdgeValue,
-        Adjacent, Neighbors, PickUpNode
     }
 
 }

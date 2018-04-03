@@ -33,7 +33,7 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class chunk
+    public class Chunk
     {
         public int chunkPart;
         public byte[] data;
@@ -41,32 +41,32 @@ namespace Actor.RemoteLoading
         public IActor sender;
     }
 
-    public class actActorUpload : BaseActor
+    public class ActorUpload : BaseActor
     {
-        public actActorUpload()
-            : base(new bhvUpload())
+        public ActorUpload()
+            : base(new BehaviorUpload())
         {
         }
     }
 
-    public class actActorDownload : BaseActor
+    public class ActorDownload : BaseActor
     {
-        public actActorDownload()
-            : base(new bhvDownload())
+        public ActorDownload()
+            : base(new BehaviorDownload())
         {
         }
     }
 
-    public class actActorDownloadTest : BaseActor
+    public class ActorDownloadTest : BaseActor
     {
-        public actActorDownloadTest()
+        public ActorDownloadTest()
             : base()
         {
             this.Become(new ConsoleBehavior());
             // start download
-            IActor down = new actActorDownload();
+            IActor down = new ActorDownload();
             // start upload
-            IActor up = new actActorUpload();
+            IActor up = new ActorUpload();
             // start download
             string fileName =
                 @"..\..\..\..\Actor.Plugin\bin\x64\Debug\" +
@@ -82,9 +82,9 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class bhvUpload : Behavior<IActor, MemoryStream>
+    public class BehaviorUpload : Behavior<IActor, MemoryStream>
     {
-        public bhvUpload()
+        public BehaviorUpload()
         {
             this.Apply = Behavior;
             this.Pattern = (a,s) => true;
@@ -98,11 +98,11 @@ namespace Actor.RemoteLoading
             int memSize = stream.Capacity;
             int pos = 0;
             int chunknumber = 0;
-            List<chunk> chunkList = new List<chunk>();
+            List<Chunk> chunkList = new List<Chunk>();
             stream.Seek(0, SeekOrigin.Begin);
             while (pos < memSize)
             {
-                chunk chk = new chunk();
+                Chunk chk = new Chunk();
                 int currChunkSize = Math.Min(chunkSize, memSize - pos + 1);
                 chk.chunkPart = chunknumber++;
                 chk.data = new byte[currChunkSize];
@@ -120,17 +120,17 @@ namespace Actor.RemoteLoading
         }
     }
 
-    public class bhvDownload : Behavior<chunk>
+    public class BehaviorDownload : Behavior<Chunk>
     {
-        private List<chunk> fChunkList = new List<chunk>();
+        private List<Chunk> fChunkList = new List<Chunk>();
 
-        public bhvDownload()
+        public BehaviorDownload()
         {
             this.Apply = Behavior;
             this.Pattern = t => true;
         }
 
-        private void Behavior(chunk msg)
+        private void Behavior(Chunk msg)
         {
             fChunkList.Add(msg);
             var lastMsg = fChunkList.Where(t => t.last).FirstOrDefault();

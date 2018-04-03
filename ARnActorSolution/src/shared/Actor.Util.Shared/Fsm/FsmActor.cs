@@ -22,7 +22,6 @@
 *****************************************************************************/
 
 using Actor.Base;
-using System.Collections.Generic;
 
 namespace Actor.Util
 {
@@ -39,6 +38,7 @@ namespace Actor.Util
             Become(someBehaviors);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public Future<TState> GetCurrentState()
         {
             var future = new Future<TState>();

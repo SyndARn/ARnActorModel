@@ -69,20 +69,17 @@ namespace Actor.Server
 
         private void SendRemoteMessage(object aMsg)
         {
-            // send message with http
-            SerialObject so = new SerialObject(aMsg, fRemoteTag);
-
             MemoryStream ms = null;
             try
             {
                 ms = new MemoryStream();
 
-                fSerializeService.Serialize(so, ms);                
+                fSerializeService.Serialize(aMsg,fRemoteTag, ms);                
 
                 ms.Seek(0, SeekOrigin.Begin);
 
                 IContextComm contextComm = ActorServer.GetInstance().ListenerService.GetCommunicationContext();
-                contextComm.SendStream(so.Tag.Host,ms);
+                contextComm.SendStream(fRemoteTag.Host,ms);
 
             }
             finally

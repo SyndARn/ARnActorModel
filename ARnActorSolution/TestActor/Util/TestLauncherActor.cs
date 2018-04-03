@@ -9,8 +9,17 @@ using System.Threading.Tasks;
 
 namespace TestActor
 {
+    [Serializable]
     public class TestLauncherException : Exception
     {
+        public TestLauncherException() : base()
+        {
+
+        }
+        public TestLauncherException(string message) : base(message)
+        {
+
+        }
         public TestLauncherException(string message,Exception inner)
             : base(message,inner)
         { }

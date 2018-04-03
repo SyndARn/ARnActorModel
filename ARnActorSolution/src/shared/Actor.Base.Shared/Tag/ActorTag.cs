@@ -111,9 +111,17 @@ namespace Actor.Base
 
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
+            if (obj == null)
+            {
+                return false;
+            }
+
             ActorTag other = obj as ActorTag;
-            if (other == null) return false;
+            if (other == null)
+            {
+                return false;
+            }
+
             return Equals(other);
         }
 

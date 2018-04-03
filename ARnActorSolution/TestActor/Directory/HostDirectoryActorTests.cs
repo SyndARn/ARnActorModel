@@ -23,6 +23,7 @@ namespace TestActor
         }
 
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         [TestMethod()]
         public void RegisterUnregisterTestV2()
         {
@@ -44,6 +45,7 @@ namespace TestActor
             });
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         [TestMethod()]
         [Ignore]
         public void RegisterUnregisterTest()

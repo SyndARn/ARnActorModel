@@ -25,8 +25,8 @@ namespace WebQuote
                 {
                     Uri uri = new Uri(data);
                     var post = client.PostAsync(uri, hc).Result;
-                    string result = post.Content.ReadAsStringAsync().Result;
-                    actor.SendMessage(result);
+                    string answer = post.Content.ReadAsStringAsync().Result;
+                    actor.SendMessage(answer);
                 }
             }
         }

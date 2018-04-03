@@ -24,6 +24,7 @@ namespace Actor.Server
 
         private static ActorServer fServerInstance = null ;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static ActorServer GetInstance()
         {
             return fServerInstance ;

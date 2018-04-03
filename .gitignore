@@ -25,6 +25,7 @@ $RECYCLE.BIN/
 .AppleDouble
 .LSOverride
 
+
 # Icon must end with two \r
 Icon
 
@@ -47,6 +48,7 @@ Temporary Items
 [Dd]ebug/
 [Bb]in/
 [Oo]bj/
+!project.assets.json
 *.csproj.user
 *.Cache
 *.pdb

@@ -41,8 +41,8 @@ namespace Actor.Server
             fDictionary.Add("Directory", this);
 
             Behaviors bhvs = new Behaviors();
-            bhvs.AddBehavior(new ActionBehavior<IActor>()) ;
-            bhvs.AddBehavior(new ActionBehavior<IActor,string>());
+            bhvs.AddBehavior(new ActionBehavior<IActor>())
+                .AddBehavior(new ActionBehavior<IActor,string>());
             Become(bhvs);
         }
 
@@ -88,7 +88,9 @@ namespace Actor.Server
         private void DoDisco(IActor anActor)
         {
             Dictionary<string, string> directory = new Dictionary<string, string>();
-            var fullhost = new ConfigManager().Host().Host;
+            // TODO replace with Host Service
+            var fullhost = ActorServer.GetInstance().FullHost;
+            // var fullhost = new ConfigManager().Host().Host;
             foreach (string key in fDictionary.Keys)
             {
                 var value = fDictionary[key];
@@ -99,8 +101,10 @@ namespace Actor.Server
 
         private void DoRegister(IActor anActor,string msg)
         {
-            if (fDictionary.Keys.Any(t => t == msg) == false )
-                fDictionary.Add(msg,anActor);
+            if (fDictionary.Keys.Any(t => t == msg) == false)
+            {
+                fDictionary.Add(msg, anActor);
+            }
         }
 
         private void DoFind(IActor anActor,string msg)

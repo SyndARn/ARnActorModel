@@ -23,12 +23,12 @@ namespace Actor.Util
 
     // calc at least 2 key value, peer / 4 for redundancy with different hash seeding
 
-    public static class CenterKey<K>
+    public static class CenterKey<TKey>
     {
-        public static K Calc(IEnumerable<K> keys)
+        public static TKey Calc(IEnumerable<TKey> keys)
         {
             CheckArg.IEnumerable(keys);
-            var dic = new Dictionary<HashKey, K>();
+            var dic = new Dictionary<HashKey, TKey>();
             foreach (var k in keys)
             {
                 dic[HashKey.ComputeHash(k.ToString())] = k;
@@ -40,34 +40,32 @@ namespace Actor.Util
 
     public enum AgentStatus { Start, PeekKey, NearestNode, AddKey }
 
-    public class AgentActor<K, V> : BaseActor
+    public class AgentActor<TKey, TValue> : BaseActor
     {
         public AgentActor()
         {
-            Become(new Behavior<IPeerActor<K, V>>(
+            Become(new Behavior<IPeerActor<TKey, TValue>>(
             a =>
             {
                 var keys = a.AskKeys();
                 var peers = a.AskPeers();
                 // peek key out of centroid
-                var key = CenterKey<K>.Calc(keys.Result());
+                var key = CenterKey<TKey>.Calc(keys.Result());
                 // calc nearest peer
-                var orderedPeers = peers.Result().OrderBy(n => n.Item1.ToString());
+                var orderedPeers = peers.Result().OrderBy(n => n.GetPeerHashKey().ToString());
                 var hashKey = HashKey.ComputeHash(key.ToString());
 
                 foreach (var peer in orderedPeers)
                 {
-                    if (hashKey.CompareTo(peer.Item1) > 0)
+                    if (hashKey.CompareTo(peer.GetPeerHashKey()) > 0)
                     {
                         // deposit
                         // get current K V
-                        var future = new Future<V>();
-                        a.GetNode(key, future);
-                        var result = future.Result();
+                        var result = a.GetNode(key).Result();
                         if (result != null)
                         {
                             // set current K V
-                            (peer.Item2 as IPeerActor<K, V>).StoreNode(key, future.Result());
+                            (peer as IPeerActor<TKey, TValue>).StoreNode(key, result);
                         }
                         break;
                     }
@@ -76,19 +74,19 @@ namespace Actor.Util
         }
     }
 
-    public class AgentPeerActor<K, V> : BaseActor
+    public class AgentPeerActor<TKey, TValue> : BaseActor
     {
         // call host, update local centroid, update evap
     }
 
-    public class AgentDiscoActor<K, V> : BaseActor
+    public class AgentDiscoActor<TKey, TValue> : BaseActor
     {
         private int sygmergy = 10;
 
         // go to another host, ask prev and succ, update this
         public AgentDiscoActor() : base()
         {
-            Become(new Behavior<IPeerActor<K, V>>(a =>
+            Become(new Behavior<IPeerActor<TKey, TValue>>(a =>
             {               
                 // get current nodes
                 var peers = a.AskPeers();
@@ -100,7 +98,7 @@ namespace Actor.Util
         }
     }
 
-    public class AgentCleanHost<K, V> : BaseActor
+    public class AgentCleanHost<TKey, TValue> : BaseActor
     {
         // look local host , remove evap < 0
     }
