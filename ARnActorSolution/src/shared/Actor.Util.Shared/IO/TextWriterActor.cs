@@ -40,8 +40,10 @@ namespace Actor.Util
 
         private void DoInit(Stream aStream)
         {
-            fStream = new StreamWriter(aStream);
-            fStream.AutoFlush = true;
+            fStream = new StreamWriter(aStream)
+            {
+                AutoFlush = true
+            };
             Become(new Behavior<string>(DoWrite));
             AddBehavior(new Behavior<TextWriterActor, IFuture<bool>>(DoFlush));
         }
@@ -50,8 +52,10 @@ namespace Actor.Util
         private void DoInit(string aFilename)
         {
             fFileName = aFilename;
-            fStream = new StreamWriter(new FileStream(fFileName, FileMode.Create,FileAccess.ReadWrite,FileShare.Read));
-            fStream.AutoFlush = true;
+            fStream = new StreamWriter(new FileStream(fFileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
+            {
+                AutoFlush = true
+            };
             Become(new Behavior<string>(DoWrite));
             AddBehavior(new Behavior<TextWriterActor, IFuture<bool>>(DoFlush));
         }

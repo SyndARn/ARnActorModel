@@ -106,10 +106,9 @@ namespace Actor.Server
         private void DoFind(IActor anActor,string msg)
         {
             // Exists
-            IActor Relative = null;
-            if (fDictionary.TryGetValue(msg, out Relative))
+            if (fDictionary.TryGetValue(msg, out IActor Relative))
             {
-                anActor.SendMessage(DirectoryRequest.Find,Relative);
+                anActor.SendMessage(DirectoryRequest.Find, Relative);
             }
             else
             {

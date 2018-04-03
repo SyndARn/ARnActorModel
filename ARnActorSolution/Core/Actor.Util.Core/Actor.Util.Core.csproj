@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <RootNamespace>Actor.Util</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="..\..\src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\Actor.Base.Core\Actor.Base.Core.csproj" />
+  </ItemGroup>
+
+</Project>

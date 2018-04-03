@@ -27,23 +27,6 @@ using System.Threading.Tasks;
 namespace Actor.Util
 {
 
-    public interface IMsgQueue<T>
-    {
-        bool Result { get; }
-        T Data { get; }
-    }
-
-    public class MsgQueue<T> : IMsgQueue<T>
-    {
-        public bool Result { get; }
-        public T Data { get; }
-        public MsgQueue(bool aResult, T aData)
-        {
-            Result = aResult;
-            Data = aData;
-        }
-    }
-
     public class QueueActor<T> : ActionActor<T>
     {
         private Queue<T> fQueue = new Queue<T>();

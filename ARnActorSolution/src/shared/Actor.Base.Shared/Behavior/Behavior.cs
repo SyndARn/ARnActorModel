@@ -45,7 +45,7 @@ namespace Actor.Base
         public Behaviors(IBehavior[] someBehaviors)
         {
             CheckArg.BehaviorParam(someBehaviors);
-            foreach(var item in someBehaviors)
+            foreach (var item in someBehaviors)
             {
                 AddBehavior(item);
             }
@@ -108,14 +108,14 @@ namespace Actor.Base
             }
         }
 
-        public Behavior(Func<object,bool> aPattern, Action<object> anApply)
+        public Behavior(Func<object, bool> aPattern, Action<object> anApply)
         {
             Pattern = aPattern;
             Apply = anApply;
             Completion = null;
         }
 
-        public Behavior(Func<object,bool> aPattern, TaskCompletionSource<object> aCompletion)
+        public Behavior(Func<object, bool> aPattern, TaskCompletionSource<object> aCompletion)
         {
             Pattern = aPattern;
             Apply = null;
@@ -161,7 +161,7 @@ namespace Actor.Base
     {
         public Func<T1, T2, bool> Pattern { get; protected set; }
         public Action<T1, T2> Apply { get; protected set; }
-        public TaskCompletionSource<IMessageParam<T1,T2>> Completion { get; protected set; }
+        public TaskCompletionSource<IMessageParam<T1, T2>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -205,7 +205,7 @@ namespace Actor.Base
         {
             Pattern = aPattern;
             Apply = null;
-            Completion = aCompletion ; 
+            Completion = aCompletion;
         }
 
         public Behavior()
@@ -214,7 +214,7 @@ namespace Actor.Base
 
         public Func<T1, T2, bool> DefaultPattern()
         {
-            return (t1,t2) => { return t1 is T1 && t2 is T2; };
+            return (t1, t2) => { return t1 is T1 && t2 is T2; };
         }
 
         public Behavior(Action<T1, T2> anApply)
@@ -300,7 +300,7 @@ namespace Actor.Base
 
         public Func<T1, T2, T3, bool> DefaultPattern()
         {
-            return (t1,t2,t3) => { return t1 is T1 && t2 is T2 && t3 is T3; };
+            return (t1, t2, t3) => { return t1 is T1 && t2 is T2 && t3 is T3; };
         }
 
         public Behavior(Action<T1, T2, T3> anApply)
@@ -314,10 +314,11 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            IMessageParam<T1, T2, T3> MessageParamT = aT as IMessageParam<T1, T2, T3>;
-            if (MessageParamT != null)
+            if (aT is IMessageParam<T1, T2, T3> MessageParamT)
+            {
                 return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
-            else return false;
+            }
+            return false;
         }
 
         public void StandardApply(object aT)
@@ -429,7 +430,7 @@ namespace Actor.Base
     public class Behavior<T1, T2, T3, T4> : IBehavior<T1, T2, T3, T4>, IBehavior
     {
         public Func<T1, T2, T3, T4, bool> Pattern { get; protected set; }
-        public Action<T1, T2, T3,T4> Apply { get; protected set; }
+        public Action<T1, T2, T3, T4> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2, T3, T4>> Completion { get; protected set; }
         public TaskCompletionSource<object> StandardCompletion
         {
@@ -496,11 +497,14 @@ namespace Actor.Base
         public bool StandardPattern(Object aT)
         {
             if (Pattern == null)
+            {
                 return false;
-            IMessageParam<T1, T2, T3, T4> MessageParamT = aT as IMessageParam<T1, T2, T3, T4>;
-            if (MessageParamT != null)
+            }
+            if (aT is IMessageParam<T1, T2, T3, T4> MessageParamT)
+            {
                 return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3, MessageParamT.Item4);
-            else return false;
+            }
+            return false;
         }
 
         public void StandardApply(Object aT)
