@@ -13,21 +13,6 @@ namespace Actor.Util
         void BroadCast(T at, IEnumerable<IActor> list);
     }
 
-    public class BroadCastActor<T> : BaseActor, IBroadCastActor<T>
-    {
-        public BroadCastActor()
-            : base()
-        {
-            Become(new BroadCastBehavior<T>()) ;
-        }
-
-        public void BroadCast(T at, IEnumerable<IActor> list)
-        {
-            this.SendMessage(at, list);
-        }
-
-    }
-
     public class BroadCastBehavior<T> : Behavior<T, IEnumerable<IActor>>
     {
 

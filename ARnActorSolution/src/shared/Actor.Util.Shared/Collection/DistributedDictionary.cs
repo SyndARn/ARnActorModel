@@ -116,8 +116,7 @@ namespace Actor.Util
                 }));
                 AddBehavior(new Behavior<IActor, TKey>((i, k) =>
                  {
-                     TValue v;
-                     bool found = KeyList.TryGetValue(k, out v);
+                     bool found = KeyList.TryGetValue(k, out TValue v);
                      i.SendMessage(found,k,v);
                  }
                 ));

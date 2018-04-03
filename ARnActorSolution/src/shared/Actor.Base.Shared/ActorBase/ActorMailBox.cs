@@ -63,8 +63,7 @@ namespace Actor.Base
 
         public T GetMessage()
         {
-            T val = default(T);
-            fQueue.TryTake(out val) ;
+            fQueue.TryTake(out T val);
             return val;
         }
 
