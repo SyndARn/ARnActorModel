@@ -62,8 +62,7 @@ namespace Actor.Server
 
         private void Found(Dictionary<string,string> someServices)
         {
-            string service;
-            if (someServices.TryGetValue(fServiceName, out service))
+            if (someServices.TryGetValue(fServiceName, out string service))
             {
                 if (!string.IsNullOrEmpty(service))
                 {
