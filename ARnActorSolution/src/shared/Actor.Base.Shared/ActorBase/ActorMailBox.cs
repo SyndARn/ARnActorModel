@@ -49,11 +49,10 @@ namespace Actor.Base
         public int RefreshFromMissed()
         {
             int i = 0;
-            T val = default(T);
-            while (fMissed.TryTake(out val))
+            while (fMissed.TryTake(out T val))
             {
-                fQueue.Add(val) ;
-                i++ ;
+                fQueue.Add(val);
+                i++;
             }
             return i;
         }
@@ -63,8 +62,7 @@ namespace Actor.Base
 
         public T GetMessage()
         {
-            T val = default(T);
-            fQueue.TryTake(out val) ;
+            fQueue.TryTake(out T val);
             return val;
         }
 

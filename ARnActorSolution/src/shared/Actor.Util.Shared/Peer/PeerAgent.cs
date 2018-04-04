@@ -81,7 +81,7 @@ namespace Actor.Util
 
     public class AgentDiscoActor<TKey, TValue> : BaseActor
     {
-        private int sygmergy = 10;
+        // private int sygmergy = 10;
 
         // go to another host, ask prev and succ, update this
         public AgentDiscoActor() : base()

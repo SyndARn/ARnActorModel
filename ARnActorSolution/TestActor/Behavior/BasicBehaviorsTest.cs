@@ -22,7 +22,7 @@ namespace TestActor
             Assert.IsTrue(bhv.StandardPattern(baseActor));
 
             ActionActor actionActor = new ActionActor();
-            Assert.IsTrue(bhv.StandardPattern(baseActor));
+            Assert.IsTrue(bhv.StandardPattern(actionActor));
 
             IFuture future = new Future<string>();
             Assert.IsTrue(bhv.StandardPattern(future));
