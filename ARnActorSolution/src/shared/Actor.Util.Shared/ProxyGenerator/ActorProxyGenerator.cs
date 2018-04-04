@@ -6,9 +6,9 @@ using System.Reflection.Emit;
 using System.Text;
 
 namespace Actor.Util
-{ 
+{
     // proxy generator
-#if !(NETFX_CORE)
+#if !(NETFX_CORE) && !(NETCOREAPP1_1)
     public static class ActorProxyGenerator<T, I>
     where T : class // real object
         where I : class // interface ...
