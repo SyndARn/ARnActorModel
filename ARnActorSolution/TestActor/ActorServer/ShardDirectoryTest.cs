@@ -11,9 +11,9 @@ namespace TestActor
     public class ShardDirectoryTest
     {
 
-        class actShardDirectoryClientTest : BaseActor
+        class ShardDirectoryClientTest : BaseActor
         {
-            public actShardDirectoryClientTest() : base()
+            public ShardDirectoryClientTest() : base()
             {
                 Become(new Behavior<string>(DoStart)) ;
                 this.SendMessage("Start");
@@ -45,7 +45,7 @@ namespace TestActor
             TestLauncherActor.Test(() =>
             {
                 ActorServer.Start("localhost", 80, new HostRelayActor());
-                new actShardDirectoryClientTest(); 
+                new ShardDirectoryClientTest(); 
             });
         }
     }

@@ -99,6 +99,14 @@ namespace Actor.Base
             fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
         }
 
+        public ActorTag(Uri urlAddress)
+        {
+            fId = ActorTagHelper.CastNewTagId();
+            fHost = urlAddress.Host;
+            fIsRemote = true;
+            fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
+        }
+
         public string Key()
         {
             return string.Format(CultureInfo.InvariantCulture, "{0}-{1}", fUriHash, fId);

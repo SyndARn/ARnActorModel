@@ -9,7 +9,11 @@
     <Import_RootNamespace>Actor.Util</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadCastActor.cs" />
+
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadcastActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\IBroadcastActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\MarkBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\DistributedDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\MsgQueue.cs" />
