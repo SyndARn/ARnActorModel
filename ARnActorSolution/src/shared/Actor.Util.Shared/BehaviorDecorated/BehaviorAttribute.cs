@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Actor.Util
 {
-#if !(NETFX_CORE) 
+#if !NETFX_CORE
     [AttributeUsage(AttributeTargets.Method)]
     public sealed class BehaviorAttribute : Attribute
     {

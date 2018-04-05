@@ -2,20 +2,25 @@
 
 namespace Actor.Base
 {
+    [AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = false)]
 #if NETFX_CORE
-    public class SerializableAttribute : Attribute
+    public sealed class SerializableAttribute : Attribute
     {
         public SerializableAttribute()
         {
         }
     }
-    public class DataContractAttribute : Attribute
+
+    [AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = false)]
+    public sealed class DataContractAttribute : Attribute
     {
         public DataContractAttribute()
         {
         }
     }
-    public class DataMemberAttribute : Attribute
+
+    [AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = true)]
+    public sealed class DataMemberAttribute : Attribute
     {
         public DataMemberAttribute()
         {

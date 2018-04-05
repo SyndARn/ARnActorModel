@@ -50,12 +50,12 @@ namespace Actor.Server
     public class ShardDirectoryActor : BaseActor
     {
         private Dictionary<string, string> fShardList;
-        public ShardDirectoryActor()
+        public ShardDirectoryActor(ActorServer actorServer)
             : base()
         {
             fShardList = new Dictionary<string, string>
             {
-                { "LocalHost", ActorServer.GetInstance().FullHost }
+                { "LocalHost",actorServer.FullHost }
             };
             DirectoryActor.GetDirectory().Register(this, "KnownShards");
             HostDirectoryActor.Register(this);

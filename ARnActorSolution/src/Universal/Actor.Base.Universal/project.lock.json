@@ -24357,12 +24357,11 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\ARn\\Source\\Repos\\NugetForActorModel\\": {},
-        "https://www.nuget.org/api/v2/": {}
+        "https://api.nuget.org/v3/index.json": {}
       }
     },
     "dependencies": {
-      "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.1"
+      "Microsoft.NETCore.UniversalWindowsPlatform": "[5.3.1, )"
     },
     "frameworks": {
       "uap10.0.10240": {}

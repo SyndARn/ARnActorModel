@@ -18,7 +18,7 @@ namespace Actor.Server
     {
         public Uri GetHostUri(string name, int port)
         {
-            var prefix = "http://";
+            const string prefix = "http://";
             var suffix = ":" + port.ToString(CultureInfo.InvariantCulture);
             var fullhost = prefix + name + suffix + "/" ;
 
@@ -28,7 +28,6 @@ namespace Actor.Server
 
     public class ConfigManager : IDisposable
     {
-
         public static ConfigManager CastForTest()
         {
             ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
@@ -100,7 +99,6 @@ namespace Actor.Server
                 }
             }
             return fListenerService;
-
         }
 
         private ISerializeService fSerializeService;
@@ -131,7 +129,6 @@ namespace Actor.Server
                             }
                     }
                 }
-                
             }
             return fSerializeService;
         }

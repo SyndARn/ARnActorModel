@@ -5,7 +5,6 @@ using System.Globalization;
 
 namespace Actor.Server
 {
-
     /// <summary>
     /// BrokerActor
     ///     Have an actor that upon receiving message will fan out this message to one or more of pre-registrered actor
@@ -30,6 +29,7 @@ namespace Actor.Server
         public RequestState State { get; set; }
         public T Data { get; set; }
     }
+
     public class WorkerStatus
     {
         public WorkerReadyState State { get; set; }
@@ -43,9 +43,7 @@ namespace Actor.Server
         private int fLastWorkerUsed = 0;
         private int fTTL = 0;
         private int fRequestProcessed = 0;
-
-        private IActor fLogger = new NullActor();
-        public IActor Logger { get { return fLogger; } set { fLogger = value; } }
+        public IActor Logger { get; set; } = new NullActor();
 
         public void RegisterWorker(IActor worker)
         {
@@ -119,14 +117,17 @@ namespace Actor.Server
         {
             Logger.SendMessage(message);
         }
+
         public void LogString(string message, object arg0)
         {
             Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, arg0));
         }
+
         public void LogString(string message, object arg0, object arg1)
         {
             Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, arg0, arg1));
         }
+
         public void LogString(string message, object[] args)
         {
             Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, args));
@@ -163,7 +164,6 @@ namespace Actor.Server
 
         public BrokerActor() : base()
         {
-
             // heartbeat actor
             Become(BehaviorBrokerStart());
 
@@ -246,5 +246,4 @@ namespace Actor.Server
             SendMessage(BrokerAction.Start);
         }
     }
-
 }

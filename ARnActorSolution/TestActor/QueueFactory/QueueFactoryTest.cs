@@ -12,7 +12,6 @@ namespace TestActor
     [TestClass]
     public class QueueFactoryTest
     {
-
         [TestMethod]
         public void LockFreeCastingTest()
         {
@@ -23,8 +22,7 @@ namespace TestActor
             lockFree.Add("Test1");
             lockFree.Add("Test2");
             Assert.AreEqual(2, lockFree.Count());
-            string s;
-            var result = lockFree.TryTake(out s);
+            var result = lockFree.TryTake(out string s);
             Assert.IsTrue(result);
             Assert.AreEqual("Test1",s) ;
         }
@@ -39,8 +37,22 @@ namespace TestActor
             lockFree.Add("Test1");
             lockFree.Add("Test2");
             Assert.AreEqual(2, lockFree.Count());
-            string s;
-            var result = lockFree.TryTake(out s);
+            var result = lockFree.TryTake(out string s);
+            Assert.IsTrue(result);
+            Assert.AreEqual("Test1", s);
+        }
+
+        [TestMethod]
+        public void RingQueueCastingTest()
+        {
+            QueueFactory<string>.Style = QueueStyle.Ring;
+            IMessageQueue<string> messageQueue = QueueFactory<string>.Cast();
+            Assert.IsNotNull(messageQueue);
+            Assert.IsTrue(messageQueue is RingQueue<string>);
+            messageQueue.Add("Test1");
+            messageQueue.Add("Test2");
+            Assert.AreEqual(2, messageQueue.Count());
+            var result = messageQueue.TryTake(out string s);
             Assert.IsTrue(result);
             Assert.AreEqual("Test1", s);
         }

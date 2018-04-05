@@ -12,8 +12,7 @@ using System.IO;
 
 namespace Actor.Server
 {
-    
-    class HttpListenerService : IListenerService, IDisposable
+    public class HttpListenerService : IListenerService, IDisposable
     {
         private HttpListener fListener;
 
@@ -37,7 +36,7 @@ namespace Actor.Server
         {
             var localhost = Dns.GetHostName();
             var servername = ActorServer.GetInstance().Name;
-            var prefix = "http://";
+            const string prefix = "http://";
             var suffix = ":" + ActorServer.GetInstance().Port.ToString(CultureInfo.InvariantCulture);
             fListener.Prefixes.Add(prefix + "localhost" + suffix + "/" + servername + "/");
             fListener.Prefixes.Add(prefix + localhost + suffix + "/" + servername + "/");

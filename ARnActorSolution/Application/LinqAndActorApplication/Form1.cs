@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using Actor.Base;
 using Actor.Util;
 
-
 namespace LinqAndActorApplication
 {
     public partial class Form1 : Form
@@ -20,7 +19,6 @@ namespace LinqAndActorApplication
             InitializeComponent();
         }
 
-
         public delegate void AddText(string value);
 
         public class TextBoxActor : BaseActor
@@ -29,23 +27,20 @@ namespace LinqAndActorApplication
 
             public TextBoxActor(TextBox textBox) : base()
             {
-                myDelegate = new AddText(t => textBox.AppendText((t)));
+                myDelegate = new AddText(t => textBox.AppendText(t));
                 Become(new Behavior<string>(
-                    (str) =>
-                    {
-                        textBox.Invoke(myDelegate, str+Environment.NewLine);
-                    }
+                    (str) => textBox.Invoke(myDelegate, str + Environment.NewLine)
                     ));
             }
-
         }
 
-        public class linqActor : BaseActor
+        public class LinqActor : BaseActor
         {
-            public linqActor() : base()
+            public LinqActor() : base()
             {
                 Become(new Behavior<TextBox>(DoIt));
             }
+
             private void DoIt(TextBox tb)
             {
                 var col = new EnumerableActor<Tuple<int, int>>();
@@ -75,15 +70,13 @@ namespace LinqAndActorApplication
                 // project
                 foreach (var item in reduce2)
                     tbActor.SendMessage(item.Item1 + " - " + item.Item2.ToString());
-
             }
         }
 
         private void LinqOperation_Click(object sender, EventArgs e)
         {
-            var li = new linqActor();
+            var li = new LinqActor();
             li.SendMessage(tbTarget);
-
         }
     }
 }

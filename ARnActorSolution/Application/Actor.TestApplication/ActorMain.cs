@@ -18,7 +18,7 @@ namespace Actor.TestApplication
         private CollectionActor<string> collect;
         public ActorMain() : base()
         {
-            Become(new Behavior<string>(t => { return true; }, DoBehavior));
+            Become(new Behavior<string>(t => true, DoBehavior));
             new ActorService();
             SendMessage("Start");
         }
@@ -45,7 +45,6 @@ namespace Actor.TestApplication
             var actForeach = new BaseActor(new ForEachBehavior<string>());
             actForeach.SendMessage<IEnumerable<string>, Action<String>>(list,
                 t => Console.WriteLine("list " + t));
-
 
             Console.WriteLine("Should have work");
 
@@ -76,12 +75,9 @@ namespace Actor.TestApplication
             Console.WriteLine("All client allocated {0}", (double)(end - start) / 10000.0);
 
             // basic redirection
-            IActor target = new BaseActor(new Behavior<string>(t => { Console.WriteLine(t); }));
-            IActor middle = new BaseActor(new Behavior<string>(t => { t = t + " augmenté"; }));
+            IActor target = new BaseActor(new Behavior<string>(t => Console.WriteLine(t)));
+            IActor middle = new BaseActor(new Behavior<string>(t => t = t + " augmenté"));
             middle.SendMessage("Bonjour");
-
-
         }
    }
-
 }

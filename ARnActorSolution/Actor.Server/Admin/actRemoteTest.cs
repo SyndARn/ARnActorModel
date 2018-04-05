@@ -7,7 +7,7 @@ using Actor.Base;
 namespace Actor.Server
 {
     // TODO to be completed
-    class RemoteNetActor : BaseActor 
+    internal class RemoteNetActor : BaseActor
     {
         public static void SendString(string aMsg)
         {
