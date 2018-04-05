@@ -144,8 +144,10 @@ namespace FsmCalc
         }
         public Accumulators Plus()
         {
-            var clone = new Accumulators();
-            clone.Accumulator = this.PlusAcc;
+            var clone = new Accumulators()
+            {
+                Accumulator = this.PlusAcc
+            };
             clone.PlusAcc = clone.Accumulator ;
             clone.MoinsAcc = clone.Accumulator ;
             clone.MultAcc = 0 ;
@@ -154,8 +156,10 @@ namespace FsmCalc
         }
         public Accumulators Moins()
         {
-            var clone = new Accumulators();
-            clone.Accumulator = this.MoinsAcc;
+            var clone = new Accumulators()
+            {
+                Accumulator = this.MoinsAcc
+            };
             clone.PlusAcc = clone.Accumulator;
             clone.MoinsAcc = clone.Accumulator;
             clone.MultAcc = 0;
@@ -164,8 +168,10 @@ namespace FsmCalc
         }
         public Accumulators Div()
         {
-            var clone = new Accumulators();
-            clone.Accumulator = this.DivAcc;
+            var clone = new Accumulators()
+            {
+                Accumulator = this.DivAcc
+            };
             clone.PlusAcc = clone.Accumulator;
             clone.MoinsAcc = clone.Accumulator;
             clone.MultAcc = 0;
@@ -174,8 +180,10 @@ namespace FsmCalc
         }
         public Accumulators Mult()
         {
-            var clone = new Accumulators();
-            clone.Accumulator = this.MultAcc;
+            var clone = new Accumulators()
+            {
+                Accumulator = this.MultAcc
+            };
             clone.PlusAcc = clone.Accumulator;
             clone.MoinsAcc = clone.Accumulator;
             clone.MultAcc = 0;

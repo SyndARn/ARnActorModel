@@ -30,17 +30,20 @@ namespace TestActor
                 ActorServer.Start("123", 80,null);
                 var tst1 = new Test1() { Name = "TestName1" };
                 var tst2 = new Test1() { Name = "TestName2" };
-                var lst = new List<IActor>();
-                lst.Add(tst1);
-                lst.Add(tst2);
+                var lst = new List<IActor>
+                {
+                    tst1,
+                    tst2
+                };
 
                 // serialize
                 BaseActor actor = new BaseActor();
                 SerialObject so = new SerialObject(lst, actor.Tag);
-                NetDataContractSerializer dcs = new NetDataContractSerializer();
-                dcs.SurrogateSelector = new ActorSurrogatorSelector();
-                dcs.Binder = new ActorBinder();
-
+                NetDataContractSerializer dcs = new NetDataContractSerializer()
+                {
+                    SurrogateSelector = new ActorSurrogatorSelector(),
+                    Binder = new ActorBinder()
+                };
                 using (MemoryStream ms = new MemoryStream())
                 {
                     dcs.Serialize(ms, so);
