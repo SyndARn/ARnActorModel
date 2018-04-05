@@ -13,7 +13,7 @@ namespace Actor.Server
         private string fFullHost = "" ;
         private HostRelayActor fActHostRelay;
         private ConfigManager fConfigManager;
-        public string FullHost { get 
+        public string FullHost { get
         {
             if (string.IsNullOrEmpty(fFullHost))
             {
@@ -30,11 +30,26 @@ namespace Actor.Server
             return fServerInstance ;
         }
 
+        public static void Start(ConfigManager configManager)
+        {
+            fServerInstance = new ActorServer();
+            fServerInstance.fConfigManager = configManager;
+            fServerInstance.Name = configManager.Host().Host;
+            fServerInstance.Port = configManager.Host().Port;
+            fServerInstance.ListenerService = configManager.GetListenerService();
+            fServerInstance.SerializeService = configManager.GetSerializeService();
+            ActorTagHelper.FullHost = configManager.Host().Host;
+            fServerInstance.DoInit(new HostRelayActor(fServerInstance.ListenerService));
+        }
+
         public static void Start(string lName, int lPort, HostRelayActor hostRelayActor)
         {
             fServerInstance = new ActorServer(lName,lPort) ;
             fServerInstance.DoInit(hostRelayActor);
         }
+
+        private ActorServer()
+        { }
 
         public ActorServer(string lName, int lPort)
         {
@@ -45,7 +60,7 @@ namespace Actor.Server
             ActorTagHelper.FullHost = fConfigManager.Host().Host;
         }
 
-        private void DoInit(HostRelayActor hostRelayActor) 
+        private void DoInit(HostRelayActor hostRelayActor)
         {
             DirectoryActor.GetDirectory(); // Start directory
             ActorConsole.Register(); // Start console
@@ -55,7 +70,7 @@ namespace Actor.Server
             if (hostRelayActor != null)
             {
                 ListenerService = fConfigManager.GetListenerService();
-                new ShardDirectoryActor(); // start shard directory
+                new ShardDirectoryActor(this); // start shard directory
                 fActHostRelay = hostRelayActor;
                 fActHostRelay.SendMessage("Listen");
             }
@@ -90,4 +105,4 @@ namespace Actor.Server
             Dispose(false);
         }
     }
-} 
+}

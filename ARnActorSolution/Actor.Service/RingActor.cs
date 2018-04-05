@@ -14,26 +14,22 @@ namespace Actor.Service
         internal static TimeSpan Delta { get { return end.Subtract(start) ; } }
     }
 
-    enum State { Start, Running }
+    internal enum State { Start, Running }
 
-    class RingNode : BaseActor
+    internal class RingNode : BaseActor
     {
         IActor fNextNode;
         int fTestRun = 0;
         public RingNode()
         {
-            Become(new Behavior<State,IActor>((s,a) => 
-            {
-              return s == State.Start ;
-            }, Behavior)) ;
+            Become(new Behavior<State,IActor>((s, a) => s == State.Start, Behavior)) ;
         }
 
         private void Behavior(State s, IActor a)
         {
             fNextNode = a;
             Become(
-                new Behavior<ActorTag>(t =>
-                { return t != null; }, Running));
+                new Behavior<ActorTag>(t => t != null, Running));
         }
 
         private void Running(ActorTag msg)
@@ -49,11 +45,12 @@ namespace Actor.Service
                     //tr.Stop("End Node Ring");
                 }
                 else
-                    fNextNode.SendMessage(msg);                
+                {
+                    fNextNode.SendMessage(msg);
+                }
             }
             else
             {
-
                 if (fTestRun >= RingTest.fTest)
                 {
                     TestResult.end = DateTimeOffset.UtcNow ;
@@ -61,10 +58,7 @@ namespace Actor.Service
                     sb.AppendLine("End Test " + fTestRun.ToString() + " " + TestResult.end.ToString());
                     sb.AppendLine("Elapsed " + fTestRun.ToString() + " " + TestResult.Delta.ToString()); // .ToString("N5"));
                     Console.WriteLine(sb.ToString());
-                    if (RingTest.answer != null)
-                    {
-                        RingTest.answer.SendMessage(sb.ToString());
-                    }
+                    RingTest.answer?.SendMessage(sb.ToString());
                 }
             }
         }
@@ -93,16 +87,21 @@ namespace Actor.Service
             {
                 act = new RingNode();
                 if (firstNode == null)
+                {
                     firstNode = act;
+                }
                 else
+                {
                     prevNode.SendMessage(
-                        State.Start, act);
+                       State.Start, act);
+                }
+
                 prevNode = act;
             }
             prevNode.SendMessage(
                 State.Start, (IActor)null);
             lastNode = prevNode;
-            Become(new Behavior<bool>(msg => { return msg; }, Test));
+            Become(new Behavior<bool>(msg => msg, Test));
             SendMessage(true);
         }
 
@@ -111,8 +110,10 @@ namespace Actor.Service
             TestResult.start = DateTimeOffset.UtcNow ;
             Console.WriteLine("Start at " + TestResult.start.ToString());
             for (int i = 0; i < RingTest.fTest; i++)
+            {
                 firstNode.SendMessage(
-                    new ActorTag(/*i*/));
+                   new ActorTag(/*i*/));
+            }
         }
     }
 }

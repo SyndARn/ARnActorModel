@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Actor.Base
 {
-
     public interface ISupervisedActor : IActor
     {
         ISupervisedActor Respawn();
     }
-
 
     public class SupervisedActor : BaseActor, ISupervisedActor
     {
@@ -20,10 +18,12 @@ namespace Actor.Base
             ISupervisedActor actor = new SupervisedActor(this.Tag);
             return actor;
         }
+
         public SupervisedActor(ActorTag previousTag) : base(previousTag)
         {
             Become(new SupervisedBehavior());
         }
+
         public SupervisedActor() : base()
         {
             Become(new SupervisedBehavior());
@@ -36,7 +36,7 @@ namespace Actor.Base
     {
         public SupervisedBehavior()
         {
-            Pattern =  t =>{return true;} ;
+            Pattern = t => true;
             Apply = t =>
              {
                  if (t.Equals(SupervisorAction.Kill))
@@ -57,8 +57,7 @@ namespace Actor.Base
 
     public class SupervisorBehavior : Behaviors
     {
-
-        private List<ISupervisedActor> fSupervised = new List<ISupervisedActor>();
+        private readonly List<ISupervisedActor> fSupervised = new List<ISupervisedActor>();
 
         public SupervisorBehavior() : base()
         {
@@ -71,10 +70,10 @@ namespace Actor.Base
         {
             switch(action)
             {
-                case SupervisorAction.Register: 
+                case SupervisorAction.Register:
                     {
                         fSupervised.Add(actor);
-                        break; 
+                        break;
                     }
                 case SupervisorAction.Unregister:
                     {

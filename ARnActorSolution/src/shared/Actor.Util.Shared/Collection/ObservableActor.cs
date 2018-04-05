@@ -33,7 +33,7 @@ namespace Actor.Util
 
     public class ObservableActor<T> : BaseActor
     {
-        private List<IActor> fCollection;
+        private readonly List<IActor> fCollection;
 
         public ObservableActor() : base()
         {
@@ -74,6 +74,5 @@ namespace Actor.Util
             var currentObservers = fCollection.ToList(); // clone before sending 
             bct.BroadCast(aT, currentObservers);
         }
-
     }
 }

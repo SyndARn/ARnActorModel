@@ -7,18 +7,16 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-
     public class DictionaryBehavior<TKey,TValue> : Behaviors, IDictionaryActor<TKey,TValue>
     {
-        private Dictionary<TKey, TValue> fDico = new Dictionary<TKey, TValue>();
+        private readonly Dictionary<TKey, TValue> fDico = new Dictionary<TKey, TValue>();
 
         public DictionaryBehavior()
         {
             var bhv1 = new Behavior<TKey, TValue>( (k, v) => fDico[k] = v);
             var bhv2 = new Behavior<IActor, TKey>((a, k) =>
                 {
-                    TValue v ;
-                    bool result = fDico.TryGetValue(k, out v);
+                    bool result = fDico.TryGetValue(k, out TValue v);
                     a.SendMessage(result, k, v);
                 });
             var bhv3 = new Behavior<TKey>(k => fDico.Remove(k));
@@ -45,10 +43,9 @@ namespace Actor.Util
         }
     }
 
-
     public class DictionaryActor<TKey,TValue> : BaseActor, IDictionaryActor<TKey, TValue>
     {
-        private IDictionaryActor<TKey, TValue> fServiceDictionary;
+        private readonly IDictionaryActor<TKey, TValue> fServiceDictionary;
 
         public DictionaryActor() : base()
         {

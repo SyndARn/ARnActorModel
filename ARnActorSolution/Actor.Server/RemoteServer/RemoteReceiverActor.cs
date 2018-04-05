@@ -4,10 +4,8 @@ using System.Diagnostics;
 
 namespace Actor.Server
 {
-
-    class RemoteReceiverActor : BaseActor
+    internal class RemoteReceiverActor : BaseActor
     {
-
         ISerializeService fSerializeService;
 
         public static void Cast(IContextComm contextComm)
@@ -20,7 +18,7 @@ namespace Actor.Server
         public RemoteReceiverActor()
         {
             fSerializeService = ActorServer.GetInstance().SerializeService;
-            Become(new Behavior<IContextComm,Stream>((i,t) => { return true; }, DoContext));
+            Become(new Behavior<IContextComm,Stream>((i, t) => true, DoContext));
         }
 
         private void DoContext(IContextComm contextComm, Stream streamMessage)
@@ -45,15 +43,13 @@ namespace Actor.Server
 
                 // find hosted actor directory
                 // forward msg to hostedactordirectory
-                Become(new Behavior<object>(t => { return true; }, ProcessMessage));
+                Become(new Behavior<object>(t => true, ProcessMessage));
                 SendMessage(so);
             }
-
         }
 
         private void ProcessMessage(object tobeSerial)
         {
-
             SerialObject aSerial = tobeSerial as SerialObject;
                 if (tobeSerial is DataContractObject)
                 {
@@ -61,7 +57,7 @@ namespace Actor.Server
                 }
 
             // disco ?
-            if ((aSerial.Data != null) && (aSerial.Data.GetType().Equals(typeof(DiscoCommand))))
+            if (aSerial.Data?.GetType().Equals(typeof(DiscoCommand)) == true)
             {
                 // ask directory entries for server
                 //actHostDirectory.Register(this);

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Règles pour Amoeba" Description="Règles d'analyse du code pour Amoeba.csproj." ToolsVersion="15.0">
+  <IncludeAll Action="Warning" />
+  <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+    <Rule Id="RCS1007" Action="Warning" />
+    <Rule Id="RCS1008" Action="Warning" />
+    <Rule Id="RCS1009" Action="Warning" />
+    <Rule Id="RCS1012" Action="Warning" />
+    <Rule Id="RCS1035" Action="Warning" />
+    <Rule Id="RCS1045" Action="Warning" />
+    <Rule Id="RCS1046" Action="Warning" />
+    <Rule Id="RCS1056" Action="Warning" />
+    <Rule Id="RCS1060" Action="Warning" />
+    <Rule Id="RCS1101" Action="Warning" />
+    <Rule Id="RCS1126" Action="Warning" />
+    <Rule Id="RCS1198" Action="Warning" />
+    <Rule Id="RCS1208" Action="Warning" />
+  </Rules>
+</RuleSet>
