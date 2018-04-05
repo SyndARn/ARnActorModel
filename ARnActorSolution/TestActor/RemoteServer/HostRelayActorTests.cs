@@ -43,7 +43,9 @@ namespace TestActor
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         private void DoDiscoTest()
         {
-            ActorServer.Start(ConfigManager.CastForTest());
+            ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
+            ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
+            ActorServer.Start("localhost", 80, new HostRelayActor());
             IActor actor1 = new TestHostRelayActor();
 
             DiscoCommand disco = new DiscoCommand(actor1);
