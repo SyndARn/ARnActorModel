@@ -37,7 +37,7 @@ namespace TestActor
         [TestMethod()]
         public void HostRelayDiscoTest()
         {
-            TestLauncherActor.Test(() => DoDiscoTest());
+            TestLauncherActor.Test(() => DoDiscoTest(),30000);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
