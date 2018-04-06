@@ -3,7 +3,6 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-
     public class BroadCastBehavior<T> : Behavior<T, IEnumerable<IActor>>
     {
 

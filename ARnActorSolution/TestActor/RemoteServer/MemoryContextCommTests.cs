@@ -12,7 +12,6 @@ namespace Actor.Server.Tests
     [TestClass()]
     public class MemoryContextCommTests
     {
-
         [TestMethod()]
         public void SendReceiveStreamTest()
         {
@@ -41,8 +40,6 @@ namespace Actor.Server.Tests
 
             // check
             Assert.AreEqual(testString, resultString);
-
         }
-
     }
 }
