@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Actor.Base;
 
 namespace Actor.Util
@@ -15,6 +17,5 @@ namespace Actor.Util
         {
             this.SendMessage(at, list);
         }
-
     }
 }
