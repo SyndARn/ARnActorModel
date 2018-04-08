@@ -9,5 +9,4 @@ namespace Actor.Util
         IFuture<IEnumerable<TKey>> AskKeys();
         IFuture<IEnumerable<IPeerActor<TKey>>> AskPeers();
     }
-
 }

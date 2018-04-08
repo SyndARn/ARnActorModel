@@ -87,7 +87,7 @@ namespace Actor.Util
         public AgentDiscoActor() : base()
         {
             Become(new Behavior<IPeerActor<TKey, TValue>>(a =>
-            {               
+            {              
                 // get current nodes
                 var peers = a.AskPeers();
                 // take one of them (lower than your reference node)

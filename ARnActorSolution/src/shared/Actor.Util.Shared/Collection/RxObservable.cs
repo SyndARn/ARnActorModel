@@ -5,7 +5,6 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-
     public class RXObservable<T> : BaseActor, IObservable<T>
     {
         private List<IObserver<T>> observers;

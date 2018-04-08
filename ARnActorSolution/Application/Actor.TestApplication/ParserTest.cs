@@ -17,8 +17,10 @@ namespace Actor.TestApplication
 
         private void DoParser()
         {
-            List<String> aList = new List<String>();
-            aList.Add(ActorTask.Stat());
+            List<String> aList = new List<String>
+            {
+                ActorTask.Stat()
+            };
             var lParser = new ParserActor();
             new EchoActor<IEnumerable<string>>(lParser, aList);
             lParser.SendMessage(aList.AsEnumerable<String>());

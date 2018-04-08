@@ -6,7 +6,7 @@ namespace Actor.Server
 {
     internal class RemoteReceiverActor : BaseActor
     {
-        ISerializeService fSerializeService;
+        private readonly ISerializeService fSerializeService;
 
         public static void Cast(IContextComm contextComm)
         {

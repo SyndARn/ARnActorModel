@@ -8,10 +8,9 @@ using Actor.Base;
 namespace TestActor
 {
     [TestClass]
-    public class FSMStateTest
+    public class FsmStateTest
     {
-
-
+    
         [TestMethod]
         public void FSMBehaviorsTest()
         {

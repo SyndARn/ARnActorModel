@@ -27,6 +27,7 @@ namespace Actor.Server
             };
             return req;
         }
+
         public ShardRequest CastAnswer(IEnumerable<string> someData)
         {
             var req = new ShardRequest()
@@ -38,6 +39,7 @@ namespace Actor.Server
             };
             return req;
         }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -49,7 +51,7 @@ namespace Actor.Server
 
     public class ShardDirectoryActor : BaseActor
     {
-        private Dictionary<string, string> fShardList;
+        private readonly Dictionary<string, string> fShardList;
         public ShardDirectoryActor(ActorServer actorServer)
             : base()
         {
@@ -63,6 +65,7 @@ namespace Actor.Server
                 t => t is ShardRequest,
                 DoProcessShardRequest));
         }
+
         private void DoProcessShardRequest(ShardRequest msg)
         {
             switch (msg.RequestType)
@@ -91,35 +94,39 @@ namespace Actor.Server
         {
             AddBehavior(new Behavior<IFuture>(DoGetAll));
         }
+
         public void Add(string aShardName)
         {
             SendAction(DoSend, aShardName);
         }
+
         private void DoSend(string aShardName)
         {
             fShardList.Add(aShardName);
         }
+
         public void Remove(string aShardName)
         {
             SendAction(DoRemove, aShardName);
         }
+
         private void DoRemove(string aShardName)
         {
             fShardList.Remove(aShardName);
         }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public async Task<IEnumerable<string>> GetAll()
         {
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
             this.SendMessage(future);
-            return await future.ResultAsync();
+            return await future.ResultAsync().ConfigureAwait(false);
         }
+
         private void DoGetAll(IFuture future)
         {
             IEnumerable<string> list = fShardList.ToList().AsEnumerable();
             future.SendMessage(list) ;
         }
     }
-
-
 }
