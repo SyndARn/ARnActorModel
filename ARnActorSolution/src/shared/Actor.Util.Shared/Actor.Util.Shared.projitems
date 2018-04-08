@@ -19,7 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collection\DistributedDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collection\MsgQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Graph\BhvGraph.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadcastBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behavior\BroadCastBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\CrudBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\ForEachBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behavior\ReceiveActor.cs" />
