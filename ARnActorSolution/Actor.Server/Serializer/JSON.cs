@@ -92,7 +92,6 @@ namespace Procurios.Public
 					NextToken(json, ref index);
 					return table;
 				} else {
-
 					// name
 					string name = ParseString(json, ref index, ref success);
 					if (!success) {
@@ -192,7 +191,6 @@ namespace Procurios.Public
 
 			bool complete = false;
 			while (!complete) {
-
 				if (index == json.Length) {
 					break;
 				}
@@ -202,7 +200,6 @@ namespace Procurios.Public
 					complete = true;
 					break;
 				} else if (c == '\\') {
-
 					if (index == json.Length) {
 						break;
 					}
@@ -239,11 +236,9 @@ namespace Procurios.Public
 							break;
 						}
 					}
-
 				} else {
 					s.Append(c);
 				}
-
 			}
 
 			if (!complete) {

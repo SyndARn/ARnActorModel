@@ -109,13 +109,13 @@
       <Project>{03a619af-9e9e-4e7d-a905-878f1452dc75}</Project>
       <Name>Actor.Server</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\Window\Actor.Util\Actor.Util.csproj">
-      <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
-      <Name>Actor.Util</Name>
-    </ProjectReference>
     <ProjectReference Include="..\src\Window\Actor.Base\Actor.Base.csproj">
       <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>
       <Name>Actor.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\Window\Actor.Util\Actor.Util.csproj">
+      <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
+      <Name>Actor.Util</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

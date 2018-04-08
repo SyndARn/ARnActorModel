@@ -14,16 +14,13 @@ namespace TestActor
         public T Call()
         {
             var r = Receive(t => t is T);
-
             return (T)r.Result;
-
         }
     }
 
     [TestClass()]
-    public class bhvGraphTests
+    public class BhvGraphTests
     {
-
         [TestMethod()]
         public void BehaviorGraphTest()
         {
@@ -55,7 +52,6 @@ namespace TestActor
                 var future = nodeA.Neighbors();
                 Assert.IsNotNull(future);
                 Assert.IsTrue(future.Result().Item2.Count() == 2);
-
             });
         }
     }

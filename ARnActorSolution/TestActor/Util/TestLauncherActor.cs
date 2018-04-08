@@ -14,12 +14,12 @@ namespace TestActor
     {
         public TestLauncherException() : base()
         {
-
         }
+
         public TestLauncherException(string message) : base(message)
         {
-
         }
+
         public TestLauncherException(string message,Exception inner)
             : base(message,inner)
         { }
@@ -48,12 +48,12 @@ namespace TestActor
 
         public async Task<bool> Wait()
         {
-            return await Wait(DefaultWait);
+            return await Wait(DefaultWait).ConfigureAwait(false);
         }
 
         public async Task<bool> Wait(int ms)
         {
-            var val = await Receive(t => t is bool, ms);
+            var val = await Receive(t => t is bool, ms).ConfigureAwait(false);
             var inTime = val != null;
             return inTime && (bool)val;
         }

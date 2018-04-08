@@ -24,48 +24,46 @@ using System.Runtime.CompilerServices;
 
 namespace Actor.Base
 {
-
     /// <summary>
     /// ActorMailBox
     /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ActorMailBox<T> : IActorMailBox<T>
     {
-        private IMessageQueue<T> fQueue ; // all actors may push here, only this one may dequeue
-        private IMessageQueue<T> fMissed ; // only this one use it in run mode
-        
+        private readonly IMessageQueue<T> _queue ; // all actors may push here, only this one may dequeue
+        private readonly IMessageQueue<T> _missed ; // only this one use it in run mode
+
         public ActorMailBox()
         {
-            fQueue = QueueFactory<T>.Cast();
-            fMissed = QueueFactory<T>.Cast();
+            _queue = QueueFactory<T>.Cast();
+            _missed = QueueFactory<T>.Cast();
         }
 
-        public bool IsEmpty => fQueue.Count() == 0;
+        public bool IsEmpty => _queue.Count() == 0;
 
         public void AddMiss(T aMessage)
         {
-            fMissed.Add(aMessage);
+            _missed.Add(aMessage);
         }
 
         public int RefreshFromMissed()
         {
             int i = 0;
-            while (fMissed.TryTake(out T val))
+            while (_missed.TryTake(out T val))
             {
-                fQueue.Add(val);
+                _queue.Add(val);
                 i++;
             }
             return i;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void AddMessage(T aMessage) => fQueue.Add(aMessage);
+        public void AddMessage(T aMessage) => _queue.Add(aMessage);
 
         public T GetMessage()
         {
-            fQueue.TryTake(out T val);
+            _queue.TryTake(out T val);
             return val;
         }
-
     }
-
 }

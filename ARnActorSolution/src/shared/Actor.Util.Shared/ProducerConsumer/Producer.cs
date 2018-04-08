@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace Actor.Util
 {
-
     public class Work<T> : BaseActor
     {
-        T fT;
+        private T fT;
 
         public Work(T aT)
         {
@@ -24,12 +23,11 @@ namespace Actor.Util
             CheckArg.Actor(anActor);
             anActor.SendMessage(this);
         }
-
     }
 
     public class Producer<T> : BaseActor
     {
-        Buffer<T> Buffer;
+        private readonly Buffer<T> Buffer;
         public Producer(Buffer<T> aBuffer) : base()
         {
             Buffer = aBuffer;
@@ -42,52 +40,6 @@ namespace Actor.Util
            Buffer.SendMessage(work);
         }
     }
-
-    public class Buffer<T> : FsmActor<string, Work<T>>
-    {
-        Queue<Consumer<T>> ConsList = new Queue<Consumer<T>>();
-        Queue<Work<T>> WorkList = new Queue<Work<T>>();
-
-        public Buffer(IEnumerable<Consumer<T>> someConsumers) : base()
-        {
-            CheckArg.IEnumerable(someConsumers);
-            foreach (var item in someConsumers)
-            {
-                ConsList.Enqueue(item);
-                item.Buffer = this;
-            }
-
-            var bhv = new FsmBehaviors<string, Work<T>>();
-
-            bhv
-                .AddRule("BufferEmpty", null,
-                t =>
-                {
-                    if (ConsList.Count != 0)
-                    {
-                        var cons = ConsList.Dequeue();
-                        cons.SendMessage(t);
-                    }
-                    else
-                        WorkList.Enqueue(t);
-                }, "BufferNotEmpty")
-                .AddRule("BufferNotEmpty", t => WorkList.Count != 0,
-                t =>
-                {
-                    if (ConsList.Count != 0)
-                    {
-                        var cons = ConsList.Dequeue();
-                        cons.SendMessage(t);
-                    }
-                    else
-                        WorkList.Enqueue(t);
-                },
-                "BufferNotEmpty");
-        }
-    }
-
-
-
 
     public class Chain : BaseActor
     {
@@ -119,19 +71,17 @@ namespace Actor.Util
             while(true)
             {
                 var fut = buffer.GetCurrentState().Result(10000);
-                if (fut == null) 
-                        Debug.WriteLine("Stop");
+                if (fut == null)
+                {
+                    Debug.WriteLine("Stop");
+                }
                 if (fut != null ? fut == "BufferEmpty" : false)
                     break;
             }
 
             Debug.WriteLine("End of chain");
-
         }
-
     }
-
-
 }
 
 

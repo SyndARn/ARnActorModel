@@ -13,7 +13,7 @@ using System.Globalization;
 
 namespace Actor.TestApplication
 {
-    class ActorMain : BaseActor
+    internal class ActorMain : BaseActor
     {
         private CollectionActor<string> collect;
         public ActorMain() : base()
@@ -72,11 +72,11 @@ namespace Actor.TestApplication
                 // aClient.Disconnect();
             }
             var end = DateTime.UtcNow.Ticks;
-            Console.WriteLine("All client allocated {0}", (double)(end - start) / 10000.0);
+            Console.WriteLine("All client allocated {0}", (end - start) / 10000.0);
 
             // basic redirection
             IActor target = new BaseActor(new Behavior<string>(t => Console.WriteLine(t)));
-            IActor middle = new BaseActor(new Behavior<string>(t => t = t + " augmenté"));
+            IActor middle = new BaseActor(new Behavior<string>(t => t += " augmenté"));
             middle.SendMessage("Bonjour");
         }
    }

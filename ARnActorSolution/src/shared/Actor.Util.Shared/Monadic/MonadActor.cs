@@ -33,7 +33,6 @@ namespace Actor.Util
 
     public static class IdentityHelper
     {
-
         public static Identity<B> Bind<A, B>(this Identity<A> a, Func<A, Identity<B>> func)
         {
             if (func == null)
@@ -47,11 +46,7 @@ namespace Actor.Util
         {
             return new Identity<T>(value);
         }
-
     }
 
     interface IMayBe<T> { }
-
-
-
 }

@@ -8,7 +8,7 @@ namespace Actor.Util
     public class ActorProxyModel<T> : BaseActor
         where T : class
     {
-        internal T fT;
+        private T fT;
         public ActorProxyModel() : base()
         {
         }
@@ -24,6 +24,5 @@ namespace Actor.Util
         {
             this.SendMessage(methodName, param);
         }
-
     }
 }

@@ -8,7 +8,6 @@ using System.Globalization;
 
 namespace Actor.Util
 {
-
     internal static class PeerOrder
     {
         public const string PeerDeleteNode = "PeerDeleteNode";
@@ -29,13 +28,10 @@ namespace Actor.Util
         {
             get
             {
-                if (fCurrentPeer == null)
-                {
-                    fCurrentPeer = HashKey.ComputeHash(LinkedActor.Tag.Key());
-                }
-                return fCurrentPeer;
+                return fCurrentPeer ?? (fCurrentPeer = HashKey.ComputeHash(LinkedActor.Tag.Key()));
             }
         }
+
         public PeerBehaviors() : base()
         {
             BecomeBehavior(new PeerStoreNode<TKey, TValue>())
@@ -76,7 +72,6 @@ namespace Actor.Util
             LinkedActor.SendMessage(future);
             return future;
         }
-
     }
 
     public interface IPeerActor<TKey> : IActor
@@ -84,20 +79,20 @@ namespace Actor.Util
         IFuture<HashKey> GetPeerHashKey();
     }
 
-    public interface IPeerActor<TKey,TValue> : 
-        IActor, 
-        IPeerBehavior<TKey,TValue>, 
-        IAgentBehavior<TKey>, 
+    public interface IPeerActor<TKey,TValue> :
+        IActor,
+        IPeerBehavior<TKey,TValue>,
+        IAgentBehavior<TKey>,
         INodeBehavior<TKey, TValue>
     { }
 
-    public class PeerActor<TKey, TValue> : BaseActor, IPeerActor<TKey>, IPeerActor<TKey,TValue>, INodeBehavior<TKey, TValue>
+    public sealed class PeerActor<TKey, TValue> : BaseActor, IPeerActor<TKey>, IPeerActor<TKey,TValue>, INodeBehavior<TKey, TValue>
     {
-        private INodeBehavior<TKey, TValue> fNodeBehaviorService;
+        private readonly INodeBehavior<TKey, TValue> _nodeBehaviorService;
         public PeerActor() : base()
         {
             var bhv = new PeerBehaviors<TKey, TValue>();
-            fNodeBehaviorService = bhv;
+            _nodeBehaviorService = bhv;
             Become(bhv);
         }
 
@@ -105,11 +100,11 @@ namespace Actor.Util
         {
             this.SendMessage(PeerOrder.PeerFindPeer, key, actor);
         }
+
         public void NewPeer(IPeerActor<TKey,TValue> actor, HashKey hash)
         {
             this.SendMessage(PeerOrder.PeerNewPeer, actor, hash);
         }
-
 
         public IFuture<IEnumerable<TKey>> AskKeys()
         {
@@ -127,29 +122,28 @@ namespace Actor.Util
 
         public void StoreNode(TKey key, TValue value)
         {
-            fNodeBehaviorService.StoreNode(key, value);
+            _nodeBehaviorService.StoreNode(key, value);
         }
 
         public IFuture<TValue> GetNode(TKey key)
         {
-            return fNodeBehaviorService.GetNode(key);
+            return _nodeBehaviorService.GetNode(key);
         }
 
         public void DeleteNode(TKey key)
         {
-            fNodeBehaviorService.DeleteNode(key);
+            _nodeBehaviorService.DeleteNode(key);
         }
 
         public IFuture<HashKey> GetHashKey()
         {
-            return fNodeBehaviorService.GetHashKey();
+            return _nodeBehaviorService.GetHashKey();
         }
 
         IFuture<HashKey> IPeerActor<TKey>.GetPeerHashKey()
         {
-            return fNodeBehaviorService.GetHashKey();
-        }      
-        
+            return _nodeBehaviorService.GetHashKey();
+        }
         // searchK
         // delete kv
         // nodelist
@@ -164,5 +158,4 @@ namespace Actor.Util
         // agent find abnormal key (not in 3 middle value)
         // go to next node with key
     }
-
 }

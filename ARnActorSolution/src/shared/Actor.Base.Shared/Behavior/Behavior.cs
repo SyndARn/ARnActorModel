@@ -34,7 +34,7 @@ namespace Actor.Base
     /// </summary>
     public class Behaviors : IBehaviors
     {
-        private List<IBehavior> fList = new List<IBehavior>();
+        private readonly List<IBehavior> fList = new List<IBehavior>();
 
         public IActor LinkedActor { get; private set; }
 
@@ -90,7 +90,6 @@ namespace Actor.Base
             fList.Remove(aBehavior);
             return this;
         }
-
     }
 
     public class Behavior : IBehavior
@@ -100,6 +99,7 @@ namespace Actor.Base
         {
             fLinkedBehaviors = someBehaviors;
         }
+
         public IActor LinkedActor
         {
             get
@@ -154,7 +154,6 @@ namespace Actor.Base
             }
             return Pattern(aT);
         }
-
     }
 
     public class Behavior<T1, T2> : IBehavior<T1, T2>, IBehavior
@@ -214,12 +213,12 @@ namespace Actor.Base
 
         public Func<T1, T2, bool> DefaultPattern()
         {
-            return (t1, t2) => { return t1 is T1 && t2 is T2; };
+            return (t1, t2) => t1 is T1 && t2 is T2;
         }
 
         public Behavior(Action<T1, T2> anApply)
         {
-            Pattern = (t1, t2) => { return t1 is T1 && t2 is T2; };
+            Pattern = (t1, t2) => t1 is T1 && t2 is T2;
             Apply = anApply;
             Completion = null;
         }
@@ -300,12 +299,12 @@ namespace Actor.Base
 
         public Func<T1, T2, T3, bool> DefaultPattern()
         {
-            return (t1, t2, t3) => { return t1 is T1 && t2 is T2 && t3 is T3; };
+            return (t1, t2, t3) => t1 is T1 && t2 is T2 && t3 is T3;
         }
 
         public Behavior(Action<T1, T2, T3> anApply)
         {
-            Pattern = (o, d, a) => { return o is T1 && d is T2 && a is T3; };
+            Pattern = (o, d, a) => o is T1 && d is T2 && a is T3;
             Apply = anApply;
             Completion = null;
         }
@@ -397,7 +396,7 @@ namespace Actor.Base
 
         public Func<T, bool> DefaultPattern()
         {
-            return t => { return t is T; };
+            return t => t is T;
         }
 
         public Behavior(Action<T> anApply)
@@ -484,7 +483,7 @@ namespace Actor.Base
 
         public Func<T1, T2, T3, T4, bool> DefaultPattern()
         {
-            return (o, d, a, r) => { return o is T1 && d is T2 && a is T3 && r is T4; };
+            return (o, d, a, r) => o is T1 && d is T2 && a is T3 && r is T4;
         }
 
         public Behavior(Action<T1, T2, T3, T4> anApply)
@@ -516,7 +515,5 @@ namespace Actor.Base
             }
         }
     }
-
-
 }
 

@@ -25,8 +25,7 @@ using System.Threading.Tasks;
 
 namespace Actor.Base
 {
-
-    public interface IBehavior 
+    public interface IBehavior
     {
         void LinkBehaviors(IBehaviors someBehaviors);
         void StandardApply(object aT);
@@ -36,7 +35,7 @@ namespace Actor.Base
         IActor LinkedActor { get; }
     }
 
-    public interface IBehavior<T> : IBehavior 
+    public interface IBehavior<T> : IBehavior
     {
         Func<T, bool> Pattern { get; }
         Action<T> Apply { get; }

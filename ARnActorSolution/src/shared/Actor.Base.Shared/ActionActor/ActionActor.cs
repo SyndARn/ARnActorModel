@@ -29,7 +29,6 @@ using Actor.Base ;
 
 namespace Actor.Base
 {
-
     /// <summary>
     /// bhvAction
     ///     this behavior allows to pass an action as behavior to an actor
@@ -51,7 +50,7 @@ namespace Actor.Base
             : base()
         {
             Pattern = DefaultPattern();
-            Apply = (a,t) => { a.Invoke(t); };
+            Apply = (a, t) => a.Invoke(t);
         }
     }
 
@@ -61,7 +60,7 @@ namespace Actor.Base
             : base()
         {
             Pattern = DefaultPattern();
-            Apply = (a,t1,t2) => { a.Invoke(t1,t2); };
+            Apply = (a, t1, t2) => a.Invoke(t1, t2);
         }
     }
 
@@ -97,7 +96,6 @@ namespace Actor.Base
         }
 
         public void SendAction(Action anAction) => this.SendMessage(anAction);
-
     }
 
     /// <summary>
@@ -116,7 +114,6 @@ namespace Actor.Base
         public void SendAction(Action anAction) => this.SendMessage(anAction);
 
         public void SendAction(Action<T> anAction, T aT) => this.SendMessage(anAction, aT);
-
     }
 
     public class ActionActor<T1,T2> : BaseActor
@@ -130,6 +127,5 @@ namespace Actor.Base
         public void SendAction(Action anAction) => this.SendMessage(anAction);
 
         public void SendAction(Action<T1,T2> anAction, T1 aT1, T2 aT2) => this.SendMessage(anAction, aT1, aT2);
-
     }
 }
