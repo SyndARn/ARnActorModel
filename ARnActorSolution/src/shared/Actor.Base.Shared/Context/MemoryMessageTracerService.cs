@@ -5,11 +5,12 @@ namespace Actor.Base
 {
     public class MemoryMessageTracerService : IMessageTracerService
     {
-        private ConcurrentQueue<string> fMessageTrace = new ConcurrentQueue<string>();
+        private readonly ConcurrentQueue<string> fMessageTrace = new ConcurrentQueue<string>();
         public void TraceMessage(object message)
         {
             fMessageTrace.Enqueue(message == null ? "null message" : message.ToString());
         }
+
         public IReadOnlyList<string> CopyAllMessages()
         {
             List<string> messages = new List<string>();

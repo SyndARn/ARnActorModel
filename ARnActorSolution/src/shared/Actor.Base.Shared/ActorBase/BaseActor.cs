@@ -30,7 +30,6 @@ using System.Runtime.CompilerServices;
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
 {
-
     internal struct SharingStruct
     {
         public int fInTask; // 0 out of task, 1 in task
@@ -116,14 +115,8 @@ namespace Actor.Base
         public void SendMessage(object msg)
         {
             TrySetInTask(msg);
-            if (MessageTracerService != null)
-            {
-                MessageTracerService.TraceMessage(msg);
-            }
-            if (GlobalContext.MessageTracerService != null)
-            {
-                GlobalContext.MessageTracerService.TraceMessage(msg);
-            }
+            MessageTracerService?.TraceMessage(msg);
+            GlobalContext.MessageTracerService?.TraceMessage(msg);
         }
 
         public static BaseActor Add(BaseActor anActor, object aMessage)
@@ -201,9 +194,9 @@ namespace Actor.Base
             }
         }
 
-        public async Task<object> Receive(Func<object, bool> aPattern)
+        public Task<object> Receive(Func<object, bool> aPattern)
         {
-            return await Receive(aPattern, Timeout.Infinite);
+            return Receive(aPattern, Timeout.Infinite);
         }
 
         private object ReceiveMessage()
@@ -289,7 +282,6 @@ namespace Actor.Base
             while (true)
 #endif
             {
-
                 // get message             
                 msg = ReceiveMessage();
                 if (msg != null)
@@ -372,7 +364,7 @@ namespace Actor.Base
         {
             foreach (var fBehavior in fListBehaviors)
             {
-                if ((fBehavior != null) && (fBehavior.StandardPattern(msg)))
+                if (fBehavior?.StandardPattern(msg) == true)
                 {
                     return fBehavior;
                 }
@@ -418,5 +410,4 @@ namespace Actor.Base
             return null ;
         }
     }
-
 }

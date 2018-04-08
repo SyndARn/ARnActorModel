@@ -7,22 +7,22 @@ namespace Actor.Base
 {
     public class LockFreeQueue<T> : IMessageQueue<T>
     {
-        private ConcurrentQueue<T> fQueue = new ConcurrentQueue<T>();
+        private readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
 
         public void Add(T item)
         {
-            fQueue.Enqueue(item);
+            _queue.Enqueue(item);
         }
 
         public int Count()
         {
-            return fQueue.Count;
+            return _queue.Count;
         }
 
         public bool TryTake(out T item)
         {
             item = default(T);
-            return fQueue.TryDequeue(out item);
+            return _queue.TryDequeue(out item);
         }
     }
 }

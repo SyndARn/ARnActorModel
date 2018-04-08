@@ -14,6 +14,7 @@ namespace Actor.Util
             var r = Receive(t => t is IMessageParam<IActor, T>);
             return (IMessageParam<IActor, T>)await r;
         }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<IMessageParam<IActor, T>> Wait(IActor target, T question, int timeOutMS)
         {
@@ -21,6 +22,7 @@ namespace Actor.Util
             var r = Receive(t => t is IMessageParam<IActor, T>, timeOutMS);
             return (IMessageParam<IActor, T>)await r;
         }
+
         public void SetResult(IActor sender, T data) => this.SendMessage(sender, data);
     }
 
@@ -33,6 +35,7 @@ namespace Actor.Util
             var r = Receive(t => t is IMessageParam<IActor, TAnswer>);
             return (IMessageParam<IActor, TAnswer>)await r;
         }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<IMessageParam<IActor, TAnswer>> Wait(IActor target, TQuestion question, int timeOutMS)
         {
@@ -40,7 +43,7 @@ namespace Actor.Util
             var r = Receive(t => t is IMessageParam<IActor, TAnswer>, timeOutMS);
             return (IMessageParam<IActor, TAnswer>)await r;
         }
+
         public void SetResult(IActor sender, TAnswer data) => this.SendMessage(sender, data) ;
     }
-
 }

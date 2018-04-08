@@ -6,8 +6,8 @@ namespace Actor.Base
 {
     public class LockQueue<T> : IMessageQueue<T>
     {
-        private Queue<T> fQueue = new Queue<T>();
-        private object fLock = new object();
+        private readonly Queue<T> fQueue = new Queue<T>();
+        private readonly object fLock = new object();
         public LockQueue()
         {
 

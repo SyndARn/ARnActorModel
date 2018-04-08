@@ -36,7 +36,7 @@ namespace Actor.Util
     {
         public ForEachBehavior() : base()
         {
-            Pattern = (e,a) => { return true; };
+            Pattern = (e, a) => true;
             Apply = ForEach;
         }
 
@@ -53,7 +53,7 @@ namespace Actor.Util
     {
         public DoForEachbehavior()
         {
-            Pattern = (t,a) => { return true; };
+            Pattern = (t, a) => true;
             Apply = DoEach;
         }
 
