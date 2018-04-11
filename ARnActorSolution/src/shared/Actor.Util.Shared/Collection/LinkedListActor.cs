@@ -25,7 +25,6 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-
     public class LinkedListActor<T> : BaseActor
     {
         public LinkedListActor()
@@ -42,7 +41,7 @@ namespace Actor.Util
         public LinkedListAddbehavior()
             : base()
         {
-            Pattern = (l, t) => { return LinkedListOperation.Add.Equals(l); };
+            Pattern = (l, t) => LinkedListOperation.Add.Equals(l);
             Apply = Behavior;
         }
 
@@ -56,9 +55,10 @@ namespace Actor.Util
     {
         public BehaviorLinkedListFirst() : base()
         {
-            Pattern = (l, t) => { return LinkedListOperation.First.Equals(l); };
+            Pattern = (l, t) => LinkedListOperation.First.Equals(l);
             Apply = Behavior;
         }
+
         private void Behavior(LinkedListOperation operation, IActor Sender)
         {
             var first = ((LinkedListBehaviors<T>)LinkedTo).fList.First.Value;
@@ -71,9 +71,10 @@ namespace Actor.Util
         public BehaviorLinkedListNext()
             : base()
         {
-            Pattern = (l, i, t) => { return LinkedListOperation.Next.Equals(l); };
+            Pattern = (l, i, t) => LinkedListOperation.Next.Equals(l);
             Apply = Behavior;
         }
+
         private void Behavior(LinkedListOperation operation, IActor actor, T data)
         {
             var find = ((LinkedListBehaviors<T>)LinkedTo).fList.Find(data);

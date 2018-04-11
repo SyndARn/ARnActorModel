@@ -7,7 +7,6 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-
     /*
      * type T
      * unit
