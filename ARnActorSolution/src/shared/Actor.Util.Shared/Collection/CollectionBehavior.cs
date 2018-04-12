@@ -33,7 +33,7 @@ using System.Threading.Tasks;
 
 namespace Actor.Util
 {
-    public enum CollectionRequest { Add, Remove, OkAdd, OkRemove } ;
+    public enum CollectionRequest { Add, Remove, OkAdd, OkRemove };
 
     public class CollectionBehaviors<T> : Behaviors
     {
@@ -48,7 +48,6 @@ namespace Actor.Util
 
     public class AddOrRemoveBehavior<T> : Behavior<CollectionRequest, T>
     {
-
         public AddOrRemoveBehavior()
             : base()
         {
@@ -73,7 +72,7 @@ namespace Actor.Util
         }
     }
 
-    public enum IteratorMethod { MoveNext, Current, OkCurrent, OkMoveNext } ;
+    public enum IteratorMethod { MoveNext, Current, OkCurrent, OkMoveNext };
 
     public class EnumeratorBehavior<T> : Behavior<IteratorMethod, int, IActor>
     {
@@ -91,7 +90,6 @@ namespace Actor.Util
             {
                 case IteratorMethod.MoveNext:
                     {
-
                         if ((i < linkedBehavior.List.Count) && (i >= 0))
                         {
                             actor.SendMessage(IteratorMethod.OkMoveNext, true);
@@ -110,17 +108,16 @@ namespace Actor.Util
                             Debug.WriteLine("Bad current");
                         break;
                     }
-                default: throw new ActorException(string.Format(CultureInfo.InvariantCulture,"Bad IteratorMethod call {0}", method));
+                default: throw new ActorException(string.Format(CultureInfo.InvariantCulture, "Bad IteratorMethod call {0}", method));
             }
         }
     }
 
-    // (Some prefer this class nested in the collection class.)
     public class CollectionActorEnumerator<T> : ActionActor<T>, IEnumerator<T>, IEnumerator, IDisposable
     {
-        private CollectionActor<T> fCollection;
+        private readonly CollectionActor<T> fCollection;
 
-        private int fIndex ;
+        private int fIndex;
 
         public CollectionActorEnumerator(CollectionActor<T> aCollection) : base()
         {
@@ -131,20 +128,18 @@ namespace Actor.Util
         public bool MoveNext()
         {
             Interlocked.Increment(ref fIndex);
-            var task = Receive(t =>
-            {
-                var messageParam = t as IMessageParam<IteratorMethod, bool>;
-                return messageParam != null && messageParam.Item1 == IteratorMethod.OkMoveNext; 
-            }
-                ) ;
+            var task = Receive(t => t is IMessageParam<IteratorMethod, bool> messageParam && messageParam.Item1 == IteratorMethod.OkMoveNext
+                );
             fCollection.SendMessage(IteratorMethod.MoveNext, fIndex, this);
-            
-           return (task.Result as IMessageParam<IteratorMethod, bool>).Item2;
+
+            return (task.Result as IMessageParam<IteratorMethod, bool>).Item2;
         }
 
         // better than this ?
-        public void Reset() { 
-            Interlocked.Exchange(ref fIndex,-1) ; }
+        public void Reset()
+        {
+            Interlocked.Exchange(ref fIndex, -1);
+        }
 
         public void Dispose()
         {
@@ -167,7 +162,7 @@ namespace Actor.Util
                 var task = Receive(t =>
                 {
                     var messageParam = t as IMessageParam<IteratorMethod, T>;
-                    return messageParam != null && messageParam.Item1 == IteratorMethod.OkCurrent;
+                    return messageParam?.Item1 == IteratorMethod.OkCurrent;
                 });
                 fCollection.SendMessage(IteratorMethod.Current, fIndex, this);
                 return (task.Result as IMessageParam<IteratorMethod, T>).Item2;
@@ -181,14 +176,12 @@ namespace Actor.Util
                 var task = Receive(t =>
                 {
                     var tu = (IMessageParam<IteratorMethod, T>)t;
-                    return (tu != null) && (tu.Item1 == IteratorMethod.OkCurrent) ;
+                    return tu?.Item1 == IteratorMethod.OkCurrent;
                 });
                 fCollection.SendMessage(IteratorMethod.Current, fIndex, (IActor)this);
                 return (task.Result as IMessageParam<IteratorMethod, T>).Item2;
-                ;
             }
         }
-
     }
 
     public class CollectionActor<T> : BaseActor, IEnumerable<T>, IEnumerable
@@ -216,7 +209,7 @@ namespace Actor.Util
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkAdd;
-            }) ;
+            }).ConfigureAwait(false);
         }
 
         public async void Remove(T aData)
@@ -226,10 +219,8 @@ namespace Actor.Util
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkRemove;
-            });
+            }).ConfigureAwait(false);
         }
     }
-
-
 }
 

@@ -21,8 +21,8 @@ namespace Actor.TestApplication
             string lPort = "";
             if (args.Length > 0)
             {
-                lName = args.Where(t => t.StartsWith("-n:")).FirstOrDefault();
-                lPort = args.Where(t => t.StartsWith("-p:")).FirstOrDefault();
+                lName = args.FirstOrDefault(t => t.StartsWith("-n:"));
+                lPort = args.FirstOrDefault(t => t.StartsWith("-p:"));
             }
             if (!string.IsNullOrEmpty(lName))
             {

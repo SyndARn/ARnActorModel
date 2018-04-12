@@ -26,10 +26,9 @@ using System.Threading.Tasks;
 
 namespace Actor.Util
 {
-
     public class QueueActor<T> : ActionActor<T>
     {
-        private Queue<T> fQueue = new Queue<T>();
+        private readonly Queue<T> fQueue = new Queue<T>();
 
         public QueueActor()
             : base()
@@ -44,7 +43,7 @@ namespace Actor.Util
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         public async Task<IMsgQueue<T>> TryDequeue()
         {
-            var retVal = Receive(t => { return t is IMsgQueue<T>; });
+            var retVal = Receive(t => t is IMsgQueue<T>);
             SendAction(DoDequeue);
             return await retVal as IMsgQueue<T>;
         }
@@ -65,7 +64,5 @@ namespace Actor.Util
                 SendMessage(new MsgQueue<T>(false, default(T)));
             }
         }
-
     }
-
 }

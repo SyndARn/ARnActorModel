@@ -7,9 +7,7 @@ namespace Actor.Util
 {
     public class MapReduceActor<TData,TKeyMap, TValueMap, TKeyReduce, TValueReduce> : BaseActor
     {
-
-        private Dictionary<TKeyReduce, List<TValueReduce>> fDict = new Dictionary<TKeyReduce, List<TValueReduce>>();
-
+        private readonly Dictionary<TKeyReduce, List<TValueReduce>> fDict = new Dictionary<TKeyReduce, List<TValueReduce>>();
         private int fActiveMap;
 
         public MapReduceActor
@@ -39,10 +37,7 @@ namespace Actor.Util
                 );
 
             // end parse
-            var bhvEndParse = new Behavior<TData, IActor>((d, a) =>
-             {
-                 fActiveMap--;
-             });
+            var bhvEndParse = new Behavior<TData, IActor>((d, a) => fActiveMap--);
 
             // receive from Map, index
             var bhvMap2Index = new Behavior<TKeyReduce, TValueReduce>
@@ -78,12 +73,8 @@ namespace Actor.Util
             // receive from Reduce, send to output
             var bhvReduceToOutput = new Behavior<ReduceActor<TKeyReduce, TValueReduce>, TKeyReduce, TValueReduce>
                 (
-                (r, k, v) =>
-                {
-                    outputActor.SendMessage(k, v);
-                }
+                (r, k, v) => outputActor.SendMessage(k, v)
                 );
-
 
             Behaviors bhvs = new Behaviors();
             bhvs.AddBehavior(bhvStart);
@@ -100,8 +91,8 @@ namespace Actor.Util
 
     public class MapActor<TKeyMap, TValueMap> : BaseActor
     {
-        IActor fSender;
-        MapAction<TKeyMap, TValueMap> fMapAction;
+        private readonly IActor fSender;
+        private readonly MapAction<TKeyMap, TValueMap> fMapAction;
         public MapActor(IActor sender, MapAction<TKeyMap, TValueMap> mapAction) : base()
         {
             fSender = sender;
@@ -117,12 +108,12 @@ namespace Actor.Util
         }
     }
 
-    public delegate TValue ReduceFunction<TKey, TValue>(TKey key, IEnumerable<TValue> values); 
+    public delegate TValue ReduceFunction<TKey, TValue>(TKey key, IEnumerable<TValue> values);
 
     public class ReduceActor<TKey, TValue> : BaseActor
     {
-        IActor fSender;
-        ReduceFunction<TKey, TValue> fReduceFunction;
+        private readonly IActor fSender;
+        private readonly ReduceFunction<TKey, TValue> fReduceFunction;
 
         public ReduceActor(IActor sender, ReduceFunction<TKey, TValue> reduceFunction) : base()
         {
@@ -137,7 +128,4 @@ namespace Actor.Util
             fSender.SendMessage(this, key, value);
         }
     }
-
-
-
 }

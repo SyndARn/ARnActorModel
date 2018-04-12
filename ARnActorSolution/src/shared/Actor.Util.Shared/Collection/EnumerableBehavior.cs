@@ -5,7 +5,6 @@ using System.Collections;
 
 namespace Actor.Util
 {
-
     public static class QueryActor
     {
         public static EnumerableActor<T> AsActorQueryiable<T>(this IEnumerable<T> source)
@@ -17,17 +16,14 @@ namespace Actor.Util
 
     public class EnumerableActor<T> : BaseActor, IEnumerable<T>, IEnumerable, ICollection<T>
     {
-        private List<T> fList = new List<T>();
+        private readonly List<T> fList = new List<T>();
 
         public int Count
         {
             get
             {
                 var future = new Future<int>();
-                this.SendMessage<Action<IActor>, IActor>((a) =>
-                {
-                    a.SendMessage(fList.Count);
-                }, future);
+                this.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fList.Count), future);
                 return future.Result();
             }
         }
@@ -37,7 +33,6 @@ namespace Actor.Util
             get
             {
                 return false;
-
             }
         }
 
@@ -52,7 +47,7 @@ namespace Actor.Util
             SendMessage(source);
         }
 
-        private void SetupData(IEnumerable<T> source) 
+        private void SetupData(IEnumerable<T> source)
         {
             fList.AddRange(source);
             SetBehavior();
@@ -89,10 +84,7 @@ namespace Actor.Util
         public bool Contains(T item)
         {
             var future = new Future<bool>();
-            this.SendMessage<Action<IActor,T>, IActor,T>((a,t) =>
-            {
-                a.SendMessage(fList.Contains(t));
-            }, future, item);
+            this.SendMessage<Action<IActor,T>, IActor,T>((a, t) => a.SendMessage(fList.Contains(t)), future, item);
             return future.Result();
         }
 
@@ -107,19 +99,14 @@ namespace Actor.Util
         public bool Remove(T item)
         {
             var future = new Future<bool>();
-            this.SendMessage<Action<IActor, T>, IActor, T>((a, t) =>
-            {
-                a.SendMessage(fList.Remove(t));
-            }, future, item);
+            this.SendMessage<Action<IActor, T>, IActor, T>((a, t) => a.SendMessage(fList.Remove(t)), future, item);
             return future.Result();
         }
 
         private class ActorEnumerator<TSource> : BaseActor, IEnumerator<TSource>, IEnumerator, IDisposable
         {
-            private EnumerableActor<TSource> fCollection;
-
+            private readonly EnumerableActor<TSource> fCollection;
             private enum EnumeratorAction { MoveNext,Reset, Current};
-
             private int fIndex;
 
             public ActorEnumerator(EnumerableActor<TSource> aCollection) : base()
@@ -170,10 +157,7 @@ namespace Actor.Util
             {
                 get {
                     var future = new Future<TSource>();
-                    fCollection.SendMessage<Action<IActor>, IActor>((a) =>
-                    {
-                        a.SendMessage(fCollection.fList[fIndex]);
-                    }, future);
+                    fCollection.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fCollection.fList[fIndex]), future);
                     return future.Result();
                 }
             }
@@ -182,17 +166,10 @@ namespace Actor.Util
             {
                 get {
                     var future = new Future<TSource>();
-                    fCollection.SendMessage<Action<IActor>, IActor>((a) =>
-                    {
-                        a.SendMessage(fCollection.fList[fIndex]);
-                    }, future);
+                    fCollection.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fCollection.fList[fIndex]), future);
                     return future.Result();
                 }
             }
-
         }
-
     }
-
-
 }

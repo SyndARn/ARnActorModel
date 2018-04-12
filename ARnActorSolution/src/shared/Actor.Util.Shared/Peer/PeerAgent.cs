@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace Actor.Util
 {
-
     // set a key,value hash the key with xor salt of well known things
     // find peer closest key ( that is me or next )
     // store key, value
@@ -87,7 +86,7 @@ namespace Actor.Util
         public AgentDiscoActor() : base()
         {
             Become(new Behavior<IPeerActor<TKey, TValue>>(a =>
-            {              
+            {            
                 // get current nodes
                 var peers = a.AskPeers();
                 // take one of them (lower than your reference node)

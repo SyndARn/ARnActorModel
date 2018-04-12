@@ -16,7 +16,7 @@ namespace Actor.Base
 
         public T Result(int timeOutMS) => (T)Receive(t => t is T, timeOutMS).Result;
 
-        public async Task<T> ResultAsync() => (T)await Receive(t => t is T);
+        public async Task<T> ResultAsync() => (T)await Receive(t => t is T).ConfigureAwait(false);
 
         public async Task<T> ResultAsync(int timeOutMS) => (T)await Receive(t => t is T, timeOutMS);
 

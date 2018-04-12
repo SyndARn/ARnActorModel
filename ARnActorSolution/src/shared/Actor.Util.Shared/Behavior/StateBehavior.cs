@@ -46,9 +46,6 @@ namespace Actor.Util
             Become(new StateBehaviors<T>());
         }
 
-
-
-
         public void SetState(T aT)
         {
             this.SendMessage(StateAction.Set, aT);

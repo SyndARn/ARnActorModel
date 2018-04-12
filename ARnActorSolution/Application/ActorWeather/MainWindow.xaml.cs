@@ -35,7 +35,8 @@ namespace ActorWeather
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             fReader.SendRest(new Uri("http://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400"), fCatcher); // 5 day weather forecast for Paris
-            tbText.DataContext = await fCatcher.GetStateAsync();
+            var future = fCatcher.GetState();
+            tbText.DataContext = await future.GetResultAsync();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
