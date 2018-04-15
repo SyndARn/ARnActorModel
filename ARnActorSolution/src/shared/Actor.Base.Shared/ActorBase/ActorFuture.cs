@@ -24,7 +24,7 @@ namespace Actor.Base
 
         public async Task<T> ResultAsync(Func<object, bool> aPattern) => (T)await Receive(aPattern);
 
-        public async Task<T> ResultAsync(Func<object, bool> aPattern, int timeOutMS) => (T)await Receive(aPattern, timeOutMS);
+        public async Task<T> ResultAsync(Func<object, bool> aPattern, int timeOutMS) => (T)await Receive(aPattern, timeOutMS).ConfigureAwait(false);
 
     }
 
@@ -42,7 +42,7 @@ namespace Actor.Base
 
         public async Task<IMessageParam<T1, T2>> ResultAsync() => (IMessageParam<T1, T2>)await Receive(t => t is IMessageParam<T1, T2>);
 
-        public async Task<IMessageParam<T1, T2>> ResultAsync(int timeOutMS) => (IMessageParam<T1, T2>)await Receive(t => t is IMessageParam<T1, T2>, timeOutMS);
+        public async Task<IMessageParam<T1, T2>> ResultAsync(int timeOutMS) => (IMessageParam<T1, T2>)await Receive(t => t is IMessageParam<T1, T2>, timeOutMS).ConfigureAwait(false);
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
@@ -52,7 +52,7 @@ namespace Actor.Base
         {
         }
 
-        public async Task<object> GetResultAsync() => await ResultAsync();
+        public async Task<object> GetResultAsync() => await ResultAsync().ConfigureAwait(false);
 
         public IMessageParam<T1, T2, T3> Result() => (IMessageParam<T1, T2, T3>)Receive(t => t is IMessageParam<T1, T2, T3>).Result;
 

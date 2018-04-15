@@ -11,8 +11,8 @@ namespace MoreThanOneMillionActor
 
     public class Glue : BaseActor
     {
-       private  ReduceActor fReduce;
-       StringObserver obs = new StringObserver();
+       private readonly ReduceActor fReduce;
+       private StringObserver obs = new StringObserver();
        public Glue(int i, ReduceActor reduce)
         {
             fReduce = reduce;

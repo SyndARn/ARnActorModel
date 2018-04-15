@@ -9,7 +9,6 @@ using System.Globalization;
 
 namespace FsmCalc
 {
-
     public enum CalcState
     {
         NoData,
