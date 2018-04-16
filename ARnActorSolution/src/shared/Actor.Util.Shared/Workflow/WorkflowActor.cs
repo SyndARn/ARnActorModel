@@ -35,6 +35,7 @@ namespace Actor.Util
             fCurrent = startWith;
             Become(new Behavior<IWfwStatus<T>>(DoProcess));
         }
+
         private void DoProcess(IWfwStatus<T> aStatus)
         {
             // find transition
@@ -53,7 +54,6 @@ namespace Actor.Util
 
     public class WfwTransition<T> : IWfwTransition<T>
     {
-
         public IWfwStatus<T> Destination {get; set;}
 
         public Behavior<IWfwStatus<T>> Action
@@ -72,6 +72,7 @@ namespace Actor.Util
             TransitionList = new List<IWfwTransition<T>>() ;
             Current = string.Empty;
         }
+
         public T Data { get; protected set; }
     }
 
@@ -87,5 +88,4 @@ namespace Actor.Util
         List<IWfwTransition<T>> TransitionList { get; }
         T Data { get; }
     }
-
 }

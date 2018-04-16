@@ -8,7 +8,6 @@ using Actor.Util;
 
 namespace MoreThanOneMillionActor
 {
-
     public class Glue : BaseActor
     {
        private readonly ReduceActor fReduce;
@@ -58,7 +57,6 @@ namespace MoreThanOneMillionActor
         }
     }
 
-
     public class ReduceActor : BaseActor
     {
         private int fSum  ;
@@ -84,7 +82,5 @@ namespace MoreThanOneMillionActor
             var res = fWait.Wait(this, "Start").Result;
             return fSum;
         }
-
     }
-
 }

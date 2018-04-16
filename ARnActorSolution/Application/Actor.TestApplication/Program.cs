@@ -97,9 +97,8 @@ namespace Actor.TestApplication
                                 var rs = Console.ReadLine();
                                 Console.Write("Enter cycle : ");
                                 var cy = Console.ReadLine();
-                                int y = 1;
                                 int.TryParse(rs, out int r);
-                                int.TryParse(cy, out y);
+                                int.TryParse(cy, out int y);
                                 new RingActor(y, r); // 30 sec
                                 break;
                             }
