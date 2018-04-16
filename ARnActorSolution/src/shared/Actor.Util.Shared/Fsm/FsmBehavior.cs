@@ -28,7 +28,7 @@ namespace Actor.Util
 {
     public class FsmBehaviors<TState, TEvent> : Behaviors
     {
-        private TState fCurrent { get; set; }
+        private TState _current { get; set; }
 
         private bool fBehaviorSet;
 
@@ -38,17 +38,17 @@ namespace Actor.Util
 
         internal TState GetCurrentState()
         {
-            return fCurrent;
+            return _current;
         }
 
         internal void ChangeState(TState aState)
         {
-            fCurrent = aState;
+            _current = aState;
         }
 
         private void GetCurrentState(IFuture<TState> future)
         {
-            future.SendMessage(fCurrent);
+            future.SendMessage(_current);
         }
 
         public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState)
@@ -60,7 +60,7 @@ namespace Actor.Util
         {
             if (!fBehaviorSet)
             {
-                fCurrent = startState;
+                _current = startState;
                 BecomeBehavior(new Behavior<IFuture<TState>>(GetCurrentState)) ;
                 fBehaviorSet = true;
             }
@@ -121,13 +121,10 @@ namespace Actor.Util
         private bool DoPattern(TEvent anEvent)
         {
             var parent = LinkedTo as FsmBehaviors<TState, TEvent>;
-            var result = parent == null ? 
+            var result = parent == null ?
                 false :
                 parent.GetCurrentState().Equals(StartState) && (Condition == null || Condition(anEvent));
-            if (TraceActor != null)
-            {
-                TraceActor.SendMessage(StartState, EndState, anEvent.ToString());
-            }
+            TraceActor?.SendMessage(StartState, EndState, anEvent.ToString());
             return result;
         }
 
@@ -141,5 +138,4 @@ namespace Actor.Util
             }
         }
     }
-
 }

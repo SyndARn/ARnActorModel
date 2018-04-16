@@ -9,7 +9,6 @@ using System.Globalization;
 
 namespace FsmCalc
 {
-
     public enum CalcState
     {
         NoData,
@@ -131,6 +130,7 @@ namespace FsmCalc
                 PlusAcc = this.PlusAcc
             };
         }
+
         public Accumulators Enter(string data)
         {
             var clone = Clone();
@@ -142,6 +142,7 @@ namespace FsmCalc
             clone.DivAcc = this.Accumulator / value;
             return clone;
         }
+
         public Accumulators Plus()
         {
             var clone = new Accumulators()
@@ -154,6 +155,7 @@ namespace FsmCalc
             clone.DivAcc = 0;
             return clone;
         }
+
         public Accumulators Moins()
         {
             var clone = new Accumulators()
@@ -166,6 +168,7 @@ namespace FsmCalc
             clone.DivAcc = 0;
             return clone;
         }
+
         public Accumulators Div()
         {
             var clone = new Accumulators()
@@ -178,6 +181,7 @@ namespace FsmCalc
             clone.DivAcc = 0;
             return clone;
         }
+
         public Accumulators Mult()
         {
             var clone = new Accumulators()
@@ -204,8 +208,6 @@ namespace FsmCalc
         }
     }
 
-
-
     public class CalcBehavior : FsmBehaviors<CalcState, Tuple<CalcEvent, string>>
     {
         private Accumulators accumulators = new Accumulators();
@@ -229,6 +231,7 @@ namespace FsmCalc
            .AddRule(CalcState.EnterDigitNoZero, e => e.Item1 == CalcEvent.Mult, e => Update(e), CalcState.EnterDigitNoZero)
            .AddRule(CalcState.EnterDigitNoZero, e => e.Item1 == CalcEvent.Clear, e => Update(e), CalcState.NoData);
         }
+
         private void Update(Tuple<CalcEvent, string> evt)
         {
             string data = evt.Item2;
@@ -250,5 +253,4 @@ namespace FsmCalc
             }
         }
     }
-
 }

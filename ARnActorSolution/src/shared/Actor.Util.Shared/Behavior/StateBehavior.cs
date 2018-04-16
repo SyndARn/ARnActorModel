@@ -29,7 +29,6 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-
     public interface IStateFullActor<T>
     {
         void SetState(T aT);
@@ -61,13 +60,13 @@ namespace Actor.Util
         public async Task<T> GetStateAsync()
         {
             this.SendMessage(StateAction.Get);
-            return (T) await Receive(t => { return t is T; }) ;
+            return (T) await Receive(t => t is T).ConfigureAwait(false);
         }
 
         public async Task<T> GetStateAsync(int timeOutMS)
         {
             this.SendMessage(StateAction.Get);
-            return (T)await Receive(t => { return t is T; }, timeOutMS);
+            return (T)await Receive(t => t is T, timeOutMS).ConfigureAwait(false);
         }
     }
 
@@ -97,7 +96,6 @@ namespace Actor.Util
         {
             ((StateBehaviors<T>)LinkedTo).Value = msg;
         }
-
     }
 
     public class GetStateBehaviorFuture<T> : Behavior<StateAction, IFuture<T>>
@@ -129,5 +127,4 @@ namespace Actor.Util
             LinkedActor.SendMessage(((StateBehaviors<T>)LinkedTo).Value);
         }
     }
-
 }
