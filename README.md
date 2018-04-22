@@ -40,8 +40,8 @@ For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](http
 
 #### Current works
 
-- more coverage
-- moving to NetCore/Shared model
-- focus on future vs actor
+- more coverage (target 90%)
+- moving to NetCore/Shared model (Actor.Base and Actor.Util are migrated)
+- focus on future vs actor (They now are basically the same object, with different interfaces).
  
 
