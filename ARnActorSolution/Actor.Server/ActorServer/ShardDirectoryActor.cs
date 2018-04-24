@@ -89,7 +89,7 @@ namespace Actor.Server
 
     public class ShardListActor : ActionActor<string>
     {
-        private HashSet<string> fShardList = new HashSet<string>();
+        private readonly HashSet<string> fShardList = new HashSet<string>();
         public ShardListActor() : base()
         {
             AddBehavior(new Behavior<IFuture>(DoGetAll));

@@ -7,15 +7,12 @@ namespace Actor.Util
 {
     public class RXObservable<T> : BaseActor, IObservable<T>
     {
-        private List<IObserver<T>> observers;
+        private readonly List<IObserver<T>> observers;
         public RXObservable()
         {
             observers = new List<IObserver<T>>();
-            var bhv1 = new Behavior<IObserver<T>>(DoSubscribe);
-            var bhv2 = new Behavior<T>(DoTrack);
-
-            Become(bhv1);
-            AddBehavior(bhv2);
+            Become(new Behavior<IObserver<T>>(DoSubscribe));
+            AddBehavior(new Behavior<T>(DoTrack));
         }
 
         private void DoSubscribe(IObserver<T> observer)
@@ -61,19 +58,21 @@ namespace Actor.Util
 
         private class Unsubscriber : IDisposable
         {
-            private List<IObserver<T>> _observers;
-            private IObserver<T> _observer;
+            private readonly List<IObserver<T>> _observers;
+            private readonly IObserver<T> _observer;
 
             public Unsubscriber(List<IObserver<T>> observers, IObserver<T> observer)
             {
-                this._observers = observers;
-                this._observer = observer;
+                _observers = observers;
+                _observer = observer;
             }
 
             public void Dispose()
             {
                 if (_observer != null && _observers.Contains(_observer))
+                {
                     _observers.Remove(_observer);
+                }
             }
         }
     }

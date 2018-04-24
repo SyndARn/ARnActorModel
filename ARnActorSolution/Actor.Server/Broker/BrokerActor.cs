@@ -38,8 +38,8 @@ namespace Actor.Server
 
     public class BrokerActor<T> : BaseActor
     {
-        private Dictionary<IActor, WorkerStatus> fWorkers = new Dictionary<IActor, WorkerStatus>();
-        private Dictionary<ActorTag, RequestStatus<T>> fRequests = new Dictionary<ActorTag, RequestStatus<T>>();
+        private readonly Dictionary<IActor, WorkerStatus> fWorkers = new Dictionary<IActor, WorkerStatus>();
+        private readonly Dictionary<ActorTag, RequestStatus<T>> fRequests = new Dictionary<ActorTag, RequestStatus<T>>();
         private int fLastWorkerUsed = 0;
         private int fTTL = 0;
         private int fRequestProcessed = 0;

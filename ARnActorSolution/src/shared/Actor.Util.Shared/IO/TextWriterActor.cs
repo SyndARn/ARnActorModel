@@ -28,7 +28,7 @@ namespace Actor.Util
         public void Flush()
         {
             IFuture<bool> future = new Future<bool>();
-            this.SendMessage(this,future);
+            this.SendMessage(this, future);
             future.Result();
         }
 
@@ -68,17 +68,12 @@ namespace Actor.Util
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && (fStream != null))
             {
-                // dispose managed resources
-                if (fStream != null)
-                {
-                    fStream.Flush();
-                    fStream.Dispose();
-                    fStream = null;
-                }
+                fStream.Flush();
+                fStream.Dispose();
+                fStream = null;
             }
-            // free native resources
         }
 
         public void Dispose()

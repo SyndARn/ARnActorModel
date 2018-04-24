@@ -33,7 +33,7 @@ namespace Actor.Base
     public static class ActorTagHelper
     {
         [ThreadStatic]
-        private static long fBaseId ;
+        private static long fBaseId;
 
         internal static long CastNewTagId()
         {
@@ -52,12 +52,8 @@ namespace Actor.Base
 
         public static string FullHost
         {
-            get
-            { return fFullHost; }
-            set
-            {
-                fFullHost = value;
-            }
+            get => fFullHost;
+            set => fFullHost = value;
         }
 
     }

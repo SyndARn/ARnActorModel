@@ -32,7 +32,7 @@ namespace Actor.Server
     public class DirectoryActor : BaseActor
     {
         public enum DirectoryRequest { Find } ;
-        private Dictionary<string, IActor> fDictionary = new Dictionary<string, IActor>();
+        private readonly Dictionary<string, IActor> fDictionary = new Dictionary<string, IActor>();
         private static Lazy<DirectoryActor> fDirectory = new Lazy<DirectoryActor>(() => new DirectoryActor(), true);
         public DirectoryActor()
             : base()

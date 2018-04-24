@@ -21,6 +21,10 @@ namespace Actor.Server
 
         public void Run(params object[] data)
         {
+            if (data.Length <2)
+            {
+                throw new ActorException("2 params expected");
+            }
             if (String.IsNullOrEmpty(data[1].ToString()))
             {
                 DirectoryActor.GetDirectory().Disco((IActor)data[0]);

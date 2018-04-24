@@ -52,8 +52,10 @@ namespace Actor.MonteCarlo
             for (int i = 0; i < 1000; i++)
             {
                 var act = new ActorPrice();
-                List<double> list = new List<double>();
-                list.Add(i);
+                List<double> list = new List<double>
+                {
+                    i
+                };
                 act.ConsoleWrite((IActor)this, list.AsEnumerable());
             }
         }
