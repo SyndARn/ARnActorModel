@@ -198,7 +198,7 @@ namespace FsmCalc
         public Accumulators Sign()
         {
             var clone = Clone();
-            clone.Data = Data.StartsWith("-",StringComparison.InvariantCulture) ? Data.Substring(1, Data.Length - 1) : "-" + Data;
+            clone.Data = Data.StartsWith("-",StringComparison.Ordinal) ? Data.Substring(1, Data.Length - 1) : "-" + Data;
             int value = int.Parse(clone.Data,CultureInfo.InvariantCulture);
             clone.PlusAcc = this.Accumulator + value;
             clone.MoinsAcc = this.Accumulator - value;

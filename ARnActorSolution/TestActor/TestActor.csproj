@@ -109,6 +109,7 @@
     <Compile Include="ActorBase\ReceiveActorTest.cs" />
     <Compile Include="ActorProxy\ActorProxyTest.cs" />
     <Compile Include="ActorServer\ShardListActorTests.cs" />
+    <Compile Include="Admin\ActorServerCommandTest.cs" />
     <Compile Include="DecoratedActor\BehaviorDecoratedActorTest.cs" />
     <Compile Include="Directory\DiscoveryActorTests.cs" />
     <Compile Include="DistributedDictionary\DistributedDictionaryTest.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Serializer\NetDataContract\NetDataContractSerializeServiceTests.cs" />
     <Compile Include="Service\RingActorTests.cs" />
     <Compile Include="Service\StringParserActorTests.cs" />
+    <Compile Include="Trait\TraitTest.cs" />
     <Compile Include="Util\TextWriterActorTest.cs" />
     <Compile Include="Util\TestLauncherActor.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />

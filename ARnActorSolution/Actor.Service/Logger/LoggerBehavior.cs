@@ -51,13 +51,13 @@ namespace Actor.Service
         {
             DoInit(ActorServer.GetInstance().Name);
         }
-        public LoggerBehaviors(string aFilename) : base()
+        public LoggerBehaviors(string fileName) : base()
         {
-            DoInit(aFilename);
+            DoInit(fileName);
         }
-        private void DoInit(string aFilename)
+        private void DoInit(string fileName)
         {
-            FileName = Environment.CurrentDirectory + aFilename;
+            FileName = Environment.CurrentDirectory + fileName;
             this.BecomeBehavior(new LogHeartBeatBehavior());
             AddBehavior(new Behavior<object>(msg =>
             {

@@ -20,7 +20,7 @@ namespace Actor.Base
 
         public void SetData(T aMessage)
         {
-            LinkedActor.SendMessage(typeof(ITrait<T>), aMessage);
+            LinkedActor.SendMessage((ITrait<T>)this, aMessage);
         }
 
         private void ApplySetData(ITrait<T> aTrait,T aT)
@@ -29,14 +29,22 @@ namespace Actor.Base
         }
     }
 
-    public class ActorWithTrait : BaseActor, ITrait<string>
+    public class ActorWithTrait<T> : BaseActor, ITrait<T>
     {
-        public ITrait<string> TraitService { get; set; }
+        private ITrait<T> _traitService;
+        public ITrait<T> TraitService { get => _traitService;
+            set
+            {
+                var bhv = value as IBehavior;
+                _traitService = value;
+                this.Become(bhv);
+            }
+        }
         public ActorWithTrait() : base()
         {
         }
 
-        public void SetData(string aMessage)
+        public void SetData(T aMessage)
         {
             TraitService.SetData(aMessage);
         }

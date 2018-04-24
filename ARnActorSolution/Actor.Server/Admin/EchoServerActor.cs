@@ -22,6 +22,7 @@
 *****************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -111,7 +112,7 @@ namespace Actor.Server
                 // back to client but we need client
                 if (aMessage.Client == null)
                 {
-                    Console.WriteLine("receive null client");
+                    Debug.WriteLine("receive null client");
                 }
                 SendAnswer(aMessage, aMessage.Data);
             }

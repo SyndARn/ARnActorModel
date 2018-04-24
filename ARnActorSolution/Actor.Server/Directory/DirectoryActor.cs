@@ -46,6 +46,7 @@ namespace Actor.Server
             Become(bhvs);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static DirectoryActor GetDirectory()
         {
             return fDirectory.Value;

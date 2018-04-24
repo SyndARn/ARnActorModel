@@ -53,14 +53,18 @@ namespace Actor.Util
             List<Consumer<long>> list = new List<Consumer<long>>();
 
             for (int i = 0; i < mj; i++)
+            {
                 list.Add(new Consumer<long>());
+            }
 
             Buffer<long> buffer = new Buffer<long>(list);
 
             List<Producer<long>> list2 = new List<Producer<long>>();
 
             for (int i = 0; i < mi; i++)
+            {
                 list2.Add(new Producer<long>(buffer));
+            }
 
             for(long i = 0; i<= mk;i++)
             {
@@ -75,8 +79,10 @@ namespace Actor.Util
                 {
                     Debug.WriteLine("Stop");
                 }
-                if (fut != null ? fut == "BufferEmpty" : false)
+                if (fut != null && fut == "BufferEmpty")
+                {
                     break;
+                }
             }
 
             Debug.WriteLine("End of chain");

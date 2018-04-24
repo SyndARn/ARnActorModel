@@ -42,5 +42,17 @@ namespace Actor.Server.Tests
                 Assert.AreEqual("Test Echo", future.ResultAsync().Result);
             });
         }
+        [TestMethod()]
+        public void EchoActorTest2()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var actor = new EchoTest();
+                new EchoActor<string>(actor, "Test Echo");
+                IFuture<string> future = new Future<string>();
+                actor.SendMessage(future);
+                Assert.AreEqual("Test Echo", future.ResultAsync().Result);
+            });
+        }
     }
 }
