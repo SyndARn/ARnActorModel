@@ -52,7 +52,7 @@ namespace Actor.Util
             this.SendMessage(ObservableAction.Register, anActor);
         }
 
-        public void UnRegisterObserver(IActor anActor)
+        public void UnregisterObserver(IActor anActor)
         {
             this.SendMessage(ObservableAction.Unregister, anActor);
         }

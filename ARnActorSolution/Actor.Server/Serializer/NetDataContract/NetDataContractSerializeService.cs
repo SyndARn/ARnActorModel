@@ -10,9 +10,9 @@ namespace Actor.Server
 {
     public class NetDataContractSerializeService : ISerializeService
     {
-        public void Serialize(object data, ActorTag aTag, Stream stream)
+        public void Serialize(object data, ActorTag tag, Stream stream)
         {
-            SerialObject so = new SerialObject(data, aTag);
+            SerialObject so = new SerialObject(data, tag);
             NetDataActorSerializer.Serialize(so, stream);
         }
 
@@ -24,9 +24,9 @@ namespace Actor.Server
 
     public class DataContractSerializeService : ISerializeService
     {
-        public void Serialize(object data, ActorTag aTag, Stream stream)
+        public void Serialize(object data, ActorTag tag, Stream stream)
         {
-            DataContractObject dco = new DataContractObject(data, aTag);
+            DataContractObject dco = new DataContractObject(data, tag);
             DataContractActorSerializer.Serialize(dco, stream);
         }
 

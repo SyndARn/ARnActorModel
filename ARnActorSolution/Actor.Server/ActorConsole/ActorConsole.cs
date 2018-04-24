@@ -32,6 +32,8 @@ namespace Actor.Server
     // TODO make it a singleton ?
     public class ActorConsole : BaseActor
     {
+        public const string WelcomeConsole = "Console starts and autoregisters";
+
         public ActorConsole()
         {
             Become(new ConsoleBehavior());
@@ -41,7 +43,7 @@ namespace Actor.Server
         {
             var console = new ActorConsole();
             DirectoryActor.GetDirectory().Register(console, "Console");
-            Console.WriteLine("Console starts and autoregisters");
+            Console.WriteLine(WelcomeConsole);
         }
     }
 }

@@ -45,9 +45,7 @@ namespace Actor.Service
     public class LoggerBehaviors : Behaviors
     {
         public string FileName { get; private set; }
-        private List<object> fMessageList = new List<object>();
-        public List<object> MessageList { get { return fMessageList; } }
-
+        public List<object> MessageList { get; } = new List<object>();
 
         public LoggerBehaviors() : base()
         {

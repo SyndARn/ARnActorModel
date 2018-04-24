@@ -32,12 +32,14 @@ namespace Actor.Server
 
         public static void Start(ConfigManager configManager)
         {
-            fServerInstance = new ActorServer();
-            fServerInstance.fConfigManager = configManager;
-            fServerInstance.Name = configManager.Host().Host;
-            fServerInstance.Port = configManager.Host().Port;
-            fServerInstance.ListenerService = configManager.GetListenerService();
-            fServerInstance.SerializeService = configManager.GetSerializeService();
+            fServerInstance = new ActorServer
+            {
+                fConfigManager = configManager ?? throw new ActorException("ConfigManager can't be null"),
+                Name = configManager.Host().Host,
+                Port = configManager.Host().Port,
+                ListenerService = configManager.GetListenerService(),
+                SerializeService = configManager.GetSerializeService()
+            };
             ActorTagHelper.FullHost = configManager.Host().Host;
             fServerInstance.DoInit(new HostRelayActor(fServerInstance.ListenerService));
         }

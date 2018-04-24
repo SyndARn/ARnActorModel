@@ -18411,7 +18411,7 @@
       ]
     },
     "Microsoft.NETCore.UniversalWindowsPlatform/5.3.1": {
-      "sha512": "j4QdwqcrgAdLIuO+Fbf2DrDYWc0WM4lYSSeoeWXNSu1hr4sYcL+YbIq/TDg7nktest7nVtG09TjCItpczOgjuA==",
+      "sha512": "pYCI0GC3pt29yFzhboHYnWmTIjaJ2K/L/aPNOHshrM1yQojxIp8cYdcDDd27r4GCSrSnkELVJ/x38OF06jqdmQ==",
       "type": "package",
       "path": "microsoft.netcore.universalwindowsplatform/5.3.1",
       "files": [
@@ -24411,7 +24411,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Users\\ARn\\Source\\Repos\\NugetForActorModel\\": {},
+        "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {
         "uap10.0.10240": {

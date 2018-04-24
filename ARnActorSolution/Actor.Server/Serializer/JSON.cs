@@ -256,10 +256,9 @@ namespace Procurios.Public
 			int lastIndex = GetLastIndexOfNumber(json, index);
 			int charLength = (lastIndex - index) + 1;
 
-			double number;
-			success = Double.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out number);
+            success = Double.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out double number);
 
-			index = lastIndex + 1;
+            index = lastIndex + 1;
 			return number;
 		}
 

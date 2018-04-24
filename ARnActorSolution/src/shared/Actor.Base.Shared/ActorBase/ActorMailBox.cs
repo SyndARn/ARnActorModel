@@ -35,8 +35,8 @@ namespace Actor.Base
 
         public ActorMailBox()
         {
-            _queue = QueueFactory<T>.Cast();
-            _missed = QueueFactory<T>.Cast();
+            _queue = QueueFactory<T>.Current.GetQueue();
+            _missed = QueueFactory<T>.Current.GetQueue();
         }
 
         public bool IsEmpty => _queue.Count() == 0;

@@ -18,7 +18,7 @@ namespace Actor.Server
 {
     public class HostDirectoryActor : BaseActor 
     {
-        private Dictionary<String, IActor> fUri2Actor = new Dictionary<String, IActor>(); // actor hosted
+        private readonly Dictionary<String, IActor> fUri2Actor = new Dictionary<String, IActor>(); // actor hosted
         private static Lazy<HostDirectoryActor> fHostDirectory = new Lazy<HostDirectoryActor>();
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]

@@ -15,8 +15,9 @@ namespace WinSkyNet1M
         {
             Stopwatch sw = Stopwatch.StartNew();
             var future = new Future<long>();
-            var skynet = new SkynetActor(null, 0, 1000000, 10, future);
+            new SkynetActor(null, 0, 1000000, 10, future);
             Console.WriteLine($"ms : {sw.Elapsed.TotalMilliseconds:0.000} - result : {future.ResultAsync().Result}");
+            sw.Stop();
             Console.ReadLine();
         }
     }

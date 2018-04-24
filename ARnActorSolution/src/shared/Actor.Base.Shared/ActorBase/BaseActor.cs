@@ -46,7 +46,7 @@ namespace Actor.Base
 
         private List<IBehavior> fListBehaviors = new List<IBehavior>(); // our behavior
 
-        private IMessageQueue<IBehavior> fCompletions = QueueFactory<IBehavior>.Cast(); // receive behaviors
+        private IMessageQueue<IBehavior> fCompletions = QueueFactory<IBehavior>.Current.GetQueue(); // receive behaviors
         private IActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
         private SharingStruct fShared = new SharingStruct();
         public IMessageTracerService MessageTracerService { get; set; }
@@ -55,7 +55,7 @@ namespace Actor.Base
         {
             CheckArg.Actor(anActor);
             anActor.fListBehaviors = new List<IBehavior>();
-            anActor.fCompletions = QueueFactory<IBehavior>.Cast();
+            anActor.fCompletions = QueueFactory<IBehavior>.Current.GetQueue();
             anActor.fMailBox = new ActorMailBox<object>();
             if (anActor.Tag == null)
             {
