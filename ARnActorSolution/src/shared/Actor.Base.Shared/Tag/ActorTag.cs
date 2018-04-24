@@ -93,16 +93,20 @@ namespace Actor.Base
 
         public ActorTag(string urlAddress)
         {
-            fId = ActorTagHelper.CastNewTagId();
-            fHost = urlAddress;
-            fIsRemote = true;
-            fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
+            CheckArg.Address(urlAddress);
+            InitTag(urlAddress);
         }
 
-        public ActorTag(Uri urlAddress)
+        public ActorTag(Uri uri)
+        {
+            CheckArg.Uri(uri);
+            InitTag(uri.Host);
+        }
+
+        private void InitTag(string urlAddress)
         {
             fId = ActorTagHelper.CastNewTagId();
-            fHost = urlAddress.Host;
+            fHost = urlAddress;
             fIsRemote = true;
             fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
         }

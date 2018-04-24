@@ -45,13 +45,7 @@ namespace Actor.Server
                     }
                 case "Stat":
                     {
-                        ActorStatServer sa = new ActorStatServer();
-                        sa.SendMessage(asker);
-                        break;
-                    }
-                case "GC":
-                    {
-                        GC.Collect();
+                        (new StatServerCommand()).Run(asker);
                         break;
                     }
                 case "AddTask":
@@ -79,18 +73,7 @@ namespace Actor.Server
                     }
                 case "Disco":
                     {
-                        // local disco ?
-                        if (String.IsNullOrEmpty(lData))
-                        {
-                            DirectoryActor.GetDirectory().Disco(asker);
-                        }
-                        else
-                        {
-                            new DiscoveryActor(lData);
-                            // remote disco
-                            //actRemoteSend rem = new actRemoteSend(Data.Item1,lData, "");
-                            //rem.SendMessage(new DiscoCommand(rem));
-                        }
+                        (new DiscoServerCommand()).Run(asker, lData);
                         break;
                     }
                 case "SendTo":

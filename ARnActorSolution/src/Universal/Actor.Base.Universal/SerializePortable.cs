@@ -8,7 +8,7 @@ namespace Actor.Base
 {
     [AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = false)]
 #if NETFX_CORE
-    public class SerializableAttribute : Attribute
+    public sealed class SerializableAttribute : Attribute
     {
         public SerializableAttribute()
         {
@@ -16,7 +16,7 @@ namespace Actor.Base
     }
 
     [AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = false)]
-    public class DataContractAttribute : Attribute
+    public sealed class DataContractAttribute : Attribute
     {
         public DataContractAttribute()
         {
@@ -24,7 +24,7 @@ namespace Actor.Base
     }
 
     [AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = true)]
-    public class DataMemberAttribute : Attribute
+    public sealed class DataMemberAttribute : Attribute
     {
         public DataMemberAttribute()
         {

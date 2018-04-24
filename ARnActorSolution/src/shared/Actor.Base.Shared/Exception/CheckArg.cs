@@ -10,6 +10,7 @@ namespace Actor.Base
 {
     public static class CheckArg
     {
+
         public static void Stream([ValidatedNotNull]Stream aStream)
         {
             if (aStream == null)
@@ -63,6 +64,14 @@ namespace Actor.Base
             if (enumerables == null)
             {
                 throw new ActorException("Null enumerables");
+            }
+        }
+
+        public static void Uri([ValidatedNotNull] Uri anUri)
+        {
+            if (anUri == null)
+            {
+                throw new ActorException("Uri can't be null");
             }
         }
 

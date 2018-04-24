@@ -94,7 +94,7 @@ namespace TestActor
                 act.SendMessage(testString);
                 string result = observer.GetData();
                 Assert.AreEqual(result, string.Format(CultureInfo.InvariantCulture,"Test {0}", observer.Tag));
-                act.UnRegisterObserver(observer);
+                act.UnregisterObserver(observer);
                 act.SendMessage(testString);
                 result = observer.GetDataInTime(1000);
                 Assert.AreEqual(result, null);

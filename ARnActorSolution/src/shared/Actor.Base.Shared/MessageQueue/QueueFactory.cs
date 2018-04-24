@@ -6,10 +6,13 @@ namespace Actor.Base
 {
     public enum QueueStyle { None, LockFree, Locking, Ring }
 
-    public static class QueueFactory<T>
+    public class QueueFactory<T>
     {
-        public static QueueStyle Style { get; set; }
-        public static IMessageQueue<T> Cast()
+
+        public static QueueFactory<T> Current { get; } = new Lazy<QueueFactory<T>>(true).Value;
+        public QueueStyle Style { get; set; }
+
+        public IMessageQueue<T> GetQueue()
         {
             switch (Style)
             {
