@@ -14,6 +14,34 @@ namespace TestActor
     public class ActionActorTest
     {
         [TestMethod]
+        public void TestActionActor2()
+        {
+            TestLauncherActor.Test(
+                () =>
+                {
+                    ConcurrentDictionary<int,string> dico = new ConcurrentDictionary<int, string>();
+                    var future = new Future<int, string>();
+                    var act = new ActionActor();
+                    act.SendAction(() =>
+                    {
+                        var tst = new ActionActor<int,string>();
+                        tst.SendAction((i,t) => dico[i] = t, 1, "test1");
+                        tst.SendAction((i, t) => dico[i] = t, 2, "test2");
+                        tst.SendAction((i, t) => dico[i] = t, 3, "test3");
+                        tst.SendAction(() =>
+                        {
+                            var s = string.Concat(dico.Values);
+                            future.SendMessage(dico.Count,s);
+                        });
+                    });
+                    var result = future.Result();
+                    Assert.AreEqual(3, result.Item1);
+                    Assert.AreEqual("test1test2test3", result.Item2);
+                }
+                );
+        }
+
+        [TestMethod]
         public void TestActionActor()
         {
             TestLauncherActor.Test(
@@ -21,6 +49,7 @@ namespace TestActor
                 {
                     ConcurrentQueue<string> queue = new ConcurrentQueue<string>();
                     var act = new ActionActor();
+                    var future = new Future<int>();
                     act.SendAction(() =>
                     {
                         var tst = new ActionActor<string>();
@@ -36,13 +65,12 @@ namespace TestActor
                         {
                             queue.Enqueue(t);
                         }, "test3");
-                        var future = new Future<int>();
                         tst.SendAction(() =>
                         {
                             future.SendMessage(queue.Count);
                         });
-                        Assert.AreEqual(3, future.Result());
                     });
+                    Assert.AreEqual(3, future.Result());
                 }
                 );
         }

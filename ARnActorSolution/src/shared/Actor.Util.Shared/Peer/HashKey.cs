@@ -32,7 +32,7 @@ public class HashKey : IComparable
         }
 
 #else
-        private byte[] fTab;
+        private readonly byte[] fTab;
         public HashKey(byte[] tab)
         {
             fTab = tab;

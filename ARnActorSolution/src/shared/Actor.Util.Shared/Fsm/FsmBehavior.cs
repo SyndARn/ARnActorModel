@@ -121,9 +121,7 @@ namespace Actor.Util
         private bool DoPattern(TEvent anEvent)
         {
             var parent = LinkedTo as FsmBehaviors<TState, TEvent>;
-            var result = parent == null ?
-                false :
-                parent.GetCurrentState().Equals(StartState) && (Condition == null || Condition(anEvent));
+            var result = (parent != null) && parent.GetCurrentState().Equals(StartState) && (Condition == null || Condition(anEvent));
             TraceActor?.SendMessage(StartState, EndState, anEvent.ToString());
             return result;
         }

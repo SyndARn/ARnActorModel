@@ -92,8 +92,8 @@ namespace TestActor
                         {
                             testContext.WriteLine(e.Message);
                             testContext.WriteLine(e.StackTrace);
-                            throw;
                         }
+                        throw;
                     }
                 });
             Task<bool> testResult = launcher.Wait(timeOutMS);
