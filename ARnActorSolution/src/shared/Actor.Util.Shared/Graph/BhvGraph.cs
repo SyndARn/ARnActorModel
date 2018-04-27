@@ -44,6 +44,7 @@ namespace Actor.Util
         private readonly NodeActor<TNode, TEdge> NodeA;
         private readonly NodeActor<TNode, TEdge> NodeB;
         private TEdge fData;
+
         public EdgeActor() : base()
         {
         }
@@ -69,6 +70,7 @@ namespace Actor.Util
     {
         private readonly Dictionary<NodeActor<TNode, TEdge>, EdgeActor<TNode, TEdge>> Links;
         private TNode fData;
+
         public NodeActor() : base()
         {
             Links = new Dictionary<NodeActor<TNode, TEdge>, EdgeActor<TNode, TEdge>>();

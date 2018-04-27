@@ -40,8 +40,6 @@ namespace Actor.Service
         }
     }
 
-
-
     public class LoggerBehaviors : Behaviors
     {
         public string FileName { get; private set; }
@@ -51,10 +49,12 @@ namespace Actor.Service
         {
             DoInit(ActorServer.GetInstance().Name);
         }
+
         public LoggerBehaviors(string fileName) : base()
         {
             DoInit(fileName);
         }
+
         private void DoInit(string fileName)
         {
             FileName = Environment.CurrentDirectory + fileName;

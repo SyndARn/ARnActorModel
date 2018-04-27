@@ -8,6 +8,7 @@ namespace Actor.Util
     public class RXObservable<T> : BaseActor, IObservable<T>
     {
         private readonly List<IObserver<T>> observers;
+
         public RXObservable()
         {
             observers = new List<IObserver<T>>();
@@ -25,7 +26,7 @@ namespace Actor.Util
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            Task<object> res = Receive(t => { return t is IMessageParam<IActor, IDisposable>; });
+            Task<object> res = Receive(t => t is IMessageParam<IActor, IDisposable>);
             SendMessage(observer);
             var resi = res.Result as IMessageParam<IActor, IDisposable>;
             return resi.Item2;
@@ -50,8 +51,10 @@ namespace Actor.Util
         private void DoEndTransmission(T observer)
         {
             foreach (var item in observers.ToArray())
+            {
                 if (observers.Contains(item))
                     item.OnCompleted();
+            }
 
             observers.Clear();
         }

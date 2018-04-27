@@ -7,20 +7,7 @@ namespace TestActor
     [TestClass]
     public class DistributedDictionaryTest
     {
-
-        private TestContext testContextInstance;
-
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void TestDistributedDictionary()

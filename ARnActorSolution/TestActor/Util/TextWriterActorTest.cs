@@ -13,6 +13,7 @@ namespace TestActor
     public class TextWriterActorTest
     {
         public TestContext TestContext { get; set; }
+
         [TestMethod]
         public void TestTextWriter()
         {

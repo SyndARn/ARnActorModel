@@ -16,6 +16,7 @@ namespace Actor.TestApplication
     internal class ActorMain : BaseActor
     {
         private CollectionActor<string> collect;
+
         public ActorMain() : base()
         {
             Become(new Behavior<string>(t => true, DoBehavior));

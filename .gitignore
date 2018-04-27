@@ -54,7 +54,7 @@ Temporary Items
 Build/
 *.bak
 /ARnActorSolution/.vs/config/applicationhost.config
-/ARnActorSolution/packages/OpenCover.4.6.519/tools/TestResults
+/ARnActorSolution/packages/
 /ARnActorSolution/TestActor/Report/*.htm
 /ARnActorSolution/TestActor/Report/combined.js
 /ARnActorSolution/TestActor/Report/report.css
