@@ -106,8 +106,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actor.Util.Core", "Core\Act
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinSkyNet1M", "WinSkyNet1M\WinSkyNet1M.csproj", "{DFCE8998-44D4-4368-92E8-CE302ACE54F8}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Actor.Server.Shared", "src\shared\Actor.Server.Shared\Actor.Server.Shared.shproj", "{A8790901-C29F-42CE-B968-18E299B41357}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\shared\Actor.Server.Shared\Actor.Server.Shared.projitems*{03a619af-9e9e-4e7d-a905-878f1452dc75}*SharedItemsImports = 4
 		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{1095564c-f31b-468a-adb5-97d4f4502ff6}*SharedItemsImports = 4
 		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{2d5bfe8e-954e-4919-8c08-edd6cf69a3e7}*SharedItemsImports = 4
 		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{33a9e4e2-0a90-4573-b4a8-2aadc2030fa6}*SharedItemsImports = 4
@@ -116,6 +119,7 @@ Global
 		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{6ca2469f-3839-4404-bbfd-a959ad2fd95e}*SharedItemsImports = 4
 		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{73609681-bce2-42ea-88f2-b377225453ec}*SharedItemsImports = 13
 		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{75d9639e-e043-41d5-926b-65b0c459f868}*SharedItemsImports = 4
+		src\shared\Actor.Server.Shared\Actor.Server.Shared.projitems*{a8790901-c29f-42ce-b968-18e299b41357}*SharedItemsImports = 13
 		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{aeae49ec-d5f6-448d-a098-f479bbdc69d2}*SharedItemsImports = 13
 		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{e107486f-a9b7-429c-81ac-e6ccee4177b2}*SharedItemsImports = 13
 		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{ed9f44af-4154-4f52-8b71-7c2148b631ab}*SharedItemsImports = 4
@@ -1582,6 +1586,7 @@ Global
 		{E21691B4-D172-4CF2-8CB0-DF3C9A7E48E0} = {17A02D6C-0B72-4CB8-9931-B5C8FA9DF936}
 		{91E2F9BE-84BB-4DB4-8E8F-08DDB4AF33EC} = {32E81CE6-D994-43C8-AC00-E1B80C79112E}
 		{DFCE8998-44D4-4368-92E8-CE302ACE54F8} = {8AD7AC78-DC22-406A-9A22-478E06F655B2}
+		{A8790901-C29F-42CE-B968-18E299B41357} = {ACCDE58D-C50C-4821-B984-C06314BF6BD3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2E4FB2F-E57F-46F5-95CE-129B8F1ED980}

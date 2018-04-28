@@ -1,31 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
-using System.Net;
 using System.Globalization;
 
 namespace Actor.Server
 {
-    public interface IHostService
-    {
-        Uri GetHostUri(string name, int port);
-    }
-
-    public class HostService : IHostService
-    {
-        public Uri GetHostUri(string name, int port)
-        {
-            const string prefix = "http://";
-            var suffix = ":" + port.ToString(CultureInfo.InvariantCulture);
-            var fullhost = prefix + name + suffix + "/" ;
-
-            return new Uri(fullhost);
-        }
-    }
-
     public class ConfigManager : IDisposable
     {
         public static ConfigManager CastForTest()
@@ -36,8 +14,37 @@ namespace Actor.Server
         }
 
         private Uri fHost;
-
         private IHostService fHostService;
+
+        public IHostService GetHostService()
+        {
+            if (fHostService == null)
+            {
+                string r = ConfigurationManager.AppSettings["HostService"];
+                if (string.IsNullOrEmpty(r))
+                {
+                    fHostService = new HostService();
+                }
+                else
+                {
+                    switch (r)
+                    {
+                        case "HostService":
+                            {
+                                fHostService = new HostService();
+                                break;
+                            }
+                        default:
+                            {
+                                fHostService = new HostService();
+                                break;
+                            }
+                    }
+                }
+            }
+            return fHostService;
+        }
+
         public Uri Host()
         {
             if (fHost == null)
@@ -53,18 +60,14 @@ namespace Actor.Server
                 {
                     hostPort = "80";
                 }
-                // parse r to get a better thing than this with reflection
-                if (string.IsNullOrEmpty(hostService))
-                {
-                    // var serv = new HostService();
-                }
-                fHostService = new HostService();
+                fHostService = GetHostService();
                 fHost = fHostService.GetHostUri(hostName, int.Parse(hostPort,CultureInfo.InvariantCulture));
             }
             return fHost;
         }
 
         private IListenerService fListenerService;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         public IListenerService GetListenerService()
@@ -102,6 +105,7 @@ namespace Actor.Server
         }
 
         private ISerializeService fSerializeService;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public ISerializeService GetSerializeService()
         {

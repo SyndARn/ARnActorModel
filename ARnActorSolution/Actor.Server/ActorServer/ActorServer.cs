@@ -38,7 +38,8 @@ namespace Actor.Server
                 Name = configManager.Host().Host,
                 Port = configManager.Host().Port,
                 ListenerService = configManager.GetListenerService(),
-                SerializeService = configManager.GetSerializeService()
+                SerializeService = configManager.GetSerializeService(),
+                HostService = configManager.GetHostService()
             };
             ActorTagHelper.FullHost = configManager.Host().Host;
             fServerInstance.DoInit(new HostRelayActor(fServerInstance.ListenerService));
