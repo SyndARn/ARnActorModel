@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Broker\WorkerActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Directory\DiscoCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Directory\IHostService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EchoServer\ActorEcho.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RemoteServer\IContextComm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RemoteServer\IListenerService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RemoteServer\MemoryListener\MemoryContextComm.cs" />

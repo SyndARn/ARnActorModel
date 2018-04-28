@@ -12,6 +12,7 @@ namespace Actor.Server
     {
         public IActor Sender { get; set; }
         public Uri Url { get; set; }
+
         public WebAnswer CastAnswer(string message)
         {
             return WebAnswer.Cast(Url, message) ;
@@ -22,6 +23,7 @@ namespace Actor.Server
     {
         public Uri Url { get; private set; }
         public string Answer { get; private set; }
+
         public static WebAnswer Cast(Uri anUri, string anAnswer)
         {
             return new WebAnswer()
@@ -52,7 +54,6 @@ namespace Actor.Server
                 }
             }
         }
-
     }
 
     public class WebActor : BaseActor
@@ -61,6 +62,7 @@ namespace Actor.Server
         {
             Become(new WebClientBehavior());
         }
+
         public static WebRequest Cast(IActor aSender, Uri anUrl)
         {
             return new WebRequest() { Sender = aSender, Url = anUrl };

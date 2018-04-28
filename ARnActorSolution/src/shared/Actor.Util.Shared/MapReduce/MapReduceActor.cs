@@ -93,6 +93,7 @@ namespace Actor.Util
     {
         private readonly IActor fSender;
         private readonly MapAction<TKeyMap, TValueMap> fMapAction;
+
         public MapActor(IActor sender, MapAction<TKeyMap, TValueMap> mapAction) : base()
         {
             fSender = sender;

@@ -97,7 +97,6 @@
     <Compile Include="Directory\HostService.cs" />
     <Compile Include="ActorServer\ShardDirectoryActor.cs" />
     <Compile Include="Admin\ActorAdminServer.cs" />
-    <Compile Include="Admin\ActorEcho.cs" />
     <Compile Include="Admin\ActorServerCommand.cs" />
     <Compile Include="Admin\ActorStatServer.cs" />
     <Compile Include="Admin\actRemoteTest.cs" />

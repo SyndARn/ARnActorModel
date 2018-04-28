@@ -35,7 +35,7 @@ namespace Actor.Server
         public DiscoveryActor(string hostAddress)
             : base()
         {
-            Become(new Behavior<string>(t => {return true ;},
+            Become(new Behavior<string>(t => true,
                 Disco)) ;
             SendMessage(hostAddress) ;
         }
@@ -43,14 +43,14 @@ namespace Actor.Server
         public DiscoveryActor(string hostAddress, IActor sender)
             : base()
         {
-            Become(new Behavior<string,IActor>((t,a) => { return true; },
+            Become(new Behavior<string,IActor>((t, actor) => true,
                 Disco));
             this.SendMessage(hostAddress, sender);
         }
 
         private void Disco(string hostAddress, IActor actor)
         {
-            Become(new Behavior<Dictionary<string, string>>(t => { return true; },
+            Become(new Behavior<Dictionary<string, string>>(t => true,
                 Found));
             var rem = new RemoteSenderActor(new ActorTag(hostAddress));
             rem.SendMessage(new DiscoCommand(actor));
@@ -58,8 +58,7 @@ namespace Actor.Server
 
         private void Disco(string hostAddress)
         {
-            Become(new Behavior<Dictionary<string,string>>(t => {return true ;}, 
-                Found)) ;
+            Become(new Behavior<Dictionary<string,string>>(t => true ,Found)) ;
             var rem = new RemoteSenderActor(new ActorTag(hostAddress));
             rem.SendMessage(new DiscoCommand(this));
         }
@@ -74,5 +73,4 @@ namespace Actor.Server
             Become(new NullBehaviors());
         }
     }
-
 }

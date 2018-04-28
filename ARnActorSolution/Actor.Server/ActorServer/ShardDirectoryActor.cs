@@ -16,7 +16,9 @@ namespace Actor.Server
         public IActor Sender { get; private set; }
         public IActor Target { get; private set; }
         public IEnumerable<string> Data { get; private set; }
+
         public ShardRequest() { }
+
         public static ShardRequest CastRequest(IActor aSender, IActor aTarget)
         {
             var req = new ShardRequest()
@@ -52,6 +54,7 @@ namespace Actor.Server
     public class ShardDirectoryActor : BaseActor
     {
         private readonly Dictionary<string, string> fShardList;
+
         public ShardDirectoryActor(ActorServer actorServer)
             : base()
         {
@@ -90,6 +93,7 @@ namespace Actor.Server
     public class ShardListActor : ActionActor<string>
     {
         private readonly HashSet<string> fShardList = new HashSet<string>();
+
         public ShardListActor() : base()
         {
             AddBehavior(new Behavior<IFuture>(DoGetAll));

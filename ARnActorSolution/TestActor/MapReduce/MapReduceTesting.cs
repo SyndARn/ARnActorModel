@@ -8,12 +8,10 @@ using System.Linq;
 
 namespace TestActor
 {
-
-    class MapReduceSimpleTest
+    internal class MapReduceSimpleTest
     {
         public MapReduceSimpleTest()
         {
-
         }
 
         public void Go(string aFilename, IActor actor)
@@ -34,7 +32,6 @@ namespace TestActor
                     {
                         a.SendMessage(item, 1);
                     }
-
                 },
                 // reduce
                 (k, v) =>
@@ -49,9 +46,9 @@ namespace TestActor
     }
 
     [TestClass]
+    [Ignore]
     public class MapReduceTesting
     {
-        [Ignore]
         [TestMethod]
         public void TestingSimpleMapReduce()
         {
@@ -60,11 +57,9 @@ namespace TestActor
                 MapReduceSimpleTest mapReduce = new MapReduceSimpleTest();
                 EnumerableActor<string> actor = new EnumerableActor<string>();
                 mapReduce.Go("test map", actor);
-
-                var actorsCount = actor.ToList();
-                var result = actorsCount.Count;
+                var result = actor.Count;
                 Assert.IsTrue(result > 0);
-            },1000*60*60);
+            });
         }
     }
 }
