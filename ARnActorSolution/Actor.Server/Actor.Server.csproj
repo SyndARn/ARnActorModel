@@ -92,9 +92,9 @@
       <Link>Properties\ARnActorModelVersion.cs</Link>
     </Compile>
     <Compile Include="ActorConsole\ActorConsole.cs" />
-    <Compile Include="ActorConsole\ConsoleBehavior.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
     <Compile Include="ActorServer\ConfigManager.cs" />
+    <Compile Include="Directory\HostService.cs" />
     <Compile Include="ActorServer\ShardDirectoryActor.cs" />
     <Compile Include="Admin\ActorAdminServer.cs" />
     <Compile Include="Admin\ActorEcho.cs" />
@@ -102,9 +102,6 @@
     <Compile Include="Admin\ActorStatServer.cs" />
     <Compile Include="Admin\actRemoteTest.cs" />
     <Compile Include="Admin\EchoServerActor.cs" />
-    <Compile Include="Broker\BrokerActor.cs" />
-    <Compile Include="Broker\HeartBeatActor.cs" />
-    <Compile Include="Broker\WorkerActor.cs" />
     <Compile Include="ClientServer\ClientBehavior.cs" />
     <Compile Include="ClientServer\ServerBehavior.cs" />
     <Compile Include="ClientServer\WebActor.cs" />
@@ -115,13 +112,8 @@
     <Compile Include="Factory\ActorAddressFactory.cs" />
     <Compile Include="RemoteServer\HttpListener\HttpContextComm.cs" />
     <Compile Include="RemoteServer\HttpListener\HttpListenerService.cs" />
-    <Compile Include="RemoteServer\IContextComm.cs" />
-    <Compile Include="RemoteServer\IListenerService.cs" />
-    <Compile Include="RemoteServer\MemoryListener\MemoryContextComm.cs" />
-    <Compile Include="RemoteServer\MemoryListener\MemoryListenerService.cs" />
     <Compile Include="RemoteServer\RemoteSenderActor.cs" />
     <Compile Include="Directory\SendByNameActor.cs" />
-    <Compile Include="Directory\DiscoCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteServer\HostRelayActor.cs" />
     <Compile Include="RemoteServer\RemoteReceiverActor.cs" />
@@ -149,6 +141,7 @@
       <Name>Actor.Util</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\src\shared\Actor.Server.Shared\Actor.Server.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

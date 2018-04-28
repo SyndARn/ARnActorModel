@@ -28,12 +28,12 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-
     public class DirectoryActor : BaseActor
     {
         public enum DirectoryRequest { Find } ;
         private readonly Dictionary<string, IActor> fDictionary = new Dictionary<string, IActor>();
-        private static Lazy<DirectoryActor> fDirectory = new Lazy<DirectoryActor>(() => new DirectoryActor(), true);
+        private static readonly Lazy<DirectoryActor> fDirectory = new Lazy<DirectoryActor>(() => new DirectoryActor(), true);
+
         public DirectoryActor()
             : base()
         {
@@ -54,7 +54,7 @@ namespace Actor.Server
 
         public string Stat()
         {
-            return "Directory entries " + fDictionary.Count().ToString(CultureInfo.InvariantCulture);
+            return "Directory entries " + fDictionary.Count.ToString(CultureInfo.InvariantCulture);
         }
 
         public void Disco(IActor anActor)
@@ -102,7 +102,7 @@ namespace Actor.Server
 
         private void DoRegister(IActor anActor,string msg)
         {
-            if (fDictionary.Keys.Any(t => t == msg) == false)
+            if (!fDictionary.Keys.Any(t => t == msg))
             {
                 fDictionary.Add(msg, anActor);
             }
@@ -120,7 +120,5 @@ namespace Actor.Server
                 anActor.SendMessage(DirectoryRequest.Find, (IActor)null);
             }
         }
-
     }
-
 }

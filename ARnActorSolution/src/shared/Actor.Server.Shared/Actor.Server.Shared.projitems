@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>a8790901-c29f-42ce-b968-18e299b41357</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Actor.Server.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ActorConsole\ConsoleBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Broker\BrokerActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Broker\HeartBeatActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Broker\WorkerActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Directory\DiscoCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Directory\IHostService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteServer\IContextComm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteServer\IListenerService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteServer\MemoryListener\MemoryContextComm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteServer\MemoryListener\MemoryListenerService.cs" />
+  </ItemGroup>
+</Project>
