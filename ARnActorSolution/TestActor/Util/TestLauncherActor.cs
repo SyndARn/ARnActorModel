@@ -23,6 +23,10 @@ namespace TestActor
         public TestLauncherException(string message,Exception inner)
             : base(message,inner)
         { }
+
+        protected TestLauncherException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+        {
+        }
     }
 
     public class TestLauncherActor : ActionActor
@@ -96,13 +100,13 @@ namespace TestActor
                         throw;
                     }
                 });
+
             Task<bool> testResult = launcher.Wait(timeOutMS);
             if (launcher.fLauncherException != null)
             {
                 throw new TestLauncherException(launcher.fLauncherException.Message, launcher.fLauncherException);
             }
-            var result = testResult.Result;
-            Assert.IsTrue(result, "Test Time Out");
+            Assert.IsTrue(testResult.Result, "Test Time Out");
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Procurios.Public
 		{
 			StringBuilder builder = new StringBuilder(BUILDER_CAPACITY);
 			bool success = SerializeValue(json, builder);
-			return (success ? builder.ToString() : null);
+			return success ? builder.ToString() : null;
 		}
 
 		protected static Hashtable ParseObject(char[] json, ref int index, ref bool success)
@@ -80,7 +80,7 @@ namespace Procurios.Public
 			// {
 			NextToken(json, ref index);
 
-			bool done = false;
+            const bool done = false;
 			while (!done) {
 				token = LookAhead(json, index);
 				if (token == JSON.TOKEN_NONE) {
@@ -127,7 +127,7 @@ namespace Procurios.Public
 			// [
 			NextToken(json, ref index);
 
-			bool done = false;
+            const bool done = false;
 			while (!done) {
 				int token = LookAhead(json, index);
 				if (token == JSON.TOKEN_NONE) {
@@ -370,9 +370,9 @@ namespace Procurios.Public
 				success = SerializeObject((Hashtable)value, builder);
 			} else if (value is ArrayList) {
 				success = SerializeArray((ArrayList)value, builder);
-			} else if ((value is Boolean) && ((Boolean)value == true)) {
+			} else if ((value is Boolean) && ((Boolean)value)) {
 				builder.Append("true");
-			} else if ((value is Boolean) && ((Boolean)value == false)) {
+			} else if ((value is Boolean) && (!(Boolean)value)) {
 				builder.Append("false");
 			} else if (value is ValueType) {
 				// thanks to ritchie for pointing out ValueType to me
@@ -461,7 +461,7 @@ namespace Procurios.Public
 					if ((codepoint >= 32) && (codepoint <= 126)) {
 						builder.Append(c);
 					} else {
-						builder.Append("\\u" + Convert.ToString(codepoint, 16).PadLeft(4, '0'));
+                        builder.Append("\\u").Append(Convert.ToString(codepoint, 16).PadLeft(4, '0'));
 					}
 				}
 			}

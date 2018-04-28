@@ -9,6 +9,7 @@ namespace Actor.Util
         where T : class
     {
         private T fT;
+
         public ActorProxyModel() : base()
         {
         }

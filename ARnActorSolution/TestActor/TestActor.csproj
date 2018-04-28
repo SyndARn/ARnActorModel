@@ -110,6 +110,7 @@
     <Compile Include="ActorProxy\ActorProxyTest.cs" />
     <Compile Include="ActorServer\ShardListActorTests.cs" />
     <Compile Include="Admin\ActorServerCommandTest.cs" />
+    <Compile Include="Composition\CompositeActorTest.cs" />
     <Compile Include="DecoratedActor\BehaviorDecoratedActorTest.cs" />
     <Compile Include="Directory\DiscoveryActorTests.cs" />
     <Compile Include="DistributedDictionary\DistributedDictionaryTest.cs" />

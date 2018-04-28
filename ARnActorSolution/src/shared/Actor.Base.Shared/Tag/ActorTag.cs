@@ -29,7 +29,6 @@ using System.Threading;
 
 namespace Actor.Base
 {
-
     public static class ActorTagHelper
     {
         [ThreadStatic]
@@ -37,7 +36,6 @@ namespace Actor.Base
 
         internal static long CastNewTagId()
         {
-
 #if !NETFX_CORE
 
             if (fBaseId == 0)
@@ -55,7 +53,6 @@ namespace Actor.Base
             get => fFullHost;
             set => fFullHost = value;
         }
-
     }
 
     [Serializable]
@@ -64,10 +61,13 @@ namespace Actor.Base
     {
         [DataMember]
         private string fHost;
+
         [DataMember]
         private bool fIsRemote;
+
         [DataMember]
         private long fId;
+
         [DataMember]
         private int fUriHash;
 

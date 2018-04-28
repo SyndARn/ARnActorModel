@@ -7,27 +7,20 @@ using System.Threading.Tasks;
 
 namespace TestActor
 {
-
-    class FutureAsyncActorTest : BaseActor
+    internal class FutureAsyncActorTest : BaseActor
     {
         private string fData;
+
         public FutureAsyncActorTest()
         {
-            Become(new Behavior<string>(t =>
-            {
-                fData = t;
-            }));
-            AddBehavior(new Behavior<IActor>(a =>
-            {
-                a.SendMessage(fData);
-            }));
+            Become(new Behavior<string>(t => fData = t));
+            AddBehavior(new Behavior<IActor>(a => a.SendMessage(fData)));
         }
     }
 
     [TestClass]
     public class FutureTest
-    {        
-
+    {
         private async Task<string> GetResult(Future<string> future)
         {
             return await future.ResultAsync();

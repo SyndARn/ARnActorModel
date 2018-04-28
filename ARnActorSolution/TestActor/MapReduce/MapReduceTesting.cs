@@ -49,10 +49,9 @@ namespace TestActor
     }
 
     [TestClass]
-    [Ignore]
     public class MapReduceTesting
     {
-
+        [Ignore]
         [TestMethod]
         public void TestingSimpleMapReduce()
         {
@@ -61,10 +60,11 @@ namespace TestActor
                 MapReduceSimpleTest mapReduce = new MapReduceSimpleTest();
                 EnumerableActor<string> actor = new EnumerableActor<string>();
                 mapReduce.Go("test map", actor);
-                
-                var result = actor.Count;
+
+                var actorsCount = actor.ToList();
+                var result = actorsCount.Count;
                 Assert.IsTrue(result > 0);
-            });
+            },1000*60*60);
         }
     }
 }

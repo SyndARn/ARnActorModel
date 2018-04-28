@@ -8,7 +8,6 @@ using Actor.Server ;
 
 namespace Actor.Service
 {
-
     public class BehaviorReceiveLine : Behavior<IActor, string>
     {
         public BehaviorReceiveLine() : base()
@@ -28,7 +27,7 @@ namespace Actor.Service
             : base()
         {
             Become(new Behavior<IActor,string>(
-                (a,s) => 
+                (a,s) =>
                     {
                         char[] chr = {' '} ;
                         var stringtoparse = s.Trim().Split(chr) ;
@@ -36,7 +35,7 @@ namespace Actor.Service
                         {
                             a.SendMessage(this,item);
                         }
-                    } 
+                    }
                 )) ;
         }
     }
@@ -53,6 +52,7 @@ namespace Actor.Service
     {
         private List<String> fList = new List<String>();
         private ActorTag fParserServer ;
+
         public ParserActor()
             : base()
         {
@@ -62,11 +62,7 @@ namespace Actor.Service
                     Console.WriteLine("parsed {0}",s);
                 }
                 );
-            var connect = new Behavior<ActorTag>(t =>
-                {
-                    fParserServer = t;
-                }
-                );
+            var connect = new Behavior<ActorTag>(t => fParserServer = t);
             var parse = new Behavior<IEnumerable<string>>(t =>
                 {
                     IActor aServer = null;

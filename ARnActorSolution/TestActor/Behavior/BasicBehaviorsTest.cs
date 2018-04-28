@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace TestActor
 {
-
     [TestClass]
     public class BasicBehaviorsTest
     {
@@ -64,7 +63,6 @@ namespace TestActor
 
             Assert.IsTrue(behavior1.LinkedActor == actor);
             Assert.IsTrue(behavior2.LinkedActor == null);
-
         }
 
         [TestMethod]
@@ -117,7 +115,6 @@ namespace TestActor
             Assert.IsFalse(bhvString.LinkedTo == behaviors);
 
             Assert.IsTrue(bhvString.LinkedActor == null);
-
         }
     }
 }

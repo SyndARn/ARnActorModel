@@ -7,7 +7,6 @@ namespace TestActor
     [TestClass]
     public class ActorCollectionTest
     {
-
         [TestMethod]
         public void TestActorCollection()
         {
@@ -19,7 +18,7 @@ namespace TestActor
                     collect.Add("Test3");
                     Assert.IsTrue(collect.Any(t => t == "Test1"));
                     Assert.IsTrue(collect.Contains("Test2"));
-                    Assert.IsTrue(collect.Where(t => t == "Test3").First() != null);
+                    Assert.IsTrue(collect.First(t => t == "Test3") != null);
                     collect.Remove("Test1");
                     collect.Remove("Test2");
                     collect.Remove("Test3");
@@ -37,7 +36,7 @@ namespace TestActor
             {
                 var collect = new CollectionActor<string>();
                 for (int i = 0; i < 100; i++)
-                    collect.Add(string.Format("Test {0}", i));
+                    collect.Add($"Test {i}");
                 Assert.AreEqual(100,collect.Count());
 
                 var enumerable = collect.ToList();

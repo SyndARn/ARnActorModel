@@ -25,7 +25,7 @@ namespace TestActor
             TestLauncherActor.Test(TestContext, () =>
             {
                 int key = 10;
-                string value = "10";
+                const string value = "10";
                 var peerActor = new PeerActor<int, string>();
                 var finder = new Future<IPeerActor<int,string>>();
 
