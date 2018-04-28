@@ -88,9 +88,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Doc\ARnActorModelVersion.cs">
-      <Link>Properties\ARnActorModelVersion.cs</Link>
-    </Compile>
     <Compile Include="ActorConsole\ActorConsole.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
     <Compile Include="ActorServer\ConfigManager.cs" />
@@ -109,6 +106,7 @@
     <Compile Include="Directory\DiscoveryActor.cs" />
     <Compile Include="Directory\HostDirectoryActor.cs" />
     <Compile Include="Factory\ActorAddressFactory.cs" />
+    <Compile Include="Properties\ARnActorModelVersion.cs" />
     <Compile Include="RemoteServer\HttpListener\HttpContextComm.cs" />
     <Compile Include="RemoteServer\HttpListener\HttpListenerService.cs" />
     <Compile Include="RemoteServer\RemoteSenderActor.cs" />
@@ -131,16 +129,16 @@
     <None Include="ARnActorKey.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Window\Actor.Base\Actor.Base.csproj">
+    <ProjectReference Include="..\Actor.Base\Actor.Base.csproj">
       <Project>{6ca2469f-3839-4404-bbfd-a959ad2fd95e}</Project>
       <Name>Actor.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\Window\Actor.Util\Actor.Util.csproj">
+    <ProjectReference Include="..\Actor.Util\Actor.Util.csproj">
       <Project>{ed9f44af-4154-4f52-8b71-7c2148b631ab}</Project>
       <Name>Actor.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\src\shared\Actor.Server.Shared\Actor.Server.Shared.projitems" Label="Shared" />
+  <Import Project="..\..\shared\Actor.Server.Shared\Actor.Server.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
