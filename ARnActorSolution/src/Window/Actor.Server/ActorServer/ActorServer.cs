@@ -13,6 +13,7 @@ namespace Actor.Server
         private string fFullHost = "" ;
         private HostRelayActor fActHostRelay;
         private ConfigManager fConfigManager;
+
         public string FullHost { get
         {
             if (string.IsNullOrEmpty(fFullHost))

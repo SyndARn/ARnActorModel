@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Actor.Server
 {
-
     public abstract class ClientBehavior<T> : Behavior<ServerMessage<T>>
     {
         private IActor fServer = null;
+
         protected ClientBehavior() : base()
         {
-            Pattern = t => { return true; };
+            Pattern = t => true;
             Apply = DispatchAnswer;
         }
 
@@ -26,9 +26,9 @@ namespace Actor.Server
             }
             switch (aMessage.Request)
             {
-                case ServerRequest.Answer: { ReceiveAnswer(aMessage); break; };
-                case ServerRequest.Request: { SendRequest(aMessage); break; };
-                default: { Debug.WriteLine("bad request receive"); break; };
+                case ServerRequest.Answer: { ReceiveAnswer(aMessage); break; }
+                case ServerRequest.Request: { SendRequest(aMessage); break; }
+                default: { Debug.WriteLine("bad request receive"); break; }
             }
         }
 
@@ -47,7 +47,5 @@ namespace Actor.Server
             }
             fServer.SendMessage(new ServerMessage<T>(LinkedTo.LinkedActor, ServerRequest.Request, aMessage.Data));
         }
-
     }
-
 }

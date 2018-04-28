@@ -16,19 +16,20 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-
     // http listener ...
     public class HostRelayActor : BaseActor, IDisposable
     {
         private IListenerService fListener;
+
         public HostRelayActor()
         {
-            Become(new Behavior<String>(t => { return "Listen".Equals(t); }, DoListen));
+            Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
         }
+
         public HostRelayActor(IListenerService listenerService)
         {
             fListener = listenerService;
-            Become(new Behavior<String>(t => { return "Listen".Equals(t); }, DoListen));
+            Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
         }
 
         private void DoListen(Object aMsg)
@@ -50,7 +51,6 @@ namespace Actor.Server
             }
         }
 
-                //Implement IDisposable.
         public void Dispose()
         {
             Dispose(true);
@@ -61,23 +61,15 @@ namespace Actor.Server
         {
                 if (disposing)
                 {
-                    // Free other state (managed objects).
-                    // fEvent.Dispose();
                 }
-                if (fListener != null)
-                    fListener.Close();
-                // Free your own state (unmanaged objects).
-                // Set large fields to null.
+                fListener?.Close();
         }
 
-        // Use C# destructor syntax for finalization code.
         ~HostRelayActor()
         {
             // Simply call Dispose(false).
 
             Dispose(false);
         }
-
     }
-
 }

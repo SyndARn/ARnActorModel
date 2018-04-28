@@ -18,6 +18,7 @@ namespace Actor.Server
             Data = aData;
             Client = aClient;
         }
+
         public IActor Client { get; set; }
         public ServerRequest Request { get; set; }
         public T Data { get; set; }
@@ -25,7 +26,7 @@ namespace Actor.Server
 
     public abstract class ServerBehavior<T> : Behavior<ServerMessage<T>>
     {
-        private List<IActor> fActorList = new List<IActor>() ;
+        private readonly List<IActor> fActorList = new List<IActor>() ;
 
         protected ServerBehavior() : base()
         {
@@ -49,7 +50,7 @@ namespace Actor.Server
                 case ServerRequest.Connect: DoConnect(aMessage);  break;
                 case ServerRequest.Disconnect: DoDisconnect(aMessage);  break;
                 case ServerRequest.Request: DoRequest(aMessage); break;
-                default: break; 
+                default: break;
             }
         }
 
@@ -93,5 +94,4 @@ namespace Actor.Server
             aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Answer, data));
         }
     }
-
 }

@@ -7,7 +7,6 @@ using System.Collections.Concurrent;
 
 namespace Actor.Server
 {
-
     public class ActorFactory : IActorFactory
     {
         public IActor CastNewActor(string actorAddress)
@@ -31,8 +30,8 @@ namespace Actor.Server
             return hash;
         }
 
-        private IActorFactory fActorFactory;
-        private ConcurrentDictionary<string, IActor> fDico = new ConcurrentDictionary<string, IActor>() ;
+        private readonly IActorFactory fActorFactory;
+        private readonly ConcurrentDictionary<string, IActor> fDico = new ConcurrentDictionary<string, IActor>() ;
 
         public ActorAddressFactory(IActorFactory actorFactory)
         {
@@ -49,5 +48,4 @@ namespace Actor.Server
             fDico[actorAddress] = fActorFactory.CastNewActor(actorAddress);
         }
     }
-
 }

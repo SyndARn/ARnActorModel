@@ -43,7 +43,8 @@ namespace Actor.Server
 
     public class EchoClientActor : BaseActor
     {
-        private EchoClientBehavior aClient;
+        private readonly EchoClientBehavior aClient;
+
         public EchoClientActor()
             : base()
         {
@@ -52,7 +53,7 @@ namespace Actor.Server
 
         public void Connect(string aServerName)
         {
-            Become(new Behavior<string, string>((s1,s2) => { return s1 == "Connect"; }, DoConnect));
+            Become(new Behavior<string, string>((s1, s2) => s1 == "Connect", DoConnect));
             this.SendMessage("Connect", aServerName);
         }
 
@@ -60,7 +61,7 @@ namespace Actor.Server
         {
             // find in directory
             DirectoryActor.GetDirectory().Find(this, host);
-            Receive(ask => { return (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>); }).ContinueWith(
+            Receive(ask => (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>)).ContinueWith(
                 r =>
                 {
                     IMessageParam<DirectoryActor.DirectoryRequest, IActor> ans = (IMessageParam<DirectoryActor.DirectoryRequest, IActor>)(r.Result);
@@ -68,7 +69,7 @@ namespace Actor.Server
                     {
                         SendByName<string>.Send("Server found", "Console");
                         ans.Item2.SendMessage(new ServerMessage<string>(this, ServerRequest.Connect, default(string)));
-                        Receive(m => 
+                        Receive(m =>
                             {
                                 ServerMessage<string> sm = m as ServerMessage<string> ;
                                 return m != null && (sm.Request.Equals(ServerRequest.Accept));
@@ -122,7 +123,6 @@ namespace Actor.Server
             }
         }
     }
-
 
     public class EchoClientBehavior : ClientBehavior<string>
     {
