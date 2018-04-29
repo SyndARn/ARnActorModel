@@ -16,16 +16,17 @@ namespace Actor.Service
         {
             Become(new LoggerBehaviors(aFileName));
             var heartBeat = new HeartBeatActor(500);
-            heartBeat.SendMessage(this);
+            heartBeat.SendMessage((IActor)this);
             SendMessage("Logging start");
         }
     }
 
-    public class LogHeartBeatBehavior : Behavior<IMessageParam<HeartBeatActor, HeartBeatAction>>
+    public class LogHeartBeatBehavior : Behavior<HeartBeatActor, HeartBeatAction>
     {
         public LogHeartBeatBehavior() : base()
         {
-            Apply = msgprm =>
+            Pattern = (actor, action) => (actor is HeartBeatActor) && (action == HeartBeatAction.Beat);
+            Apply = (actor,action) =>
             {
                 var parent = LinkedTo as LoggerBehaviors;
                 if (parent.MessageList.Count > 0)
@@ -57,9 +58,9 @@ namespace Actor.Service
 
         private void DoInit(string fileName)
         {
-            FileName = Environment.CurrentDirectory + fileName;
-            this.BecomeBehavior(new LogHeartBeatBehavior());
-            AddBehavior(new Behavior<object>(msg =>
+            FileName = Path.Combine(Environment.CurrentDirectory,fileName);
+            BecomeBehavior(new LogHeartBeatBehavior());
+            AddBehavior(new Behavior<string>(msg =>
             {
                 if (msg != null)
                 {
