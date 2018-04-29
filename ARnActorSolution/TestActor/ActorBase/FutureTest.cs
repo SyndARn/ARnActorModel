@@ -21,9 +21,9 @@ namespace TestActor
     [TestClass]
     public class FutureTest
     {
-        private async Task<string> GetResult(Future<string> future)
+        private Task<string> GetResult(Future<string> future)
         {
-            return await future.ResultAsync();
+            return future.ResultAsync();
         }
 
         [TestMethod]

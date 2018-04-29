@@ -50,9 +50,9 @@ namespace TestActor
             SendMessage(false);
         }
 
-        public async Task<bool> Wait()
+        public Task<bool> Wait()
         {
-            return await Wait(DefaultWait).ConfigureAwait(false);
+            return Wait(DefaultWait);
         }
 
         public async Task<bool> Wait(int ms)

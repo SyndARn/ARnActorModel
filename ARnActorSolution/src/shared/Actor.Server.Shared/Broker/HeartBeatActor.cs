@@ -7,7 +7,8 @@ namespace Actor.Server
 
     public class HeartBeatActor : BaseActor
     {
-        private int fTimeOutMS;
+        private readonly int fTimeOutMS;
+
         public HeartBeatActor(int timeOutMS)
         {
             fTimeOutMS = timeOutMS;

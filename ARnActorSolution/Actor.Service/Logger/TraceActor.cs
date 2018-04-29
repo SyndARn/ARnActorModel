@@ -12,7 +12,7 @@ namespace Actor.Service
             Become(new NullBehaviors());
         }
 
-        private static Lazy<LoggerActor> fLogger = new Lazy<LoggerActor>
+        private static readonly Lazy<LoggerActor> fLogger = new Lazy<LoggerActor>
             (
             () => new LoggerActor("TraceLogger")
             , true);

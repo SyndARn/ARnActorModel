@@ -150,6 +150,7 @@
     <Compile Include="Service\RingActorTests.cs" />
     <Compile Include="Service\StringParserActorTests.cs" />
     <Compile Include="Trait\TraitTest.cs" />
+    <Compile Include="Composition\InjectionActorTest.cs" />
     <Compile Include="Util\TextWriterActorTest.cs" />
     <Compile Include="Util\TestLauncherActor.cs" />
     <Compile Include="Behavior\CrudeActorTests.cs" />

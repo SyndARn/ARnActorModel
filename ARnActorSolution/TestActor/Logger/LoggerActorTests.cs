@@ -22,8 +22,10 @@ namespace Actor.Service.Tests
             const string logFilename = "testLog";
             TestLauncherActor.Test(() =>
             {
-                var logger = new LoggerActor(logFilename);
-                logger.MessageTracerService = new MemoryMessageTracerService();
+                var logger = new LoggerActor(logFilename)
+                {
+                    MessageTracerService = new MemoryMessageTracerService()
+                };
                 logger.SendMessage("Test Message");
                 var msgList = logger.MessageTracerService.CopyAllMessages();
                 Assert.IsTrue(msgList.Contains("Test Message"));

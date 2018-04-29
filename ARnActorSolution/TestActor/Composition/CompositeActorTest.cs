@@ -19,12 +19,12 @@ namespace TestActor
 
     internal class OperActor : BaseActor
     {
-        public OperatorPlusBehavior trait { get; set; }
+        public OperatorPlusBehavior Trait { get; set; }
 
         public OperActor()
         {
-            trait = new OperatorPlusBehavior();
-            Become(trait);
+            Trait = new OperatorPlusBehavior();
+            Become(Trait);
         }
     }
 
@@ -40,9 +40,9 @@ namespace TestActor
                 var number1 = new NumberActor((IActor)operPlus,1);
                 var number2 = new NumberActor((IActor)operPlus, 2);
                 var output = new Future<int>();
-                operPlus.trait.RegisterInput(number1);
-                operPlus.trait.RegisterInput(number2);
-                operPlus.trait.RegisterOutput(output);
+                operPlus.Trait.RegisterInput(number1);
+                operPlus.Trait.RegisterInput(number2);
+                operPlus.Trait.RegisterOutput(output);
                 number1.SendMessage("start");
                 number2.SendMessage("start");
                 Assert.AreEqual(3, output.Result());
