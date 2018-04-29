@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
 using System.Globalization;
 
 namespace Actor.Service
 {
-    public class TraceActor : BaseActor 
+    public class TraceActor : BaseActor
     {
         public TraceActor()
         {
@@ -18,10 +14,7 @@ namespace Actor.Service
 
         private static Lazy<LoggerActor> fLogger = new Lazy<LoggerActor>
             (
-            () =>
-            {
-                return new LoggerActor("TraceLogger");
-            }
+            () => new LoggerActor("TraceLogger")
             , true);
 
         private Stopwatch fWatch;

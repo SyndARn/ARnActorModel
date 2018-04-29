@@ -30,7 +30,7 @@ namespace TestActor
             var query = mts.CopyAllMessages().ToList();
             string s = string.Empty;
             query.ForEach(item => s = s + item);
-            Assert.AreEqual(3, query.Count(), s);
+            Assert.AreEqual(3, query.Count, s);
             Assert.IsTrue(query.Contains("Test 2"));
             Assert.IsFalse(query.Contains("Test 4"));
             Assert.AreEqual("Test 1", query.First());

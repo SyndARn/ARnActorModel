@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Actor.Base
 {
@@ -64,24 +62,5 @@ namespace Actor.Base
         }
 
         protected abstract void DoCompositeBehavior(IActor actor, T t);
-    }
-
-    public class OperatorPlusBehavior : CompositeBehavior<int>
-    {
-        private int accumulator;
-
-        protected override void DoCompositeBehavior(IActor actor, int t)
-        {
-            inputs.Remove(actor);
-            accumulator+=t;
-            if (inputs.Count == 0)
-            {
-                foreach(var item in outputs)
-                {
-                    item.SendMessage(accumulator);
-                }
-                outputs.Clear();
-            }
-        }
     }
 }
