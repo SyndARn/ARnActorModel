@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Actor.Base
+﻿namespace Actor.Base
 {
-
     /// <summary>
     /// How an actor is handled in running context
     /// </summary>
@@ -22,23 +15,16 @@ namespace Actor.Base
 
     public class ActorInjection : IRunningActor
     {
-        BaseActor realActor = null;
-
         public static ActorInjection Cast(IBehaviors bhvs)
         {
-            ActorInjection inject = new ActorInjection()
+            return new ActorInjection()
             {
-                realActor = new BaseActor(bhvs)
+                Actor = new BaseActor(bhvs)
             };
-            return inject;
         }
 
-        public BaseActor Actor
-        {
-            get { return realActor ; }
-        }
+        public BaseActor Actor { get; private set; }
 
         // now you can injection.actor.sendmessageto ...
     }
-
 }
