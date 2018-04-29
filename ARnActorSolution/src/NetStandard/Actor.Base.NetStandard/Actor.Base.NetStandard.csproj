@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>ARnActorKey.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>Actor.Base</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="..\..\shared\Actor.Base.Shared\Actor.Base.Shared.projitems" Label="Shared" />
+
+</Project>
