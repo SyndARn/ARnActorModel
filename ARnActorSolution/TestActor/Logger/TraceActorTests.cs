@@ -14,7 +14,6 @@ namespace Actor.Service.Tests
     [TestClass()]
     public class TraceActorTests
     {
-
         public TestContext TestContext { get; set; }
 
         [TestMethod()]

@@ -17,7 +17,7 @@ namespace Actor.Server.Tests
         public void SerializeTest()
         {
             IActor actor = new BaseActor();
-            string someData = "TestData";
+            const string someData = "TestData";
             SerialObject serialObject = new SerialObject(someData, actor.Tag);
 
             Assert.AreEqual("TestData", serialObject.Data);
@@ -26,7 +26,6 @@ namespace Actor.Server.Tests
             NetDataContractSerializeService service = new NetDataContractSerializeService();
             using (MemoryStream serializeStream = new MemoryStream())
             {
-
                 service.Serialize(serialObject.Data,serialObject.Tag, serializeStream);
                 serializeStream.Seek(0, SeekOrigin.Begin); // rewind
 
@@ -41,8 +40,6 @@ namespace Actor.Server.Tests
                     Assert.AreEqual(actor.Tag, returnObject.Tag);
                 }
             }
-
         }
-
     }
 }
