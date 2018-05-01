@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 
 namespace Actor.Server
 {
+    [Serializable]
     [DataContract]
     public class DataContractObject
     {
