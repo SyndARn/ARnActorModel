@@ -1,4 +1,4 @@
-
+ 
 #### ARnActorModel
 A C# Actor Model library.
 
@@ -36,9 +36,7 @@ Unit tests are included as well as some sample applications.
 I used the excellent [OpenCover](https://github.com/OpenCover/opencover) to give some tests coverage and it's checked with AppVeyor for continuous integration.
 [![Coverage Status](https://coveralls.io/repos/github/SyndARn/ARnActorModel/badge.svg?branch=master)](https://coveralls.io/github/SyndARn/ARnActorModel?branch=master)
 
-For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
-
-#### Supported Framework
+#### Supported Framework [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
 - .Net 4.6 (Actor.Base, Actor.Util, Actor.Server, Actor.Service)
 - Netcore 2.0 (Actor.Base, Actor.Util)
 - Netstandard 2.0 (Actor.Base, Actor.Util)
