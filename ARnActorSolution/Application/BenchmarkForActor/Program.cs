@@ -16,7 +16,6 @@ namespace BenchmarkForActor
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
             Accumulator accumulator = new Accumulator();
-            IFuture<double> future = new Future<double>();
             List<IActor> actorList = new List<IActor>();
             for (int i = 0; i < 1000; i++)
                 actorList.Add(new BenchActor(accumulator));
@@ -31,6 +30,7 @@ namespace BenchmarkForActor
                 if (stopwatch.ElapsedMilliseconds > lastElapsed + 1000 )
                 {
                     lastElapsed = stopwatch.ElapsedMilliseconds;
+                    IFuture<double> future = new Future<double>();
                     accumulator.SendMessage(future);
                     double speed = future.Result() / lastElapsed *1000.0;
                     Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Speed {0}", speed));

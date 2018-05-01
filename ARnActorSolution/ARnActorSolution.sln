@@ -110,9 +110,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Server", "src\Window\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetStandard", "NetStandard", "{56A5BC9C-D8DC-4E44-B64E-1C04AEDAE9FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Base.NetStandard", "src\NetStandard\Actor.Base.NetStandard\Actor.Base.NetStandard.csproj", "{FADBC51F-89BF-48FC-A5AB-710F22BB362E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actor.Base.NetStandard", "src\NetStandard\Actor.Base.NetStandard\Actor.Base.NetStandard.csproj", "{FADBC51F-89BF-48FC-A5AB-710F22BB362E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Util.NetStandard", "src\NetStandard\Actor.Util.NetStandard\Actor.Util.NetStandard.csproj", "{D2B9E9B9-0918-41EB-9F4E-F6C663D05FB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actor.Util.NetStandard", "src\NetStandard\Actor.Util.NetStandard\Actor.Util.NetStandard.csproj", "{D2B9E9B9-0918-41EB-9F4E-F6C663D05FB3}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

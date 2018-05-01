@@ -16,8 +16,9 @@ namespace WinSkyNet1M
             Stopwatch sw = Stopwatch.StartNew();
             var future = new Future<long>();
             new SkynetActor(null, 0, 1000000, 10, future);
-            Console.WriteLine($"ms : {sw.Elapsed.TotalMilliseconds:0.000} - result : {future.ResultAsync().Result}");
+            Console.WriteLine($"ms : {sw.Elapsed.TotalMilliseconds:#,##0.000} - result : {future.ResultAsync().Result}");
             sw.Stop();
+            Console.WriteLine($" Stat {ActorTaskFactory.Stat()}");
             Console.ReadLine();
         }
     }
@@ -51,6 +52,7 @@ namespace WinSkyNet1M
                          future.SendMessage(_accumulator);
                  }
              }));
+
             AddBehavior(new Behavior<string>((s) =>
             {
                 if (size != 1)
@@ -66,6 +68,7 @@ namespace WinSkyNet1M
                     _parent.SendMessage(_number);
                 }
             })) ;
+
             SendMessage("start");
         }
     }

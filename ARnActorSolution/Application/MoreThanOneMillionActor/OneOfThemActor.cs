@@ -12,6 +12,7 @@ namespace MoreThanOneMillionActor
     {
        private readonly ReduceActor fReduce;
        private StringObserver obs = new StringObserver();
+
        public Glue(int i, ReduceActor reduce)
         {
             fReduce = reduce;
@@ -45,7 +46,7 @@ namespace MoreThanOneMillionActor
 
         private void Observe(IActor observer)
         {
-            observer.SendMessage(GetState()) ;
+            observer.SendMessage(GetState().Result()) ;
         }
     }
 
@@ -62,6 +63,7 @@ namespace MoreThanOneMillionActor
         private int fSum  ;
         private int fCount;
         private ReceiveActor<string> fWait;
+
         public ReduceActor(int qtt) : base()
         {
             fSum = 0;

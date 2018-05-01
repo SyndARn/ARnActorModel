@@ -87,7 +87,7 @@ namespace Actor.Base
         {
             if (Interlocked.CompareExchange(ref fShared.fInTask, 1, 0) == 0)
             {
-                ActorTask.AddActor(MessageLoop, taskCreationOptions);
+                ActorTaskFactory.AddActor(MessageLoop, taskCreationOptions);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Actor.Base
         {
             if (Interlocked.CompareExchange(ref fShared.fInTask, 1, 0) == 0)
             {
-                ActorTask.AddActor(MessageLoop, TaskCreationOptions.None);
+                ActorTaskFactory.AddActor(MessageLoop, TaskCreationOptions.None);
             }
         }
 
@@ -326,7 +326,9 @@ namespace Actor.Base
                 }
 
                 if (patternmatch || receivematch)
+                {
                     break;
+                }
             }
 
             if (patternmatch)

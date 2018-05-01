@@ -19,7 +19,7 @@ namespace Actor.TestApplication
         {
             List<String> aList = new List<String>
             {
-                ActorTask.Stat()
+                ActorTaskFactory.Stat()
             };
             var lParser = new ParserActor();
             new EchoActor<IEnumerable<string>>(lParser, aList);

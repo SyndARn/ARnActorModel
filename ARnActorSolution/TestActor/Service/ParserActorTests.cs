@@ -20,7 +20,7 @@ namespace TestActor
         private void DoParser(IActor anActor)
         {
             List<String> aList = new List<String>();
-            aList.Add(ActorTask.Stat());
+            aList.Add(ActorTaskFactory.Stat());
             var lParser = new ParserActor();
             lParser.SendMessage(aList.AsEnumerable<String>(), anActor);
         }
