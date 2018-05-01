@@ -1,3 +1,4 @@
+
 #### ARnActorModel
 A C# Actor Model library.
 
@@ -37,11 +38,14 @@ I used the excellent [OpenCover](https://github.com/OpenCover/opencover) to give
 
 For a common usage, you can download ARnActorModel here in Nuget. [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
 
+#### Supported Framework
+- .Net 4.6 (Actor.Base, Actor.Util, Actor.Server, Actor.Service)
+- Netcore 2.0 (Actor.Base, Actor.Util)
+- Netstandard 2.0 (Actor.Base, Actor.Util)
 
 #### Current works
-
 - more coverage (target 90%)
-- moving to NetCore/Shared model (Actor.Base and Actor.Util are migrated)
-- focus on future vs actor (They now are basically the same object, with different interfaces).
+- focus on future vs actor (They now are basically the same object, with different interfaces)
+- Improved Message Loop
  
 
