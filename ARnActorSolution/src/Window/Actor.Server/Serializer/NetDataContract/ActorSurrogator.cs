@@ -12,7 +12,6 @@ using System.Reflection;
 
 namespace Actor.Server
 {
-
     public class DataContractActorSurrogate : IDataContractSurrogate
     {
         public object GetCustomDataToExport(MemberInfo memberInfo, Type dataContractType)
@@ -36,11 +35,13 @@ namespace Actor.Server
 
         public object GetDeserializedObject(object obj, Type targetType)
         {
-            IActor act = (IActor)obj;
-            HostDirectoryActor.Register(act);
-            // continue
-            ActorTag remoteTag = act.Tag;
-            return act;
+            if (obj is IActor act)
+            {
+                HostDirectoryActor.Register(act);
+                ActorTag remoteTag = act.Tag;
+                return act;
+            }
+            return obj;
         }
 
         public void GetKnownCustomDataTypes(Collection<Type> customDataTypes)
@@ -60,8 +61,7 @@ namespace Actor.Server
                 // typeof(RemoteSenderActor).GetField("fRemoteTag").SetValue(obj, getTag);
             }
 
-
-            return null; // ms bug here
+            return obj;
         }
 
         public Type GetReferencedTypeOnImport(string typeName, string typeNamespace, object customData)
@@ -86,7 +86,7 @@ namespace Actor.Server
         {
             if (info == null)
             {
-                throw new ArgumentNullException("info","SerializationInfo was null");
+                throw new ArgumentNullException(nameof(info), "SerializationInfo was null");
             }
             IActor act = (IActor)obj;
             HostDirectoryActor.Register(act);

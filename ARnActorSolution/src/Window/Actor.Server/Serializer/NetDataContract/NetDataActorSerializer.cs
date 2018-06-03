@@ -10,7 +10,6 @@ using Procurios.Public;
 
 namespace Actor.Server
 {
-
     public static class NetDataActorSerializer
     {
         public static SerialObject DeSerialize(Stream inputStream)

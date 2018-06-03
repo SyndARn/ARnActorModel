@@ -65,7 +65,8 @@ namespace Actor.Server.Tests
                 using (MemoryStream deserializeStream = new MemoryStream())
                 {
                     serializeStream.CopyTo(deserializeStream);
-                    DataContractObject returnObject = service.Deserialize(deserializeStream) as DataContractObject;
+                    deserializeStream.Seek(0, SeekOrigin.Begin);
+                    DataContractObject returnObject = service.Deserialize(deserializeStream) as DataContractObject ;
                     Assert.IsNotNull(returnObject);
                     Assert.IsNotNull(returnObject.Data);
                     Assert.IsNotNull(returnObject.Tag);
@@ -74,6 +75,5 @@ namespace Actor.Server.Tests
                 }
             }
         }
-
     }
 }
