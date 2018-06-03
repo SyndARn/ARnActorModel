@@ -8,15 +8,19 @@ using System.Runtime.Serialization;
 
 namespace Actor.Server
 {
+    [Serializable]
     [DataContract]
+    [KnownType(typeof(ActorTag))]
     public class DataContractObject
     {
         [DataMember]
         public object Data { get; private set; }
+
         [DataMember]
         public ActorTag Tag { get; private set; }
 
         public DataContractObject() { }
+
         public DataContractObject(object someData, ActorTag aTag)
         {
             Data = someData;

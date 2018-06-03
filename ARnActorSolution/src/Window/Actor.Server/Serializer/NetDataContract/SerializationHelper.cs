@@ -10,7 +10,6 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-
     public class ActorBinder : SerializationBinder
     {
         public override Type BindToType(string assemblyName, string typeName)
@@ -27,8 +26,6 @@ namespace Actor.Server
             return outtype;
         }
     }
-
-
 
     public class ActorSurrogatorSelector : SurrogateSelector
     {
@@ -54,7 +51,9 @@ namespace Actor.Server
                 return new ActorSurrogator();
             }
             else
+            {
                 return base.GetSurrogate(type, context, out selector);
+            }
         }
     }
 }

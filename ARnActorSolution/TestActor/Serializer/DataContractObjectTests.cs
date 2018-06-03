@@ -16,7 +16,7 @@ namespace Actor.Server.Tests
         }
 
         [TestMethod()]
-        public void DataContractObjectTest1()
+        public void DataContractObjectTestWithData()
         {
             string someData = "someData";
             ActorTag tag = new ActorTag();
