@@ -13,7 +13,6 @@ namespace TestActor
     [TestClass()]
     public class HostDirectoryActorTests
     {
-
         [TestMethod()]
         public void GetStatTest()
         {
@@ -21,7 +20,6 @@ namespace TestActor
             Assert.IsNotNull(stat);
             Assert.IsTrue(stat.Contains("Host entries"));
         }
-
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         [TestMethod()]
@@ -69,6 +67,5 @@ namespace TestActor
                 Assert.AreEqual("Test",result2,string.Format(CultureInfo.InvariantCulture,"Expected {0} Found {1}","Test",result2));
             });
         }
-        
     }
 }

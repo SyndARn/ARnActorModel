@@ -10,6 +10,7 @@ namespace BenchmarkForActor
     public class Accumulator : BaseActor
     {
         private double fAccumulate = 0;
+
         public Accumulator()
         {
             Become(new Behavior<double>
