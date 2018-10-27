@@ -10,9 +10,6 @@ using System.Linq.Expressions;
 
 namespace Actor.TestApplication
 {
-
-
-
     public class DynamicActor : DynamicObject, IActor
     {
 

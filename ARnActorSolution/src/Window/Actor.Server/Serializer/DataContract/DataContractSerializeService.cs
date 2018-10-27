@@ -8,17 +8,17 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    public class NetDataContractSerializeService : ISerializeService
+    public class DataContractSerializeService : ISerializeService
     {
         public void Serialize(object data, ActorTag tag, Stream stream)
         {
-            SerialObject so = new SerialObject(data, tag);
-            NetDataActorSerializer.Serialize(so, stream);
+            DataContractObject dco = new DataContractObject(data, tag);
+            DataContractActorSerializer.Serialize(dco, stream);
         }
 
         public object Deserialize(Stream stream)
         {
-            return NetDataActorSerializer.DeSerialize(stream);
+            return DataContractActorSerializer.DeSerialize(stream);
         }
     }
 }

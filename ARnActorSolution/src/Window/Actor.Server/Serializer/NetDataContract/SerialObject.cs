@@ -11,8 +11,8 @@ namespace Actor.Server
     [Serializable]
     public class SerialObject
     {
-        public object Data { get; private set; }
-        public ActorTag Tag { get; private set; }
+        public object Data { get; }
+        public ActorTag Tag { get; }
         public SerialObject() { }
         public SerialObject(object someData, ActorTag aTag)
         {

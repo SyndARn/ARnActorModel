@@ -19,8 +19,10 @@ namespace TestActor
 
         private void DoParser(IActor anActor)
         {
-            List<String> aList = new List<String>();
-            aList.Add(ActorTask.Stat());
+            List<String> aList = new List<String>
+            {
+                ActorTask.Stat()
+            };
             var lParser = new ParserActor();
             lParser.SendMessage(aList.AsEnumerable<String>(), anActor);
         }
@@ -28,7 +30,8 @@ namespace TestActor
 
     internal class TestReceiver : BaseActor
     {
-        private List<string> fList = new List<string>();
+        private readonly List<string> fList = new List<string>();
+
         public TestReceiver()
         {
             Become(new Behavior<IEnumerable<string>>(Receive));
@@ -59,7 +62,6 @@ namespace TestActor
     [TestClass()]
     public class ParserActorTests
     {
-
         [TestMethod()]
         [Ignore]
         public void ParserActorTest()
