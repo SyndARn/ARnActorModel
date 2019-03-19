@@ -6,11 +6,14 @@ using System.Text;
 namespace Procurios.Public
 {
 	/// <summary>
+	/// <para>
 	/// This class encodes and decodes JSON strings.
 	/// Spec. details, see http://www.json.org/
-	///
+	/// </para>
+	/// <para>
 	/// JSON uses Arrays and Objects. These correspond here to the datatypes ArrayList and Hashtable.
 	/// All numbers are parsed to doubles.
+	/// </para>
 	/// </summary>
 	public class JSON
 	{

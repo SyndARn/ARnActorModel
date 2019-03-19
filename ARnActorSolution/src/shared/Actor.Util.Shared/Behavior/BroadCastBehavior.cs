@@ -5,7 +5,6 @@ namespace Actor.Util
 {
     public class BroadCastBehavior<T> : Behavior<T, IEnumerable<IActor>>
     {
-
         public BroadCastBehavior()
         {
             this.Pattern = (t, en) => true;

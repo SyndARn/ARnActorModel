@@ -54,10 +54,8 @@ namespace Actor.Util
         public DoForEachbehavior()
         {
             Pattern = (t, a) => true;
-            Apply = DoEach;
+            Apply = (T aT, Action<T> action) => action(aT);
         }
-
-        private void DoEach(T aT, Action<T> action) => action(aT);
     }
 }
 

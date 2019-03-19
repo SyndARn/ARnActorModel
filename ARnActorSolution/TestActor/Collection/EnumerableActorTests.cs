@@ -13,7 +13,6 @@ namespace TestActor
     [TestClass()]
     public class EnumerableActorTests
     {
-
         [TestMethod()]
         public void QueryiableTest()
         {
@@ -34,7 +33,7 @@ namespace TestActor
             int sum = 0;
             foreach (var item in queryActor)
             {
-                sum = sum + int.Parse(item,CultureInfo.InvariantCulture);
+                sum += int.Parse(item, CultureInfo.InvariantCulture);
             }
 
             Assert.AreEqual(expected, sum);
@@ -55,8 +54,10 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                var act = new EnumerableActor<string>();
-                act.Add("test");
+                var act = new EnumerableActor<string>
+                {
+                    "test"
+                };
             });
         }
 
@@ -65,8 +66,10 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                var act = new EnumerableActor<string>();
-                act.Add("test");
+                var act = new EnumerableActor<string>
+                {
+                    "test"
+                };
                 act.Remove("test");
             });
         }
@@ -76,16 +79,18 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                var act = new EnumerableActor<string>();
-                act.Add("test1");
-                act.Add("test2");
+                var act = new EnumerableActor<string>
+                {
+                    "test1",
+                    "test2"
+                };
                 var list = new List<string>();
                 foreach(var item in act)
                 {
                     list.Add(item);
                 }
                 Assert.AreEqual(2, list.Count);
-                Assert.AreEqual(2, act.Count());
+                Assert.AreEqual(2, act.Count);
             });
         }
 

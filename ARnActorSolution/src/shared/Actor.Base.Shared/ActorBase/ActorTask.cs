@@ -33,7 +33,6 @@ using System.Runtime.CompilerServices;
 
 namespace Actor.Base
 {
-
     public static class ActorTask
     {
         private static long numAddTask = 0; // qtt of task launched
@@ -42,17 +41,15 @@ namespace Actor.Base
         public static string Stat()
         {
 #if ! NETFX_CORE && ! NETCOREAPP1_1
-            int workerThread;
-            int ioThread;
-            ThreadPool.GetAvailableThreads(out workerThread, out ioThread);
+            ThreadPool.GetAvailableThreads(out int workerThread, out int ioThread);
 #endif
             StringBuilder sb = new StringBuilder();
 #if ! NETFX_CORE && ! NETCOREAPP1_1
-            sb.AppendLine("Max Active Threads " + workerThread.ToString(CultureInfo.InvariantCulture) + " " + ioThread.ToString(CultureInfo.InvariantCulture));
+            sb.Append("Max Active Threads ").Append(workerThread.ToString(CultureInfo.InvariantCulture)).Append(" ").AppendLine(ioThread.ToString(CultureInfo.InvariantCulture));
 #endif
-            sb.AppendLine("Task processed " + numAddTask.ToString(CultureInfo.InvariantCulture));
+            sb.Append("Task processed ").AppendLine(numAddTask.ToString(CultureInfo.InvariantCulture));
             long total = numAddTask - numCloseTask; // 2 at rest, the actorserver AND the current task
-            sb.AppendLine("Task running " + total.ToString(CultureInfo.InvariantCulture));
+            sb.Append("Task running ").AppendLine(total.ToString(CultureInfo.InvariantCulture));
             return sb.ToString();
         }
 
@@ -63,7 +60,6 @@ namespace Actor.Base
             {
                 throw new ActorException(string.Format(CultureInfo.InvariantCulture,"bad, no actor should be null at this point {0}", nameof(messageLoop)));
             }
-
 
             // handling here a max active task
             Task.Factory.StartNew(() =>

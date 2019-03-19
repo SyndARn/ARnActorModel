@@ -9,17 +9,17 @@ namespace Actor.Util
 {
     public class DictionaryBehavior<TKey,TValue> : Behaviors, IDictionaryActor<TKey,TValue>
     {
-        private readonly Dictionary<TKey, TValue> fDico = new Dictionary<TKey, TValue>();
+        private readonly Dictionary<TKey, TValue> _dico = new Dictionary<TKey, TValue>();
 
         public DictionaryBehavior()
         {
-            var bhv1 = new Behavior<TKey, TValue>( (k, v) => fDico[k] = v);
+            var bhv1 = new Behavior<TKey, TValue>( (k, v) => _dico[k] = v);
             var bhv2 = new Behavior<IActor, TKey>((a, k) =>
                 {
-                    bool result = fDico.TryGetValue(k, out TValue v);
+                    bool result = _dico.TryGetValue(k, out TValue v);
                     a.SendMessage(result, k, v);
                 });
-            var bhv3 = new Behavior<TKey>(k => fDico.Remove(k));
+            var bhv3 = new Behavior<TKey>(k => _dico.Remove(k));
             AddBehavior(bhv1);
             AddBehavior(bhv2);
             AddBehavior(bhv3);

@@ -16172,10 +16172,11 @@
   },
   "libraries": {
     "coveralls.io/1.4.2": {
-      "sha512": "V8id+G8NdmmFKXbbxk/zqVGXZnuSrzOkcF9GhOLhNOHCG9kC4qiQLvod+kGrtpQyzyzySIyLdI18H5eGA08ZDA==",
+      "sha512": "ZGm1aq3YPPeSxJ1tCCDP2KX40B37H1SjNYOz4W0wvSAVFxxcPWBUXPnk5lwj9Hx9FADh0Kog4cRKjKxUYlGm4A==",
       "type": "package",
       "path": "coveralls.io/1.4.2",
       "files": [
+        ".signature.p7s",
         "coveralls.io.1.4.2.nupkg.sha512",
         "coveralls.io.nuspec",
         "tools/CommandLine.dll",
@@ -25717,8 +25718,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\ARn\\Source\\Repos\\NugetForActorModel\\": {},
-        "https://www.nuget.org/api/v2/": {}
+        "https://api.nuget.org/v3/index.json": {}
       }
     },
     "dependencies": {

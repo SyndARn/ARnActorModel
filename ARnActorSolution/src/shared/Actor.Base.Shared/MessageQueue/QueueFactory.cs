@@ -2,11 +2,9 @@
 
 namespace Actor.Base
 {
-    public enum QueueStyle { None, LockFree, Locking, Ring }
-
     public class QueueFactory<T>
     {
-
+        public enum QueueStyle { None, LockFree, Locking, Ring }
         public static QueueFactory<T> Current { get; } = new Lazy<QueueFactory<T>>(true).Value;
         public QueueStyle Style { get; set; }
 

@@ -12,6 +12,7 @@ namespace Actor.Base
     public class Trait<T> : Behavior<ITrait<T>,T>, ITrait<T>
     {
         private T fData;
+
         public Trait() : base()
         {
             Pattern = DefaultPattern();
@@ -32,6 +33,7 @@ namespace Actor.Base
     public class ActorWithTrait<T> : BaseActor, ITrait<T>
     {
         private ITrait<T> _traitService;
+
         public ITrait<T> TraitService { get => _traitService;
             set
             {
@@ -40,6 +42,7 @@ namespace Actor.Base
                 this.Become(bhv);
             }
         }
+
         public ActorWithTrait() : base()
         {
         }

@@ -1,4 +1,5 @@
-﻿/*****************************************************************************
+﻿#region license
+/*****************************************************************************
 		               ARnActor Actor Model Library .Net
      
 	 Copyright (C) {2015}  {ARn/SyndARn} 
@@ -20,6 +21,8 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
+#endregion
+
 using System;
 using System.Threading.Tasks;
 
@@ -46,6 +49,7 @@ namespace Actor.Base
     {
         Func<T1, T2, bool> Pattern { get; }
         Action<T1, T2> Apply { get; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         TaskCompletionSource<IMessageParam<T1,T2>> Completion { get; }
     }

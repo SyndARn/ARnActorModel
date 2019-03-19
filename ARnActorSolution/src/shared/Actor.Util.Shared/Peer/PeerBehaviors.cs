@@ -24,6 +24,7 @@ namespace Actor.Util
         internal Dictionary<TKey, TValue> Nodes = new Dictionary<TKey, TValue>();
         internal Dictionary<HashKey, IPeerActor<TKey,TValue>> Peers = new Dictionary<HashKey, IPeerActor<TKey,TValue>>();
         private HashKey fCurrentPeer;
+
         internal HashKey CurrentPeer
         {
             get
@@ -89,6 +90,7 @@ namespace Actor.Util
     public sealed class PeerActor<TKey, TValue> : BaseActor, IPeerActor<TKey>, IPeerActor<TKey,TValue>, INodeBehavior<TKey, TValue>
     {
         private readonly INodeBehavior<TKey, TValue> _nodeBehaviorService;
+
         public PeerActor() : base()
         {
             var bhv = new PeerBehaviors<TKey, TValue>();

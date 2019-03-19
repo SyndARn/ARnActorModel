@@ -20,18 +20,12 @@ namespace TestActor
             Assert.IsTrue(rx is IActor);
         }
 
-        class Observer : BaseActor, IObserver<string>
+        private class Observer : BaseActor, IObserver<string>
         {
             public Observer()
             {
-                Become(new Behavior<string>(s =>
-                {
-                    Data = s;
-                }));
-                AddBehavior(new Behavior<IActor>(a =>
-                {
-                    a.SendMessage(Data);
-                }));
+                Become(new Behavior<string>(s => Data = s));
+                AddBehavior(new Behavior<IActor>(a => a.SendMessage(Data)));
             }
 
             public async Task<string> GetResultAsync()
@@ -42,14 +36,13 @@ namespace TestActor
             }
 
             private string Data { get; set; }
+
             public void OnCompleted()
             {
-                
             }
 
             public void OnError(Exception error)
             {
-                
             }
 
             public void OnNext(string value)

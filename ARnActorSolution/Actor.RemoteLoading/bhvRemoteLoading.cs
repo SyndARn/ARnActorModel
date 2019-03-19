@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 
 namespace Actor.RemoteLoading
 {
-
     public class bhvDynActor : BaseActor
     {
         public bhvDynActor()
@@ -122,7 +121,7 @@ namespace Actor.RemoteLoading
 
     public class BehaviorDownload : Behavior<Chunk>
     {
-        private List<Chunk> fChunkList = new List<Chunk>();
+        private readonly List<Chunk> fChunkList = new List<Chunk>();
 
         public BehaviorDownload()
         {

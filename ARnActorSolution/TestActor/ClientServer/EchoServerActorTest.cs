@@ -15,7 +15,6 @@ namespace TestActor
     [TestClass]
     public class EchoServerActorTest
     {
-
         [TestMethod]
         public void EchoClient100Test()
         {

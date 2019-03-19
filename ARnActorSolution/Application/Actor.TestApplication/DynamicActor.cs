@@ -33,7 +33,7 @@ namespace Actor.TestApplication
         }
 
         private IActor fActor;
-        private dynamic fDynamic;
+        private readonly dynamic fDynamic;
 
         public DynamicActor(dynamic dynamic)
         {
@@ -62,9 +62,9 @@ namespace Actor.TestApplication
         }
     }
 
-    public class TestDynActor 
+    public class TestDynActor
     {
-        public TestDynActor() 
+        public TestDynActor()
         {
         }
 

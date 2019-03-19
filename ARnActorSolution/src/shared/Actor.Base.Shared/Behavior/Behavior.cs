@@ -1,4 +1,5 @@
-﻿/*****************************************************************************
+﻿#region license
+/*****************************************************************************
 		               ARnActor Actor Model Library .Net
      
 	 Copyright (C) {2015}  {ARn/SyndARn} 
@@ -20,6 +21,8 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -95,6 +98,7 @@ namespace Actor.Base
     public class Behavior : IBehavior
     {
         private IBehaviors fLinkedBehaviors;
+
         public void LinkBehaviors(IBehaviors someBehaviors)
         {
             fLinkedBehaviors = someBehaviors;
@@ -133,6 +137,7 @@ namespace Actor.Base
         public Func<object, bool> Pattern { get; protected set; }
         public Action<object> Apply { get; protected set; }
         public TaskCompletionSource<object> Completion { get; protected set; }
+
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -161,6 +166,7 @@ namespace Actor.Base
         public Func<T1, T2, bool> Pattern { get; protected set; }
         public Action<T1, T2> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2>> Completion { get; protected set; }
+
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -227,8 +233,7 @@ namespace Actor.Base
         {
             if (Pattern == null)
                 return false;
-            IMessageParam<T1, T2> MessageParamT = aT as IMessageParam<T1, T2>;
-            return MessageParamT == null ? false : Pattern(MessageParamT.Item1, MessageParamT.Item2);
+            return !(aT is IMessageParam<T1, T2> MessageParamT) ? false : Pattern(MessageParamT.Item1, MessageParamT.Item2);
         }
 
         public void StandardApply(object aT)
@@ -247,6 +252,7 @@ namespace Actor.Base
         public Func<T1, T2, T3, bool> Pattern { get; protected set; }
         public Action<T1, T2, T3> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2, T3>> Completion { get; protected set; }
+
         public TaskCompletionSource<object> StandardCompletion
         {
             get
@@ -331,7 +337,7 @@ namespace Actor.Base
     }
 
     /// <summary>
-    /// bhvBehavior
+    /// Behavior
     /// A behavior is describe with two properties : Pattern and Apply.
     /// At message reception, it's tested against each Pattern and if it succeeded, 
     /// the Apply is invoke with this message as parameter.
@@ -412,9 +418,9 @@ namespace Actor.Base
             {
                 return false;
             }
-            if (aT is T)
+            if (aT is T t)
             {
-                return Pattern((T)aT);
+                return Pattern(t);
             }
             return false;
         }
@@ -431,6 +437,7 @@ namespace Actor.Base
         public Func<T1, T2, T3, T4, bool> Pattern { get; protected set; }
         public Action<T1, T2, T3, T4> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2, T3, T4>> Completion { get; protected set; }
+
         public TaskCompletionSource<object> StandardCompletion
         {
             get

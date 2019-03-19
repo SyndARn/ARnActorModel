@@ -51,10 +51,12 @@ namespace Actor.Server
         private void ProcessMessage(object tobeSerial)
         {
             SerialObject aSerial = tobeSerial as SerialObject;
-                if (tobeSerial is DataContractObject)
-                {
-                aSerial = new SerialObject(((DataContractObject)tobeSerial).Data, ((DataContractObject)tobeSerial).Tag);
-                }
+            if (tobeSerial is DataContractObject dataContractObject)
+            {
+                aSerial = new SerialObject(
+                    dataContractObject.Data,
+                    dataContractObject.Tag);
+            }
 
             // disco ?
             if (aSerial.Data?.GetType().Equals(typeof(DiscoCommand)) == true)
