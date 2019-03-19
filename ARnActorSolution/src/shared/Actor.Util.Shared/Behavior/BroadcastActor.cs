@@ -15,6 +15,5 @@ namespace Actor.Util
         {
             this.SendMessage(at, list);
         }
-
     }
 }

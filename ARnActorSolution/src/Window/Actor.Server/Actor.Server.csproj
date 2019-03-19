@@ -105,6 +105,7 @@
     <Compile Include="Directory\DirectoryActor.cs" />
     <Compile Include="Directory\DiscoveryActor.cs" />
     <Compile Include="Directory\HostDirectoryActor.cs" />
+    <Compile Include="Directory\SendByName.cs" />
     <Compile Include="Factory\ActorAddressFactory.cs" />
     <Compile Include="Properties\ARnActorModelVersion.cs" />
     <Compile Include="RemoteServer\HttpListener\HttpContextComm.cs" />

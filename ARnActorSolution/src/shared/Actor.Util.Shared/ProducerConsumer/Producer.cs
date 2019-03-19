@@ -10,7 +10,7 @@ namespace Actor.Util
 {
     public class Work<T> : BaseActor
     {
-        private T fT;
+        private readonly T fT;
 
         public Work(T aT)
         {

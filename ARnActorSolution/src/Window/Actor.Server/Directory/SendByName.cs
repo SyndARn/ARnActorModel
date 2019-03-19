@@ -20,16 +20,17 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
+using Actor.Base;
 
-namespace Actor.Base
+namespace Actor.Server
 {
-    /// <summary>
-    /// How an actor is known to other actors
-    /// </summary>
-    public interface IActor
+    public static class SendByName<T>
     {
-        ActorTag Tag { get; }
-
-        void SendMessage(object msg);
+        public static void Send(T data, string actor)
+        {
+            var act = new SendByNameActor<T>();
+            act.SendMessage(actor, data);
+        }
     }
+
 }

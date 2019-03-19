@@ -29,16 +29,6 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-
-    public static class SendByName<T>
-    {
-        public static void Send(T aData, string anActor)
-        {
-            var act = new SendByNameActor<T>();
-            act.SendMessage(anActor, aData);
-        }
-    }
-
     /// <summary>
     /// SendByNameActor
     ///   SendByName works together with Directory
@@ -67,13 +57,8 @@ namespace Actor.Server
         // SendBehavior to send message to actor found in directory
         private void SendBehavior(DirectoryActor.DirectoryRequest request, IActor actor)
         {
-            if (actor != null)
-            {
-                actor.SendMessage(origMessage);
-            }
+            actor?.SendMessage(origMessage);
             Become(new Behavior<string, T>(FindBehavior));
         }
-
     }
-
 }

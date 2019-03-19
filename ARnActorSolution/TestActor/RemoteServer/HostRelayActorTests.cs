@@ -11,20 +11,19 @@ using System.Configuration;
 
 namespace TestActor
 {
-
     internal class TestHostRelayActor : BaseActor
     {
-        private List<string> Data = new List<string>();
+        private readonly List<string> _data = new List<string>();
 
         public TestHostRelayActor()
         {
             Become(new Behavior<Dictionary<string, string>>(
                 d =>
                 {
-                    Data.Clear();
-                    Data.AddRange(d.Keys);
+                    _data.Clear();
+                    _data.AddRange(d.Keys);
                     Become(new Behavior<IFuture<IEnumerable<string>>>(
-                        f => f.SendMessage(Data.AsEnumerable<string>())
+                        f => f.SendMessage(_data.AsEnumerable<string>())
                         ));
                 }
                 )) ;
@@ -55,8 +54,7 @@ namespace TestActor
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
             actor1.SendMessage(future);
             var result1 = future.Result();
-            Assert.IsTrue(result1.Count() >= 3, $@"found {result1.Count()}");
+            Assert.IsTrue(result1.Count() >= 3, $"found {result1.Count()}");
         }
-
     }
 }

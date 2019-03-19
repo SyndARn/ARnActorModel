@@ -24,5 +24,4 @@ namespace Actor.Base
 #endif
 
     }
-
 }

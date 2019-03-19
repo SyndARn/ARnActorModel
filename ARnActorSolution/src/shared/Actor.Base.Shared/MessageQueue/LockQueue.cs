@@ -8,9 +8,9 @@ namespace Actor.Base
     {
         private readonly Queue<T> fQueue = new Queue<T>();
         private readonly object fLock = new object();
+
         public LockQueue()
         {
-
         }
 
         public void Add(T item)

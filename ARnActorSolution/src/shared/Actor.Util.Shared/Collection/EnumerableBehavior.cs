@@ -9,21 +9,20 @@ namespace Actor.Util
     {
         public static EnumerableActor<T> AsActorQueryiable<T>(this IEnumerable<T> source)
         {
-            var act = new EnumerableActor<T>(source);
-            return act ;
+            return new EnumerableActor<T>(source) ;
         }
     }
 
     public class EnumerableActor<T> : BaseActor, IEnumerable<T>, IEnumerable, ICollection<T>
     {
-        private readonly List<T> fList = new List<T>();
+        private readonly List<T> _list = new List<T>();
 
         public int Count
         {
             get
             {
                 var future = new Future<int>();
-                this.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fList.Count), future);
+                this.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(_list.Count), future);
                 return future.Result();
             }
         }
@@ -49,7 +48,7 @@ namespace Actor.Util
 
         private void SetupData(IEnumerable<T> source)
         {
-            fList.AddRange(source);
+            _list.AddRange(source);
             SetBehavior();
         }
 
@@ -73,25 +72,25 @@ namespace Actor.Util
 
         public void Add(T item)
         {
-            this.SendMessage<Action<T>, T>(t => fList.Add(t), item);
+            this.SendMessage<Action<T>, T>(t => _list.Add(t), item);
         }
 
         public void Clear()
         {
-            this.SendMessage((Action)(() => fList.Clear()));
+            this.SendMessage((Action)(() => _list.Clear()));
         }
 
         public bool Contains(T item)
         {
             var future = new Future<bool>();
-            this.SendMessage<Action<IActor,T>, IActor,T>((a, t) => a.SendMessage(fList.Contains(t)), future, item);
+            this.SendMessage<Action<IActor,T>, IActor,T>((a, t) => a.SendMessage(_list.Contains(t)), future, item);
             return future.Result();
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
             this.SendMessage<Action<T[], int>, T[], int>(
-                (tab, i) => fList.CopyTo(tab, i),
+                (tab, i) => _list.CopyTo(tab, i),
                 array,
                 arrayIndex) ;
         }
@@ -99,7 +98,7 @@ namespace Actor.Util
         public bool Remove(T item)
         {
             var future = new Future<bool>();
-            this.SendMessage<Action<IActor, T>, IActor, T>((a, t) => a.SendMessage(fList.Remove(t)), future, item);
+            this.SendMessage<Action<IActor, T>, IActor, T>((a, t) => a.SendMessage(_list.Remove(t)), future, item);
             return future.Result();
         }
 
@@ -122,7 +121,7 @@ namespace Actor.Util
                 fCollection.SendMessage<Action<IActor>, IActor>((a) =>
                    {
                        fIndex++;
-                       a.SendMessage(fIndex < fCollection.fList.Count);
+                       a.SendMessage(fIndex < fCollection._list.Count);
                    }, future) ;
                 return future.Result();
             }
@@ -149,7 +148,6 @@ namespace Actor.Util
             {
                 if (disposable)
                 {
-
                 }
             }
 
@@ -157,7 +155,7 @@ namespace Actor.Util
             {
                 get {
                     var future = new Future<TSource>();
-                    fCollection.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fCollection.fList[fIndex]), future);
+                    fCollection.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fCollection._list[fIndex]), future);
                     return future.Result();
                 }
             }
@@ -166,7 +164,7 @@ namespace Actor.Util
             {
                 get {
                     var future = new Future<TSource>();
-                    fCollection.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fCollection.fList[fIndex]), future);
+                    fCollection.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fCollection._list[fIndex]), future);
                     return future.Result();
                 }
             }

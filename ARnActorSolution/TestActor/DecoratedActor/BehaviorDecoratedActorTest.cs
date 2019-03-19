@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestActor
 {
-
     internal class TestActor : BehaviorDecoratedActor
     {
         private string fAnswer;

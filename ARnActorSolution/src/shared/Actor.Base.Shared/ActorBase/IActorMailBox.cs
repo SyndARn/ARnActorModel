@@ -6,8 +6,10 @@
 
         void AddMessage(T aMessage);
         void AddMiss(T aMessage);
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         T GetMessage();
+
         int RefreshFromMissed();
     }
 }

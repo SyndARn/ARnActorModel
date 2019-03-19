@@ -10,7 +10,6 @@ namespace Actor.Base
 {
     public static class CheckArg
     {
-
         public static void Stream([ValidatedNotNull]Stream aStream)
         {
             if (aStream == null)
@@ -99,7 +98,8 @@ namespace Actor.Base
             }
         }
 
-        sealed class ValidatedNotNullAttribute : Attribute
+        [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+        public sealed class ValidatedNotNullAttribute : Attribute
         {
         }
     }

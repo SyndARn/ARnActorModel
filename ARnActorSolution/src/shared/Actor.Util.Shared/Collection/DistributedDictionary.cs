@@ -34,6 +34,7 @@ namespace Actor.Util
     public class DistributedDictionaryBehaviors<TKey, TValue> : Behaviors
     {
         private readonly Dictionary<int,HashActor<TKey, TValue>> HashActorList = new Dictionary<int,HashActor<TKey, TValue>>();
+
         public DistributedDictionaryBehaviors() : base()
         {
             BecomeBehavior(new DistributedDictionaryGetBehavior<TKey, TValue>());
@@ -111,6 +112,7 @@ namespace Actor.Util
     public class HashActor<TKey, TValue> : BaseActor
     {
         private readonly Dictionary<TKey,TValue> KeyList = new Dictionary<TKey,TValue>();
+
         public HashActor() : base()
         {
                 Become(new Behavior<TKey,TValue>((k, v) => KeyList[k] = v));

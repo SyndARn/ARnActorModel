@@ -20,6 +20,7 @@ namespace Actor.Service
     {
         IActor fNextNode;
         int fTestRun = 0;
+
         public RingNode()
         {
             Become(new Behavior<State,IActor>((s, a) => s == State.Start, Behavior)) ;
@@ -73,7 +74,7 @@ namespace Actor.Service
     public class RingActor : BaseActor
     {
         int fNode ;
-        IActor firstNode = null;
+        readonly IActor firstNode = null;
         IActor lastNode;
         public RingActor(int aTest,int aNode, IActor answer = null)
         {

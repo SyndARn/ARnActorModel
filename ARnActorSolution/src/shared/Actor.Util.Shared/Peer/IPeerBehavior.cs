@@ -7,5 +7,4 @@ namespace Actor.Util
         void FindPeer(TKey key, IFuture<IPeerActor<TKey,TValue>> actor);
         void NewPeer(IPeerActor<TKey,TValue> actor, HashKey hash);
     }
-
 }

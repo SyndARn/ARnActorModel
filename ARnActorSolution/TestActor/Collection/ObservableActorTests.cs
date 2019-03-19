@@ -10,8 +10,7 @@ using System.Globalization;
 
 namespace TestActor
 {
-
-    class TestObserver : BaseActor
+    internal class TestObserver : BaseActor
     {
         public TestObserver() : base()
         {
@@ -35,16 +34,15 @@ namespace TestActor
     [TestClass()]
     public class ObservableActorTests
     {
-
         [TestMethod()]
         public void ObservableActorTest()
         {
             TestLauncherActor.Test(() =>
                 {
-                    ObservableActor<string> act = new ObservableActor<string>();
-                    Assert.IsNotNull(act);
-                    Assert.IsTrue(act is ObservableActor<string>);
-                    Assert.IsTrue(act is IActor);
+                    ObservableActor<string> observableActor = new ObservableActor<string>();
+                    Assert.IsNotNull(observableActor);
+                    Assert.IsTrue(observableActor is ObservableActor<string>);
+                    Assert.IsTrue(observableActor is IActor);
                 }) ;
         }
 
@@ -53,13 +51,13 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                ObservableActor<string> act = new ObservableActor<string>();
+                ObservableActor<string> observableActor = new ObservableActor<string>();
                 TestObserver observer1 = new TestObserver();
-                act.RegisterObserver(observer1);
+                observableActor.RegisterObserver(observer1);
                 TestObserver observer2 = new TestObserver();
-                act.RegisterObserver(observer2);
+                observableActor.RegisterObserver(observer2);
                 string testString = string.Format("Test {0}", observer1.Tag);
-                act.SendMessage(testString);
+                observableActor.SendMessage(testString);
                 string result1 = observer1.GetData();
                 Assert.AreEqual(result1, string.Format("Test {0}", observer1.Tag));
                 string result2 = observer2.GetData();

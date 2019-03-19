@@ -279,7 +279,7 @@ namespace Actor.Base
 #if DEBUG_MSG
             while (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
 #else
-            while (true)
+            do
 #endif
             {
                 // get message             
@@ -324,10 +324,8 @@ namespace Actor.Base
                         }
                     }
                 }
-
-                if (patternmatch || receivematch)
-                    break;
             }
+            while (!patternmatch && !receivematch);
 
             if (patternmatch)
             {

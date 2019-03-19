@@ -40,6 +40,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\QueueFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\RingQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)PatternActor\PatternActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PatternActor\StringPatternActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessActor\ProcessActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tag\ActorTag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Trait\Trait.cs" />

@@ -15,9 +15,4 @@ namespace Actor.Base
 
         protected abstract void DoApply(T msg);
     }
-
-    public abstract class StringPatternActor : PatternActor<string>
-    {
-    }
-
 }

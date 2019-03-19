@@ -1,4 +1,5 @@
-﻿/*****************************************************************************
+﻿#region license
+/*****************************************************************************
 		               ARnActor Actor Model Library .Net
      
 	 Copyright (C) {2015}  {ARn/SyndARn} 
@@ -20,6 +21,7 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
+#endregion
 using System;
 using System.Globalization;
 #if !NETFX_CORE
@@ -46,13 +48,7 @@ namespace Actor.Base
             return fBaseId++;
         }
 
-        private static string fFullHost = "";
-
-        public static string FullHost
-        {
-            get => fFullHost;
-            set => fFullHost = value;
-        }
+        public static string FullHost { get; set; } = "";
     }
 
     [Serializable]
@@ -124,8 +120,7 @@ namespace Actor.Base
                 return false;
             }
 
-            ActorTag other = obj as ActorTag;
-            if (other == null)
+            if (!(obj is ActorTag other))
             {
                 return false;
             }

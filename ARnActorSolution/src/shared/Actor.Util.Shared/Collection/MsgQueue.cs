@@ -14,6 +14,7 @@ namespace Actor.Util
     {
         public bool Result { get; }
         public T Data { get; }
+
         public MsgQueue(bool aResult, T aData)
         {
             Result = aResult;
