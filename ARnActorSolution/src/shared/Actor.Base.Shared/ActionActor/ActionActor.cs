@@ -21,11 +21,6 @@
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Actor.Base ;
 
 namespace Actor.Base
 {
@@ -37,7 +32,6 @@ namespace Actor.Base
     public class ActionBehavior : Behavior<Action>
     {
         public ActionBehavior()
-            : base()
         {
             Pattern = DefaultPattern();
             Apply = t => t.Invoke() ;
@@ -47,7 +41,6 @@ namespace Actor.Base
     public class ActionBehavior<T> : Behavior<Action<T>, T>
     {
         public ActionBehavior()
-            : base()
         {
             Pattern = DefaultPattern();
             Apply = (a, t) => a.Invoke(t);
@@ -57,7 +50,6 @@ namespace Actor.Base
     public class ActionBehavior<T1,T2> : Behavior<Action<T1,T2>, T1,T2>
     {
         public ActionBehavior()
-            : base()
         {
             Pattern = DefaultPattern();
             Apply = (a, t1, t2) => a.Invoke(t1, t2);
@@ -66,7 +58,7 @@ namespace Actor.Base
 
     public class ActionBehaviors<T> : Behaviors
     {
-        public ActionBehaviors() : base()
+        public ActionBehaviors()
         {
             AddBehavior(new ActionBehavior());
             AddBehavior(new ActionBehavior<T>());
@@ -75,7 +67,7 @@ namespace Actor.Base
 
     public class ActionBehaviors<T1,T2> : Behaviors
     {
-        public ActionBehaviors() : base()
+        public ActionBehaviors()
         {
             AddBehavior(new ActionBehavior());
             AddBehavior(new ActionBehavior<T1,T2>());
@@ -90,7 +82,6 @@ namespace Actor.Base
     public class ActionActor : BaseActor
     {
         public ActionActor()
-            : base()
         {
             Become(new ActionBehavior());
         }
@@ -106,7 +97,6 @@ namespace Actor.Base
     public class ActionActor<T> : BaseActor
     {
         public ActionActor()
-            : base()
         {
             Become(new ActionBehaviors<T>());
         }
@@ -119,7 +109,6 @@ namespace Actor.Base
     public class ActionActor<T1,T2> : BaseActor
     {
         public ActionActor()
-            : base()
         {
             Become(new ActionBehaviors<T1,T2>());
         }

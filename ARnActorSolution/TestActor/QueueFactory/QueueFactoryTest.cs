@@ -17,7 +17,7 @@ namespace TestActor
         {
             var factory = new QueueFactory<string>
             {
-                Style = QueueFactory<string>.QueueStyle.LockFree
+                Style = QueueStyle.LockFree
             };
             var lockFree = factory.GetQueue();
             Assert.IsNotNull(lockFree);
@@ -35,7 +35,7 @@ namespace TestActor
         {
             var factory = new QueueFactory<string>
             {
-                Style = QueueFactory<string>.QueueStyle.Locking
+                Style = QueueStyle.Locking
             };
             var locking = factory.GetQueue();
             Assert.IsNotNull(locking);
@@ -53,7 +53,7 @@ namespace TestActor
         {
             var factory = new QueueFactory<string>
             {
-                Style = QueueFactory<string>.QueueStyle.Ring
+                Style = QueueStyle.Ring
             };
             IMessageQueue<string> messageQueue = factory.GetQueue();
             Assert.IsNotNull(messageQueue);

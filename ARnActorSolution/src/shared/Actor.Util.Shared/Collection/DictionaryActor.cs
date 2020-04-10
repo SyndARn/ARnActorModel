@@ -45,28 +45,28 @@ namespace Actor.Util
 
     public class DictionaryActor<TKey,TValue> : BaseActor, IDictionaryActor<TKey, TValue>
     {
-        private readonly IDictionaryActor<TKey, TValue> fServiceDictionary;
+        private readonly IDictionaryActor<TKey, TValue> _serviceDictionary;
 
         public DictionaryActor() : base()
         {
             DictionaryBehavior<TKey, TValue> lServiceDictionary = new DictionaryBehavior<TKey, TValue>();
-            fServiceDictionary = lServiceDictionary;
+            _serviceDictionary = lServiceDictionary;
             Become(lServiceDictionary);
         }
 
         public void AddKeyValue(TKey key, TValue value)
         {
-            fServiceDictionary.AddKeyValue(key, value);
+            _serviceDictionary.AddKeyValue(key, value);
         }
 
         public IFuture<bool, TKey, TValue> GetKeyValue(TKey key)
         {
-            return fServiceDictionary.GetKeyValue(key);
+            return _serviceDictionary.GetKeyValue(key);
         }
 
         public void RemoveKey(TKey key)
         {
-            fServiceDictionary.RemoveKey(key);
+            _serviceDictionary.RemoveKey(key);
         }
     }
 }

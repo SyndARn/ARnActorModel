@@ -33,10 +33,12 @@ namespace Actor.Base
         private readonly IMessageQueue<T> _queue ; // all actors may push here, only this one may dequeue
         private readonly IMessageQueue<T> _missed ; // only this one use it in run mode
 
+        private static QueueFactory<T> _factory = new QueueFactory<T>() ;
+
         public ActorMailBox()
         {
-            _queue = QueueFactory<T>.Current.GetQueue();
-            _missed = QueueFactory<T>.Current.GetQueue();
+            _queue = _factory.GetQueue();
+            _missed = _factory.GetQueue();
         }
 
         public bool IsEmpty => _queue.Count() == 0;

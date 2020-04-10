@@ -80,7 +80,7 @@ namespace Actor.Util
             var find = ((LinkedListBehaviors<T>)LinkedTo).fList.Find(data);
             if (find != null)
             {
-                var next = find.Next;
+                LinkedListNode<T> next = find.Next;
                 actor.SendMessage(LinkedListOperation.Answer, next.Value);
             }
         }

@@ -20,10 +20,12 @@ namespace Actor.Base
 
         public static void Address([ValidatedNotNull]string anAddress)
         {
-            if (string.IsNullOrEmpty(anAddress))
+            if (!string.IsNullOrEmpty(anAddress))
             {
-                throw new ActorException("Address should be filled");
+                return;
             }
+
+            throw new ActorException("Address should be filled");
         }
 
         public static void Behavior([ValidatedNotNull]IBehavior aBehavior)
@@ -36,66 +38,82 @@ namespace Actor.Base
 
         public static void BehaviorParam([ValidatedNotNull]params IBehavior[] someBehaviors)
         {
-            if (someBehaviors == null)
+            if (someBehaviors != null || someBehaviors != null)
             {
-                if (someBehaviors == null) throw new ActorException("Null someBehaviors");
+                return;
             }
+
+            throw new ActorException("Null someBehaviors");
         }
 
         public static void Behaviors([ValidatedNotNull]Behaviors someBehaviors)
         {
-            if (someBehaviors == null)
+            if (someBehaviors != null)
             {
-                throw new ActorException("Null someBehaviors");
+                return;
             }
+
+            throw new ActorException("Null someBehaviors");
         }
 
         public static void Behaviors([ValidatedNotNull]IBehaviors someBehaviors)
         {
-            if (someBehaviors == null)
+            if (someBehaviors != null)
             {
-                throw new ActorException("Null someBehaviors");
+                return;
             }
+
+            throw new ActorException("Null someBehaviors");
         }
 
         public static void IEnumerable([ValidatedNotNull] IEnumerable enumerables)
         {
-            if (enumerables == null)
+            if (enumerables != null)
             {
-                throw new ActorException("Null enumerables");
+                return;
             }
+
+            throw new ActorException("Null enumerables");
         }
 
         public static void Uri([ValidatedNotNull] Uri anUri)
         {
-            if (anUri == null)
+            if (anUri != null)
             {
-                throw new ActorException("Uri can't be null");
+                return;
             }
+
+            throw new ActorException("Uri can't be null");
         }
 
         public static void Actor([ValidatedNotNull] IActor anActor)
         {
-            if (anActor == null)
+            if (anActor != null)
             {
-                throw new ActorException("actor must exist");
+                return;
             }
+
+            throw new ActorException("actor must exist");
         }
 
         public static void Future([ValidatedNotNull] IFuture aFuture)
         {
-            if (aFuture == null)
+            if (aFuture != null)
             {
-                throw new ActorException("future must exist");
+                return;
             }
+
+            throw new ActorException("future must exist");
         }
 
         public static void Pattern([ValidatedNotNull]Func<object, bool> aPattern)
         {
-            if (aPattern == null)
+            if (aPattern != null)
             {
-                throw new ActorException("Null pattern received");
+                return;
             }
+
+            throw new ActorException("Null pattern received");
         }
 
         [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]

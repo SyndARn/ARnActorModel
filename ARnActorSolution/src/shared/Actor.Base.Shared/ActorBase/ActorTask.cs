@@ -64,9 +64,9 @@ namespace Actor.Base
             // handling here a max active task
             Task.Factory.StartNew(() =>
             {
-                Interlocked.Increment(ref numAddTask);
+                numAddTask++; // Interlocked.Increment(ref numAddTask);
                 messageLoop();
-                Interlocked.Increment(ref numCloseTask);
+                numCloseTask++; //Interlocked.Increment(ref numCloseTask);
             }, taskCreationOptions)
             .ContinueWith((t) =>
             {

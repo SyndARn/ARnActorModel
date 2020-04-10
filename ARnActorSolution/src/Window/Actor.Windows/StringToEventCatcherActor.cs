@@ -15,12 +15,6 @@ namespace Actor.Windows
     public class EventCatcherActor<T> : ActionActor
     {
 
-
-        public EventCatcherActor()
-            : base()
-        {
-        }
-
         EventHandler<T> fEvent = null;
         Control fControl = null;
 

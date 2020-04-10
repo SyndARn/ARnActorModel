@@ -62,10 +62,7 @@ namespace TestActor
             return inTime && (bool)val;
         }
 
-        public static void Test(Action action)
-        {
-            Test( null, action, DefaultWait);
-        }
+        public static void Test(Action action) => Test(null, action, DefaultWait);
 
         public static void Test(Action action, int timeOutMS)
         {

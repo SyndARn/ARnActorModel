@@ -33,7 +33,7 @@ namespace Actor.Base
         void LinkBehaviors(IBehaviors someBehaviors);
         void StandardApply(object aT);
         bool StandardPattern(object aT);
-        TaskCompletionSource<object> StandardCompletion {get;}
+        TaskCompletionSource<object> AwaitingPattern {get;}
         IBehaviors LinkedTo { get; }
         IActor LinkedActor { get; }
     }

@@ -2,11 +2,11 @@
 
 namespace Actor.Base
 {
+    public enum QueueStyle { None, LockFree, Locking, Ring, Buffer }
+
     public class QueueFactory<T>
     {
-        public enum QueueStyle { None, LockFree, Locking, Ring }
-        public static QueueFactory<T> Current { get; } = new Lazy<QueueFactory<T>>(true).Value;
-        public QueueStyle Style { get; set; }
+        public QueueStyle Style { get; set; } = QueueStyle.LockFree;
 
         public IMessageQueue<T> GetQueue()
         {
@@ -15,6 +15,7 @@ namespace Actor.Base
                 case QueueStyle.LockFree: return new LockFreeQueue<T>();
                 case QueueStyle.Locking: return new LockQueue<T>();
                 case QueueStyle.Ring: return new RingQueue<T>();
+                case QueueStyle.Buffer: return new BufferQueue<T>();
                 default: return new LockFreeQueue<T>();
             }
         }

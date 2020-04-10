@@ -138,7 +138,7 @@ namespace Actor.Base
         public Action<object> Apply { get; protected set; }
         public TaskCompletionSource<object> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> StandardCompletion
+        public TaskCompletionSource<object> AwaitingPattern
         {
             get
             {
@@ -167,7 +167,7 @@ namespace Actor.Base
         public Action<T1, T2> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2>> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> StandardCompletion
+        public TaskCompletionSource<object> AwaitingPattern
         {
             get
             {
@@ -253,7 +253,7 @@ namespace Actor.Base
         public Action<T1, T2, T3> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2, T3>> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> StandardCompletion
+        public TaskCompletionSource<object> AwaitingPattern
         {
             get
             {
@@ -351,7 +351,7 @@ namespace Actor.Base
         public Action<T> Apply { get; protected set; }
         public TaskCompletionSource<T> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> StandardCompletion
+        public TaskCompletionSource<object> AwaitingPattern
         {
             get
             {
@@ -438,7 +438,7 @@ namespace Actor.Base
         public Action<T1, T2, T3, T4> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2, T3, T4>> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> StandardCompletion
+        public TaskCompletionSource<object> AwaitingPattern
         {
             get
             {

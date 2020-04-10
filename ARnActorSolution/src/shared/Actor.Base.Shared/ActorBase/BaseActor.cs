@@ -22,10 +22,10 @@
 *****************************************************************************/
 
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
@@ -42,21 +42,22 @@ namespace Actor.Base
 
     public class BaseActor : IActor
     {
-        public ActorTag Tag { get { return fShared.fTag; } private set { fShared.fTag = value; } } // unique identifier, and host
+        public ActorTag Tag { get { return _sharedStruct.fTag; } private set { _sharedStruct.fTag = value; } } // unique identifier, and host
 
-        private List<IBehavior> fListBehaviors = new List<IBehavior>(); // our behavior
+        private List<IBehavior> _behaviors = new List<IBehavior>(); // our behavior
+        private static readonly QueueFactory<IBehavior> _factoryBehavior = new QueueFactory<IBehavior>();
 
-        private IMessageQueue<IBehavior> fCompletions = QueueFactory<IBehavior>.Current.GetQueue(); // receive behaviors
-        private IActorMailBox<object> fMailBox = new ActorMailBox<object>(); // our mailbox
-        private SharingStruct fShared = new SharingStruct();
+        private IMessageQueue<IBehavior> _awaitingBehaviors = _factoryBehavior.GetQueue(); // receive behaviors
+        private IActorMailBox<object> _mailBox = new ActorMailBox<object>(); // our mailbox
+        private SharingStruct _sharedStruct = new SharingStruct();
         public IMessageTracerService MessageTracerService { get; set; }
 
         public static void CompleteInitialize(BaseActor anActor)
         {
             CheckArg.Actor(anActor);
-            anActor.fListBehaviors = new List<IBehavior>();
-            anActor.fCompletions = QueueFactory<IBehavior>.Current.GetQueue();
-            anActor.fMailBox = new ActorMailBox<object>();
+            anActor._behaviors = new List<IBehavior>();
+            anActor._awaitingBehaviors = _factoryBehavior.GetQueue();
+            anActor._mailBox = new ActorMailBox<object>();
             if (anActor.Tag == null)
             {
                 anActor.Tag = new ActorTag();
@@ -74,7 +75,7 @@ namespace Actor.Base
         {
             if (msg != null)
             {
-                fMailBox.AddMessage(msg);
+                _mailBox.AddMessage(msg);
 #if DEBUG_MSG
                 Interlocked.Increment(ref fShared.fMessCount);
 #endif
@@ -85,7 +86,7 @@ namespace Actor.Base
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask(TaskCreationOptions taskCreationOptions)
         {
-            if (Interlocked.CompareExchange(ref fShared.fInTask, 1, 0) == 0)
+            if (Interlocked.CompareExchange(ref _sharedStruct.fInTask, 1, 0) == 0)
             {
                 ActorTask.AddActor(MessageLoop, taskCreationOptions);
             }
@@ -94,7 +95,7 @@ namespace Actor.Base
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask()
         {
-            if (Interlocked.CompareExchange(ref fShared.fInTask, 1, 0) == 0)
+            if (Interlocked.CompareExchange(ref _sharedStruct.fInTask, 1, 0) == 0)
             {
                 ActorTask.AddActor(MessageLoop, TaskCreationOptions.None);
             }
@@ -106,7 +107,7 @@ namespace Actor.Base
 #if DEBUG_MSG
             Interlocked.Add(ref fShared.fMessCount, fMailBox.RefreshFromMissed());
 #else
-            fMailBox.RefreshFromMissed();
+            _mailBox.RefreshFromMissed();
 #endif
 
         }
@@ -157,40 +158,40 @@ namespace Actor.Base
         public async Task<object> Receive(Func<object, bool> aPattern, int timeOutMS)
         {
             CheckArg.Pattern(aPattern);
-            var lTCS = new Behavior(aPattern, new TaskCompletionSource<object>());
-            Interlocked.Increment(ref fShared.fReceive);
-            fCompletions.Add(lTCS);
+            var awaitingBehavior = new Behavior(aPattern, new TaskCompletionSource<object>());
+            Interlocked.Increment(ref _sharedStruct.fReceive);
+            _awaitingBehaviors.Add(awaitingBehavior);
             AddMissedMessages();
-            Interlocked.Exchange(ref fShared.fInTask, 0);
+            Interlocked.Exchange(ref _sharedStruct.fInTask, 0);
             TrySetInTask(TaskCreationOptions.LongRunning);
             if (timeOutMS != Timeout.Infinite)
             {
-                var noTimeOut = lTCS.Completion.Task.Wait(timeOutMS) ;
+                var noTimeOut = awaitingBehavior.Completion.Task.Wait(timeOutMS);
                 if (noTimeOut)
                 {
-                    return await lTCS.Completion.Task;
+                    return await awaitingBehavior.Completion.Task.ConfigureAwait(false);
                 }
                 else
                 {
                     // remove this lTCS
                     Queue<IBehavior> lQueue = new Queue<IBehavior>();
-                    while (fCompletions.TryTake(out IBehavior bhv))
+                    while (_awaitingBehaviors.TryTake(out IBehavior bhv))
                     {
-                        if (bhv != lTCS)
+                        if (bhv != awaitingBehavior)
                             lQueue.Enqueue(bhv);
                     }
                     while (lQueue.Count > 0)
                     {
-                        fCompletions.Add(lQueue.Dequeue());
+                        _awaitingBehaviors.Add(lQueue.Dequeue());
                     }
 
-                    Interlocked.Decrement(ref fShared.fReceive);
+                    Interlocked.Decrement(ref _sharedStruct.fReceive);
                     return null;
                 }
             }
             else
             {
-                return await lTCS.Completion.Task;
+                return await awaitingBehavior.Completion.Task;
             }
         }
 
@@ -201,7 +202,7 @@ namespace Actor.Base
 
         private object ReceiveMessage()
         {
-            object msg = fMailBox.GetMessage();
+            object msg = _mailBox.GetMessage();
 #if DEBUG_MSG
             if (msg != null)
             {
@@ -214,9 +215,9 @@ namespace Actor.Base
         protected void Become(IBehaviors someBehaviors)
         {
             CheckArg.Behaviors(someBehaviors);
-            fListBehaviors.Clear();
+            _behaviors.Clear();
             someBehaviors.LinkToActor(this);
-            fListBehaviors.AddRange(someBehaviors.AllBehaviors());
+            _behaviors.AddRange(someBehaviors.AllBehaviors());
             AddMissedMessages();
             TrySetInTask();
         }
@@ -225,13 +226,13 @@ namespace Actor.Base
         {
             CheckArg.BehaviorParam(manyBehaviors);
 
-            fListBehaviors.Clear();
+            _behaviors.Clear();
 
             var someBehaviors = new Behaviors();
             foreach (var item in manyBehaviors)
             {
                 someBehaviors.AddBehavior(item);
-                fListBehaviors.Add(item);
+                _behaviors.Add(item);
             }
             someBehaviors.LinkToActor(this);
             AddMissedMessages();
@@ -242,7 +243,7 @@ namespace Actor.Base
         {
             CheckArg.Behaviors(someBehaviors);
             someBehaviors.LinkToActor(this);
-            fListBehaviors.AddRange(someBehaviors.AllBehaviors());
+            _behaviors.AddRange(someBehaviors.AllBehaviors());
             AddMissedMessages();
             TrySetInTask();
         }
@@ -255,7 +256,7 @@ namespace Actor.Base
             foreach (var item in someBehaviors)
             {
                 behaviors.AddBehavior(item);
-                fListBehaviors.Add(item);
+                _behaviors.Add(item);
             }
             behaviors.LinkToActor(this);
             AddMissedMessages();
@@ -266,16 +267,16 @@ namespace Actor.Base
         {
             CheckArg.Behavior(aBehavior);
             AddMissedMessages();
-            fListBehaviors.Remove(aBehavior);
+            _behaviors.Remove(aBehavior);
         }
 
         private void MessageLoop()
         {
-            bool receivematch = false;
+            bool matchedByWaitingBehavior = false;
             object msg = null;
-            IBehavior tcs = null;
-            bool patternmatch = false;
-            int oldReceive = Interlocked.Exchange(ref fShared.fReceive, fShared.fReceive);
+            IBehavior behavior = null;
+            bool matchedByPattern = false;
+            int oldReceive = Interlocked.Exchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive);
 #if DEBUG_MSG
             while (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
 #else
@@ -286,16 +287,16 @@ namespace Actor.Base
                 msg = ReceiveMessage();
                 if (msg != null)
                 {
-                    receivematch = false;
+                    matchedByWaitingBehavior = false;
 
-                    tcs = PatternMatching(msg);
-                    patternmatch = tcs != null;
+                    behavior = MatchByPattern(msg);
+                    matchedByPattern = behavior != null;
 
                     // receive pattern
-                    if (!patternmatch)
+                    if (!matchedByPattern)
                     {
-                        tcs = ReceiveMatching(msg);
-                        receivematch = tcs != null;
+                        behavior = MatchByWaitingBehavior(msg);
+                        matchedByWaitingBehavior = behavior != null;
                     }
                 }
 #if DEBUG_MSG
@@ -307,60 +308,60 @@ namespace Actor.Base
 #endif
 
                 // miss
-                if (!patternmatch && !receivematch && msg != null)
+                if (!matchedByPattern && !matchedByWaitingBehavior && msg != null)
                 {
-                    fMailBox.AddMiss(msg);
+                    _mailBox.AddMiss(msg);
                 }
 
-                if (patternmatch)
+                if (matchedByPattern)
                 {
-                    if (Interlocked.CompareExchange(ref fShared.fReceive, fShared.fReceive, 0) == 0)
+                    if (Interlocked.CompareExchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive, 0) == 0)
                     {
-                        tcs.StandardApply(msg);
-                        patternmatch = false;
-                        if (Interlocked.CompareExchange(ref fShared.fReceive, fShared.fReceive, 0) != 0)
+                        behavior.StandardApply(msg);
+                        matchedByPattern = false;
+                        if (Interlocked.CompareExchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive, 0) != 0)
                         {
                             break;
                         }
                     }
                 }
             }
-            while (!patternmatch && !receivematch);
+            while (!matchedByPattern && !matchedByWaitingBehavior);
 
-            if (patternmatch)
+            if (matchedByPattern)
             {
-                tcs.StandardApply(msg);
+                behavior.StandardApply(msg);
             }
 
-            if (receivematch)
+            if (matchedByWaitingBehavior)
             {
                 AddMissedMessages();
-                Interlocked.Decrement(ref fShared.fReceive);
-                tcs.StandardCompletion.SetResult(msg);
+                Interlocked.Decrement(ref _sharedStruct.fReceive);
+                behavior.AwaitingPattern.SetResult(msg);
             }
 
-            int newReceive = Interlocked.Exchange(ref fShared.fReceive, fShared.fReceive);
+            int newReceive = Interlocked.Exchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive);
 
             if ((newReceive > 0) && (oldReceive != newReceive))
             {
                 AddMissedMessages();
             }
 
-            Interlocked.Exchange(ref fShared.fInTask, 0);
+            Interlocked.Exchange(ref _sharedStruct.fInTask, 0);
 
 #if DEBUG_MSG
             if (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
 #else
-            if (!fMailBox.IsEmpty)
+            if (!_mailBox.IsEmpty)
 #endif
             {
                 TrySetInTask();
             }
         }
 
-        private IBehavior PatternMatching(object msg)
+        private IBehavior MatchByPattern(object msg)
         {
-            foreach (var fBehavior in fListBehaviors)
+            foreach (var fBehavior in _behaviors)
             {
                 if (fBehavior?.StandardPattern(msg) == true)
                 {
@@ -370,31 +371,28 @@ namespace Actor.Base
             return null;
         }
 
-        private IBehavior ReceiveMatching(Object msg)
+        private IBehavior MatchByWaitingBehavior(Object msg)
         {
             Queue<IBehavior> lQueue = null;
-            while (fCompletions.TryTake(out IBehavior tcs))
+            while (_awaitingBehaviors.TryTake(out IBehavior behavior))
             {
                 if (lQueue == null)
                 {
                     lQueue = new Queue<IBehavior>();
                 }
-                if (!tcs.StandardPattern(msg))
+                if (!behavior.StandardPattern(msg))
                 {
-                    lQueue.Enqueue(tcs);
+                    lQueue.Enqueue(behavior);
                 }
                 else
                 {
-                    if (tcs.StandardCompletion != null)
+                    if (behavior.AwaitingPattern != null)
                     {
-                        if (lQueue != null)
+                        while (lQueue.Count > 0)
                         {
-                            while (lQueue.Count > 0)
-                            {
-                                fCompletions.Add(lQueue.Dequeue());
-                            }
+                            _awaitingBehaviors.Add(lQueue.Dequeue());
                         }
-                        return tcs;
+                        return behavior;
                     }
                 }
             }
@@ -402,10 +400,10 @@ namespace Actor.Base
             {
                 while (lQueue.Count > 0)
                 {
-                    fCompletions.Add(lQueue.Dequeue());
+                    _awaitingBehaviors.Add(lQueue.Dequeue());
                 }
             }
-            return null ;
+            return null;
         }
     }
 }

@@ -34,6 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exception\CheckArg.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageParam\IMessageParam.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageParam\MessageParam.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\BufferQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\IMessageQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\LockFreeQueue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MessageQueue\LockQueue.cs" />
