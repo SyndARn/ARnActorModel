@@ -32,7 +32,7 @@ namespace Actor.Server
                         else
                         {
                             ConnectActor.Connect(this, lData, "KnownShards");
-                            Receive(ans => ans is IMessageParam<string, ActorTag, IActor>).ContinueWith(
+                            AsyncReceive(ans => ans is IMessageParam<string, ActorTag, IActor>).ContinueWith(
                                 ans =>
                                 {
                                     var res = ans.Result as IMessageParam<string, ActorTag, IActor>;
@@ -61,7 +61,7 @@ namespace Actor.Server
                         string lHost = lData.Split(separ2)[0] ;
                         string lService = lData.Split(separ2)[1] ;
                         ConnectActor.Connect(this, lHost, lService);
-                        var data = Receive(ans => ans is IMessageParam<string, ActorTag, IActor>) ;
+                        var data = AsyncReceive(ans => ans is IMessageParam<string, ActorTag, IActor>) ;
                         var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                         // we got remote server adress
                         EchoClientActor aClient = new EchoClientActor();
@@ -86,7 +86,7 @@ namespace Actor.Server
                         string lHost = lData.Split(separ2)[0];
                         string lMsg = lData.Split(separ2)[1];
                         ConnectActor.Connect(this, lHost, "RPrint");
-                        var data = Receive(ans => ans is IMessageParam<string, ActorTag, IActor>);
+                        var data = AsyncReceive(ans => ans is IMessageParam<string, ActorTag, IActor>);
                         var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                         res.Item3.SendMessage("call  from " + this.Tag.Key());
                         // SendMessageTo("call from " + this.Tag.Id,res.Item3);

@@ -95,6 +95,9 @@
     <Compile Include="ActorConsole\ActorConsole.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
     <Compile Include="ActorServer\ConfigManager.cs" />
+    <Compile Include="Admin\EchoClientActor.cs" />
+    <Compile Include="Admin\EchoClientBehavior.cs" />
+    <Compile Include="Admin\EchoServerBehavior.cs" />
     <Compile Include="Directory\HostService.cs" />
     <Compile Include="ActorServer\ShardDirectoryActor.cs" />
     <Compile Include="Admin\ActorAdminServer.cs" />

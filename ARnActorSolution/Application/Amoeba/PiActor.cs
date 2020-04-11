@@ -30,7 +30,7 @@ namespace Amoeba
         public async Task<string> GetResultAsync()
         {
             var future = new Future<string>();
-            SendMessage(future);
+            this.SendMessage(future);
             return await future.ResultAsync();
         }
 

@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
-		               ARnActor Actor Model Library C# .Net
+		               ARnActor Actor Model Library .Net
      
 	 Copyright (C) {2015}  {ARn/SyndARn} 
  
@@ -21,30 +21,32 @@
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
 
+using System.Diagnostics;
 using Actor.Base;
 
-namespace Actor.Util
+namespace Actor.Server
 {
 
-    public class FsmActor<TState, TEvent> : BaseActor
+    public class EchoServerBehavior : ServerBehavior<string>
     {
-
-        public FsmActor() : base()
+        protected override void DoRequest(ServerMessage<string> aMessage)
         {
-        }
-
-        public FsmActor(FsmBehaviors<TState, TEvent> someBehaviors) : base()
-        {
-            Become(someBehaviors);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public Future<TState> GetCurrentState()
-        {
-            var future = new Future<TState>();
-            this.SendMessage(future);
-            return future;
+            if (aMessage != null)
+            {
+                // echo to console
+                SendByName<string>.Send(
+                    "server receive " + aMessage.Data, "Console");
+                // back to client but we need client
+                if (aMessage.Client == null)
+                {
+                    Debug.WriteLine("receive null client");
+                }
+                SendAnswer(aMessage, aMessage.Data);
+            }
+            else
+            {
+                throw new ActorException("bhvEchoServer : null message received") ;
+            }
         }
     }
-
 }

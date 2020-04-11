@@ -44,7 +44,7 @@ namespace Actor.Server
                 // find hosted actor directory
                 // forward msg to hostedactordirectory
                 Become(new Behavior<object>(t => true, ProcessMessage));
-                SendMessage(so);
+                this.SendMessage(so);
             }
         }
 

@@ -20,12 +20,12 @@ namespace Actor.Util
         }
         public void Store(string aData)
         {
-            SendMessage(aData);
+            this.SendMessage(aData);
         }
         public string Retrieve()
         {
             IFuture<string> future = new Future<string>();
-            SendMessage(future);
+            this.SendMessage(future);
             return future.Result();
         }
     }

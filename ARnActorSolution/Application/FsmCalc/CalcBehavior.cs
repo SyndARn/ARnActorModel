@@ -51,7 +51,7 @@ namespace FsmCalc
 
         public void Register(IActor actor)
         {
-            SendMessage(actor);
+            this.SendMessage(actor);
         }
 
         private void DoRegister(IActor actor)

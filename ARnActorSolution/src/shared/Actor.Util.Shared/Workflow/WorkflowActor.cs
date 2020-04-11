@@ -28,11 +28,11 @@ namespace Actor.Util
     */
     public class WorkflowActor<T> : BaseActor
     {
-        private IWfwStatus<T> fCurrent ;
+        private IWfwStatus<T> _current ;
         public WorkflowActor(IWfwStatus<T> startWith)
             : base()
         {
-            fCurrent = startWith;
+            _current = startWith;
             Become(new Behavior<IWfwStatus<T>>(DoProcess));
         }
 
@@ -45,7 +45,7 @@ namespace Actor.Util
                 {
                     tr.Action.Apply(aStatus);
                     // change status
-                    fCurrent = tr.Destination;
+                    _current = tr.Destination;
                     break ;
                 }
             }

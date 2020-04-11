@@ -18,7 +18,7 @@ namespace TestActor
 
         public string GetData()
         {
-            return Receive(t => t is string).Result as string;
+            return AsyncReceive(t => t is string).Result as string;
         }
 
         public string GetDataInTime(int timeOutMs)

@@ -40,34 +40,22 @@ namespace TestActor
         {
         }
 
-        public void Finish()
-        {
-            SendMessage(true);
-        }
+        public void Finish() => SendMessage(true);
 
-        public void Fail()
-        {
-            SendMessage(false);
-        }
+        public void Fail() => SendMessage(false);
 
-        public Task<bool> Wait()
-        {
-            return Wait(DefaultWait);
-        }
+        public Task<bool> Wait() => Wait(DefaultWait);
 
         public async Task<bool> Wait(int ms)
         {
             var val = await Receive(t => t is bool, ms).ConfigureAwait(false);
-            var inTime = val != null;
+            bool inTime = val != null;
             return inTime && (bool)val;
         }
 
         public static void Test(Action action) => Test(null, action, DefaultWait);
 
-        public static void Test(Action action, int timeOutMS)
-        {
-            Test(null, action, timeOutMS);
-        }
+        public static void Test(Action action, int timeOutMS) => Test(null, action, timeOutMS);
 
         public static void Test(TestContext testContext, Action action)
         {

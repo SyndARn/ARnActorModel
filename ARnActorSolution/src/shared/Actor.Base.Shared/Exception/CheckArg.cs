@@ -1,21 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
 
 namespace Actor.Base
 {
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+    public sealed class ValidatedNotNullAttribute : Attribute
+    {
+    }
+
     public static class CheckArg
     {
         public static void Stream([ValidatedNotNull]Stream aStream)
         {
-            if (aStream == null)
+            if (aStream != null)
             {
-                throw new ActorException("Stream can't be null");
+                return;
             }
+            throw new ActorException("Stream can't be null");
         }
 
         public static void Address([ValidatedNotNull]string anAddress)
@@ -116,9 +118,5 @@ namespace Actor.Base
             throw new ActorException("Null pattern received");
         }
 
-        [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
-        public sealed class ValidatedNotNullAttribute : Attribute
-        {
-        }
     }
 }

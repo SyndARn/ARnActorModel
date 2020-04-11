@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Actor.Base
 {
+    [DebuggerDisplay("CompositeBehavior")]
     public abstract class CompositeBehavior<T> : Behaviors
     {
         protected HashSet<IActor> inputs = new HashSet<IActor>();

@@ -34,7 +34,7 @@ namespace Amoeba
         public Future<long,long> GetResult()
         {
             Future<long, long> future = new Future<long, long>();
-            SendMessage(future);
+            this.SendMessage(future);
             return future;
         }
     }

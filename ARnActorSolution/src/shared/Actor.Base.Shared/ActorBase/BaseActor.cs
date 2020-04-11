@@ -42,7 +42,7 @@ namespace Actor.Base
 
     public class BaseActor : IActor
     {
-        public ActorTag Tag { get { return _sharedStruct.fTag; } private set { _sharedStruct.fTag = value; } } // unique identifier, and host
+        public ActorTag Tag { get => _sharedStruct.fTag; private set => _sharedStruct.fTag = value; } // unique identifier, and host
 
         private List<IBehavior> _behaviors = new List<IBehavior>(); // our behavior
         private static readonly QueueFactory<IBehavior> _factoryBehavior = new QueueFactory<IBehavior>();
@@ -58,20 +58,19 @@ namespace Actor.Base
             anActor._behaviors = new List<IBehavior>();
             anActor._awaitingBehaviors = _factoryBehavior.GetQueue();
             anActor._mailBox = new ActorMailBox<object>();
-            if (anActor.Tag == null)
+            if (anActor.Tag != null)
             {
-                anActor.Tag = new ActorTag();
+                return;
             }
+
+            anActor.Tag = new ActorTag();
         }
 
         protected BaseActor(ActorTag previousTag)
-            : base()
-        {
-            Tag = previousTag;
-        }
+            : base() => Tag = previousTag;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void TrySetInTask(Object msg)
+        private void TrySetInTask(object msg)
         {
             if (msg != null)
             {
@@ -80,6 +79,7 @@ namespace Actor.Base
                 Interlocked.Increment(ref fShared.fMessCount);
 #endif
             }
+
             TrySetInTask(TaskCreationOptions.None);
         }
 
@@ -127,10 +127,7 @@ namespace Actor.Base
             return anActor;
         }
 
-        public static BaseActor operator +(BaseActor anActor, object aMessage)
-        {
-            return Add(anActor, aMessage);
-        }
+        public static BaseActor operator +(BaseActor anActor, object aMessage) => Add(anActor, aMessage);
 
         public BaseActor(IBehaviors someBehaviors)
         {
@@ -150,10 +147,7 @@ namespace Actor.Base
             Become(someBehaviors);
         }
 
-        public BaseActor()
-        {
-            Tag = new ActorTag();
-        }
+        public BaseActor() => Tag = new ActorTag();
 
         public async Task<object> Receive(Func<object, bool> aPattern, int timeOutMS)
         {
@@ -166,7 +160,7 @@ namespace Actor.Base
             TrySetInTask(TaskCreationOptions.LongRunning);
             if (timeOutMS != Timeout.Infinite)
             {
-                var noTimeOut = awaitingBehavior.Completion.Task.Wait(timeOutMS);
+                bool noTimeOut = awaitingBehavior.Completion.Task.Wait(timeOutMS);
                 if (noTimeOut)
                 {
                     return await awaitingBehavior.Completion.Task.ConfigureAwait(false);
@@ -178,8 +172,11 @@ namespace Actor.Base
                     while (_awaitingBehaviors.TryTake(out IBehavior bhv))
                     {
                         if (bhv != awaitingBehavior)
+                        {
                             lQueue.Enqueue(bhv);
+                        }
                     }
+
                     while (lQueue.Count > 0)
                     {
                         _awaitingBehaviors.Add(lQueue.Dequeue());
@@ -195,10 +192,7 @@ namespace Actor.Base
             }
         }
 
-        public Task<object> Receive(Func<object, bool> aPattern)
-        {
-            return Receive(aPattern, Timeout.Infinite);
-        }
+        public Task<object> AsyncReceive(Func<object, bool> aPattern) => Receive(aPattern, Timeout.Infinite);
 
         private object ReceiveMessage()
         {
@@ -229,11 +223,12 @@ namespace Actor.Base
             _behaviors.Clear();
 
             var someBehaviors = new Behaviors();
-            foreach (var item in manyBehaviors)
+            foreach (IBehavior item in manyBehaviors)
             {
                 someBehaviors.AddBehavior(item);
                 _behaviors.Add(item);
             }
+
             someBehaviors.LinkToActor(this);
             AddMissedMessages();
             TrySetInTask();
@@ -251,13 +246,14 @@ namespace Actor.Base
         protected void AddBehavior(params IBehavior[] someBehaviors)
         {
             CheckArg.BehaviorParam(someBehaviors);
-            var behaviors = new Behaviors();
+            Behaviors behaviors = new Behaviors();
 
-            foreach (var item in someBehaviors)
+            foreach (IBehavior item in someBehaviors)
             {
                 behaviors.AddBehavior(item);
                 _behaviors.Add(item);
             }
+
             behaviors.LinkToActor(this);
             AddMissedMessages();
             TrySetInTask();
@@ -368,10 +364,11 @@ namespace Actor.Base
                     return fBehavior;
                 }
             }
+
             return null;
         }
 
-        private IBehavior MatchByWaitingBehavior(Object msg)
+        private IBehavior MatchByWaitingBehavior(object msg)
         {
             Queue<IBehavior> lQueue = null;
             while (_awaitingBehaviors.TryTake(out IBehavior behavior))
@@ -380,6 +377,7 @@ namespace Actor.Base
                 {
                     lQueue = new Queue<IBehavior>();
                 }
+
                 if (!behavior.StandardPattern(msg))
                 {
                     lQueue.Enqueue(behavior);
@@ -392,10 +390,12 @@ namespace Actor.Base
                         {
                             _awaitingBehaviors.Add(lQueue.Dequeue());
                         }
+
                         return behavior;
                     }
                 }
             }
+
             if (lQueue != null)
             {
                 while (lQueue.Count > 0)
@@ -403,6 +403,7 @@ namespace Actor.Base
                     _awaitingBehaviors.Add(lQueue.Dequeue());
                 }
             }
+
             return null;
         }
     }

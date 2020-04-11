@@ -21,9 +21,6 @@
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
 using System.Net;
@@ -46,7 +43,7 @@ namespace Actor.Server
             fTcpListener = new TcpListener(fEndPoint);
             Become(new Behavior<string>(DoStartListen));
             fTcpListener.Start();
-            SendMessage("Start Listen");
+            this.SendMessage("Start Listen");
         }
 
         private void DoStartListen(string msg)
@@ -54,7 +51,7 @@ namespace Actor.Server
             Task<TcpClient> client = fTcpListener.AcceptTcpClientAsync();
             IActor entryConnection = new actEntryConnection();
             entryConnection.SendMessage(client.Result);
-            SendMessage("Continue Listen");
+            this.SendMessage("Continue Listen");
         }
     }
 
@@ -91,7 +88,7 @@ namespace Actor.Server
                 // find hosted actor directory
                 // forward msg to hostedactordirectory
                 Become(new Behavior<SerialObject>(t => { return true; }, DoProcessMessage));
-                SendMessage(so);
+                this.SendMessage(so);
             }
         }
 

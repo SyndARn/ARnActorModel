@@ -31,14 +31,14 @@ namespace Actor.Server
     public class DirectoryActor : BaseActor
     {
         public enum DirectoryRequest { Find } ;
-        private readonly Dictionary<string, IActor> fDictionary = new Dictionary<string, IActor>();
-        private static readonly Lazy<DirectoryActor> fDirectory = new Lazy<DirectoryActor>(() => new DirectoryActor(), true);
+        private readonly Dictionary<string, IActor> _dictionary = new Dictionary<string, IActor>();
+        private static readonly Lazy<DirectoryActor> _directory = new Lazy<DirectoryActor>(() => new DirectoryActor(), true);
 
         public DirectoryActor()
             : base()
         {
             Console.WriteLine("Dictionary starts and autoregisters");
-            fDictionary.Add("Directory", this);
+            _dictionary.Add("Directory", this);
 
             Behaviors bhvs = new Behaviors();
             bhvs.AddBehavior(new ActionBehavior<IActor>())
@@ -47,30 +47,15 @@ namespace Actor.Server
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public static DirectoryActor GetDirectory()
-        {
-            return fDirectory.Value;
-        }
+        public static DirectoryActor GetDirectory() => _directory.Value;
 
-        public string Stat()
-        {
-            return "Directory entries " + fDictionary.Count.ToString(CultureInfo.InvariantCulture);
-        }
+        public string Stat() => "Directory entries " + _dictionary.Count.ToString(CultureInfo.InvariantCulture);
 
-        public void Disco(IActor anActor)
-        {
-            this.SendMessage((Action<IActor>)DoDisco, anActor);
-        }
+        public void Disco(IActor anActor) => this.SendMessage((Action<IActor>)DoDisco, anActor);
 
-        public void Register(IActor anActor, string aKey)
-        {
-            this.SendMessage((Action<IActor,string>)DoRegister, anActor, aKey);
-        }
+        public void Register(IActor anActor, string aKey) => this.SendMessage((Action<IActor, string>)DoRegister, anActor, aKey);
 
-        public void Find(IActor anActor, string aKey)
-        {
-            this.SendMessage((Action<IActor, string>)DoFind, anActor, aKey);
-        }
+        public void Find(IActor anActor, string aKey) => this.SendMessage((Action<IActor, string>)DoFind, anActor, aKey);
 
         public IFuture<DirectoryRequest,IActor> FindActor(string aKey)
         {
@@ -81,7 +66,7 @@ namespace Actor.Server
 
         public IActor GetActorByName(string actorName)
         {
-            var future = new Future<DirectoryRequest, IActor>();
+            Future<DirectoryRequest, IActor> future = new Future<DirectoryRequest, IActor>();
             Find(future, actorName);
             return future.Result().Item2;
         }
@@ -90,11 +75,11 @@ namespace Actor.Server
         {
             Dictionary<string, string> directory = new Dictionary<string, string>();
             // TODO replace with Host Service
-            var fullhost = ActorServer.GetInstance().FullHost;
+            string fullhost = ActorServer.GetInstance().FullHost;
             // var fullhost = new ConfigManager().Host().Host;
-            foreach (string key in fDictionary.Keys)
+            foreach (string key in _dictionary.Keys)
             {
-                var value = fDictionary[key];
+                IActor value = _dictionary[key];
                 directory.Add(key,fullhost + value.Tag.Key());
             }
             anActor.SendMessage(directory);
@@ -102,16 +87,16 @@ namespace Actor.Server
 
         private void DoRegister(IActor anActor,string msg)
         {
-            if (!fDictionary.Keys.Any(t => t == msg))
+            if (!_dictionary.Keys.Any(t => t == msg))
             {
-                fDictionary.Add(msg, anActor);
+                _dictionary.Add(msg, anActor);
             }
         }
 
         private void DoFind(IActor anActor,string msg)
         {
             // Exists
-            if (fDictionary.TryGetValue(msg, out IActor Relative))
+            if (_dictionary.TryGetValue(msg, out IActor Relative))
             {
                 anActor.SendMessage(DirectoryRequest.Find, Relative);
             }
