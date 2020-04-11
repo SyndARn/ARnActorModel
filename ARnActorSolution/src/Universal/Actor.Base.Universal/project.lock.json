@@ -25791,7 +25791,6 @@
     "C:\\Users\\ARn\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj",
       "projectName": "Actor.Base.Universal",

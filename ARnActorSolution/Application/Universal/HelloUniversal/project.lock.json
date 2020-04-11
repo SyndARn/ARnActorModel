@@ -25920,7 +25920,6 @@
     "C:\\Users\\ARn\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.0.0",
     "restore": {
       "projectUniqueName": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\Application\\Universal\\HelloUniversal\\HelloUniversal.csproj",
       "projectName": "HelloUniversal",
