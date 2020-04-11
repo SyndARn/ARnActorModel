@@ -2,7 +2,6 @@
   "dependencies": {
     "coveralls.io": "1.4.2",
     "Microsoft.NETCore.UniversalWindowsPlatform": "6.2.10",
-    "NETStandard.Library": "2.0.3",
     "OpenCover": "4.7.922"
   },
   "frameworks": {

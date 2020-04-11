@@ -16,7 +16,6 @@
   <Import Project="..\..\src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
   </ItemGroup>
