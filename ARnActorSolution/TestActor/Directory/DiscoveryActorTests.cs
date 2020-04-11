@@ -26,9 +26,9 @@ namespace TestActor
             ActorServer.Start("localhost", 80, new HostRelayActor());
             var future = new Future<Dictionary<string, string>>();
             var disco = new DiscoveryActor("localhost",future);
-            var result = future.Result(5000);
+            var result = future.Result(60000);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Count == 3);
+            Assert.IsTrue(result.Count >= 3,$"result is {result.Count}");
             Assert.IsTrue(result.Keys.Contains("KnownShards"));
         }
     }

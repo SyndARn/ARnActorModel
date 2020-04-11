@@ -64,10 +64,10 @@ namespace TestActor
         {
             TestLauncherActor.Test(TestContext, () =>
             {
-                var node1 = new PeerActor<int, string>();
-                var node2 = new PeerActor<int, string>();
-                var node3 = new PeerActor<int, string>();
-                var node4 = new PeerActor<int, string>();
+                PeerActor<int, string> node1 = new PeerActor<int, string>();
+                PeerActor<int, string> node2 = new PeerActor<int, string>();
+                PeerActor<int, string> node3 = new PeerActor<int, string>();
+                PeerActor<int, string> node4 = new PeerActor<int, string>();
                 node1.NewPeer(node2, node2.GetHashKey().Result());
                 node1.NewPeer(node3, node3.GetHashKey().Result());
                 node1.NewPeer(node4, node4.GetHashKey().Result());
@@ -76,7 +76,7 @@ namespace TestActor
                 node3.StoreNode(30, "30");
                 var future = new Future<IPeerActor<int,string>>();
                 node1.FindPeer(30, future);
-                var result = future.Result();
+                IPeerActor<int, string> result = future.Result();
                 Assert.IsNotNull(result);
                 // Assert.AreEqual(node3.Tag.Key(), result.Tag.Key());
                 future = new Future<IPeerActor<int, string>>();

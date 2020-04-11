@@ -197,7 +197,7 @@ namespace Actor.Util
             return new CollectionActorEnumerator<T>(this);
         }
 
-        System.Collections.IEnumerator IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return new CollectionActorEnumerator<T>(this);
         }

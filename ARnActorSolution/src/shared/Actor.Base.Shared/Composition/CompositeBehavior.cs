@@ -7,25 +7,13 @@ namespace Actor.Base
         protected HashSet<IActor> inputs = new HashSet<IActor>();
         protected HashSet<IActor> outputs = new HashSet<IActor>();
 
-        public void RegisterInput(IActor actor)
-        {
-            LinkedActor.SendMessage(actor, true, true);
-        }
+        public void RegisterInput(IActor actor) => LinkedActor.SendMessage(actor, true, true);
 
-        public void UnregisterInput(IActor actor)
-        {
-            LinkedActor.SendMessage(actor, true, false);
-        }
+        public void UnregisterInput(IActor actor) => LinkedActor.SendMessage(actor, true, false);
 
-        public void RegisterOutput(IActor actor)
-        {
-            LinkedActor.SendMessage(actor, false, true);
-        }
+        public void RegisterOutput(IActor actor) => LinkedActor.SendMessage(actor, false, true);
 
-        public void UnregisterOutput(IActor actor)
-        {
-            LinkedActor.SendMessage(actor, false, false);
-        }
+        public void UnregisterOutput(IActor actor) => LinkedActor.SendMessage(actor, false, false);
 
         protected CompositeBehavior()
         {

@@ -11,7 +11,7 @@ namespace Actor.Base
 
     public class Trait<T> : Behavior<ITrait<T>,T>, ITrait<T>
     {
-        private T fData;
+        private T _data;
 
         public Trait() : base()
         {
@@ -26,7 +26,7 @@ namespace Actor.Base
 
         private void ApplySetData(ITrait<T> aTrait,T aT)
         {
-            fData = aT;
+            _data = aT;
         }
     }
 

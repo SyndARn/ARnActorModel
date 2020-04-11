@@ -6,8 +6,8 @@ namespace Actor.Base
 {
     public class RingQueue<T> : IMessageQueue<T>
     {
-        private RingBuffer<T> fRingBuffer = new RingBuffer<T>();
-        private Object fLock = new Object();
+        private readonly RingBuffer<T> fRingBuffer = new RingBuffer<T>();
+        private readonly Object fLock = new Object();
         public void Add(T item)
         {
             lock (fLock)
@@ -35,7 +35,7 @@ namespace Actor.Base
 
     public class RingBuffer<T>
     {
-        private List<T> fList = new List<T>(128);
+        private readonly List<T> fList = new List<T>(128);
         private int fHead;
         private int fTail;
         public int Count()
