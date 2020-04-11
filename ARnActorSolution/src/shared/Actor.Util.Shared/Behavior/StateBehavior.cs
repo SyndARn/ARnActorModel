@@ -60,7 +60,7 @@ namespace Actor.Util
         public async Task<T> GetStateAsync()
         {
             this.SendMessage(StateAction.Get);
-            return (T) await Receive(t => t is T).ConfigureAwait(false);
+            return (T) await AsyncReceive(t => t is T).ConfigureAwait(false);
         }
 
         public async Task<T> GetStateAsync(int timeOutMS)

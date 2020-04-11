@@ -1,5 +1,5 @@
 ﻿/*****************************************************************************
-		               ARnActor Actor Model Library C# .Net
+		               ARnActor Actor Model Library .Net
      
 	 Copyright (C) {2015}  {ARn/SyndARn} 
  
@@ -21,30 +21,22 @@
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
 
+using System.Diagnostics;
 using Actor.Base;
 
-namespace Actor.Util
+namespace Actor.Server
 {
 
-    public class FsmActor<TState, TEvent> : BaseActor
+    public class EchoClientBehavior : ClientBehavior<string>
     {
-
-        public FsmActor() : base()
+        protected override void ReceiveAnswer(ServerMessage<string> aMessage)
         {
-        }
-
-        public FsmActor(FsmBehaviors<TState, TEvent> someBehaviors) : base()
-        {
-            Become(someBehaviors);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public Future<TState> GetCurrentState()
-        {
-            var future = new Future<TState>();
-            this.SendMessage(future);
-            return future;
+            // echo to console
+            if (aMessage != null)
+            {
+                SendByName<string>.Send(
+                    "client receive " + aMessage.Data, "Console");
+            }
         }
     }
-
 }

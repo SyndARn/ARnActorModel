@@ -2,18 +2,19 @@
 {
     public class OperatorPlusBehavior : CompositeBehavior<int>
     {
-        private int accumulator;
+        private int _accumulator;
 
         protected override void DoCompositeBehavior(IActor actor, int t)
         {
             inputs.Remove(actor);
-            accumulator += t;
+            _accumulator += t;
             if (inputs.Count == 0)
             {
-                foreach (var item in outputs)
+                foreach (IActor item in outputs)
                 {
-                    item.SendMessage(accumulator);
+                    item.SendMessage(_accumulator);
                 }
+
                 outputs.Clear();
             }
         }

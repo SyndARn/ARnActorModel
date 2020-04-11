@@ -128,7 +128,7 @@ namespace Actor.Util
         public bool MoveNext()
         {
             Interlocked.Increment(ref fIndex);
-            var task = Receive(t => t is IMessageParam<IteratorMethod, bool> messageParam && messageParam.Item1 == IteratorMethod.OkMoveNext
+            var task = AsyncReceive(t => t is IMessageParam<IteratorMethod, bool> messageParam && messageParam.Item1 == IteratorMethod.OkMoveNext
                 );
             fCollection.SendMessage(IteratorMethod.MoveNext, fIndex, this);
 
@@ -159,7 +159,7 @@ namespace Actor.Util
         {
             get
             {
-                var task = Receive(t =>
+                var task = AsyncReceive(t =>
                 {
                     var messageParam = t as IMessageParam<IteratorMethod, T>;
                     return messageParam?.Item1 == IteratorMethod.OkCurrent;
@@ -173,7 +173,7 @@ namespace Actor.Util
         {
             get
             {
-                var task = Receive(t =>
+                var task = AsyncReceive(t =>
                 {
                     var tu = (IMessageParam<IteratorMethod, T>)t;
                     return tu?.Item1 == IteratorMethod.OkCurrent;
@@ -205,7 +205,7 @@ namespace Actor.Util
         public async void Add(T aData)
         {
             this.SendMessage(CollectionRequest.Add, aData);
-            await Receive(t =>
+            await AsyncReceive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkAdd;
@@ -215,7 +215,7 @@ namespace Actor.Util
         public async void Remove(T aData)
         {
             this.SendMessage(CollectionRequest.Remove, aData);
-            await Receive(t =>
+            await AsyncReceive(t =>
             {
                 var val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkRemove;

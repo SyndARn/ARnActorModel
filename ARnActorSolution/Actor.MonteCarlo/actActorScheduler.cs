@@ -31,7 +31,7 @@ namespace Actor.MonteCarlo
             shardList = new ShardList();
             Become(new Behavior<String>(DoScheduling));
             AddBehavior(new Behavior<double>(DoCollectData));
-            SendMessage("Start");
+            this.SendMessage("Start");
         }
 
         private void DoCollectData(double data)

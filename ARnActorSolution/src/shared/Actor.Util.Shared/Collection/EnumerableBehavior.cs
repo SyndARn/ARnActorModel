@@ -43,7 +43,7 @@ namespace Actor.Util
         public EnumerableActor(IEnumerable<T> source) : base()
         {
             Become(new Behavior<IEnumerable<T>>(SetupData));
-            SendMessage(source);
+            this.SendMessage(source);
         }
 
         private void SetupData(IEnumerable<T> source)

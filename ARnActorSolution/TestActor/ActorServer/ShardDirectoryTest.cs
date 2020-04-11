@@ -23,7 +23,7 @@ namespace TestActor
             {
                 // find shard in directory
                 ConnectActor connect = new ConnectActor(this, ActorServer.GetInstance().FullHost, "KnownShards");
-                var data = Receive(ans => { return ans is IMessageParam<string, ActorTag, IActor>; }) ;
+                var data = AsyncReceive(ans => { return ans is IMessageParam<string, ActorTag, IActor>; }) ;
                 var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                 var shardDir = res.Item3 ;
                 Assert.IsNotNull(shardDir) ;

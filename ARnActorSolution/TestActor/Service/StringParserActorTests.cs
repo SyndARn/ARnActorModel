@@ -1,12 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Service;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TestActor;
-using Actor.Util;
 using Actor.Base;
 
 namespace Actor.Service.Tests
@@ -31,7 +27,7 @@ namespace Actor.Service.Tests
         public async Task<IEnumerable<string>> GetList()
         {
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
-            SendMessage((IActor)future);
+            this.SendMessage((IActor)future);
             return await future.ResultAsync();
         }
     }

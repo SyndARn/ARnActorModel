@@ -26,15 +26,15 @@ namespace Actor.Util
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            Task<object> res = Receive(t => t is IMessageParam<IActor, IDisposable>);
-            SendMessage(observer);
+            Task<object> res = AsyncReceive(t => t is IMessageParam<IActor, IDisposable>);
+            this.SendMessage(observer);
             var resi = res.Result as IMessageParam<IActor, IDisposable>;
             return resi.Item2;
         }
 
         public void Track(T loc)
         {
-            SendMessage(loc);
+            this.SendMessage(loc);
         }
 
         private void DoTrack(T loc)

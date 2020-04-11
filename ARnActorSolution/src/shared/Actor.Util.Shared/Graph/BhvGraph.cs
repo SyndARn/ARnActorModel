@@ -98,25 +98,13 @@ namespace Actor.Util
                 }));
         }
 
-        public void AddEdge(NodeActor<TNode,TEdge> node)
-        {
-            this.SendMessage(GraphOperation.AddEdge, node);
-        }
+        public void AddEdge(NodeActor<TNode, TEdge> node) => this.SendMessage(GraphOperation.AddEdge, node);
 
-        public void RemoveEdge(NodeActor<TNode, TEdge> node)
-        {
-            this.SendMessage(GraphOperation.RemoveEdge, node);
-        }
+        public void RemoveEdge(NodeActor<TNode, TEdge> node) => this.SendMessage(GraphOperation.RemoveEdge, node);
 
-        public void Adjacent(NodeActor<TNode,TEdge> nodeA, IActor sender)
-        {
-            this.SendMessage(GraphOperation.Adjacent, nodeA, sender);
-        }
+        public void Adjacent(NodeActor<TNode, TEdge> nodeA, IActor sender) => this.SendMessage(GraphOperation.Adjacent, nodeA, sender);
 
-        public void Neighbors(IActor sender)
-        {
-            this.SendMessage(GraphOperation.Neighbors, sender);
-        }
+        public void Neighbors(IActor sender) => this.SendMessage(GraphOperation.Neighbors, sender);
 
         public IFuture<IActor, IEnumerable<NodeActor<TNode, TEdge>>> Neighbors()
         {

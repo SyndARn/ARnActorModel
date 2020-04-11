@@ -18,7 +18,7 @@ namespace MoreThanOneMillionActor
             fReduce = reduce;
             obs.RegisterObserver(fReduce);
             Become(new Behavior<int>(Go));
-            SendMessage(i);
+            this.SendMessage(i);
         }
 
         private void Go(int message)

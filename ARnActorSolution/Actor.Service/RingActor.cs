@@ -103,7 +103,7 @@ namespace Actor.Service
                 State.Start, (IActor)null);
             lastNode = prevNode;
             Become(new Behavior<bool>(msg => msg, Test));
-            SendMessage(true);
+            this.SendMessage(true);
         }
 
         protected void Test(bool msg)

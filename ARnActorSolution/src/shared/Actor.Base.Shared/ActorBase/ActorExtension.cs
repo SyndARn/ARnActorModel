@@ -46,22 +46,22 @@ namespace Actor.Base
             anActor.SendMessage(new MessageParam<T1, T2, T3, T4>(t1, t2, t3, t4));
         }
 
-        public static Task<object> Receive<T1, T2>(this BaseActor anActor, Func<T1, T2, bool> aPattern)
+        public static Task<object> AsyncReceive<T1, T2>(this BaseActor anActor, Func<T1, T2, bool> aPattern)
         {
             CheckArg.Actor(anActor);
-            return anActor.Receive((o) => o is IMessageParam<T1, T2> t && aPattern(t.Item1, t.Item2));
+            return anActor.AsyncReceive((o) => o is IMessageParam<T1, T2> t && aPattern(t.Item1, t.Item2));
         }
 
-        public static Task<object> Receive<T1, T2, T3>(this BaseActor anActor, Func<T1, T2, T3, bool> aPattern)
+        public static Task<object> AsyncReceive<T1, T2, T3>(this BaseActor anActor, Func<T1, T2, T3, bool> aPattern)
         {
             CheckArg.Actor(anActor);
-            return anActor.Receive((o) => o is IMessageParam<T1, T2, T3> t && aPattern(t.Item1, t.Item2, t.Item3));
+            return anActor.AsyncReceive((o) => o is IMessageParam<T1, T2, T3> t && aPattern(t.Item1, t.Item2, t.Item3));
         }
 
-        public static Task<object> Receive<T1, T2, T3, T4>(this BaseActor anActor, Func<T1, T2, T3, T4, bool> aPattern)
+        public static Task<object> AsyncReceive<T1, T2, T3, T4>(this BaseActor anActor, Func<T1, T2, T3, T4, bool> aPattern)
         {
             CheckArg.Actor(anActor);
-            return anActor.Receive((o) => o is IMessageParam<T1, T2, T3, T4> t && aPattern(t.Item1, t.Item2, t.Item3, t.Item4));
+            return anActor.AsyncReceive((o) => o is IMessageParam<T1, T2, T3, T4> t && aPattern(t.Item1, t.Item2, t.Item3, t.Item4));
         }
     }
 }

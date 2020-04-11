@@ -14,27 +14,24 @@ namespace Actor.Server
 
     class HttpContextComm : IContextComm
     {
-        private HttpListenerContext fContext;
-        private HttpListener fListener;
-        public HttpContextComm(HttpListener listener)
-        {
-            fListener = listener;
-        }
+        private HttpListenerContext _context;
+        private HttpListener _listener;
+        public HttpContextComm(HttpListener listener) => _listener = listener;
 
         public Stream ReceiveStream()
         {
-            fContext = fListener.GetContext(); // blocking
-            return fContext.Request.InputStream;
+            _context = _listener.GetContext(); // blocking
+            return _context.Request.InputStream;
         }
 
         public void Acknowledge()
         {
-            if (fContext != null)
+            if (_context != null)
             {
-                HttpListenerResponse response = fContext.Response;
+                HttpListenerResponse response = _context.Response;
                 response.Close();
-                fContext = null;
-                fListener = null;
+                _context = null;
+                _listener = null;
             }
         }
 

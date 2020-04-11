@@ -42,35 +42,33 @@ namespace Actor.Server
 
     public class BrokerActor<T> : BaseActor
     {
-        private readonly Dictionary<IActor, WorkerStatus> fWorkers = new Dictionary<IActor, WorkerStatus>();
-        private readonly Dictionary<ActorTag, RequestStatus<T>> fRequests = new Dictionary<ActorTag, RequestStatus<T>>();
-        private int fLastWorkerUsed = 0;
-        private int fTTL = 0;
-        private int fRequestProcessed = 0;
+        private readonly Dictionary<IActor, WorkerStatus> _workers = new Dictionary<IActor, WorkerStatus>();
+        private readonly Dictionary<ActorTag, RequestStatus<T>> _requests = new Dictionary<ActorTag, RequestStatus<T>>();
+        private int _lastWorkerUsed = 0;
+        private int _TTL = 0;
+        private int _requestProcessed = 0;
         public IActor Logger { get; set; } = new NullActor();
 
-        public void RegisterWorker(IActor worker)
-        {
-            this.SendMessage(BrokerAction.RegisterWorker, worker);
-        }
+        public void RegisterWorker(IActor worker) => this.SendMessage(BrokerAction.RegisterWorker, worker);
 
         private IActor FindWorker()
         {
-            if (fLastWorkerUsed < 0)
+            if (_lastWorkerUsed < 0)
             {
-                fLastWorkerUsed = 0;
+                _lastWorkerUsed = 0;
             }
             else
             {
-                if (fLastWorkerUsed >= fWorkers.Count)
-                { fLastWorkerUsed = 0; }
+                if (_lastWorkerUsed >= _workers.Count)
+                { _lastWorkerUsed = 0; }
             }
-            var worker = fWorkers.Where(w => w.Value.State == WorkerReadyState.Idle).Skip(fLastWorkerUsed).FirstOrDefault();
-            fLastWorkerUsed++;
+            var worker = _workers.Where(w => w.Value.State == WorkerReadyState.Idle).Skip(_lastWorkerUsed).FirstOrDefault();
+            _lastWorkerUsed++;
             if (worker.Key == null)
             {
-                worker = fWorkers.FirstOrDefault(w => w.Value.State == WorkerReadyState.Idle);
+                worker = _workers.FirstOrDefault(w => w.Value.State == WorkerReadyState.Idle);
             }
+
             return worker.Key;
         }
 
@@ -98,7 +96,7 @@ namespace Actor.Server
                          TimeToLive = 0,
                          State = WorkerReadyState.Idle
                      };
-                     fWorkers.Add(a, workerStatus);
+                     _workers.Add(a, workerStatus);
                      LogString("Worker Register", a.Tag.Key());
                  }
                 );
@@ -111,31 +109,19 @@ namespace Actor.Server
                 (b, a) => b == BrokerAction.UnregisterWorker,
                  (b, a) =>
                  {
-                     fWorkers.Remove(a);
+                     _workers.Remove(a);
                      LogString("Worker UnRegister", a.Tag.Key());
                  }
                 );
         }
 
-        public void LogString(string message)
-        {
-            Logger.SendMessage(message);
-        }
+        public void LogString(string message) => Logger.SendMessage(message);
 
-        public void LogString(string message, object arg0)
-        {
-            Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, arg0));
-        }
+        public void LogString(string message, object arg0) => Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, arg0));
 
-        public void LogString(string message, object arg0, object arg1)
-        {
-            Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, arg0, arg1));
-        }
+        public void LogString(string message, object arg0, object arg1) => Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, arg0, arg1));
 
-        public void LogString(string message, object[] args)
-        {
-            Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, args));
-        }
+        public void LogString(string message, object[] args) => Logger.SendMessage(string.Format(CultureInfo.InvariantCulture, message, args));
 
         private Behavior<T> BehaviorProcessClientRequest()
         {
@@ -148,13 +134,13 @@ namespace Actor.Server
                         State = RequestState.Unprocessed,
                         Tag = new ActorTag()
                     };
-                    fRequests[requestStatus.Tag] = requestStatus;
+                    _requests[requestStatus.Tag] = requestStatus;
 
                     var worker = FindWorker();
                     if (worker != null)
                     {
-                        fWorkers[worker].State = WorkerReadyState.Busy;
-                        fWorkers[worker].TimeToLive = 0;
+                        _workers[worker].State = WorkerReadyState.Busy;
+                        _workers[worker].TimeToLive = 0;
                         worker.SendMessage((IActor)this, requestStatus.Tag, t);
                         requestStatus.State = RequestState.Running;
                         LogString("Processing Request {0} on worker {1}", requestStatus.Tag.Key(), worker.Tag.Key());
@@ -186,14 +172,14 @@ namespace Actor.Server
                 (a, s, t) => s == WorkerReadyState.Busy,
                  (a, s, t) =>
                  {
-                     fWorkers[a].State = WorkerReadyState.Busy;
+                     _workers[a].State = WorkerReadyState.Busy;
                      LogString("Worker {0} can't process request {1}", a.Tag.Key(), t.Key());
                      var worker = FindWorker();
                      if (worker != null)
                      {
-                         fWorkers[worker].State = WorkerReadyState.Busy;
-                         fWorkers[worker].TimeToLive = 0;
-                         worker.SendMessage((IActor)this, t, fRequests[t]);
+                         _workers[worker].State = WorkerReadyState.Busy;
+                         _workers[worker].TimeToLive = 0;
+                         worker.SendMessage((IActor)this, t, _requests[t]);
                          LogString("ReProcessing Request {0} on worker {1}", a.Tag.Key(), t.Key());
                      }
                      else
@@ -208,17 +194,17 @@ namespace Actor.Server
                 (a, s, t) => s == WorkerReadyState.Idle,
                  (a, s, t) =>
                  {
-                     fRequestProcessed++;
-                     fRequests.Remove(t);
-                     fWorkers[a].State = WorkerReadyState.Idle;
-                     fWorkers[a].TimeToLive = fTTL;
+                     _requestProcessed++;
+                     _requests.Remove(t);
+                     _workers[a].State = WorkerReadyState.Idle;
+                     _workers[a].TimeToLive = _TTL;
                      LogString("Request {0} End on worker {1}", t.Key(), a.Tag.Key());
                      // find a request
-                     var tagRequest = fRequests.Values.FirstOrDefault(v => v.State == RequestState.Unprocessed);
+                     RequestStatus<T> tagRequest = _requests.Values.FirstOrDefault(v => v.State == RequestState.Unprocessed);
                      if (tagRequest != null)
                      {
-                         fWorkers[a].State = WorkerReadyState.Busy;
-                         fWorkers[a].TimeToLive = 0;
+                         _workers[a].State = WorkerReadyState.Busy;
+                         _workers[a].TimeToLive = 0;
                          tagRequest.State = RequestState.Running;
                          a.SendMessage((IActor)this, tagRequest.Tag, tagRequest.Data);
                          LogString("Processing Request {0} reusing worker {1}", tagRequest.Tag.Key(), a.Tag.Key());
@@ -230,24 +216,25 @@ namespace Actor.Server
                 (
                 (a, h) =>
                 {
-                    foreach (var worker in fWorkers.Where(w => w.Value.TimeToLive < fTTL))
+                    foreach (var worker in _workers.Where(w => w.Value.TimeToLive < _TTL))
                     {
                         worker.Key.SendMessage((IActor)this, BrokerAction.Hearbeat);
                     }
-                    fTTL++;
-                    LogString("Heart Beat Signal, Request Processed {0}", fRequestProcessed);
+
+                    _TTL++;
+                    LogString("Heart Beat Signal, Request Processed {0}", _requestProcessed);
                 }
                 ));
             // heartbeat answer
             AddBehavior(new Behavior<IActor, WorkerReadyState>(
                 (a, w) =>
                 {
-                    var workerState = fWorkers[a];
-                    workerState.TimeToLive = fTTL;
+                    var workerState = _workers[a];
+                    workerState.TimeToLive = _TTL;
                     LogString("Answer To HeartBeat from Worker {0}", a.Tag.Key());
                 }));
             // start heart beat
-            SendMessage(BrokerAction.Start);
+            this.SendMessage(BrokerAction.Start);
         }
     }
 }

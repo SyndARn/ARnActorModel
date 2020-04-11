@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 #if NETCOREAPP1_1
 using System.Runtime.Serialization.Json ;
 #else
@@ -6,6 +7,7 @@ using System.Runtime.Serialization;
 #endif
 namespace Actor.Base
 {
+    [DebuggerDisplay("ActorException")]
     [Serializable]
     public class ActorException : Exception
     {

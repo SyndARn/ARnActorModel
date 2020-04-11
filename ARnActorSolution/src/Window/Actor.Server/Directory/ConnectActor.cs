@@ -20,11 +20,8 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
 
 namespace Actor.Server
@@ -32,6 +29,7 @@ namespace Actor.Server
     /// <summary>
     /// Connect to a shard Service
     /// </summary>
+    [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ConnectActor : BaseActor
     {
         private string fServiceName;
@@ -47,11 +45,11 @@ namespace Actor.Server
             this.SendMessage("DoConnect");
         }
 
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => ToString();
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "Actor.Server.ConnectActor")]
-        public static void Connect(IActor lSender, string hostAddress, string serviceName)
-        {
-            new ConnectActor(lSender, hostAddress, serviceName);
-        }
+        public static void Connect(IActor lSender, string hostAddress, string serviceName) => new ConnectActor(lSender, hostAddress, serviceName);
 
         private void DoDisco(string msg)
         {
@@ -68,7 +66,7 @@ namespace Actor.Server
                 {
                     ActorTag tag = new ActorTag(service);
                     Become(new Behavior<ActorTag>(DoConnect));
-                    SendMessage(tag);
+                    this.SendMessage(tag);
                 }
                 else
                 // service with no end point

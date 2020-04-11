@@ -44,7 +44,7 @@ namespace Actor.Util
 
         public void PublishData(T aT)
         {
-            SendMessage(aT);
+            this.SendMessage(aT);
         }
 
         public void RegisterObserver(IActor anActor)

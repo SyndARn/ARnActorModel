@@ -10,32 +10,29 @@ namespace Actor.Server
         public ISerializeService SerializeService { get; private set; }
         public IListenerService ListenerService { get; private set; }
         public IHostService HostService { get; private set; }
-        private string fFullHost = "" ;
-        private HostRelayActor fActHostRelay;
-        private ConfigManager fConfigManager;
+        private string _fullHost = "" ;
+        private HostRelayActor _actHostRelay;
+        private ConfigManager _configManager;
 
         public string FullHost { get
         {
-            if (string.IsNullOrEmpty(fFullHost))
+            if (string.IsNullOrEmpty(_fullHost))
             {
-                    fFullHost = fConfigManager.Host().Host;
+                    _fullHost = _configManager.Host().Host;
             }
-            return fFullHost;
+            return _fullHost;
         } }
 
         private static ActorServer fServerInstance = null ;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public static ActorServer GetInstance()
-        {
-            return fServerInstance ;
-        }
+        public static ActorServer GetInstance() => fServerInstance;
 
         public static void Start(ConfigManager configManager)
         {
             fServerInstance = new ActorServer
             {
-                fConfigManager = configManager ?? throw new ActorException("ConfigManager can't be null"),
+                _configManager = configManager ?? throw new ActorException("ConfigManager can't be null"),
                 Name = configManager.Host().Host,
                 Port = configManager.Host().Port,
                 ListenerService = configManager.GetListenerService(),
@@ -57,28 +54,29 @@ namespace Actor.Server
 
         public ActorServer(string lName, int lPort)
         {
-            fConfigManager = new ConfigManager();
+            _configManager = new ConfigManager();
             Name = lName;
             Port = lPort;
-            SerializeService = fConfigManager.GetSerializeService();
-            ActorTagHelper.FullHost = fConfigManager.Host().Host;
+            SerializeService = _configManager.GetSerializeService();
+            ActorTagHelper.FullHost = _configManager.Host().Host;
         }
 
         private void DoInit(HostRelayActor hostRelayActor)
-        {
+            {
             DirectoryActor.GetDirectory(); // Start directory
             ActorConsole.Register(); // Start console
             // should work now
             SendByName<string>.Send("Actor Server Start", "Console");
             Become(new NullBehavior());
-            if (hostRelayActor != null)
+            if (hostRelayActor == null)
             {
-                ListenerService = fConfigManager.GetListenerService();
-                new ShardDirectoryActor(this); // start shard directory
-                fActHostRelay = hostRelayActor;
-                fActHostRelay.SendMessage("Listen");
+                return;
             }
-            // new actTcpServer();
+
+            ListenerService = _configManager.GetListenerService();
+            new ShardDirectoryActor(this); // start shard directory
+            _actHostRelay = hostRelayActor;
+            _actHostRelay.SendMessage("Listen");
         }
 
         public void Dispose()
@@ -88,25 +86,26 @@ namespace Actor.Server
         }
 
         protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
+                {
+            if (!disposing)
             {
-                if (fActHostRelay != null)
-                {
-                    fActHostRelay.Dispose();
-                    fActHostRelay = null;
-                }
-                if (fConfigManager != null)
-                {
-                    fConfigManager.Dispose();
-                    fConfigManager = null;
-                }
+                return;
             }
+
+            if (_actHostRelay != null)
+            {
+                _actHostRelay.Dispose();
+                _actHostRelay = null;
+            }
+            if (_configManager == null)
+            {
+                return;
+            }
+
+            _configManager.Dispose();
+            _configManager = null;
         }
 
-        ~ActorServer()
-        {
-            Dispose(false);
-        }
+        ~ActorServer() => Dispose(false);
     }
 }

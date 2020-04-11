@@ -19,17 +19,17 @@ namespace Actor.Util
 
         public void Set(TKey key, TValue value)
         {
-            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Set, key, value, null));
+            this.SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Set, key, value, null));
         }
 
         public void Delete(TKey key)
         {
-            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Delete, key, default(TValue), null));
+            this.SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Delete, key, default(TValue), null));
         }
 
         public void Update(TKey key, TValue value)
         {
-            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Update, key, value, null));
+            this.SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Update, key, value, null));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Actor.Util
         public async Task<IMessageParam<IActor, T>> Wait(IActor target, T question)
         {
             target.SendMessage((IActor)this, question);
-            var r = Receive(t => t is IMessageParam<IActor, T>);
+            var r = AsyncReceive(t => t is IMessageParam<IActor, T>);
             return (IMessageParam<IActor, T>)await r;
         }
 
@@ -32,7 +32,7 @@ namespace Actor.Util
         public async Task<IMessageParam<IActor, TAnswer>> Wait(IActor target, TQuestion question)
         {
             target.SendMessage((IActor)this, question);
-            var r = Receive(t => t is IMessageParam<IActor, TAnswer>);
+            var r = AsyncReceive(t => t is IMessageParam<IActor, TAnswer>);
             return (IMessageParam<IActor, TAnswer>)await r;
         }
 

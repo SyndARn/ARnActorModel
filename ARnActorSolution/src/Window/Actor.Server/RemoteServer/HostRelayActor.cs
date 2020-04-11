@@ -42,7 +42,7 @@ namespace Actor.Server
                 }
                 IContextComm context = fListener.GetCommunicationContext();
                 RemoteReceiverActor.Cast(context);
-                SendMessage("Listen");
+                this.SendMessage("Listen");
             }
             catch(Exception e)
             {

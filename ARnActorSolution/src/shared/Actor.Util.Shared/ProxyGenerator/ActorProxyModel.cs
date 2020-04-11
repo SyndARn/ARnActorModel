@@ -24,9 +24,6 @@ namespace Actor.Util
             Become(behaviors);
         }
 
-        public void SendMethodAndParam(string methodName, object param)
-        {
-            this.SendMessage(methodName, param);
-        }
+        public void SendMethodAndParam(string methodName, object param) => this.SendMessage(methodName, param);
     }
 }

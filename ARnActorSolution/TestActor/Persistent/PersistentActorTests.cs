@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Actor.Base;
 using Actor.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestActor
 {
@@ -31,8 +27,8 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                var service = new MemoizePersistentService<string>();
-                var persistent = new PersistentActor<string>(service, "TestActor");
+                MemoizePersistentService<string> service = new MemoizePersistentService<string>();
+                PersistentActor<string> persistent = new PersistentActor<string>(service, "TestActor");
                 persistent.SendMessage(new EventSourceTest("A"));
                 persistent.SendMessage(new EventSourceTest("B"));
                 persistent.SendMessage(new EventSourceTest("C"));

@@ -41,7 +41,7 @@ namespace TestActor
         public Future<IEnumerable<string>> GetResult()
         {
             var future = new Future<IEnumerable<string>>();
-            SendMessage((IActor)future);
+            this.SendMessage((IActor)future);
             return future;
         }
 
