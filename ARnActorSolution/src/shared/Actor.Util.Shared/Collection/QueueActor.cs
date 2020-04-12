@@ -35,23 +35,17 @@ namespace Actor.Util
         {
         }
 
-        public void Queue(T at)
-        {
-            SendAction(DoQueue, at);
-        }
+        public void Queue(T at) => SendAction(DoQueue, at);
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public async Task<IMsgQueue<T>> TryDequeue()
+        public async Task<IMsgQueue<T>> TryDequeueAsync()
         {
             var retVal = AsyncReceive(t => t is IMsgQueue<T>);
             SendAction(DoDequeue);
             return await retVal as IMsgQueue<T>;
         }
 
-        private void DoQueue(T at)
-        {
-            fQueue.Enqueue(at);
-        }
+        private void DoQueue(T at) => fQueue.Enqueue(at);
 
         private void DoDequeue()
         {

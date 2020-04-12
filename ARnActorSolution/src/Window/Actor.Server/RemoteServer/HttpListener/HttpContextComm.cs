@@ -41,12 +41,14 @@ namespace Actor.Server
             using (StreamReader srDebug = new StreamReader(stream))
             {
                 while (!srDebug.EndOfStream)
+                {
                     Debug.Print(srDebug.ReadLine());
+                }
 
                 stream.Seek(0, SeekOrigin.Begin);
-                using (var client = new HttpClient())
+                using (HttpClient client = new HttpClient())
                 {
-                    using (var hc = new StreamContent(stream))
+                    using (StreamContent hc = new StreamContent(stream))
                     {
                         client.PostAsync(uri, hc).Wait();
                     }

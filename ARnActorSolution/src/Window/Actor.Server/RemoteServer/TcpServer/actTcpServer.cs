@@ -32,12 +32,12 @@ using Actor.Base;
 namespace Actor.Server
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actTcpServer : BaseActor
+    public class ActorTcpServer : BaseActor
     {
         TcpListener fTcpListener;
         IPEndPoint fEndPoint;
 
-        public actTcpServer()
+        public ActorTcpServer()
         {
             fEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80);
             fTcpListener = new TcpListener(fEndPoint);
@@ -75,6 +75,7 @@ namespace Actor.Server
                     var req = sr.ReadLine();
                     Debug.Print("receive " + req);
                 }
+
                 memStream.Seek(0, SeekOrigin.Begin);
                 NetDataContractSerializer dcs = new NetDataContractSerializer();
                 dcs.SurrogateSelector = new ActorSurrogatorSelector();

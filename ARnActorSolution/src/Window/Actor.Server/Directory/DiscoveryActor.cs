@@ -70,6 +70,7 @@ namespace Actor.Server
             {
                 Console.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0} - {1}",s, dico[s]));
             }
+
             Become(new NullBehaviors());
         }
     }

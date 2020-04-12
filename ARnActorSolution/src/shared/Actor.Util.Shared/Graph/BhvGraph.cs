@@ -23,20 +23,14 @@ namespace Actor.Util
             AddBehavior(new Behavior<GraphOperation, IActor>(
                 (o, a) => o == GraphOperation.PickUpNode,
                 (o, a) => {
-                    var node = fNodeCollection.FirstOrDefault();
+                    NodeActor<TNode, TEdge> node = fNodeCollection.FirstOrDefault();
                     a.SendMessage(this, node);
                 }));
         }
 
-        public void AddNode(NodeActor<TNode, TEdge> node)
-        {
-            this.SendMessage(GraphOperation.AddNode, node);
-        }
+        public void AddNode(NodeActor<TNode, TEdge> node) => this.SendMessage(GraphOperation.AddNode, node);
 
-        public void RemoveNode(NodeActor<TNode, TEdge> node)
-        {
-            this.SendMessage(GraphOperation.RemoveNode, node);
-        }
+        public void RemoveNode(NodeActor<TNode, TEdge> node) => this.SendMessage(GraphOperation.RemoveNode, node);
     }
 
     public class EdgeActor<TNode, TEdge> : BaseActor
@@ -68,32 +62,32 @@ namespace Actor.Util
 
     public class NodeActor<TNode, TEdge> : BaseActor
     {
-        private readonly Dictionary<NodeActor<TNode, TEdge>, EdgeActor<TNode, TEdge>> Links;
-        private TNode fData;
+        private readonly Dictionary<NodeActor<TNode, TEdge>, EdgeActor<TNode, TEdge>> _links;
+        private TNode _data;
 
         public NodeActor() : base()
         {
-            Links = new Dictionary<NodeActor<TNode, TEdge>, EdgeActor<TNode, TEdge>>();
+            _links = new Dictionary<NodeActor<TNode, TEdge>, EdgeActor<TNode, TEdge>>();
             Become(new Behavior<GraphOperation, NodeActor<TNode, TEdge>>(
                 (o, n) => o == GraphOperation.AddEdge,
-                (o, n) => Links[n] = new EdgeActor<TNode, TEdge>(this, n)));
+                (o, n) => _links[n] = new EdgeActor<TNode, TEdge>(this, n)));
             AddBehavior(new Behavior<GraphOperation, NodeActor<TNode, TEdge>>(
                 (o, n) => o == GraphOperation.RemoveEdge,
-                (o, n) => Links.Remove(n)));
+                (o, n) => _links.Remove(n)));
             AddBehavior(new Behavior<GraphOperation, IActor>(
                 (o, n) => o == GraphOperation.GetNodeValue,
-                (o, n) => n.SendMessage(this, fData)));
+                (o, n) => n.SendMessage(this, _data)));
             AddBehavior(new Behavior<GraphOperation, TNode>(
                 (o, n) => o == GraphOperation.SetNodeValue,
-                (o, n) => fData = n));
+                (o, n) => _data = n));
             AddBehavior(new Behavior<GraphOperation, NodeActor<TNode, TEdge>, IActor>(
                 (o, n, a) => o == GraphOperation.Adjacent,
-                (o, n, a) => a.SendMessage(this, Links.ContainsKey(n))));
+                (o, n, a) => a.SendMessage(this, _links.ContainsKey(n))));
             AddBehavior(new Behavior<GraphOperation, IActor>(
                 (o, a) => o == GraphOperation.Neighbors,
                 (o, a) =>
                 {
-                    var list = Links.Select(t => t.Key);
+                    IEnumerable<NodeActor<TNode, TEdge>> list = _links.Select(t => t.Key);
                     a.SendMessage(this, list);
                 }));
         }
@@ -108,7 +102,7 @@ namespace Actor.Util
 
         public IFuture<IActor, IEnumerable<NodeActor<TNode, TEdge>>> Neighbors()
         {
-            var future = new Future<IActor, IEnumerable<NodeActor<TNode, TEdge>>>();
+            Future<IActor, IEnumerable<NodeActor<TNode, TEdge>>> future = new Future<IActor, IEnumerable<NodeActor<TNode, TEdge>>>();
             this.SendMessage(GraphOperation.Neighbors, future);
             return future;
         }

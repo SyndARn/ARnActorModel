@@ -91,7 +91,7 @@ namespace Actor.Server
                 (b, a) => b == BrokerAction.RegisterWorker,
                  (b, a) =>
                  {
-                     WorkerStatus workerStatus = new WorkerStatus()
+                     WorkerStatus workerStatus = new WorkerStatus
                      {
                          TimeToLive = 0,
                          State = WorkerReadyState.Idle
@@ -128,7 +128,7 @@ namespace Actor.Server
             return new Behavior<T>(
                 (t) =>
                 {
-                    var requestStatus = new RequestStatus<T>()
+                    var requestStatus = new RequestStatus<T>
                     {
                         Data = t,
                         State = RequestState.Unprocessed,

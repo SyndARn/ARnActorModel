@@ -128,7 +128,7 @@ namespace Actor.Util
         public bool MoveNext()
         {
             Interlocked.Increment(ref fIndex);
-            var task = AsyncReceive(t => t is IMessageParam<IteratorMethod, bool> messageParam && messageParam.Item1 == IteratorMethod.OkMoveNext
+            Task<object> task = Receive(t => t is IMessageParam<IteratorMethod, bool> messageParam && messageParam.Item1 == IteratorMethod.OkMoveNext
                 );
             fCollection.SendMessage(IteratorMethod.MoveNext, fIndex, this);
 
@@ -136,10 +136,7 @@ namespace Actor.Util
         }
 
         // better than this ?
-        public void Reset()
-        {
-            Interlocked.Exchange(ref fIndex, -1);
-        }
+        public void Reset() => Interlocked.Exchange(ref fIndex, -1);
 
         public void Dispose()
         {
@@ -159,9 +156,9 @@ namespace Actor.Util
         {
             get
             {
-                var task = AsyncReceive(t =>
+                Task<object> task = Receive(t =>
                 {
-                    var messageParam = t as IMessageParam<IteratorMethod, T>;
+                    IMessageParam<IteratorMethod, T> messageParam = t as IMessageParam<IteratorMethod, T>;
                     return messageParam?.Item1 == IteratorMethod.OkCurrent;
                 });
                 fCollection.SendMessage(IteratorMethod.Current, fIndex, this);
@@ -173,9 +170,9 @@ namespace Actor.Util
         {
             get
             {
-                var task = AsyncReceive(t =>
+                Task<object> task = Receive(t =>
                 {
-                    var tu = (IMessageParam<IteratorMethod, T>)t;
+                    IMessageParam<IteratorMethod, T> tu = (IMessageParam<IteratorMethod, T>)t;
                     return tu?.Item1 == IteratorMethod.OkCurrent;
                 });
                 fCollection.SendMessage(IteratorMethod.Current, fIndex, (IActor)this);
@@ -187,27 +184,18 @@ namespace Actor.Util
     public class CollectionActor<T> : BaseActor, IEnumerable<T>, IEnumerable
     {
         public CollectionActor()
-            : base()
-        {
-            Become(new CollectionBehaviors<T>());
-        }
+            : base() => Become(new CollectionBehaviors<T>());
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return new CollectionActorEnumerator<T>(this);
-        }
+        public IEnumerator<T> GetEnumerator() => new CollectionActorEnumerator<T>(this);
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new CollectionActorEnumerator<T>(this);
-        }
+        IEnumerator IEnumerable.GetEnumerator() => new CollectionActorEnumerator<T>(this);
 
         public async void Add(T aData)
         {
             this.SendMessage(CollectionRequest.Add, aData);
-            await AsyncReceive(t =>
+            await Receive(t =>
             {
-                var val = t is CollectionRequest;
+                bool val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkAdd;
             }).ConfigureAwait(false);
         }
@@ -215,9 +203,9 @@ namespace Actor.Util
         public async void Remove(T aData)
         {
             this.SendMessage(CollectionRequest.Remove, aData);
-            await AsyncReceive(t =>
+            await Receive(t =>
             {
-                var val = t is CollectionRequest;
+                bool val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkRemove;
             }).ConfigureAwait(false);
         }

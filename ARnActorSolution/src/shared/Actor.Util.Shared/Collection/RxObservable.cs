@@ -26,34 +26,40 @@ namespace Actor.Util
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            Task<object> res = AsyncReceive(t => t is IMessageParam<IActor, IDisposable>);
-            this.SendMessage(observer);
-            var resi = res.Result as IMessageParam<IActor, IDisposable>;
+            Task<object> res = Receive(t => t is IMessageParam<IActor, IDisposable>);
+            SendMessage(observer);
+            IMessageParam<IActor, IDisposable> resi = res.Result as IMessageParam<IActor, IDisposable>;
             return resi.Item2;
         }
 
         public void Track(T loc)
         {
-            this.SendMessage(loc);
+            SendMessage(loc);
         }
 
         private void DoTrack(T loc)
         {
-            foreach (var observer in observers)
+            foreach (IObserver<T> observer in observers)
             {
                 if (loc == null)
+                {
                     observer.OnError(new ActorException());
+                }
                 else
+                {
                     observer.OnNext(loc);
+                }
             }
         }
 
         private void DoEndTransmission(T observer)
         {
-            foreach (var item in observers.ToArray())
+            foreach (IObserver<T> item in observers.ToArray())
             {
                 if (observers.Contains(item))
+                {
                     item.OnCompleted();
+                }
             }
 
             observers.Clear();

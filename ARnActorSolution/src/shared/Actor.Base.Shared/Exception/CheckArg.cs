@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.IO;
 using System.Collections;
 
 namespace Actor.Base
 {
-    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
-    public sealed class ValidatedNotNullAttribute : Attribute
-    {
-    }
-
     public static class CheckArg
     {
         public static void Stream([ValidatedNotNull]Stream aStream)
@@ -17,6 +16,7 @@ namespace Actor.Base
             {
                 return;
             }
+
             throw new ActorException("Stream can't be null");
         }
 
@@ -32,10 +32,12 @@ namespace Actor.Base
 
         public static void Behavior([ValidatedNotNull]IBehavior aBehavior)
         {
-            if (aBehavior == null)
+            if (aBehavior != null)
             {
-                throw new ActorException("behavior can't be null");
+                return;
             }
+
+            throw new ActorException("behavior can't be null");
         }
 
         public static void BehaviorParam([ValidatedNotNull]params IBehavior[] someBehaviors)
@@ -118,5 +120,9 @@ namespace Actor.Base
             throw new ActorException("Null pattern received");
         }
 
+        [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+        public sealed class ValidatedNotNullAttribute : Attribute
+        {
+        }
     }
 }
