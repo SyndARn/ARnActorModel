@@ -7,23 +7,23 @@ namespace Actor.Util
 {
     public class RXObservable<T> : BaseActor, IObservable<T>
     {
-        private readonly List<IObserver<T>> observers;
+        private readonly List<IObserver<T>> _observers;
 
         public RXObservable()
         {
-            observers = new List<IObserver<T>>();
+            _observers = new List<IObserver<T>>();
             Become(new Behavior<IObserver<T>>(DoSubscribe));
             AddBehavior(new Behavior<T>(DoTrack));
         }
 
         private void DoSubscribe(IObserver<T> observer)
         {
-            if (!observers.Contains(observer))
+            if (!_observers.Contains(observer))
             {
-                observers.Add(observer);
+                _observers.Add(observer);
             }
 
-            IDisposable dispo = new Unsubscriber(observers, observer);
+            IDisposable dispo = new Unsubscriber(_observers, observer);
             this.SendMessage(this, dispo);
         }
 
@@ -35,14 +35,11 @@ namespace Actor.Util
             return resi.Item2;
         }
 
-        public void Track(T loc)
-        {
-            SendMessage(loc);
-        }
+        public void Track(T loc) => SendMessage(loc);
 
         private void DoTrack(T loc)
         {
-            foreach (IObserver<T> observer in observers)
+            foreach (IObserver<T> observer in _observers)
             {
                 if (loc == null)
                 {
@@ -57,15 +54,15 @@ namespace Actor.Util
 
         private void DoEndTransmission(T observer)
         {
-            foreach (IObserver<T> item in observers.ToArray())
+            foreach (IObserver<T> item in _observers.ToArray())
             {
-                if (observers.Contains(item))
+                if (_observers.Contains(item))
                 {
                     item.OnCompleted();
                 }
             }
 
-            observers.Clear();
+            _observers.Clear();
         }
 
         private class Unsubscriber : IDisposable
@@ -81,10 +78,12 @@ namespace Actor.Util
 
             public void Dispose()
             {
-                if (_observer != null && _observers.Contains(_observer))
+                if (_observer == null || !_observers.Contains(_observer))
                 {
-                    _observers.Remove(_observer);
+                    return;
                 }
+
+                _observers.Remove(_observer);
             }
         }
     }

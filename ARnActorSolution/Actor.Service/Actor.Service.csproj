@@ -104,6 +104,8 @@
     <Compile Include="..\Doc\ARnActorModelVersion.cs">
       <Link>Properties\ARnActorModelVersion.cs</Link>
     </Compile>
+    <Compile Include="Logger\LoggerActor.cs" />
+    <Compile Include="Logger\LogHeartBeatBehavior.cs" />
     <Compile Include="ParserActor.cs" />
     <Compile Include="ActorService.cs" />
     <Compile Include="RingActor.cs" />

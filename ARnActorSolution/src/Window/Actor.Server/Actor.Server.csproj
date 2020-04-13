@@ -95,6 +95,8 @@
     <Compile Include="ActorConsole\ActorConsole.cs" />
     <Compile Include="ActorServer\ActorServer.cs" />
     <Compile Include="ActorServer\ConfigManager.cs" />
+    <Compile Include="ActorServer\ShardListActor.cs" />
+    <Compile Include="ActorServer\ShardRequest.cs" />
     <Compile Include="Admin\EchoClientActor.cs" />
     <Compile Include="Admin\EchoClientBehavior.cs" />
     <Compile Include="Admin\EchoServerBehavior.cs" />
@@ -123,7 +125,10 @@
     <Compile Include="RemoteServer\HostRelayActor.cs" />
     <Compile Include="RemoteServer\RemoteReceiverActor.cs" />
     <Compile Include="RemoteServer\TcpServer\actTcpServer.cs" />
+    <Compile Include="Rest\BehaviorsRestReader.cs" />
     <Compile Include="Rest\RestReaderActor.cs" />
+    <Compile Include="Rest\RestReceiveBehavior.cs" />
+    <Compile Include="Rest\RestSendBehavior.cs" />
     <Compile Include="Serializer\DataContract\DataContractActorSerializer.cs" />
     <Compile Include="Serializer\DataContract\DataContractActorSurrogator.cs" />
     <Compile Include="Serializer\DataContract\DataContractSerializeService.cs" />

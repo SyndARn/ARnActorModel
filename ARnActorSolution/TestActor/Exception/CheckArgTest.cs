@@ -59,6 +59,17 @@ namespace TestActor
 
             }
 
+            CheckArg.Behavior(new Actor.Base.Behavior<string>());
+            try
+            {
+                CheckArg.BehaviorEnumerable(null);
+                Assert.Fail();
+            }
+            catch (ActorException)
+            {
+
+            }
+
             CheckArg.Actor(new Actor.Base.BaseActor());
             try
             {

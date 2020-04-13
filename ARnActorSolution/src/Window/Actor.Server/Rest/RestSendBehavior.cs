@@ -26,10 +26,21 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    public class RestReaderActor : BaseActor
+    public class RestSendBehavior : Behavior<Uri, IActor>
     {
-        public RestReaderActor() : base() => Become(new BehaviorsRestReader());
+        public RestSendBehavior()
+            : base()
+        {
+            Pattern = DefaultPattern();
+            Apply = DoRestPost;
+        }
 
-        public void SendRest(Uri anUri, IActor answer) => this.SendMessage(anUri, answer);
+        private void DoRestPost(Uri uri, IActor actor)
+        {
+            (LinkedTo as BehaviorsRestReader).Answer = actor;
+            var actWeb = new WebActor();
+            var wr = WebActor.Cast(LinkedActor, uri);
+            actWeb.SendMessage(wr);
+        }
     }
 }

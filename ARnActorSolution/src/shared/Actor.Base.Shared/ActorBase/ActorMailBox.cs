@@ -24,16 +24,13 @@ using System.Runtime.CompilerServices;
 
 namespace Actor.Base
 {
-    /// <summary>
-    /// ActorMailBox
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
+    [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ActorMailBox<T> : IActorMailBox<T>
     {
-        private readonly IMessageQueue<T> _queue ; // all actors may push here, only this one may dequeue
-        private readonly IMessageQueue<T> _missed ; // only this one use it in run mode
+        private readonly IMessageQueue<T> _queue; // all actors may push here, only this one may dequeue
+        private readonly IMessageQueue<T> _missed; // only this one use it in run mode
 
-        private static QueueFactory<T> _factory = new QueueFactory<T>() ;
+        private static readonly QueueFactory<T> _factory = new QueueFactory<T>();
 
         public ActorMailBox()
         {
@@ -42,6 +39,9 @@ namespace Actor.Base
         }
 
         public bool IsEmpty => _queue.Count() == 0;
+
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => ToString();
 
         public void AddMiss(T aMessage) => _missed.Add(aMessage);
 
@@ -53,6 +53,7 @@ namespace Actor.Base
                 _queue.Add(val);
                 i++;
             }
+
             return i;
         }
 

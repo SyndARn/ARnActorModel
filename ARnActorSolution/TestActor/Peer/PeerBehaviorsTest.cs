@@ -44,7 +44,6 @@ namespace TestActor
         [TestMethod]
         public void PeerAgentTest()
         {
-
         }
 
         [TestMethod]

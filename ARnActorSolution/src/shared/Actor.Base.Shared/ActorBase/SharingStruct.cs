@@ -20,16 +20,22 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
+
 using System;
-using System.Diagnostics;
-using Actor.Base;
-
-namespace Actor.Server
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+namespace Actor.Base
 {
-    public class RestReaderActor : BaseActor
+    internal struct SharingStruct
     {
-        public RestReaderActor() : base() => Become(new BehaviorsRestReader());
-
-        public void SendRest(Uri anUri, IActor answer) => this.SendMessage(anUri, answer);
+        public int fInTask; // 0 out of task, 1 in task
+        public int fReceive;
+        public ActorTag fTag;
+#if DEBUG_MSG
+        public int fMessCount; // this should always be queue + postpone total
+#endif
     }
 }

@@ -15,7 +15,7 @@ namespace Actor.Server
         public override Type BindToType(string assemblyName, string typeName)
         {
             Type outtype = null;
-            Type typefound = Type.GetType(String.Format(CultureInfo.InvariantCulture,"{0}, {1}", typeName, assemblyName));
+            Type typefound = Type.GetType(string.Format(CultureInfo.InvariantCulture,"{0}, {1}", typeName, assemblyName));
             if (typefound != null)
             {
                 if (typefound.IsSubclassOf(typeof(BaseActor)))

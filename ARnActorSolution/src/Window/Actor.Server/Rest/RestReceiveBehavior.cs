@@ -26,10 +26,19 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    public class RestReaderActor : BaseActor
+    public class RestReceiveBehavior : Behavior<WebAnswer>
     {
-        public RestReaderActor() : base() => Become(new BehaviorsRestReader());
+        public RestReceiveBehavior() : base()
+        {
+            Pattern = DefaultPattern();
+            Apply = DoRestReceive;
+        }
 
-        public void SendRest(Uri anUri, IActor answer) => this.SendMessage(anUri, answer);
+        private void DoRestReceive(WebAnswer webAnswer)
+        {
+            Debug.WriteLine("Receive {0}", webAnswer.Answer);
+            BehaviorsRestReader reader = LinkedTo as BehaviorsRestReader;
+            reader.Answer.SendMessage(webAnswer.Answer);
+        }
     }
 }

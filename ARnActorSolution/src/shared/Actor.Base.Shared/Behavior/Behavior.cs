@@ -37,7 +37,7 @@ namespace Actor.Base
     /// </summary>
     public class Behaviors : IBehaviors
     {
-        private readonly List<IBehavior> fList = new List<IBehavior>();
+        private readonly List<IBehavior> _behaviors = new List<IBehavior>();
 
         public IActor LinkedActor { get; private set; }
 
@@ -45,44 +45,44 @@ namespace Actor.Base
         {
         }
 
+        public Behaviors(IEnumerable<IBehavior> manyBehaviors)
+        {
+            CheckArg.BehaviorEnumerable(manyBehaviors);
+            foreach (IBehavior item in manyBehaviors)
+            {
+                AddBehavior(item);
+            }
+        }
+
         public Behaviors(IBehavior[] someBehaviors)
         {
-            CheckArg.BehaviorParam(someBehaviors);
+            CheckArg.BehaviorParam(someBehaviors);            
             foreach (IBehavior item in someBehaviors)
             {
                 AddBehavior(item);
             }
         }
 
-        public IEnumerable<IBehavior> AllBehaviors()
-        {
-            return fList.ToList(); // force clone
-        }
+        public IEnumerable<IBehavior> AllBehaviors() => _behaviors.ToList(); // force clone
 
-        public void LinkToActor(IActor anActor)
-        {
-            LinkedActor = anActor;
-        }
+        public void LinkToActor(IActor anActor) => LinkedActor = anActor;
 
-        public bool FindBehavior(IBehavior aBehavior)
-        {
-            return fList.Contains(aBehavior);
-        }
+        public bool FindBehavior(IBehavior aBehavior) => _behaviors.Contains(aBehavior);
 
         public IBehaviors AddBehavior(IBehavior aBehavior)
         {
             CheckArg.Behavior(aBehavior);
             aBehavior.LinkBehaviors(this);
-            fList.Add(aBehavior);
+            _behaviors.Add(aBehavior);
             return this;
         }
 
         public IBehaviors BecomeBehavior(IBehavior aBehavior)
         {
             CheckArg.Behavior(aBehavior);
-            fList.Clear();
+            _behaviors.Clear();
             aBehavior.LinkBehaviors(this);
-            fList.Add(aBehavior);
+            _behaviors.Add(aBehavior);
             return this;
         }
 
@@ -90,7 +90,7 @@ namespace Actor.Base
         {
             CheckArg.Behavior(aBehavior);
             aBehavior.LinkBehaviors(null);
-            fList.Remove(aBehavior);
+            _behaviors.Remove(aBehavior);
             return this;
         }
     }
@@ -193,7 +193,10 @@ namespace Actor.Base
         public bool StandardPattern(object aT)
         {
             if (Pattern == null)
+            {
                 return false;
+            }
+
             return !(aT is IMessageParam<T1, T2> MessageParamT) ? false : Pattern(MessageParamT.Item1, MessageParamT.Item2);
         }
 

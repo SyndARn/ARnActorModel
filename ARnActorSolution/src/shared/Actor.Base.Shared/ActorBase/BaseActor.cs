@@ -23,6 +23,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,19 +31,14 @@ using System.Threading.Tasks;
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
 {
-    internal struct SharingStruct
-    {
-        public int fInTask; // 0 out of task, 1 in task
-        public int fReceive;
-        public ActorTag fTag;
-#if DEBUG_MSG
-        public int fMessCount; // this should always be queue + postpone total
-#endif
-    }
-
+    [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class BaseActor : IActor
     {
-        public ActorTag Tag { get => _sharedStruct.fTag; private set => _sharedStruct.fTag = value; } // unique identifier, and host
+        public ActorTag Tag
+        {
+            get => _sharedStruct.fTag;
+            private set => _sharedStruct.fTag = value;
+        }
 
         private List<IBehavior> _behaviors = new List<IBehavior>(); // our behavior
         private static readonly QueueFactory<IBehavior> _factoryBehavior = new QueueFactory<IBehavior>();
@@ -51,6 +47,9 @@ namespace Actor.Base
         private IActorMailBox<object> _mailBox = new ActorMailBox<object>(); // our mailbox
         private SharingStruct _sharedStruct = new SharingStruct();
         public IMessageTracerService MessageTracerService { get; set; }
+
+        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay => ToString();
 
         public static void CompleteInitialize(BaseActor anActor)
         {
@@ -75,9 +74,6 @@ namespace Actor.Base
             if (msg != null)
             {
                 _mailBox.AddMessage(msg);
-#if DEBUG_MSG
-                Interlocked.Increment(ref fShared.fMessCount);
-#endif
             }
 
             TrySetInTask(TaskCreationOptions.None);
@@ -85,32 +81,27 @@ namespace Actor.Base
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask(TaskCreationOptions taskCreationOptions)
-        {
-            if (Interlocked.CompareExchange(ref _sharedStruct.fInTask, 1, 0) == 0)
             {
-                ActorTask.AddActor(MessageLoop, taskCreationOptions);
+            if (Interlocked.CompareExchange(ref _sharedStruct.fInTask, 1, 0) != 0)
+            {
+                return;
             }
+
+            ActorTask.AddActor(MessageLoop, taskCreationOptions);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask()
-        {
-            if (Interlocked.CompareExchange(ref _sharedStruct.fInTask, 1, 0) == 0)
             {
-                ActorTask.AddActor(MessageLoop, TaskCreationOptions.None);
+            if (Interlocked.CompareExchange(ref _sharedStruct.fInTask, 1, 0) != 0)
+            {
+                return;
             }
+
+            ActorTask.AddActor(MessageLoop, TaskCreationOptions.None);
         }
 
-        private void AddMissedMessages()
-        {
-            // add all missed messages ...
-#if DEBUG_MSG
-            Interlocked.Add(ref fShared.fMessCount, fMailBox.RefreshFromMissed());
-#else
-            _mailBox.RefreshFromMissed();
-#endif
-
-        }
+        private void AddMissedMessages() => _mailBox.RefreshFromMissed();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SendMessage(object msg)
@@ -188,23 +179,13 @@ namespace Actor.Base
             }
             else
             {
-                return await awaitingBehavior.Completion.Task;
+                return await awaitingBehavior.Completion.Task.ConfigureAwait(false);
             }
         }
 
         public Task<object> ReceiveAsync(Func<object, bool> aPattern) => ReceiveAsync(aPattern, Timeout.Infinite);
 
-        private object ReceiveMessage()
-        {
-            object msg = _mailBox.GetMessage();
-#if DEBUG_MSG
-            if (msg != null)
-            {
-                Interlocked.Decrement(ref fShared.fMessCount);
-            }
-#endif
-            return msg;
-        }
+        private object ReceiveMessage() => _mailBox.GetMessage();
 
         protected void Become(IBehaviors someBehaviors)
         {
@@ -222,12 +203,8 @@ namespace Actor.Base
 
             _behaviors.Clear();
 
-            Behaviors someBehaviors = new Behaviors();
-            foreach (IBehavior item in manyBehaviors)
-            {
-                someBehaviors.AddBehavior(item);
-                _behaviors.Add(item);
-            }
+            _behaviors = manyBehaviors.ToList();
+            Behaviors someBehaviors = new Behaviors(manyBehaviors);
 
             someBehaviors.LinkToActor(this);
             AddMissedMessages();
@@ -267,41 +244,32 @@ namespace Actor.Base
         }
 
         private void MessageLoop()
-        {
+            {
             bool matchedByWaitingBehavior = false;
             object msg = null;
             IBehavior behavior = null;
             bool matchedByPattern = false;
             int oldReceive = Interlocked.Exchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive);
-#if DEBUG_MSG
-            while (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
-#else
             do
-#endif
             {
                 // get message             
                 msg = ReceiveMessage();
-                if (msg != null)
-                {
-                    matchedByWaitingBehavior = false;
-
-                    behavior = MatchByPattern(msg);
-                    matchedByPattern = behavior != null;
-
-                    // receive pattern
-                    if (!matchedByPattern)
-                    {
-                        behavior = MatchByWaitingBehavior(msg);
-                        matchedByWaitingBehavior = behavior != null;
-                    }
-                }
-#if DEBUG_MSG
-#else
-                else
+                if (msg == null)
                 {
                     break;
                 }
-#endif
+
+                matchedByWaitingBehavior = false;
+
+                behavior = MatchByPattern(msg);
+                matchedByPattern = behavior != null;
+
+                // receive pattern
+                if (!matchedByPattern)
+                {
+                    behavior = MatchByWaitingBehavior(msg);
+                    matchedByWaitingBehavior = behavior != null;
+                }
 
                 // miss
                 if (!matchedByPattern && !matchedByWaitingBehavior && msg != null)
@@ -345,14 +313,12 @@ namespace Actor.Base
 
             Interlocked.Exchange(ref _sharedStruct.fInTask, 0);
 
-#if DEBUG_MSG
-            if (Interlocked.CompareExchange(ref fShared.fMessCount, 0, 0) != 0)
-#else
-            if (!_mailBox.IsEmpty)
-#endif
+            if (_mailBox.IsEmpty)
             {
-                TrySetInTask();
+                return;
             }
+
+            TrySetInTask();
         }
 
         private IBehavior MatchByPattern(object msg)
@@ -396,12 +362,14 @@ namespace Actor.Base
                 }
             }
 
-            if (lQueue != null)
+            if (lQueue == null)
             {
-                while (lQueue.Count > 0)
-                {
-                    _awaitingBehaviors.Add(lQueue.Dequeue());
-                }
+                return null;
+            }
+
+            while (lQueue.Count > 0)
+            {
+                _awaitingBehaviors.Add(lQueue.Dequeue());
             }
 
             return null;
