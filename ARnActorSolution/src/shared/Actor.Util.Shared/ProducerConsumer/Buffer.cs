@@ -33,7 +33,7 @@ namespace Actor.Util
                         WorkList.Enqueue(t);
                     }
                 }, "BufferNotEmpty")
-                .AddRule("BufferNotEmpty", t => WorkList.Count != 0,
+                .AddRule("BufferNotEmpty",  _ => WorkList.Count != 0,
                 t =>
                 {
                     if (ConsList.Count != 0)

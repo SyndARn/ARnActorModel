@@ -79,6 +79,33 @@ namespace Actor.Base
             },
             TaskContinuationOptions.OnlyOnFaulted);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AddActor(Action messageLoop)
+        {
+            if (messageLoop == null)
+            {
+                throw new ActorException(string.Format(CultureInfo.InvariantCulture, "bad, no actor should be null at this point {0}", nameof(messageLoop)));
+            }
+
+            // handling here a max active task
+            Task.Run(() =>
+            {
+                numAddTask++; // Interlocked.Increment(ref numAddTask);
+                messageLoop();
+                numCloseTask++; //Interlocked.Increment(ref numCloseTask);
+            })
+            .ContinueWith((t) =>
+            {
+                foreach (Exception item in t.Exception.InnerExceptions)
+                {
+                    Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, "Task fault on {0}", item.Message), "[Task Actor Fault]");
+                }
+
+                throw t.Exception;
+            },
+            TaskContinuationOptions.OnlyOnFaulted);
+        }
     }
 }
 

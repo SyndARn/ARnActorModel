@@ -22,7 +22,7 @@ namespace WinSkyNet1M
         }
     }
 
-    public class SkynetActor : BaseActor
+    public class SkynetActor : SimpleActor
     {
         private readonly long _number;
         private readonly IActor _parent;
@@ -36,7 +36,8 @@ namespace WinSkyNet1M
             _parent = parent;
             _future = future;
             _actorQtt = dv;
-            Become(new Behavior<long>((i) =>
+            Become(
+                new Behavior<long>((i) =>
              {
                  _accumulator += i;
                  _actorQtt--;
@@ -50,8 +51,8 @@ namespace WinSkyNet1M
                      if ((future != null) && (_actorQtt == 0))
                          future.SendMessage(_accumulator);
                  }
-             }));
-            AddBehavior(new Behavior<string>((s) =>
+             }),
+            new Behavior<string>((s) =>
             {
                 if (size != 1)
                 {

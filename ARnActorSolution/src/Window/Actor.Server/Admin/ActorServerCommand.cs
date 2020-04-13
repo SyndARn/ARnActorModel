@@ -36,7 +36,6 @@ namespace Actor.Server
         }
     }
 
-
     public class StatServerCommand : IActorServerCommand
     {
         public string Name => "Stat";

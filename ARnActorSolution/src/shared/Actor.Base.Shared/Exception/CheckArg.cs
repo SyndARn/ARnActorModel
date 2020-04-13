@@ -30,6 +30,17 @@ namespace Actor.Base
             throw new ActorException("Address should be filled");
         }
 
+        public static void BehaviorEnumerable([ValidatedNotNull]IEnumerable<IBehavior> behaviors)
+        {
+            if (behaviors != null)
+            {
+                return;
+            }
+
+            throw new ActorException("behaviors can't be null");
+        }
+
+
         public static void Behavior([ValidatedNotNull]IBehavior aBehavior)
         {
             if (aBehavior != null)

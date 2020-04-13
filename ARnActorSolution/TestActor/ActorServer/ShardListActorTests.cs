@@ -25,7 +25,7 @@ namespace TestActor
                 shardList.Add(Shard2);
                 shardList.Add(Shard3);
 
-                var resultList = shardList.GetAll().Result;
+                var resultList = shardList.GetAllAsync().Result;
                 Assert.AreEqual(3, resultList.Count());
                 Assert.IsTrue(resultList.Contains(Shard1));
                 Assert.IsTrue(resultList.Contains(Shard2));
@@ -47,7 +47,7 @@ namespace TestActor
                 shardList.Add(Shard3);
                 shardList.Remove(Shard2);
 
-                var resultList = shardList.GetAll().Result;
+                var resultList = shardList.GetAllAsync().Result;
                 Assert.AreEqual(2, resultList.Count());
                 Assert.IsTrue(resultList.Contains(Shard1));
                 Assert.IsFalse(resultList.Contains(Shard2));

@@ -21,20 +21,15 @@ namespace TestActor
     [TestClass]
     public class FutureTest
     {
-        private Task<string> GetResult(Future<string> future)
-        {
-            return future.ResultAsync();
-        }
-
         [TestMethod]
         public void FutureAsyncTest()
         {
             TestLauncherActor.Test(() =>
             {
-                var future = new Future<string>();
-                var actor = new FutureAsyncActorTest();
+                Future<string> future = new Future<string>();
+                FutureAsyncActorTest actor = new FutureAsyncActorTest();
                 actor.SendMessage("Test Data");
-                var result = GetResult(future);
+                Task<string> result = future.ResultAsync();
                 actor.SendMessage((IActor)future);
                 Assert.AreEqual("Test Data", result.Result);
             });
@@ -45,11 +40,11 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                var future = new Future<string>();
-                var actor = new FutureAsyncActorTest();
+                Future<string> future = new Future<string>();
+                FutureAsyncActorTest actor = new FutureAsyncActorTest();
                 actor.SendMessage("Test Data");
                 actor.SendMessage(future);
-                var result = future.Result(o => (string)o == "Test Data");
+                string result = future.Result(o => (string)o == "Test Data");
                 Assert.AreEqual("Test Data", result);
             });
         }
@@ -59,10 +54,10 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                var future = new Future<string>();
-                var actor = new FutureAsyncActorTest();
+                Future<string> future = new Future<string>();
+                FutureAsyncActorTest actor = new FutureAsyncActorTest();
                 actor.SendMessage("Test Data");
-                var result = future.ResultAsync(o => (string)o == "Test Data");
+                Task<string> result = future.ResultAsync(o => (string)o == "Test Data");
                 actor.SendMessage(future);
                 Assert.AreEqual("Test Data", result.Result);
             });

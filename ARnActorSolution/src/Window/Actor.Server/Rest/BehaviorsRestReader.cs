@@ -26,10 +26,14 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    public class RestReaderActor : BaseActor
+    public class BehaviorsRestReader : Behaviors
     {
-        public RestReaderActor() : base() => Become(new BehaviorsRestReader());
+        public IActor Answer { get; set; }
 
-        public void SendRest(Uri anUri, IActor answer) => this.SendMessage(anUri, answer);
+        public BehaviorsRestReader() : base()
+        {
+            this.AddBehavior(new RestSendBehavior());
+            this.AddBehavior(new RestReceiveBehavior());
+        }
     }
 }

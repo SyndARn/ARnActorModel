@@ -2,9 +2,6 @@
 using Actor.Util;
 using Actor.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace TestActor
@@ -72,7 +69,7 @@ namespace TestActor
                 var dsp = rx.Subscribe(obs);
                 rx.Track("Test Message");
                 Assert.IsTrue(obs.GetResultAsync().Result == "Test Message");
-            },60000);
+            },120000);
         }
     }
 }

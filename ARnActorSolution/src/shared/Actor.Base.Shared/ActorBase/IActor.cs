@@ -23,9 +23,6 @@
 
 namespace Actor.Base
 {
-    /// <summary>
-    /// How an actor is known to other actors
-    /// </summary>
     public interface IActor
     {
         ActorTag Tag { get; }
