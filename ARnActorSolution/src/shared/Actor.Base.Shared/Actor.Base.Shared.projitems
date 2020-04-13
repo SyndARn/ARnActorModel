@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ActionActor\ActionActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionActor\ActionBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActionActor\ActionBehaviors.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\ActorExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\ActorFuture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\ActorInjection.cs" />
@@ -45,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)PatternActor\StringPatternActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProcessActor\ProcessActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tag\ActorTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tag\ActorTagHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Trait\Trait.cs" />
   </ItemGroup>
 </Project>

@@ -31,26 +31,6 @@ using System.Threading;
 
 namespace Actor.Base
 {
-    public static class ActorTagHelper
-    {
-        [ThreadStatic]
-        private static long fBaseId;
-
-        internal static long CastNewTagId()
-        {
-#if !NETFX_CORE
-
-            if (fBaseId == 0)
-            {
-                fBaseId = (long)Thread.CurrentThread.ManagedThreadId << 32;
-            }
-#endif
-            return fBaseId++;
-        }
-
-        public static string FullHost { get; set; } = "";
-    }
-
     [Serializable]
     [DataContract]
     public class ActorTag : IEquatable<ActorTag>
@@ -67,13 +47,7 @@ namespace Actor.Base
         [DataMember]
         private int fUriHash;
 
-        public string Host
-        {
-            get
-            {
-                return fHost;
-            }
-        }
+        public string Host => fHost;
 
         public ActorTag()
         {
@@ -103,15 +77,9 @@ namespace Actor.Base
             fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
         }
 
-        public string Key()
-        {
-            return string.Format(CultureInfo.InvariantCulture, "{0}-{1}", fUriHash, fId);
-        }
+        public string Key() => string.Format(CultureInfo.InvariantCulture, "{0}-{1}", fUriHash, fId);
 
-        public override int GetHashCode()
-        {
-            return Key().GetHashCode();
-        }
+        public override int GetHashCode() => Key().GetHashCode();
 
         public override bool Equals(object obj)
         {
@@ -130,8 +98,7 @@ namespace Actor.Base
 
         public bool Equals(ActorTag other)
         {
-            if (other == null) return false;
-            return fHost == other.fHost && fIsRemote == other.fIsRemote && fId == other.fId;
+            return other == null ? false : fHost == other.fHost && fIsRemote == other.fIsRemote && fId == other.fId;
         }
     }
 }

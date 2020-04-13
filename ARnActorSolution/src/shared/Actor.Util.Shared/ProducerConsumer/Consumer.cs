@@ -12,12 +12,12 @@ namespace Actor.Util
             var bhv = new FsmBehaviors<string, Work<T>>();
 
             bhv
-                .AddRule("SleepState", null, t => t.SendMessage(this), "BusyState")
-                .AddRule("BusyState", null, t => Buffer.SendMessage(this), "SleepState")
+                .AddRule("SleepState", null, (Work<T> t) => t.SendMessage(this), "BusyState")
+                .AddRule("BusyState", null, (Work<T> t) => Buffer.SendMessage(this), "SleepState")
                 .AddBehavior(new Behavior<Work<T>>(
-                    t =>
+                    (Work<T> t) =>
                     {
-                        this.SendMessage(GetCurrentState().Result(), t);
+                        (this).SendMessage(GetCurrentState().Result(), t);
                     }));
 
             Become(bhv);

@@ -21,10 +21,7 @@ namespace Actor.Server
     {
         private IListenerService fListener;
 
-        public HostRelayActor()
-        {
-            Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
-        }
+        public HostRelayActor() => Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
 
         public HostRelayActor(IListenerService listenerService)
         {
@@ -32,7 +29,7 @@ namespace Actor.Server
             Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
         }
 
-        private void DoListen(Object aMsg)
+        private void DoListen(object aMsg)
         {
             try
             {
@@ -42,7 +39,7 @@ namespace Actor.Server
                 }
                 IContextComm context = fListener.GetCommunicationContext();
                 RemoteReceiverActor.Cast(context);
-                this.SendMessage("Listen");
+                SendMessage("Listen");
             }
             catch(Exception e)
             {

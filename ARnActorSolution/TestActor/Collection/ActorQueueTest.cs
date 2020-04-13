@@ -1,7 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Util;
-using Actor.Base;
 
 namespace TestActor
 {
@@ -17,9 +15,9 @@ namespace TestActor
                     actorqueue.Queue("a");
                     actorqueue.Queue("b");
                     actorqueue.Queue("c");
-                    var a = actorqueue.TryDequeue();
-                    var b = actorqueue.TryDequeue();
-                    var c = actorqueue.TryDequeue();
+                    var a = actorqueue.TryDequeueAsync();
+                    var b = actorqueue.TryDequeueAsync();
+                    var c = actorqueue.TryDequeueAsync();
                     Assert.IsTrue(a.Result.Result);
                     Assert.IsTrue(b.Result.Result);
                     Assert.IsTrue(c.Result.Result);

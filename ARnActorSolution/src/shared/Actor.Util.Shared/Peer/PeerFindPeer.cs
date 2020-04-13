@@ -18,7 +18,7 @@ namespace Actor.Util
                 if (key.CompareTo(current) <= 0)
                 {
                     // Store here
-                    i.SendMessage(LinkedActor as IPeerActor<TKey,TValue>);
+                    i.SendMessage(LinkedActor as IPeerActor<TKey, TValue>);
                 }
                 else
                 {

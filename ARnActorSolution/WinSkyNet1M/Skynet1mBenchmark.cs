@@ -66,7 +66,7 @@ namespace WinSkyNet1M
                     _parent.SendMessage(_number);
                 }
             })) ;
-            this.SendMessage("start");
+            SendMessage("start");
         }
     }
 }

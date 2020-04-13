@@ -21,8 +21,8 @@ namespace TestActor
                     ));
                 AddBehavior(new Behavior<IFuture<string>>
                     (
-                        f => true,
-                        f => f.SendMessage(_data)
+                        (IFuture<string> f) => true,
+                        (IFuture<string> f) => f.SendMessage(_data)
                     ));
             }
         }

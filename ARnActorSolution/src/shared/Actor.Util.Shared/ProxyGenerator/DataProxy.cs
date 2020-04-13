@@ -15,7 +15,7 @@ namespace Actor.Util
         {
             fObject = new DataObject();
             var behaviorStore = new Behavior<string>(t => fObject.Store(t));
-            var behaviorRetrieve = new Behavior<IFuture<string>>(t => t.SendMessage(fObject.Retrieve()));
+            var behaviorRetrieve = new Behavior<IFuture<string>>((IFuture<string> t) => t.SendMessage(fObject.Retrieve()));
             Become(behaviorStore, behaviorRetrieve);
         }
         public void Store(string aData)

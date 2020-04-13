@@ -36,25 +36,13 @@ namespace Actor.Util
         {
         }
 
-        internal TState GetCurrentState()
-        {
-            return _current;
-        }
+        internal TState GetCurrentState() => _current;
 
-        internal void ChangeState(TState aState)
-        {
-            _current = aState;
-        }
+        internal void ChangeState(TState aState) => _current = aState;
 
-        private void GetCurrentState(IFuture<TState> future)
-        {
-            future.SendMessage(_current);
-        }
+        private void GetCurrentState(IFuture<TState> future) => future.SendMessage(_current);
 
-        public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState)
-        {
-            return AddRule(startState, aCondition, anAction, reachedState, null);
-        }
+        public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState) => AddRule(startState, aCondition, anAction, reachedState, null);
 
         public FsmBehaviors<TState, TEvent> AddRule(TState startState, Func<TEvent, bool> aCondition, Action<TEvent> anAction, TState reachedState, IActor traceActor)
         {
@@ -120,8 +108,8 @@ namespace Actor.Util
 
         private bool DoPattern(TEvent anEvent)
         {
-            var parent = LinkedTo as FsmBehaviors<TState, TEvent>;
-            var result = (parent != null) && parent.GetCurrentState().Equals(StartState) && (Condition == null || Condition(anEvent));
+            FsmBehaviors<TState, TEvent> parent = LinkedTo as FsmBehaviors<TState, TEvent>;
+            bool result = (parent != null) && parent.GetCurrentState().Equals(StartState) && (Condition == null || Condition(anEvent));
             TraceActor?.SendMessage(StartState, EndState, anEvent.ToString());
             return result;
         }

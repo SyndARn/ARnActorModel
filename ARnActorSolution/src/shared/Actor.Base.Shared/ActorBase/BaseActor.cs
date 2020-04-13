@@ -149,10 +149,10 @@ namespace Actor.Base
 
         public BaseActor() => Tag = new ActorTag();
 
-        public async Task<object> Receive(Func<object, bool> aPattern, int timeOutMS)
+        public async Task<object> ReceiveAsync(Func<object, bool> aPattern, int timeOutMS)
         {
             CheckArg.Pattern(aPattern);
-            var awaitingBehavior = new Behavior(aPattern, new TaskCompletionSource<object>());
+            Behavior awaitingBehavior = new Behavior(aPattern, new TaskCompletionSource<object>());
             Interlocked.Increment(ref _sharedStruct.fReceive);
             _awaitingBehaviors.Add(awaitingBehavior);
             AddMissedMessages();
@@ -192,7 +192,7 @@ namespace Actor.Base
             }
         }
 
-        public Task<object> AsyncReceive(Func<object, bool> aPattern) => Receive(aPattern, Timeout.Infinite);
+        public Task<object> ReceiveAsync(Func<object, bool> aPattern) => ReceiveAsync(aPattern, Timeout.Infinite);
 
         private object ReceiveMessage()
         {
@@ -222,7 +222,7 @@ namespace Actor.Base
 
             _behaviors.Clear();
 
-            var someBehaviors = new Behaviors();
+            Behaviors someBehaviors = new Behaviors();
             foreach (IBehavior item in manyBehaviors)
             {
                 someBehaviors.AddBehavior(item);
@@ -357,7 +357,7 @@ namespace Actor.Base
 
         private IBehavior MatchByPattern(object msg)
         {
-            foreach (var fBehavior in _behaviors)
+            foreach (IBehavior fBehavior in _behaviors)
             {
                 if (fBehavior?.StandardPattern(msg) == true)
                 {

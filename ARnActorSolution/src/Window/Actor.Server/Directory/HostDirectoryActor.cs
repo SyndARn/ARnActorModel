@@ -71,7 +71,7 @@ namespace Actor.Server
             var lKey = aMsg.Tag.Key();
             if (fUri2Actor.TryGetValue(lKey, out IActor lActor))
             {
-                  lActor.SendMessage(aMsg.Data);
+                lActor.SendMessage(aMsg.Data);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Actor.Server
             GetInstance().SendMessage((Action<IActor>) GetInstance().DoStat, sender);
 
             var task = await HostDirectoryActor.GetInstance()
-                .AsyncReceive(ans => { return (ans is IActor) && (sender.Equals(((IActor)ans))); }) ;
+                .ReceiveAsync(ans => { return (ans is IActor) && (sender.Equals(((IActor)ans))); }) ;
             return task as string ;
         }
 

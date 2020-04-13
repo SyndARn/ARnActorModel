@@ -22,7 +22,7 @@ namespace Actor.Util
             get
             {
                 var future = new Future<int>();
-                this.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(_list.Count), future);
+                (this).SendMessage((Action<IActor>)((a) => a.SendMessage(_list.Count)), (IActor)future);
                 return future.Result();
             }
         }
@@ -35,15 +35,12 @@ namespace Actor.Util
             }
         }
 
-        public EnumerableActor() : base()
-        {
-            SetBehavior();
-        }
+        public EnumerableActor() : base() => SetBehavior();
 
         public EnumerableActor(IEnumerable<T> source) : base()
         {
             Become(new Behavior<IEnumerable<T>>(SetupData));
-            this.SendMessage(source);
+            SendMessage(source);
         }
 
         private void SetupData(IEnumerable<T> source)
@@ -60,30 +57,18 @@ namespace Actor.Util
             AddBehavior(new Behavior<Action>((a) => a()));
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return new ActorEnumerator<T>(this);
-        }
+        public IEnumerator<T> GetEnumerator() => new ActorEnumerator<T>(this);
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new ActorEnumerator<T>(this);
-        }
+        IEnumerator IEnumerable.GetEnumerator() => new ActorEnumerator<T>(this);
 
-        public void Add(T item)
-        {
-            this.SendMessage<Action<T>, T>(t => _list.Add(t), item);
-        }
+        public void Add(T item) => this.SendMessage<Action<T>, T>(t => _list.Add(t), item);
 
-        public void Clear()
-        {
-            this.SendMessage((Action)(() => _list.Clear()));
-        }
+        public void Clear() => SendMessage((Action)(() => _list.Clear()));
 
         public bool Contains(T item)
         {
             var future = new Future<bool>();
-            this.SendMessage<Action<IActor,T>, IActor,T>((a, t) => a.SendMessage(_list.Contains(t)), future, item);
+            (this).SendMessage((Action<IActor, T>)((a, t) => a.SendMessage(_list.Contains(t))), (IActor)future, item);
             return future.Result();
         }
 
@@ -98,7 +83,7 @@ namespace Actor.Util
         public bool Remove(T item)
         {
             var future = new Future<bool>();
-            this.SendMessage<Action<IActor, T>, IActor, T>((a, t) => a.SendMessage(_list.Remove(t)), future, item);
+            (this).SendMessage((Action<IActor, T>)((a, t) => a.SendMessage(_list.Remove(t))), (IActor)future, item);
             return future.Result();
         }
 
@@ -155,7 +140,7 @@ namespace Actor.Util
             {
                 get {
                     var future = new Future<TSource>();
-                    fCollection.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fCollection._list[fIndex]), future);
+                    fCollection.SendMessage((Action<IActor>)((a) => a.SendMessage(fCollection._list[fIndex])), (IActor)future);
                     return future.Result();
                 }
             }
@@ -164,7 +149,7 @@ namespace Actor.Util
             {
                 get {
                     var future = new Future<TSource>();
-                    fCollection.SendMessage<Action<IActor>, IActor>((a) => a.SendMessage(fCollection._list[fIndex]), future);
+                    fCollection.SendMessage((Action<IActor>)((a) => a.SendMessage(fCollection._list[fIndex])), (IActor)future);
                     return future.Result();
                 }
             }

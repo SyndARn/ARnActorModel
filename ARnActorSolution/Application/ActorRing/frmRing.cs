@@ -63,7 +63,7 @@ namespace ActorRing
                     rcvmess++; if (rcvmess >= qttMess)
                     {
                         DateTimeOffset end = DateTimeOffset.UtcNow ;
-                        catcher.SendMessage(string.Format("start {0} end {1} Duration{2}", 
+                        catcher.SendMessage(string.Format("start {0} end {1} Duration{2}",
                             start.ToString(), end.ToString(), end.Subtract(start).ToString()));
                     }
                 }

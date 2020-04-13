@@ -13,13 +13,13 @@ namespace Actor.Util
 
         public DictionaryBehavior()
         {
-            var bhv1 = new Behavior<TKey, TValue>( (k, v) => _dico[k] = v);
-            var bhv2 = new Behavior<IActor, TKey>((a, k) =>
+            Behavior<TKey, TValue> bhv1 = new Behavior<TKey, TValue>( (k, v) => _dico[k] = v);
+            Behavior<IActor, TKey> bhv2 = new Behavior<IActor, TKey>((a, k) =>
                 {
                     bool result = _dico.TryGetValue(k, out TValue v);
                     a.SendMessage(result, k, v);
                 });
-            var bhv3 = new Behavior<TKey>(k => _dico.Remove(k));
+            Behavior<TKey> bhv3 = new Behavior<TKey>(k => _dico.Remove(k));
             AddBehavior(bhv1);
             AddBehavior(bhv2);
             AddBehavior(bhv3);
@@ -32,7 +32,7 @@ namespace Actor.Util
 
         public IFuture<bool, TKey, TValue> GetKeyValue(TKey key)
         {
-            var future = new Future<bool, TKey, TValue>();
+            Future<bool, TKey, TValue> future = new Future<bool, TKey, TValue>();
             LinkedActor.SendMessage((IActor)future, key);
             return future;
         }

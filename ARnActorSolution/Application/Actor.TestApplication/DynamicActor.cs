@@ -51,7 +51,7 @@ namespace Actor.TestApplication
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-                fActor.SendMessage(Tuple.Create(binder, args));
+            fActor.SendMessage(Tuple.Create(binder, args));
                 result = null;
                 return true;
         }

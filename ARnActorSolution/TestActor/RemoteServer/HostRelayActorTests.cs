@@ -23,7 +23,7 @@ namespace TestActor
                     _data.Clear();
                     _data.AddRange(d.Keys);
                     Become(new Behavior<IFuture<IEnumerable<string>>>(
-                        f => f.SendMessage(_data.AsEnumerable<string>())
+                        f => f.SendMessage(_data.AsEnumerable())
                         ));
                 }
                 )) ;

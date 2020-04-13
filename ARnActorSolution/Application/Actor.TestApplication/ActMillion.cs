@@ -18,13 +18,13 @@ namespace Actor.TestApplication
         {
             fQueue = new QueueActor<IActor>();
             Become(new Behavior<string>(DoStart));
-            this.SendMessage("DoStart");
+            SendMessage("DoStart");
         }
 
         public void Send()
         {
             Become(new Behavior<string>(DoSend));
-            this.SendMessage("DoSend");
+            SendMessage("DoSend");
         }
 
         private void DoStart(string msg)
@@ -39,11 +39,11 @@ namespace Actor.TestApplication
         private void DoSend(string msg)
         {
             int i = 0;
-            IMsgQueue<IActor> item = fQueue.TryDequeue().Result;
+            IMsgQueue<IActor> item = fQueue.TryDequeueAsync().Result;
             while(item.Result && (i<KSize))
             {
                 item.Data.SendMessage("Bop");
-                item = fQueue.TryDequeue().Result;
+                item = fQueue.TryDequeueAsync().Result;
                 Console.WriteLine("receive " + i.ToString(CultureInfo.InvariantCulture));
                 i++;
             }

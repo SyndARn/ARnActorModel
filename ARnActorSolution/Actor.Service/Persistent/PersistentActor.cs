@@ -59,7 +59,7 @@ namespace Actor.Service
             Become(new PersistentLoadBehavior<T>(service));
             AddBehavior(new PersistentWriteBehavior<T>(service));
             AddBehavior(new Behavior<IEventSource<T>>(Transact));
-            AddBehavior(new Behavior<PersistentCommand,IActor>(                
+            AddBehavior(new Behavior<PersistentCommand, IActor>(                
                 (c,a) => c == PersistentCommand.GetCurrent,
                 (c,a) => a.SendMessage(fCurrentState)));
         }

@@ -42,7 +42,7 @@ namespace Actor.Server
             fServiceName = serviceName;
             fSender = lSender;
             Become(new Behavior<string>(DoDisco));
-            this.SendMessage("DoConnect");
+            SendMessage("DoConnect");
         }
 
         [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
@@ -66,7 +66,7 @@ namespace Actor.Server
                 {
                     ActorTag tag = new ActorTag(service);
                     Become(new Behavior<ActorTag>(DoConnect));
-                    this.SendMessage(tag);
+                    SendMessage(tag);
                 }
                 else
                 // service with no end point

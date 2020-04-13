@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Actor.Base
+﻿namespace Actor.Base
 {
     public enum QueueStyle { None, LockFree, Locking, Ring, Buffer }
 

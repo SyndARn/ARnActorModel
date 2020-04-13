@@ -23,7 +23,7 @@ namespace Actor.Server
             sb.AppendLine(ActorTask.Stat()) ;
             // get number of actor in hostdirectory
             sb.AppendLine(HostDirectoryActor.GetInstance().GetStat());
-            msg.SendMessage(sb.ToString()) ;
+            msg.SendMessage(sb.ToString());
             Become(new NullBehaviors());
         }
     }

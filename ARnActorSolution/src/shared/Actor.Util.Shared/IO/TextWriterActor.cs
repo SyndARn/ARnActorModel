@@ -15,13 +15,13 @@ namespace Actor.Util
 #if !(NETFX_CORE) || WINDOWS_UWP
             Become(new Behavior<string>(DoInit));
 #endif
-            this.SendMessage(aFileName);
+            SendMessage(aFileName);
         }
 
         public TextWriterActor(Stream aStream)
         {
             Become(new Behavior<Stream>(DoInit));
-            this.SendMessage(aStream);
+            SendMessage(aStream);
         }
 
         public void Flush()

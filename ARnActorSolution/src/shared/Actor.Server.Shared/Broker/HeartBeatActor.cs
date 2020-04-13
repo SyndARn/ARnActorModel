@@ -16,7 +16,7 @@ namespace Actor.Server
             {
                 a.SendMessage(this, HeartBeatAction.Beat);
                 Task.Delay(fTimeOutMS).Wait();
-                this.SendMessage(a);
+                SendMessage(a);
             }));
         }
     }

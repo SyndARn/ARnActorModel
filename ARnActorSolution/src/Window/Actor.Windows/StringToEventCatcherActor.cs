@@ -28,7 +28,7 @@ namespace Actor.Windows
 
         private void DoWait()
         {
-            var retval = AsyncReceive(t => { return t is T; }).Result;
+            var retval = ReceiveAsync(t => { return t is T; }).Result;
             if ((fEvent != null) && (fControl != null))
             {
                 fControl.Invoke(fEvent, this, retval);

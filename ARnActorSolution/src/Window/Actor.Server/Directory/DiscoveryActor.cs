@@ -37,7 +37,7 @@ namespace Actor.Server
         {
             Become(new Behavior<string>(t => true,
                 Disco)) ;
-            this.SendMessage(hostAddress) ;
+            SendMessage(hostAddress);
         }
 
         public DiscoveryActor(string hostAddress, IActor sender)
@@ -70,6 +70,7 @@ namespace Actor.Server
             {
                 Console.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0} - {1}",s, dico[s]));
             }
+
             Become(new NullBehaviors());
         }
     }

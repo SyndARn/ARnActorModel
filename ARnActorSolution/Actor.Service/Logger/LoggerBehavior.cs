@@ -17,7 +17,7 @@ namespace Actor.Service
             Become(new LoggerBehaviors(aFileName));
             var heartBeat = new HeartBeatActor(500);
             heartBeat.SendMessage((IActor)this);
-            this.SendMessage("Logging start");
+            SendMessage("Logging start");
         }
     }
 

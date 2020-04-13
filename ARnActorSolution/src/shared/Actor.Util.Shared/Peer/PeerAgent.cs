@@ -27,12 +27,12 @@ namespace Actor.Util
         public static TKey Calc(IEnumerable<TKey> keys)
         {
             CheckArg.IEnumerable(keys);
-            var dic = new Dictionary<HashKey, TKey>();
-            foreach (var k in keys)
+            Dictionary<HashKey, TKey> dic = new Dictionary<HashKey, TKey>();
+            foreach (TKey k in keys)
             {
                 dic[HashKey.ComputeHash(k.ToString())] = k;
             }
-            var elected = dic.Keys.OrderBy(h => h.ToString()).FirstOrDefault();
+            HashKey elected = dic.Keys.OrderBy(h => h.ToString()).FirstOrDefault();
             return dic[elected];
         }
     }
@@ -46,21 +46,21 @@ namespace Actor.Util
             Become(new Behavior<IPeerActor<TKey, TValue>>(
             a =>
             {
-                var keys = a.AskKeys();
-                var peers = a.AskPeers();
+                IFuture<IEnumerable<TKey>> keys = a.AskKeys();
+                IFuture<IEnumerable<IPeerActor<TKey>>> peers = a.AskPeers();
                 // peek key out of centroid
-                var key = CenterKey<TKey>.Calc(keys.Result());
+                TKey key = CenterKey<TKey>.Calc(keys.Result());
                 // calc nearest peer
-                var orderedPeers = peers.Result().OrderBy(n => n.GetPeerHashKey().ToString());
-                var hashKey = HashKey.ComputeHash(key.ToString());
+                IOrderedEnumerable<IPeerActor<TKey>> orderedPeers = peers.Result().OrderBy(n => n.GetPeerHashKey().ToString());
+                HashKey hashKey = HashKey.ComputeHash(key.ToString());
 
-                foreach (var peer in orderedPeers)
+                foreach (IPeerActor<TKey> peer in orderedPeers)
                 {
                     if (hashKey.CompareTo(peer.GetPeerHashKey()) > 0)
                     {
                         // deposit
                         // get current K V
-                        var result = a.GetNode(key).Result();
+                        TValue result = a.GetNode(key).Result();
                         if (result != null)
                         {
                             // set current K V
@@ -88,7 +88,7 @@ namespace Actor.Util
             Become(new Behavior<IPeerActor<TKey, TValue>>(a =>
             {
                 // get current nodes
-                var peers = a.AskPeers();
+                IFuture<IEnumerable<IPeerActor<TKey>>> peers = a.AskPeers();
                 // take one of them (lower than your reference node)
                 // deposit sygmergy
                 // go to this one

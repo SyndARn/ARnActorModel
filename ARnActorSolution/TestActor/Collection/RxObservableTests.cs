@@ -31,7 +31,7 @@ namespace TestActor
             public async Task<string> GetResultAsync()
             {
                 var future = new Future<string>();
-                this.SendMessage((IActor)future);
+                SendMessage((IActor)future);
                 return await future.ResultAsync();
             }
 

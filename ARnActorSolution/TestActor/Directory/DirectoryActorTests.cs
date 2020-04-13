@@ -33,7 +33,7 @@ namespace TestActor
         private void DoIt(IActor caller, IActor lookup, string name)
         {
             DirectoryActor.GetDirectory().Find(this, name);
-            var task = AsyncReceive(ask => { return (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>); });
+            var task = ReceiveAsync(ask => { return (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>); });
             if ((task.Result as IMessageParam<DirectoryActor.DirectoryRequest, IActor>).Item2 == lookup)
             {
                 caller.SendMessage(true);
