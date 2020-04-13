@@ -47,7 +47,7 @@ namespace Actor.Server
         {
             // find in directory
             DirectoryActor.GetDirectory().Find(this, host);
-            AsyncReceive(ask => (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>)).ContinueWith(
+            ReceiveAsync(ask => (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>)).ContinueWith(
                 r =>
                 {
                     IMessageParam<DirectoryActor.DirectoryRequest, IActor> ans = (IMessageParam<DirectoryActor.DirectoryRequest, IActor>)(r.Result);
@@ -55,7 +55,7 @@ namespace Actor.Server
                     {
                         SendByName<string>.Send("Server found", "Console");
                         ans.Item2.SendMessage(new ServerMessage<string>(this, ServerRequest.Connect, default(string)));
-                        AsyncReceive(m =>
+                        ReceiveAsync(m =>
                             {
                                 ServerMessage<string> sm = m as ServerMessage<string> ;
                                 return m != null && (sm.Request.Equals(ServerRequest.Accept));
@@ -79,7 +79,7 @@ namespace Actor.Server
 
         public void SendMessage(string message)
         {
-            this.SendMessage(new ServerMessage<string>(this, ServerRequest.Request, message));
+            SendMessage(new ServerMessage<string>(this, ServerRequest.Request, message));
         }
         //public void Disconnect()
         //{

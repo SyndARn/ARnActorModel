@@ -16,19 +16,19 @@ namespace TestActor
             public ShardDirectoryClientTest() : base()
             {
                 Become(new Behavior<string>(DoStart)) ;
-                this.SendMessage("Start");
+                SendMessage("Start");
             }
 
             private void DoStart(string msg)
             {
                 // find shard in directory
                 ConnectActor connect = new ConnectActor(this, ActorServer.GetInstance().FullHost, "KnownShards");
-                var data = AsyncReceive(ans => { return ans is IMessageParam<string, ActorTag, IActor>; }) ;
+                var data = ReceiveAsync(ans => { return ans is IMessageParam<string, ActorTag, IActor>; }) ;
                 var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                 var shardDir = res.Item3 ;
                 Assert.IsNotNull(shardDir) ;
                 ShardRequest req = ShardRequest.CastRequest(this,this) ;
-                shardDir.SendMessage(req) ;
+                shardDir.SendMessage(req);
                 Become(new Behavior<ShardRequest>(WaitAns));
             }
 

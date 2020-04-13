@@ -20,7 +20,7 @@ namespace BenchmarkForActor
 
             AddBehavior(new Behavior<IFuture<double>>
                 (
-                    f => f.SendMessage(fAccumulate)
+                    (IFuture<double> f) => f.SendMessage(fAccumulate)
                 ));
         }
     }

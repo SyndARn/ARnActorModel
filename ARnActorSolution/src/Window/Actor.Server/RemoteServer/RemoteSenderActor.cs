@@ -26,10 +26,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Sockets;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
 
 namespace Actor.Server
@@ -51,7 +47,7 @@ namespace Actor.Server
         {
             CheckArg.Actor(anActor);
             anActor.fSerializeService = ActorServer.GetInstance().SerializeService;
-            anActor.Become(new Behavior<Object>(anActor.DoRouting));
+            anActor.Become(new Behavior<object>(anActor.DoRouting));
         }
 
         public RemoteSenderActor(ActorTag aTag)
@@ -62,10 +58,7 @@ namespace Actor.Server
             Become(new Behavior<object>(DoRouting));
         }
 
-        private void DoRouting(object aMsg)
-        {
-            SendRemoteMessage(aMsg);
-        }
+        private void DoRouting(object aMsg) => SendRemoteMessage(aMsg);
 
         private void SendRemoteMessage(object aMsg)
         {

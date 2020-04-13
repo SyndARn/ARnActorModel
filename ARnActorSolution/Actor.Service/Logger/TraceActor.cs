@@ -28,7 +28,7 @@ namespace Actor.Service
         public void Stop(string aMsg)
         {
             fWatch.Stop();
-            fLogger.Value.SendMessage(String.Format(CultureInfo.InvariantCulture,"[Trace] {0} {1}", fWatch.ElapsedTicks,aMsg));
+            fLogger.Value.SendMessage(string.Format(CultureInfo.InvariantCulture, "[Trace] {0} {1}", fWatch.ElapsedTicks, aMsg));
         }
     }
 }

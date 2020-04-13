@@ -103,7 +103,7 @@ namespace Actor.Service
                 State.Start, (IActor)null);
             lastNode = prevNode;
             Become(new Behavior<bool>(msg => msg, Test));
-            this.SendMessage(true);
+            SendMessage(true);
         }
 
         protected void Test(bool msg)
@@ -112,8 +112,7 @@ namespace Actor.Service
             Console.WriteLine("Start at " + TestResult.start.ToString());
             for (int i = 0; i < RingTest.fTest; i++)
             {
-                firstNode.SendMessage(
-                   new ActorTag(/*i*/));
+                firstNode.SendMessage(new ActorTag(/*i*/));
             }
         }
     }

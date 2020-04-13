@@ -23,7 +23,7 @@ namespace Actor.TestApplication
             };
             var lParser = new ParserActor();
             new EchoActor<IEnumerable<string>>(lParser, aList);
-            lParser.SendMessage(aList.AsEnumerable<String>());
+            lParser.SendMessage(aList.AsEnumerable());
         }
     }
 }

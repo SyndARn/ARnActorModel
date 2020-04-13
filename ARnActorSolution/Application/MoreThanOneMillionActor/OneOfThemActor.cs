@@ -18,7 +18,7 @@ namespace MoreThanOneMillionActor
             fReduce = reduce;
             obs.RegisterObserver(fReduce);
             Become(new Behavior<int>(Go));
-            this.SendMessage(i);
+            SendMessage(i);
         }
 
         private void Go(int message)
@@ -46,7 +46,7 @@ namespace MoreThanOneMillionActor
 
         private void Observe(IActor observer)
         {
-            observer.SendMessage(GetState()) ;
+            observer.SendMessage(GetState());
         }
     }
 

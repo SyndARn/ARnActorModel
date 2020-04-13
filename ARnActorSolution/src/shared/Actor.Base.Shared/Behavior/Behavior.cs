@@ -48,7 +48,7 @@ namespace Actor.Base
         public Behaviors(IBehavior[] someBehaviors)
         {
             CheckArg.BehaviorParam(someBehaviors);
-            foreach (var item in someBehaviors)
+            foreach (IBehavior item in someBehaviors)
             {
                 AddBehavior(item);
             }
@@ -104,13 +104,7 @@ namespace Actor.Base
             fLinkedBehaviors = someBehaviors;
         }
 
-        public IActor LinkedActor
-        {
-            get
-            {
-                return fLinkedBehaviors?.LinkedActor;
-            }
-        }
+        public IActor LinkedActor => fLinkedBehaviors?.LinkedActor;
 
         public Behavior(Func<object, bool> aPattern, Action<object> anApply)
         {
@@ -126,30 +120,15 @@ namespace Actor.Base
             Completion = aCompletion;
         }
 
-        public IBehaviors LinkedTo
-        {
-            get
-            {
-                return fLinkedBehaviors;
-            }
-        }
+        public IBehaviors LinkedTo => fLinkedBehaviors;
 
         public Func<object, bool> Pattern { get; protected set; }
         public Action<object> Apply { get; protected set; }
         public TaskCompletionSource<object> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> AwaitingPattern
-        {
-            get
-            {
-                return Completion;
-            }
-        }
+        public TaskCompletionSource<object> AwaitingPattern => Completion;
 
-        public void StandardApply(object aT)
-        {
-            Apply?.Invoke(aT);
-        }
+        public void StandardApply(object aT) => Apply?.Invoke(aT);
 
         public bool StandardPattern(object aT)
         {
@@ -167,31 +146,13 @@ namespace Actor.Base
         public Action<T1, T2> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2>> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> AwaitingPattern
-        {
-            get
-            {
-                return Completion as TaskCompletionSource<Object>;
-            }
-        }
+        public TaskCompletionSource<object> AwaitingPattern => Completion as TaskCompletionSource<object>;
 
         private IBehaviors fLinkedBehaviors;
 
-        public IActor LinkedActor
-        {
-            get
-            {
-                return fLinkedBehaviors.LinkedActor;
-            }
-        }
+        public IActor LinkedActor => fLinkedBehaviors.LinkedActor;
 
-        public IBehaviors LinkedTo
-        {
-            get
-            {
-                return fLinkedBehaviors;
-            }
-        }
+        public IBehaviors LinkedTo => fLinkedBehaviors;
 
         public void LinkBehaviors(IBehaviors someBehaviors)
         {
@@ -253,36 +214,15 @@ namespace Actor.Base
         public Action<T1, T2, T3> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2, T3>> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> AwaitingPattern
-        {
-            get
-            {
-                return Completion as TaskCompletionSource<object>;
-            }
-        }
+        public TaskCompletionSource<object> AwaitingPattern => Completion as TaskCompletionSource<object>;
 
         private IBehaviors fLinkedBehaviors;
 
-        public IActor LinkedActor
-        {
-            get
-            {
-                return fLinkedBehaviors.LinkedActor;
-            }
-        }
+        public IActor LinkedActor => fLinkedBehaviors.LinkedActor;
 
-        public IBehaviors LinkedTo
-        {
-            get
-            {
-                return fLinkedBehaviors;
-            }
-        }
+        public IBehaviors LinkedTo => fLinkedBehaviors;
 
-        public void LinkBehaviors(IBehaviors someBehaviors)
-        {
-            fLinkedBehaviors = someBehaviors;
-        }
+        public void LinkBehaviors(IBehaviors someBehaviors) => fLinkedBehaviors = someBehaviors;
 
         public Behavior(Func<T1, T2, T3, bool> aPattern, Action<T1, T2, T3> anApply)
         {
@@ -351,31 +291,13 @@ namespace Actor.Base
         public Action<T> Apply { get; protected set; }
         public TaskCompletionSource<T> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> AwaitingPattern
-        {
-            get
-            {
-                return Completion as TaskCompletionSource<object>;
-            }
-        }
+        public TaskCompletionSource<object> AwaitingPattern => Completion as TaskCompletionSource<object>;
 
         private IBehaviors fLinkedBehaviors;
 
-        public IActor LinkedActor
-        {
-            get
-            {
-                return fLinkedBehaviors?.LinkedActor;
-            }
-        }
+        public IActor LinkedActor => fLinkedBehaviors?.LinkedActor;
 
-        public IBehaviors LinkedTo
-        {
-            get
-            {
-                return fLinkedBehaviors;
-            }
-        }
+        public IBehaviors LinkedTo => fLinkedBehaviors;
 
         public void LinkBehaviors(IBehaviors someBehaviors)
         {
@@ -438,31 +360,13 @@ namespace Actor.Base
         public Action<T1, T2, T3, T4> Apply { get; protected set; }
         public TaskCompletionSource<IMessageParam<T1, T2, T3, T4>> Completion { get; protected set; }
 
-        public TaskCompletionSource<object> AwaitingPattern
-        {
-            get
-            {
-                return Completion as TaskCompletionSource<object>;
-            }
-        }
+        public TaskCompletionSource<object> AwaitingPattern => Completion as TaskCompletionSource<object>;
 
         private IBehaviors fLinkedBehaviors;
 
-        public IActor LinkedActor
-        {
-            get
-            {
-                return fLinkedBehaviors.LinkedActor;
-            }
-        }
+        public IActor LinkedActor => fLinkedBehaviors.LinkedActor;
 
-        public IBehaviors LinkedTo
-        {
-            get
-            {
-                return fLinkedBehaviors;
-            }
-        }
+        public IBehaviors LinkedTo => fLinkedBehaviors;
 
         public void LinkBehaviors(IBehaviors someBehaviors)
         {

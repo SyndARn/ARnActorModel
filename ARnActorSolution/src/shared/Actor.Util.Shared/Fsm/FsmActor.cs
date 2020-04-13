@@ -42,7 +42,7 @@ namespace Actor.Util
         public Future<TState> GetCurrentState()
         {
             var future = new Future<TState>();
-            this.SendMessage(future);
+            SendMessage(future);
             return future;
         }
     }

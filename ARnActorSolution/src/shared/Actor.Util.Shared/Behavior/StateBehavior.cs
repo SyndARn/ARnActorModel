@@ -42,7 +42,7 @@ namespace Actor.Util
     {
         public StateFullActor() : base() => Become(new StateBehaviors<T>());
 
-        public void SetState(T aT) => this.SendMessage(StateAction.Set, aT);
+        public void SetState(T aT) => IActorExtension.SendMessage(this, StateAction.Set, aT);
 
         public IFuture<T> GetState()
         {
@@ -53,14 +53,14 @@ namespace Actor.Util
 
         public async Task<T> GetStateAsync()
         {
-            this.SendMessage(StateAction.Get);
-            return (T) await AsyncReceive(t => t is T).ConfigureAwait(false);
+            SendMessage(StateAction.Get);
+            return (T) await ReceiveAsync(t => t is T).ConfigureAwait(false);
         }
 
         public async Task<T> GetStateAsync(int timeOutMS)
         {
-            this.SendMessage(StateAction.Get);
-            return (T)await Receive(t => t is T, timeOutMS).ConfigureAwait(false);
+            SendMessage(StateAction.Get);
+            return (T)await ReceiveAsync(t => t is T, timeOutMS).ConfigureAwait(false);
         }
     }
 

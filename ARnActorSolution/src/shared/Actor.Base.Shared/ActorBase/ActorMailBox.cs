@@ -43,10 +43,7 @@ namespace Actor.Base
 
         public bool IsEmpty => _queue.Count() == 0;
 
-        public void AddMiss(T aMessage)
-        {
-            _missed.Add(aMessage);
-        }
+        public void AddMiss(T aMessage) => _missed.Add(aMessage);
 
         public int RefreshFromMissed()
         {

@@ -43,7 +43,7 @@ namespace Actor.Server
             fTcpListener = new TcpListener(fEndPoint);
             Become(new Behavior<string>(DoStartListen));
             fTcpListener.Start();
-            this.SendMessage("Start Listen");
+            SendMessage("Start Listen");
         }
 
         private void DoStartListen(string msg)
@@ -51,7 +51,7 @@ namespace Actor.Server
             Task<TcpClient> client = fTcpListener.AcceptTcpClientAsync();
             IActor entryConnection = new actEntryConnection();
             entryConnection.SendMessage(client.Result);
-            this.SendMessage("Continue Listen");
+            SendMessage("Continue Listen");
         }
     }
 
@@ -89,7 +89,7 @@ namespace Actor.Server
                 // find hosted actor directory
                 // forward msg to hostedactordirectory
                 Become(new Behavior<SerialObject>(t => { return true; }, DoProcessMessage));
-                this.SendMessage(so);
+                SendMessage(so);
             }
         }
 

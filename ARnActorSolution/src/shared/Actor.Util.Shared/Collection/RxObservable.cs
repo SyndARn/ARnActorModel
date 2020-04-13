@@ -19,14 +19,17 @@ namespace Actor.Util
         private void DoSubscribe(IObserver<T> observer)
         {
             if (!observers.Contains(observer))
+            {
                 observers.Add(observer);
+            }
+
             IDisposable dispo = new Unsubscriber(observers, observer);
             this.SendMessage(this, dispo);
         }
 
         public IDisposable Subscribe(IObserver<T> observer)
         {
-            Task<object> res = Receive(t => t is IMessageParam<IActor, IDisposable>);
+            Task<object> res = ReceiveAsync(t => t is IMessageParam<IActor, IDisposable>);
             SendMessage(observer);
             IMessageParam<IActor, IDisposable> resi = res.Result as IMessageParam<IActor, IDisposable>;
             return resi.Item2;

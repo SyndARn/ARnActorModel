@@ -123,14 +123,14 @@ namespace Actor.Server
         public async Task<IEnumerable<string>> GetAll()
         {
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
-            this.SendMessage(future);
+            SendMessage(future);
             return await future.ResultAsync().ConfigureAwait(false);
         }
 
         private void DoGetAll(IFuture future)
         {
             IEnumerable<string> list = fShardList.ToList().AsEnumerable();
-            future.SendMessage(list) ;
+            future.SendMessage(list);
         }
     }
 }

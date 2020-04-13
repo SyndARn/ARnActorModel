@@ -27,7 +27,7 @@ namespace Actor.Service.Tests
         public async Task<IEnumerable<string>> GetList()
         {
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
-            this.SendMessage((IActor)future);
+            SendMessage((IActor)future);
             return await future.ResultAsync();
         }
     }

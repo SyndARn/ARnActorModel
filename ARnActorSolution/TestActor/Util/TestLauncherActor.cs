@@ -48,7 +48,7 @@ namespace TestActor
 
         public async Task<bool> Wait(int ms)
         {
-            var val = await Receive(t => t is bool, ms).ConfigureAwait(false);
+            var val = await ReceiveAsync(t => t is bool, ms).ConfigureAwait(false);
             bool inTime = val != null;
             return inTime && (bool)val;
         }

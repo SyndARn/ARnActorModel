@@ -20,11 +20,8 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
 
 namespace Actor.Util
@@ -44,18 +41,12 @@ namespace Actor.Util
 
         public void PublishData(T aT)
         {
-            this.SendMessage(aT);
+            SendMessage(aT);
         }
 
-        public void RegisterObserver(IActor anActor)
-        {
-            this.SendMessage(ObservableAction.Register, anActor);
-        }
+        public void RegisterObserver(IActor anActor) => this.SendMessage(ObservableAction.Register, anActor);
 
-        public void UnregisterObserver(IActor anActor)
-        {
-            this.SendMessage(ObservableAction.Unregister, anActor);
-        }
+        public void UnregisterObserver(IActor anActor) => this.SendMessage(ObservableAction.Unregister, anActor);
 
         private void DoRegister(ObservableAction action, IActor actor)
         {

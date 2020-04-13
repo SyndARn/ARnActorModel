@@ -234,7 +234,7 @@ namespace Actor.Server
                     LogString("Answer To HeartBeat from Worker {0}", a.Tag.Key());
                 }));
             // start heart beat
-            this.SendMessage(BrokerAction.Start);
+            SendMessage(BrokerAction.Start);
         }
     }
 }

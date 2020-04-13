@@ -77,10 +77,7 @@ namespace Actor.Base
             fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
         }
 
-        public string Key()
-        {
-            return string.Format(CultureInfo.InvariantCulture, "{0}-{1}", fUriHash, fId);
-        }
+        public string Key() => string.Format(CultureInfo.InvariantCulture, "{0}-{1}", fUriHash, fId);
 
         public override int GetHashCode() => Key().GetHashCode();
 

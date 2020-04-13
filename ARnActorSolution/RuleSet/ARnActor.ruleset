@@ -44,8 +44,6 @@
     <Rule Id="RCS1153" Action="Warning" />
     <Rule Id="RCS1162" Action="Warning" />
     <Rule Id="RCS1174" Action="Warning" />
-    <Rule Id="RCS1176" Action="Warning" />
-    <Rule Id="RCS1177" Action="Warning" />
     <Rule Id="RCS1184" Action="Warning" />
     <Rule Id="RCS1185" Action="Warning" />
     <Rule Id="RCS1198" Action="Warning" />

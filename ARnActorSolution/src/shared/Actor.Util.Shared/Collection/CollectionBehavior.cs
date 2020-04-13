@@ -103,9 +103,14 @@ namespace Actor.Util
                 case IteratorMethod.Current:
                     {
                         if ((i >= 0) && (i < linkedBehavior.List.Count))
+                        {
                             actor.SendMessage(IteratorMethod.OkCurrent, linkedBehavior.List[i]);
+                        }
                         else
+                        {
                             Debug.WriteLine("Bad current");
+                        }
+
                         break;
                     }
                 default: throw new ActorException(string.Format(CultureInfo.InvariantCulture, "Bad IteratorMethod call {0}", method));
@@ -128,7 +133,7 @@ namespace Actor.Util
         public bool MoveNext()
         {
             Interlocked.Increment(ref fIndex);
-            Task<object> task = Receive(t => t is IMessageParam<IteratorMethod, bool> messageParam && messageParam.Item1 == IteratorMethod.OkMoveNext
+            Task<object> task = ReceiveAsync(t => t is IMessageParam<IteratorMethod, bool> messageParam && messageParam.Item1 == IteratorMethod.OkMoveNext
                 );
             fCollection.SendMessage(IteratorMethod.MoveNext, fIndex, this);
 
@@ -156,7 +161,7 @@ namespace Actor.Util
         {
             get
             {
-                Task<object> task = Receive(t =>
+                Task<object> task = ReceiveAsync(t =>
                 {
                     IMessageParam<IteratorMethod, T> messageParam = t as IMessageParam<IteratorMethod, T>;
                     return messageParam?.Item1 == IteratorMethod.OkCurrent;
@@ -170,7 +175,7 @@ namespace Actor.Util
         {
             get
             {
-                Task<object> task = Receive(t =>
+                Task<object> task = ReceiveAsync(t =>
                 {
                     IMessageParam<IteratorMethod, T> tu = (IMessageParam<IteratorMethod, T>)t;
                     return tu?.Item1 == IteratorMethod.OkCurrent;
@@ -193,7 +198,7 @@ namespace Actor.Util
         public async void Add(T aData)
         {
             this.SendMessage(CollectionRequest.Add, aData);
-            await Receive(t =>
+            await ReceiveAsync(t =>
             {
                 bool val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkAdd;
@@ -203,7 +208,7 @@ namespace Actor.Util
         public async void Remove(T aData)
         {
             this.SendMessage(CollectionRequest.Remove, aData);
-            await Receive(t =>
+            await ReceiveAsync(t =>
             {
                 bool val = t is CollectionRequest;
                 return val && (CollectionRequest)t == CollectionRequest.OkRemove;

@@ -13,7 +13,7 @@ namespace TestActor
     {
         public T Call()
         {
-            var r = AsyncReceive(t => t is T);
+            var r = ReceiveAsync(t => t is T);
             return (T)r.Result;
         }
     }

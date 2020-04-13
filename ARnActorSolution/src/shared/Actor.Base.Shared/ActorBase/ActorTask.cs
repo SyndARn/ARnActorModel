@@ -70,10 +70,11 @@ namespace Actor.Base
             }, taskCreationOptions)
             .ContinueWith((t) =>
             {
-                foreach(var item in t.Exception.InnerExceptions)
+                foreach(Exception item in t.Exception.InnerExceptions)
                 {
                     Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, "Task fault on {0}", item.Message), "[Task Actor Fault]");
                 }
+
                 throw t.Exception;
             },
             TaskContinuationOptions.OnlyOnFaulted);

@@ -11,7 +11,7 @@ namespace Actor.Util
         public async Task<IMessageParam<IActor, T>> Wait(IActor target, T question)
         {
             target.SendMessage((IActor)this, question);
-            Task<object> r = Receive(t => t is IMessageParam<IActor, T>);
+            Task<object> r = ReceiveAsync(t => t is IMessageParam<IActor, T>);
             return (IMessageParam<IActor, T>)await r;
         }
 
@@ -19,7 +19,7 @@ namespace Actor.Util
         public async Task<IMessageParam<IActor, T>> Wait(IActor target, T question, int timeOutMS)
         {
             target.SendMessage((IActor)this, question);
-            Task<object> r = Receive(t => t is IMessageParam<IActor, T>, timeOutMS);
+            Task<object> r = ReceiveAsync(t => t is IMessageParam<IActor, T>, timeOutMS);
             return (IMessageParam<IActor, T>)await r;
         }
 
@@ -32,7 +32,7 @@ namespace Actor.Util
         public async Task<IMessageParam<IActor, TAnswer>> Wait(IActor target, TQuestion question)
         {
             target.SendMessage((IActor)this, question);
-            Task<object> r = Receive(t => t is IMessageParam<IActor, TAnswer>);
+            Task<object> r = ReceiveAsync(t => t is IMessageParam<IActor, TAnswer>);
             return (IMessageParam<IActor, TAnswer>)await r;
         }
 
@@ -40,7 +40,7 @@ namespace Actor.Util
         public async Task<IMessageParam<IActor, TAnswer>> Wait(IActor target, TQuestion question, int timeOutMS)
         {
             target.SendMessage((IActor)this, question);
-            Task<object> r = Receive(t => t is IMessageParam<IActor, TAnswer>, timeOutMS);
+            Task<object> r = ReceiveAsync(t => t is IMessageParam<IActor, TAnswer>, timeOutMS);
             return (IMessageParam<IActor, TAnswer>)await r;
         }
 

@@ -40,7 +40,7 @@ namespace Actor.Util
                 .AddBehavior(new PeerFindPeer<TKey, TValue>())
                 .AddBehavior(new PeerNewPeer<TKey, TValue>())
                 .AddBehavior(new PeerDeleteNode<TKey, TValue>())
-                .AddBehavior(new Behavior<IFuture<HashKey>>(f => f.SendMessage(this.CurrentPeer)))
+                .AddBehavior(new Behavior<IFuture<HashKey>>((IFuture<HashKey> f) => f.SendMessage(CurrentPeer)))
                 .AddBehavior(new Behavior<IFuture<IEnumerable<TKey>>>())// AskKeys();
                 .AddBehavior(new Behavior<IFuture<IEnumerable<Tuple<HashKey, IActor>>>>()); // AskNodes();
         }

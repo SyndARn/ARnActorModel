@@ -18,12 +18,12 @@ namespace TestActor
 
         public string GetData()
         {
-            return AsyncReceive(t => t is string).Result as string;
+            return ReceiveAsync(t => t is string).Result as string;
         }
 
         public string GetDataInTime(int timeOutMs)
         {
-            var r = Receive(t => t is string, timeOutMs).Result;
+            var r = ReceiveAsync(t => t is string, timeOutMs).Result;
             if (r != null)
                 return r as string;
             else

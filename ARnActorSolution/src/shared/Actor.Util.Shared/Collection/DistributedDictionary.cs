@@ -27,7 +27,7 @@ namespace Actor.Util
 
         public void RemoveKey(TKey key)
         {
-            this.SendMessage(key);
+            SendMessage(key);
         }
     }
 

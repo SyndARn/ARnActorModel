@@ -18,7 +18,7 @@ namespace Actor.Server.Tests
         public EchoTest() : base()
         {
             Become(new Behavior<IActor, string>((a, s) => fData = s));
-            AddBehavior(new Behavior<IFuture<string>>(a => a.SendMessage(fData)));
+            AddBehavior(new Behavior<IFuture<string>>((IFuture<string> a) => a.SendMessage(fData)));
         }
     }
 

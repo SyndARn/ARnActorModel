@@ -37,7 +37,7 @@ namespace Actor.Util
         protected void DoProduce(T aT)
         {
            var work = new Work<T>(aT);
-           Buffer.SendMessage(work);
+            Buffer.SendMessage(work);
         }
     }
 

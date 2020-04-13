@@ -51,7 +51,7 @@ namespace FsmCalc
 
         public void Register(IActor actor)
         {
-            this.SendMessage(actor);
+            SendMessage(actor);
         }
 
         private void DoRegister(IActor actor)
@@ -76,37 +76,37 @@ namespace FsmCalc
 
         public void Clear()
         {
-            this.SendMessage(Tuple.Create(CalcEvent.Clear, ""));
+            SendMessage(Tuple.Create(CalcEvent.Clear, ""));
         }
 
         public void Digit(string aDigit)
         {
-            this.SendMessage(Tuple.Create(CalcEvent.Digit, aDigit));
+            SendMessage(Tuple.Create(CalcEvent.Digit, aDigit));
         }
 
         public void Div()
         {
-            this.SendMessage(Tuple.Create(CalcEvent.Div, ""));
+            SendMessage(Tuple.Create(CalcEvent.Div, ""));
         }
 
         public void Moins()
         {
-            this.SendMessage(Tuple.Create(CalcEvent.Moins, ""));
+            SendMessage(Tuple.Create(CalcEvent.Moins, ""));
         }
 
         public void Mult()
         {
-            this.SendMessage(Tuple.Create(CalcEvent.Mult, ""));
+            SendMessage(Tuple.Create(CalcEvent.Mult, ""));
         }
 
         public void Plus()
         {
-            this.SendMessage(Tuple.Create(CalcEvent.Plus, ""));
+            SendMessage(Tuple.Create(CalcEvent.Plus, ""));
         }
 
         public void Sign()
         {
-            this.SendMessage(Tuple.Create(CalcEvent.Sign, ""));
+            SendMessage(Tuple.Create(CalcEvent.Sign, ""));
         }
     }
 

@@ -37,7 +37,7 @@ namespace Actor.Server
         {
             Become(new Behavior<string>(t => true,
                 Disco)) ;
-            this.SendMessage(hostAddress) ;
+            SendMessage(hostAddress);
         }
 
         public DiscoveryActor(string hostAddress, IActor sender)

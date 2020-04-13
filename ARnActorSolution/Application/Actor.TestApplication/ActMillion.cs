@@ -18,13 +18,13 @@ namespace Actor.TestApplication
         {
             fQueue = new QueueActor<IActor>();
             Become(new Behavior<string>(DoStart));
-            this.SendMessage("DoStart");
+            SendMessage("DoStart");
         }
 
         public void Send()
         {
             Become(new Behavior<string>(DoSend));
-            this.SendMessage("DoSend");
+            SendMessage("DoSend");
         }
 
         private void DoStart(string msg)
