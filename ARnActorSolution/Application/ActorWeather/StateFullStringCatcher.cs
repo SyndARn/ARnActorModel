@@ -1,11 +1,5 @@
-﻿using Actor.Base;
-using Actor.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using Actor.Util;
+
 
 namespace ActorWeather
 {

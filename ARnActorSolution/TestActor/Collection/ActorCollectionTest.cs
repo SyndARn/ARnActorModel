@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Util;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace TestActor
 {
@@ -12,7 +13,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
                 {
-                    var collect = new CollectionActor<string>();
+                    CollectionActor<string> collect = new CollectionActor<string>();
                     collect.Add("Test1");
                     collect.Add("Test2");
                     collect.Add("Test3");
@@ -24,7 +25,7 @@ namespace TestActor
                     collect.Remove("Test3");
                     collect.Add("Test4");
                     collect.Add("Test5");
-                    var enumerable = collect.ToList();
+                    List<string> enumerable = collect.ToList();
                     Assert.AreEqual(2, enumerable.Count);
                 });
         }
@@ -34,15 +35,18 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                var collect = new CollectionActor<string>();
+                CollectionActor<string> collect = new CollectionActor<string>();
                 for (int i = 0; i < 100; i++)
-                    collect.Add($"Test {i}");
+                {
+                    collect.Add($"Test {i.ToString()}");
+                }
+
                 Assert.AreEqual(100,collect.Count());
 
-                var enumerable = collect.ToList();
+                List<string> enumerable = collect.ToList();
                 Assert.AreEqual(100, enumerable.Count);
 
-                var query = from col in collect
+                IEnumerable<string> query = from col in collect
                             where col.Contains('1')
                             select col;
                 Assert.AreEqual(query.Count(), 19);

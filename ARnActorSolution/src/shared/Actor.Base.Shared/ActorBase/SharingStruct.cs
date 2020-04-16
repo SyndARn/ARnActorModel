@@ -34,8 +34,5 @@ namespace Actor.Base
         public int fInTask; // 0 out of task, 1 in task
         public int fReceive;
         public ActorTag fTag;
-#if DEBUG_MSG
-        public int fMessCount; // this should always be queue + postpone total
-#endif
     }
 }

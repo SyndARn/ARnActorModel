@@ -6,7 +6,6 @@ using Actor.Util;
 using Actor.Service;
 using System.Globalization;
 
-
 namespace Actor.TestApplication
 {
     internal class ActorMain : BaseActor
@@ -20,32 +19,32 @@ namespace Actor.TestApplication
             SendMessage("Start");
         }
 
-        private List<IActor> clientList;
+        private List<IActor> _clientList;
 
         private void DoBehavior(string msg)
         {
             Console.WriteLine("Serv Start");
-            var start = DateTime.UtcNow.Ticks;
+            long start = DateTime.UtcNow.Ticks;
             collect = new CollectionActor<string>();
-            var list = new List<string>();
+            List<string> list = new List<string>();
             for (int i = 0; i < 10; i++)
             {
                 collect.Add(i.ToString(CultureInfo.InvariantCulture));
                 list.Add(i.ToString(CultureInfo.InvariantCulture));
             }
 
-            foreach (var item in collect)
+            foreach (string item in collect)
             {
                 Console.WriteLine("Collect " + item);
             }
 
-            var actForeach = new BaseActor(new ForEachBehavior<string>());
+            BaseActor actForeach = new BaseActor(new ForEachBehavior<string>());
             actForeach.SendMessage<IEnumerable<string>, Action<String>>(list,
                 t => Console.WriteLine("list " + t));
 
             Console.WriteLine("Should have work");
 
-            var linkedlist = new LinkedListActor<string>();
+            LinkedListActor<string> linkedlist = new LinkedListActor<string>();
             for (int i = 0; i < 100; i++)
             {
                 linkedlist.SendMessage(LinkedListOperation.Add, i.ToString());
@@ -58,17 +57,17 @@ namespace Actor.TestApplication
             new LinkedListActor<string>();
 
             IActor aServer = new EchoServerActor();
-            clientList = new List<IActor>();
+            _clientList = new List<IActor>();
             for (int i = 0; i < 100; i++)
             {
                 EchoClientActor aClient = new EchoClientActor();// new actEchoClient(aServer);
                 // DirectoryRequest.SendRegister("client + " + i.ToString(), aClient);
                 aClient.Connect("EchoServer");
                 aClient.SendMessage("client-" + i.ToString(CultureInfo.InvariantCulture));
-                clientList.Add(aClient);
+                _clientList.Add(aClient);
                 // aClient.Disconnect();
             }
-            var end = DateTime.UtcNow.Ticks;
+            long end = DateTime.UtcNow.Ticks;
             Console.WriteLine("All client allocated {0}", (end - start) / 10000.0);
 
             // basic redirection

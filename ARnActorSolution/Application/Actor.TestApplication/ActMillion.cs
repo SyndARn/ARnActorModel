@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
 using Actor.Util;
 using System.Globalization;
@@ -12,8 +8,9 @@ namespace Actor.TestApplication
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class actMillion : BaseActor
     {
-        private QueueActor<IActor> fQueue;
+        private readonly QueueActor<IActor> fQueue;
         const int KSize = 10000 ;
+
         public actMillion() : base()
         {
             fQueue = new QueueActor<IActor>();
@@ -33,6 +30,7 @@ namespace Actor.TestApplication
             {
                 fQueue.Queue(new BaseActor());
             }
+
             Console.WriteLine("end start million");
         }
 
@@ -47,6 +45,7 @@ namespace Actor.TestApplication
                 Console.WriteLine("receive " + i.ToString(CultureInfo.InvariantCulture));
                 i++;
             }
+
             Console.WriteLine("end "+i.ToString(CultureInfo.InvariantCulture));
         }
     }

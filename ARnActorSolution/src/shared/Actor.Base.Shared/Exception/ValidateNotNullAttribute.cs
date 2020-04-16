@@ -2,8 +2,8 @@
 
 namespace Actor.Base
 {
-    //[AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
-    //public sealed class ValidatedNotNullAttribute : Attribute
-    //{
-    //}
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+    public sealed class ValidatedNotNullAttribute : Attribute
+    {
+    }
 }

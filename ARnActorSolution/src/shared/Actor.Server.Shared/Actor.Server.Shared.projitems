@@ -10,9 +10,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ActorConsole\ConsoleBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Broker\BrokerAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Broker\BrokerActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Broker\HeartBeatActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Broker\RequestState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Broker\RequestStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Broker\WorkerActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Broker\WorkerReadyState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Broker\WorkerStatus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Directory\DiscoCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Directory\IHostService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EchoServer\ActorEcho.cs" />

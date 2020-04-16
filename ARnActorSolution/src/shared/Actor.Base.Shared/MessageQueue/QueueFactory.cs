@@ -1,11 +1,18 @@
 ﻿namespace Actor.Base
 {
-    public enum QueueStyle { None, LockFree, Locking, Ring, Buffer }
+    public enum QueueStyle
+    {
+        None,
+        LockFree,
+        Locking,
+        Ring,
+        Buffer
+    }
 
     public class QueueFactory<T>
     {
         public QueueStyle Style { get; set; } = QueueStyle.LockFree;
-
+        public static readonly QueueFactory<IBehavior> Current = new QueueFactory<IBehavior>();
         public IMessageQueue<T> GetQueue()
         {
             switch (Style)

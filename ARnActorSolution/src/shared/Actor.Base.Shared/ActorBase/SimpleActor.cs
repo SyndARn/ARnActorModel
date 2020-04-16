@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Actor.Base
 {
@@ -102,6 +101,7 @@ namespace Actor.Base
 
         public SimpleActor(IBehavior[] manyBehaviors)
         {
+            CheckArg.BehaviorParam(manyBehaviors);
             Tag = new ActorTag();
             Behaviors someBehaviors = new Behaviors();
             foreach (IBehavior item in manyBehaviors)
@@ -115,7 +115,11 @@ namespace Actor.Base
 
         public SimpleActor() => Tag = new ActorTag();
 
-        private object ReceiveMessage() => _mailBox.GetMessage();
+        private bool ReceiveMessage(out object message)
+        {
+            message = _mailBox.GetMessage();
+            return message != null;
+        }
 
         protected void Become(IBehaviors someBehaviors)
         {
@@ -174,37 +178,20 @@ namespace Actor.Base
 
         private void MessageLoop()
         {
-            object msg = null;
-            IBehavior behavior = null;
-            bool matchedByPattern = false;
 
-            do
+            while (ReceiveMessage(out object msg))
             {
-                // get message             
-                msg = ReceiveMessage();
-                if (msg != null)
-                {
-                    behavior = MatchByPattern(msg);
-                    matchedByPattern = behavior != null;
-                }
-                else
-                {
-                    break;
-                }
+                IBehavior behavior = MatchByPattern(msg);
 
-                // miss
-                if (!matchedByPattern && msg != null)
+                if (behavior == null)
                 {
                     _mailBox.AddMiss(msg);
                 }
-
-                if (matchedByPattern)
+                else
                 {
                     behavior.StandardApply(msg);
-                    matchedByPattern = false;
                 }
             }
-            while (!matchedByPattern);
 
             Interlocked.Exchange(ref _sharedStruct.fInTask, 0);
 
