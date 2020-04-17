@@ -7,18 +7,14 @@ using Actor.Base;
 
 namespace ARnActorHelloWorld
 {
-    class Program
+    internal static class Program
     {
-
-        class HelloWorld : BaseActor
+        private class HelloWorld : BaseActor
         {
-            public HelloWorld() : base()
-            {
-                Become(new Behavior<string>(t => Console.WriteLine(t))) ;
-            }
+            public HelloWorld() : base() => Become(new Behavior<string>(t => Console.WriteLine(t)));
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var act = new HelloWorld();
             act.SendMessage("Hello world!");

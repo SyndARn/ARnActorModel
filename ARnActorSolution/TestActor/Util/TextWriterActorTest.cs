@@ -24,14 +24,15 @@ namespace TestActor
             string fullPath = sb.ToString();
             TestLauncherActor.Test(() =>
             {
-                using (var textWriter = new TextWriterActor(fullPath))
+                using (TextWriterActor textWriter = new TextWriterActor(fullPath))
                 {
                     textWriter.SendMessage("1st line");
                     textWriter.SendMessage("2nd line");
                     textWriter.SendMessage("3rd line");
                     textWriter.Flush();
                 }
-                using (var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+
+                using (FileStream stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     StreamReader reader = new StreamReader(stream);
                     try

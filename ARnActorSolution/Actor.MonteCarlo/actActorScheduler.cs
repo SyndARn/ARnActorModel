@@ -41,7 +41,9 @@ namespace Actor.MonteCarlo
             var ct = shardList.Count();
             Console.WriteLine("receive "+ct);
             if (ct >= 1000-1)
+            {
                 SendByName<string>.Send("Done", "Console");
+            }
         }
 
         private void DoScheduling(string msg)

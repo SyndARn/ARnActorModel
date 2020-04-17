@@ -40,7 +40,6 @@ namespace Actor.Base
             throw new ActorException("behaviors can't be null");
         }
 
-
         public static void Behavior([ValidatedNotNull]IBehavior aBehavior)
         {
             if (aBehavior != null)
@@ -131,9 +130,9 @@ namespace Actor.Base
             throw new ActorException("Null pattern received");
         }
 
-        [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
-        public sealed class ValidatedNotNullAttribute : Attribute
-        {
-        }
+        //[AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+        //public sealed class ValidatedNotNullAttribute : Attribute
+        //{
+        //}
     }
 }

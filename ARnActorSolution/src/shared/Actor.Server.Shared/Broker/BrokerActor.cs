@@ -1,44 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Actor.Base;
-using System.Globalization;
 
 namespace Actor.Server
 {
-    /// <summary>
-    /// <para>
-    /// BrokerActor
-    ///     Have an actor that upon receiving message will fan out this message to one or more of pre-registrered actor
-    ///     BrokerActor are very usefull if they are registered, sending a message to the broker will forward it across the
-    ///     shards.
-    /// </para>
-    /// <para>
-    ///     a simple broker send a message to one of it workers, 
-    ///     a more complex broker will take a different rout : one of free worker, a new spawned worker, etc ...
-    /// </para>
-    /// <para>
-    ///     worker can be made simple, they just react to message
-    ///     or complex : they become statefull and can alert the broker of their current status (alive, ready, busy ...)
-    /// </para>
-    /// 
-    /// </summary>
-    /// 
-    public enum BrokerAction { RegisterWorker, UnregisterWorker, Hearbeat, Start };
-    public enum WorkerReadyState { Unknown, Idle, Busy, Transient };
-    public enum RequestState { Unprocessed, Processed, Running };
-
-    public class RequestStatus<T>
-    {
-        public ActorTag Tag { get; set; }
-        public RequestState State { get; set; }
-        public T Data { get; set; }
-    }
-
-    public class WorkerStatus
-    {
-        public WorkerReadyState State { get; set; }
-        public int TimeToLive { get; set; }
-    }
 
     public class BrokerActor<T> : BaseActor
     {
@@ -60,9 +26,12 @@ namespace Actor.Server
             else
             {
                 if (_lastWorkerUsed >= _workers.Count)
-                { _lastWorkerUsed = 0; }
+                {
+                    _lastWorkerUsed = 0;
+                }
             }
-            var worker = _workers.Where(w => w.Value.State == WorkerReadyState.Idle).Skip(_lastWorkerUsed).FirstOrDefault();
+
+            KeyValuePair<IActor, WorkerStatus> worker = _workers.Where(w => w.Value.State == WorkerReadyState.Idle).Skip(_lastWorkerUsed).FirstOrDefault();
             _lastWorkerUsed++;
             if (worker.Key == null)
             {
@@ -78,7 +47,7 @@ namespace Actor.Server
                 s => s == BrokerAction.Start,
                 s =>
                 {
-                    var actor = new HeartBeatActor(30000);
+                    HeartBeatActor actor = new HeartBeatActor(30000);
                     actor.SendMessage((IActor)this);
                     Logger.SendMessage("HeartBeat start");
                 });
@@ -128,7 +97,7 @@ namespace Actor.Server
             return new Behavior<T>(
                 (t) =>
                 {
-                    var requestStatus = new RequestStatus<T>
+                    RequestStatus<T> requestStatus = new RequestStatus<T>
                     {
                         Data = t,
                         State = RequestState.Unprocessed,
@@ -136,7 +105,7 @@ namespace Actor.Server
                     };
                     _requests[requestStatus.Tag] = requestStatus;
 
-                    var worker = FindWorker();
+                    IActor worker = FindWorker();
                     if (worker != null)
                     {
                         _workers[worker].State = WorkerReadyState.Busy;
@@ -174,7 +143,7 @@ namespace Actor.Server
                  {
                      _workers[a].State = WorkerReadyState.Busy;
                      LogString("Worker {0} can't process request {1}", a.Tag.Key(), t.Key());
-                     var worker = FindWorker();
+                     IActor worker = FindWorker();
                      if (worker != null)
                      {
                          _workers[worker].State = WorkerReadyState.Busy;

@@ -20,6 +20,7 @@ namespace Actor.Server
             {
                 throw new ArgumentNullException(nameof(info), "SerializationInfo was null");
             }
+
             IActor act = (IActor)obj;
             HostDirectoryActor.Register(act);
             // continue
@@ -39,11 +40,13 @@ namespace Actor.Server
                 {
                     throw new ActorException("Receiving null SerializationInfo");
                 }
+
                 BaseActor.CompleteInitialize(remoteActor);
                 RemoteSenderActor.CompleteInitialize(remoteActor);
                 ActorTag getTag = (ActorTag)info.GetValue("RemoteTag", typeof(ActorTag));
                 typeof(RemoteSenderActor).GetField("fRemoteTag").SetValue(obj, getTag);
             }
+
             return null; // ms bug here
         }
     }

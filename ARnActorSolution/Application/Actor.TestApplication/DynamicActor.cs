@@ -12,7 +12,6 @@ namespace Actor.TestApplication
 {
     public class DynamicActor : DynamicObject, IActor
     {
-
         private class InternalDynamicActor : BaseActor
         {
             private dynamic fDynamic;

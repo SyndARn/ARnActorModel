@@ -41,9 +41,7 @@ namespace Actor.Base
         }
 
         private List<IBehavior> _behaviors = new List<IBehavior>(); // our behavior
-        private static readonly QueueFactory<IBehavior> _factoryBehavior = new QueueFactory<IBehavior>();
-
-        private IMessageQueue<IBehavior> _awaitingBehaviors = _factoryBehavior.GetQueue(); // receive behaviors
+        private IMessageQueue<IBehavior> _awaitingBehaviors = QueueFactory<IBehavior>.Current.GetQueue(); // receive behaviors
         private IActorMailBox<object> _mailBox = new ActorMailBox<object>(); // our mailbox
         private SharingStruct _sharedStruct = new SharingStruct();
         public IMessageTracerService MessageTracerService { get; set; }
@@ -55,7 +53,7 @@ namespace Actor.Base
         {
             CheckArg.Actor(anActor);
             anActor._behaviors = new List<IBehavior>();
-            anActor._awaitingBehaviors = _factoryBehavior.GetQueue();
+            anActor._awaitingBehaviors = QueueFactory<IBehavior>.Current.GetQueue();
             anActor._mailBox = new ActorMailBox<object>();
             if (anActor.Tag != null)
             {
@@ -65,8 +63,7 @@ namespace Actor.Base
             anActor.Tag = new ActorTag();
         }
 
-        protected BaseActor(ActorTag previousTag)
-            : base() => Tag = previousTag;
+        protected BaseActor(ActorTag previousTag) => Tag = previousTag;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask(object msg)
@@ -81,7 +78,7 @@ namespace Actor.Base
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask(TaskCreationOptions taskCreationOptions)
-            {
+        {
             if (Interlocked.CompareExchange(ref _sharedStruct.fInTask, 1, 0) != 0)
             {
                 return;
@@ -92,7 +89,7 @@ namespace Actor.Base
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void TrySetInTask()
-            {
+        {
             if (Interlocked.CompareExchange(ref _sharedStruct.fInTask, 1, 0) != 0)
             {
                 return;
@@ -185,7 +182,11 @@ namespace Actor.Base
 
         public Task<object> ReceiveAsync(Func<object, bool> aPattern) => ReceiveAsync(aPattern, Timeout.Infinite);
 
-        private object ReceiveMessage() => _mailBox.GetMessage();
+        private bool ReceiveMessage(out object msg)
+        {
+            msg = _mailBox.GetMessage();
+            return msg != null;
+        }
 
         protected void Become(IBehaviors someBehaviors)
         {
@@ -244,60 +245,35 @@ namespace Actor.Base
         }
 
         private void MessageLoop()
-            {
-            bool matchedByWaitingBehavior = false;
+        {
             object msg = null;
             IBehavior behavior = null;
-            bool matchedByPattern = false;
             int oldReceive = Interlocked.Exchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive);
-            do
+            while (ReceiveMessage(out msg))
             {
-                // get message             
-                msg = ReceiveMessage();
-                if (msg == null)
-                {
-                    break;
-                }
-
-                matchedByWaitingBehavior = false;
-
                 behavior = MatchByPattern(msg);
-                matchedByPattern = behavior != null;
 
-                // receive pattern
-                if (!matchedByPattern)
+                if (behavior != null)
                 {
-                    behavior = MatchByWaitingBehavior(msg);
-                    matchedByWaitingBehavior = behavior != null;
-                }
-
-                // miss
-                if (!matchedByPattern && !matchedByWaitingBehavior && msg != null)
-                {
-                    _mailBox.AddMiss(msg);
-                }
-
-                if (matchedByPattern)
-                {
-                    if (Interlocked.CompareExchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive, 0) == 0)
+                    bool shouldBreak = Interlocked.CompareExchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive, 0) != 0;
+                    behavior.StandardApply(msg);
+                    if (shouldBreak || Interlocked.CompareExchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive, 0) != 0)
                     {
-                        behavior.StandardApply(msg);
-                        matchedByPattern = false;
-                        if (Interlocked.CompareExchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive, 0) != 0)
-                        {
-                            break;
-                        }
+                        break;
                     }
                 }
+                else
+                {
+                    behavior = MatchByWaitingBehavior(msg);
+                    if (behavior != null)
+                    {
+                        break;
+                    }
+                    _mailBox.AddMiss(msg);
+                }
             }
-            while (!matchedByPattern && !matchedByWaitingBehavior);
 
-            if (matchedByPattern)
-            {
-                behavior.StandardApply(msg);
-            }
-
-            if (matchedByWaitingBehavior)
+            if (behavior?.AwaitingPattern != null)
             {
                 AddMissedMessages();
                 Interlocked.Decrement(ref _sharedStruct.fReceive);
