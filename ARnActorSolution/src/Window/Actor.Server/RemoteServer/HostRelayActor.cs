@@ -19,13 +19,13 @@ namespace Actor.Server
     // http listener ...
     public class HostRelayActor : BaseActor, IDisposable
     {
-        private IListenerService fListener;
+        private IListenerService _listener;
 
         public HostRelayActor() => Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
 
         public HostRelayActor(IListenerService listenerService)
         {
-            fListener = listenerService;
+            _listener = listenerService;
             Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
         }
 
@@ -33,11 +33,12 @@ namespace Actor.Server
         {
             try
             {
-                if (fListener == null)
+                if (_listener == null)
                 {
-                    fListener = ActorServer.GetInstance().ListenerService;
+                    _listener = ActorServer.GetInstance().ListenerService;
                 }
-                IContextComm context = fListener.GetCommunicationContext();
+
+                IContextComm context = _listener.GetCommunicationContext();
                 RemoteReceiverActor.Cast(context);
                 SendMessage("Listen");
             }
@@ -59,7 +60,7 @@ namespace Actor.Server
                 if (disposing)
                 {
                 }
-                fListener?.Close();
+                _listener?.Close();
         }
 
         ~HostRelayActor()

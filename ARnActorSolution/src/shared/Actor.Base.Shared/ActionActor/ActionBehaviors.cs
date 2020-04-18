@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Actor.Base
+﻿namespace Actor.Base
 {
     public class ActionBehaviors<T> : Behaviors
     {
@@ -21,5 +17,4 @@ namespace Actor.Base
             AddBehavior(new ActionBehavior<T1, T2>());
         }
     }
-
 }

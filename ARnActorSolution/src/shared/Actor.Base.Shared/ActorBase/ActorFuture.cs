@@ -5,10 +5,6 @@ namespace Actor.Base
 {
     public class Future<T> : BaseActor, IFuture<T>
     {
-        public Future()
-        {
-        }
-
         public async Task<object> GetResultAsync() => await ResultAsync().ConfigureAwait(false);
 
         public T Result() => (T)ReceiveAsync(t => t is T).Result;
@@ -28,10 +24,6 @@ namespace Actor.Base
 
     public class Future<T1,T2> : BaseActor, IFuture<T1, T2>
     {
-        public Future()
-        {
-        }
-
         public async Task<object> GetResultAsync() => await ResultAsync().ConfigureAwait(false);
 
         public IMessageParam<T1,T2> Result() => (IMessageParam<T1, T2>)ReceiveAsync(t => t is IMessageParam<T1, T2>).Result;
@@ -43,13 +35,8 @@ namespace Actor.Base
         public async Task<IMessageParam<T1, T2>> ResultAsync(int timeOutMS) => (IMessageParam<T1, T2>)await ReceiveAsync(t => t is IMessageParam<T1, T2>, timeOutMS).ConfigureAwait(false);
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
     public class Future<T1, T2, T3> : BaseActor, IFuture<T1, T2, T3>
     {
-        public Future()
-        {
-        }
-
         public async Task<object> GetResultAsync() => await ResultAsync().ConfigureAwait(false);
 
         public IMessageParam<T1, T2, T3> Result() => (IMessageParam<T1, T2, T3>)ReceiveAsync(t => t is IMessageParam<T1, T2, T3>).Result;

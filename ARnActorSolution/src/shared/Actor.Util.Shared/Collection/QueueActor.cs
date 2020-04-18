@@ -42,7 +42,7 @@ namespace Actor.Util
         {
             Task<object> retVal = ReceiveAsync(t => t is IMsgQueue<T>);
             SendAction(DoDequeue);
-            return await retVal as IMsgQueue<T>;
+            return await retVal.ConfigureAwait(false) as IMsgQueue<T>;
         }
 
         private void DoQueue(T at) => fQueue.Enqueue(at);

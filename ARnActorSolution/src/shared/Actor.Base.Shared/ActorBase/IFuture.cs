@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 namespace Actor.Base
 {
-
     public interface IFuture : IActor
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
@@ -25,6 +24,7 @@ namespace Actor.Base
     {
         IMessageParam<T1, T2> Result();
         IMessageParam<T1, T2> Result(int timeOutMS);
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
         Task<IMessageParam<T1, T2>> ResultAsync();
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]

@@ -17,7 +17,7 @@
     {
         public static ActorInjection Cast(IBehaviors bhvs)
         {
-            return new ActorInjection()
+            return new ActorInjection
             {
                 Actor = new BaseActor(bhvs)
             };

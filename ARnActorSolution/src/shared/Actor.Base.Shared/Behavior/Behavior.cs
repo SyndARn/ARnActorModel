@@ -97,14 +97,11 @@ namespace Actor.Base
 
     public class Behavior : IBehavior
     {
-        private IBehaviors fLinkedBehaviors;
+        private IBehaviors _linkedBehaviors;
 
-        public void LinkBehaviors(IBehaviors someBehaviors)
-        {
-            fLinkedBehaviors = someBehaviors;
-        }
+        public void LinkBehaviors(IBehaviors someBehaviors) => _linkedBehaviors = someBehaviors;
 
-        public IActor LinkedActor => fLinkedBehaviors?.LinkedActor;
+        public IActor LinkedActor => _linkedBehaviors?.LinkedActor;
 
         public Behavior(Func<object, bool> aPattern, Action<object> anApply)
         {
@@ -120,7 +117,7 @@ namespace Actor.Base
             Completion = aCompletion;
         }
 
-        public IBehaviors LinkedTo => fLinkedBehaviors;
+        public IBehaviors LinkedTo => _linkedBehaviors;
 
         public Func<object, bool> Pattern { get; protected set; }
         public Action<object> Apply { get; protected set; }
@@ -136,6 +133,7 @@ namespace Actor.Base
             {
                 return false;
             }
+
             return Pattern(aT);
         }
     }
@@ -148,16 +146,13 @@ namespace Actor.Base
 
         public TaskCompletionSource<object> AwaitingPattern => Completion as TaskCompletionSource<object>;
 
-        private IBehaviors fLinkedBehaviors;
+        private IBehaviors _lLinkedBehaviors;
 
-        public IActor LinkedActor => fLinkedBehaviors.LinkedActor;
+        public IActor LinkedActor => _lLinkedBehaviors.LinkedActor;
 
-        public IBehaviors LinkedTo => fLinkedBehaviors;
+        public IBehaviors LinkedTo => _lLinkedBehaviors;
 
-        public void LinkBehaviors(IBehaviors someBehaviors)
-        {
-            fLinkedBehaviors = someBehaviors;
-        }
+        public void LinkBehaviors(IBehaviors someBehaviors) => _lLinkedBehaviors = someBehaviors;
 
         public Behavior(Func<T1, T2, bool> aPattern, Action<T1, T2> anApply)
         {
@@ -178,10 +173,7 @@ namespace Actor.Base
         {
         }
 
-        public Func<T1, T2, bool> DefaultPattern()
-        {
-            return (t1, t2) => t1 is T1 && t2 is T2;
-        }
+        public Func<T1, T2, bool> DefaultPattern() => (t1, t2) => t1 is T1 && t2 is T2;
 
         public Behavior(Action<T1, T2> anApply)
         {
@@ -202,11 +194,13 @@ namespace Actor.Base
 
         public void StandardApply(object aT)
         {
-            if (Apply != null)
+            if (Apply == null)
             {
-                IMessageParam<T1, T2> MessageParamT = (IMessageParam<T1, T2>)aT;
-                Apply(MessageParamT.Item1, MessageParamT.Item2);
+                return;
             }
+
+            IMessageParam<T1, T2> MessageParamT = (IMessageParam<T1, T2>)aT;
+            Apply(MessageParamT.Item1, MessageParamT.Item2);
         }
     }
 
@@ -219,13 +213,13 @@ namespace Actor.Base
 
         public TaskCompletionSource<object> AwaitingPattern => Completion as TaskCompletionSource<object>;
 
-        private IBehaviors fLinkedBehaviors;
+        private IBehaviors _linkedBehaviors;
 
-        public IActor LinkedActor => fLinkedBehaviors.LinkedActor;
+        public IActor LinkedActor => _linkedBehaviors.LinkedActor;
 
-        public IBehaviors LinkedTo => fLinkedBehaviors;
+        public IBehaviors LinkedTo => _linkedBehaviors;
 
-        public void LinkBehaviors(IBehaviors someBehaviors) => fLinkedBehaviors = someBehaviors;
+        public void LinkBehaviors(IBehaviors someBehaviors) => _linkedBehaviors = someBehaviors;
 
         public Behavior(Func<T1, T2, T3, bool> aPattern, Action<T1, T2, T3> anApply)
         {
@@ -261,21 +255,27 @@ namespace Actor.Base
         public bool StandardPattern(object aT)
         {
             if (Pattern == null)
+            {
                 return false;
+            }
+
             if (aT is IMessageParam<T1, T2, T3> MessageParamT)
             {
                 return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
             }
+
             return false;
         }
 
         public void StandardApply(object aT)
         {
-            if (Apply != null)
+            if (Apply == null)
             {
-                IMessageParam<T1, T2, T3> MessageParamT = (IMessageParam<T1, T2, T3>)aT;
-                Apply(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
+                return;
             }
+
+            IMessageParam<T1, T2, T3> MessageParamT = (IMessageParam<T1, T2, T3>)aT;
+            Apply(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
         }
     }
 
@@ -296,15 +296,15 @@ namespace Actor.Base
 
         public TaskCompletionSource<object> AwaitingPattern => Completion as TaskCompletionSource<object>;
 
-        private IBehaviors fLinkedBehaviors;
+        private IBehaviors _linkedBehaviors;
 
-        public IActor LinkedActor => fLinkedBehaviors?.LinkedActor;
+        public IActor LinkedActor => _linkedBehaviors?.LinkedActor;
 
-        public IBehaviors LinkedTo => fLinkedBehaviors;
+        public IBehaviors LinkedTo => _linkedBehaviors;
 
         public void LinkBehaviors(IBehaviors someBehaviors)
         {
-            fLinkedBehaviors = someBehaviors;
+            _linkedBehaviors = someBehaviors;
         }
 
         public Behavior(Func<T, bool> aPattern, Action<T> anApply)
@@ -325,10 +325,7 @@ namespace Actor.Base
         {
         }
 
-        public Func<T, bool> DefaultPattern()
-        {
-            return t => t is T;
-        }
+        public Func<T, bool> DefaultPattern() => t => t is T;
 
         public Behavior(Action<T> anApply)
         {
@@ -343,17 +340,11 @@ namespace Actor.Base
             {
                 return false;
             }
-            if (aT is T t)
-            {
-                return Pattern(t);
-            }
-            return false;
+
+            return aT is T t ? Pattern(t) : false;
         }
 
-        public void StandardApply(object aT)
-        {
-            Apply?.Invoke((T)aT);
-        }
+        public void StandardApply(object aT) => Apply?.Invoke((T)aT);
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
@@ -365,16 +356,13 @@ namespace Actor.Base
 
         public TaskCompletionSource<object> AwaitingPattern => Completion as TaskCompletionSource<object>;
 
-        private IBehaviors fLinkedBehaviors;
+        private IBehaviors _linkedBehaviors;
 
-        public IActor LinkedActor => fLinkedBehaviors.LinkedActor;
+        public IActor LinkedActor => _linkedBehaviors.LinkedActor;
 
-        public IBehaviors LinkedTo => fLinkedBehaviors;
+        public IBehaviors LinkedTo => _linkedBehaviors;
 
-        public void LinkBehaviors(IBehaviors someBehaviors)
-        {
-            fLinkedBehaviors = someBehaviors;
-        }
+        public void LinkBehaviors(IBehaviors someBehaviors) => _linkedBehaviors = someBehaviors;
 
         public Behavior(Func<T1, T2, T3, T4, bool> aPattern, Action<T1, T2, T3, T4> anApply)
         {
@@ -395,10 +383,7 @@ namespace Actor.Base
         {
         }
 
-        public Func<T1, T2, T3, T4, bool> DefaultPattern()
-        {
-            return (o, d, a, r) => o is T1 && d is T2 && a is T3 && r is T4;
-        }
+        public Func<T1, T2, T3, T4, bool> DefaultPattern() => (o, d, a, r) => o is T1 && d is T2 && a is T3 && r is T4;
 
         public Behavior(Action<T1, T2, T3, T4> anApply)
         {
@@ -407,20 +392,22 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public bool StandardPattern(Object aT)
+        public bool StandardPattern(object aT)
         {
             if (Pattern == null)
             {
                 return false;
             }
+
             if (aT is IMessageParam<T1, T2, T3, T4> MessageParamT)
             {
                 return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3, MessageParamT.Item4);
             }
+
             return false;
         }
 
-        public void StandardApply(Object aT)
+        public void StandardApply(object aT)
         {
             if (Apply != null)
             {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Util;
 using Actor.Base;
 
@@ -10,7 +7,6 @@ namespace TestActor
     [TestClass]
     public class FsmStateTest
     {
-    
         [TestMethod]
         public void FSMBehaviorsTest()
         {

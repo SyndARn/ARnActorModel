@@ -5,21 +5,20 @@ using Actor.Server;
 
 namespace TestActor
 {
-
     internal class DiscoTestActor : BaseActor
     {
-        private IActor fLauncher;
+        private readonly IActor _launcher;
 
         public DiscoTestActor(IActor aLauncher)
         {
-            fLauncher = aLauncher;
+            _launcher = aLauncher;
             Become(new Behavior<Dictionary<string, string>>(ReceiveDisco));
         }
 
         private void ReceiveDisco(Dictionary<string, string> msg)
         {
             Assert.IsNotNull(msg);
-            fLauncher.SendMessage(true);
+            _launcher.SendMessage(true);
         }
     }
 
@@ -33,14 +32,13 @@ namespace TestActor
         private void DoIt(IActor caller, IActor lookup, string name)
         {
             DirectoryActor.GetDirectory().Find(this, name);
-            var task = ReceiveAsync(ask => { return (ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>); });
-            if ((task.Result as IMessageParam<DirectoryActor.DirectoryRequest, IActor>).Item2 == lookup)
+            var task = ReceiveAsync(ask => ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>);
+            if ((task.Result as IMessageParam<DirectoryActor.DirectoryRequest, IActor>)?.Item2 == lookup)
             {
                 caller.SendMessage(true);
             }
         }
     }
-
 
     [TestClass()]
     public class DirectoryActorTests

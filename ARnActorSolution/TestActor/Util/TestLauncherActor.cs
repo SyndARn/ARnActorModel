@@ -57,10 +57,7 @@ namespace TestActor
 
         public static void Test(Action action, int timeOutMS) => Test(null, action, timeOutMS);
 
-        public static void Test(TestContext testContext, Action action)
-        {
-            Test(testContext, action, DefaultWait);
-        }
+        public static void Test(TestContext testContext, Action action) => Test(testContext, action, DefaultWait);
 
         public static void Test(TestContext testContext, Action action, int timeOutMS)
         {
@@ -82,6 +79,7 @@ namespace TestActor
                             testContext.WriteLine(e.Message);
                             testContext.WriteLine(e.StackTrace);
                         }
+
                         throw;
                     }
                 });
@@ -91,6 +89,7 @@ namespace TestActor
             {
                 throw new TestLauncherException(launcher.fLauncherException.Message, launcher.fLauncherException);
             }
+
             Assert.IsTrue(testResult.Result, "Test Time Out");
         }
     }

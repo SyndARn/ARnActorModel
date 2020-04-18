@@ -13,6 +13,7 @@
     {
         public QueueStyle Style { get; set; } = QueueStyle.LockFree;
         public static readonly QueueFactory<IBehavior> Current = new QueueFactory<IBehavior>();
+
         public IMessageQueue<T> GetQueue()
         {
             switch (Style)
