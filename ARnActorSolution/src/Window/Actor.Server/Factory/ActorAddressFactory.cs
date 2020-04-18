@@ -1,26 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Actor.Base;
+﻿using Actor.Base;
 using System.Collections.Concurrent;
 
 namespace Actor.Server
 {
-    public class ActorFactory : IActorFactory
-    {
-        public IActor CastNewActor(string actorAddress)
-        {
-            var actor = new BaseActor(); // and force tag
-            return actor;
-        }
-    }
-
-    public interface IActorFactory
-    {
-        IActor CastNewActor(string actorAddress);
-    }
-
     public class ActorAddressFactory
     {
         public static long HashAddress(string anAddress)
@@ -30,22 +12,13 @@ namespace Actor.Server
             return hash;
         }
 
-        private readonly IActorFactory fActorFactory;
-        private readonly ConcurrentDictionary<string, IActor> fDico = new ConcurrentDictionary<string, IActor>() ;
+        private readonly IActorFactory _actorFactory;
+        private readonly ConcurrentDictionary<string, IActor> _dico = new ConcurrentDictionary<string, IActor>() ;
 
-        public ActorAddressFactory(IActorFactory actorFactory)
-        {
-            fActorFactory = actorFactory;
-        }
+        public ActorAddressFactory(IActorFactory actorFactory) => _actorFactory = actorFactory;
 
-        public IActor GetActor(string actorAddress)
-        {
-            return fDico[actorAddress];
-        }
+        public IActor GetActor(string actorAddress) => _dico[actorAddress];
 
-        public void CreateActorAddress(string actorAddress)
-        {
-            fDico[actorAddress] = fActorFactory.CastNewActor(actorAddress);
-        }
+        public void CreateActorAddress(string actorAddress) => _dico[actorAddress] = _actorFactory.CastNewActor(actorAddress);
     }
 }

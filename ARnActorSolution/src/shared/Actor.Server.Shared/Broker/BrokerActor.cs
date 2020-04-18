@@ -5,7 +5,6 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-
     public class BrokerActor<T> : BaseActor
     {
         private readonly Dictionary<IActor, WorkerStatus> _workers = new Dictionary<IActor, WorkerStatus>();
@@ -162,23 +161,25 @@ namespace Actor.Server
                 (
                 (a, s, t) => s == WorkerReadyState.Idle,
                  (a, s, t) =>
-                 {
-                     _requestProcessed++;
-                     _requests.Remove(t);
-                     _workers[a].State = WorkerReadyState.Idle;
-                     _workers[a].TimeToLive = _TTL;
-                     LogString("Request {0} End on worker {1}", t.Key(), a.Tag.Key());
-                     // find a request
-                     RequestStatus<T> tagRequest = _requests.Values.FirstOrDefault(v => v.State == RequestState.Unprocessed);
-                     if (tagRequest != null)
                      {
+                         _requestProcessed++;
+                         _requests.Remove(t);
+                         _workers[a].State = WorkerReadyState.Idle;
+                         _workers[a].TimeToLive = _TTL;
+                         LogString("Request {0} End on worker {1}", t.Key(), a.Tag.Key());
+                         // find a request
+                         RequestStatus<T> tagRequest = _requests.Values.FirstOrDefault(v => v.State == RequestState.Unprocessed);
+                         if (tagRequest == null)
+                         {
+                             return;
+                         }
+
                          _workers[a].State = WorkerReadyState.Busy;
                          _workers[a].TimeToLive = 0;
                          tagRequest.State = RequestState.Running;
                          a.SendMessage((IActor)this, tagRequest.Tag, tagRequest.Data);
                          LogString("Processing Request {0} reusing worker {1}", tagRequest.Tag.Key(), a.Tag.Key());
                      }
-                 }
                 ));
             // heartbeatactor
             AddBehavior(new Behavior<HeartBeatActor, HeartBeatAction>

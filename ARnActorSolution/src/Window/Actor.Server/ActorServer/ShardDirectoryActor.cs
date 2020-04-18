@@ -5,7 +5,6 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-
     public class ShardDirectoryActor : BaseActor
     {
         private readonly Dictionary<string, string> _shardList;

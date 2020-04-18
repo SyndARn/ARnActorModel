@@ -20,17 +20,18 @@ namespace Actor.Server
             {
                     _fullHost = _configManager.Host().Host;
             }
+
             return _fullHost;
         } }
 
-        private static ActorServer fServerInstance = null ;
+        private static ActorServer _serverInstance = null ;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public static ActorServer GetInstance() => fServerInstance;
+        public static ActorServer GetInstance() => _serverInstance;
 
         public static void Start(ConfigManager configManager)
         {
-            fServerInstance = new ActorServer
+            _serverInstance = new ActorServer
             {
                 _configManager = configManager ?? throw new ActorException("ConfigManager can't be null"),
                 Name = configManager.Host().Host,
@@ -40,13 +41,19 @@ namespace Actor.Server
                 HostService = configManager.GetHostService()
             };
             ActorTagHelper.FullHost = configManager.Host().Host;
-            fServerInstance.DoInit(new HostRelayActor(fServerInstance.ListenerService));
+            _serverInstance.DoInit(new HostRelayActor(_serverInstance.ListenerService));
         }
 
         public static void Start(string lName, int lPort, HostRelayActor hostRelayActor)
         {
-            fServerInstance = new ActorServer(lName,lPort) ;
-            fServerInstance.DoInit(hostRelayActor);
+            _serverInstance = new ActorServer(lName,lPort) ;
+            _serverInstance.DoInit(hostRelayActor);
+        }
+
+        public static void Start(Uri uri, HostRelayActor hostRelayActor)
+        {
+            _serverInstance = new ActorServer(uri.Host,uri.Port);
+            _serverInstance.DoInit(hostRelayActor);
         }
 
         private ActorServer()

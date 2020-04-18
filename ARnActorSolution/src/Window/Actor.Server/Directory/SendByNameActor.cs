@@ -40,10 +40,7 @@ namespace Actor.Server
         // The message to be send
         private T origMessage;
 
-        public SendByNameActor()
-        {
-            Become(new Behavior<string, T>(FindBehavior));
-        }
+        public SendByNameActor() => Become(new Behavior<string, T>(FindBehavior));
 
         // FindBehavior to find the alias in directory
         private void FindBehavior(string msg1, T msg2)

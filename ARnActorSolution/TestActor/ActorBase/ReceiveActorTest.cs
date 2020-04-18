@@ -38,7 +38,7 @@ namespace TestActor
             {
                 var actor = new ReceiveActor<int, string>();
                 var target = new TargetActor();
-                var resultOdd = actor.Wait(target, 1);
+                var resultOdd = actor.WaitAsync(target, 1);
                 Assert.IsTrue(resultOdd.Result.Item2 == "odd");
             }) ;
         }
@@ -50,7 +50,7 @@ namespace TestActor
             {
                 var actor = new ReceiveActor<int, string>();
                 var target = new TargetActor();
-                var resultEven = actor.Wait(target, 2);
+                var resultEven = actor.WaitAsync(target, 2);
                 Assert.IsTrue(resultEven.Result.Item2 == "even");
             });
         }
@@ -62,7 +62,7 @@ namespace TestActor
             {
                 var actor = new ReceiveActor<int>();
                 var target = new TargetActor2();
-                var resultEven = actor.Wait(target, 1);
+                var resultEven = actor.WaitAsync(target, 1);
                 Assert.IsTrue(resultEven.Result.Item2 == 2);
             });
         }
@@ -74,7 +74,7 @@ namespace TestActor
             {
                 var actor = new ReceiveActor<int>();
                 var target = new TargetActor2();
-                var resultEven = actor.Wait(target, 2);
+                var resultEven = actor.WaitAsync(target, 2);
                 Assert.IsTrue(resultEven.Result.Item2 == 4);
             });
         }
@@ -86,7 +86,7 @@ namespace TestActor
             {
                 var actor = new ReceiveActor<int, string>();
                 var target = new TargetActor();
-                var resultOdd = actor.Wait(target, 1,10000);
+                var resultOdd = actor.WaitAsync(target, 1,10000);
                 Assert.IsTrue(resultOdd.Result.Item2 == "odd");
             });
         }
@@ -98,7 +98,7 @@ namespace TestActor
             {
                 var actor = new ReceiveActor<int, string>();
                 var target = new TargetActor();
-                var resultEven = actor.Wait((IActor)target, 2,2000);
+                var resultEven = actor.WaitAsync((IActor)target, 2,2000);
                 Assert.IsTrue(resultEven.Result.Item2 == "even");
             });
         }
@@ -110,7 +110,7 @@ namespace TestActor
             {
                 var actor = new ReceiveActor<int>();
                 var target = new TargetActor2();
-                var resultEven = actor.Wait((IActor)target, 1, 2000);
+                var resultEven = actor.WaitAsync((IActor)target, 1, 2000);
                 Assert.IsTrue(resultEven.Result.Item2 == 2);
             });
         }
@@ -122,7 +122,7 @@ namespace TestActor
             {
                 var actor = new ReceiveActor<int>();
                 var target = new TargetActor2();
-                var resultEven = actor.Wait((IActor)target, 2, 2000);
+                var resultEven = actor.WaitAsync((IActor)target, 2, 2000);
                 Assert.IsTrue(resultEven.Result.Item2 == 4);
             });
         }

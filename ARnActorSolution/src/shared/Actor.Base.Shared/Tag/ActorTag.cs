@@ -27,7 +27,6 @@ using System.Globalization;
 #if !NETFX_CORE
 using System.Runtime.Serialization;
 #endif
-using System.Threading;
 
 namespace Actor.Base
 {
@@ -60,19 +59,19 @@ namespace Actor.Base
         public ActorTag(string urlAddress)
         {
             CheckArg.Address(urlAddress);
-            InitTag(urlAddress);
+            InitTag(new Uri(urlAddress));
         }
 
         public ActorTag(Uri uri)
         {
             CheckArg.Uri(uri);
-            InitTag(uri.Host);
-        }
+            InitTag(uri);
+        }        
 
-        private void InitTag(string urlAddress)
+        private void InitTag(Uri uri)
         {
             fId = ActorTagHelper.CastNewTagId();
-            fHost = urlAddress;
+            fHost = uri.AbsoluteUri;
             fIsRemote = true;
             fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
         }
@@ -96,9 +95,6 @@ namespace Actor.Base
             return Equals(other);
         }
 
-        public bool Equals(ActorTag other)
-        {
-            return other == null ? false : fHost == other.fHost && fIsRemote == other.fIsRemote && fId == other.fId;
-        }
+        public bool Equals(ActorTag other) => other == null ? false : fHost == other.fHost && fIsRemote == other.fIsRemote && fId == other.fId;
     }
 }
