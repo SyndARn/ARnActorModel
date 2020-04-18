@@ -10,7 +10,6 @@ namespace TestActor
     [TestClass]
     public class FsmStateTest
     {
-    
         [TestMethod]
         public void FSMBehaviorsTest()
         {

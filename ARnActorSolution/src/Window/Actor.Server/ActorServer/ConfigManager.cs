@@ -54,7 +54,7 @@ namespace Actor.Server
                 string hostPort = ConfigurationManager.AppSettings["HostPort"];
                 if (string.IsNullOrEmpty(hostName))
                 {
-                    hostName = "ARnActorServer";
+                    hostName = "http://localhost";
                 }
                 if (string.IsNullOrEmpty(hostPort))
                 {
@@ -63,6 +63,7 @@ namespace Actor.Server
                 fHostService = GetHostService();
                 fHost = fHostService.GetHostUri(hostName, int.Parse(hostPort,CultureInfo.InvariantCulture));
             }
+
             return fHost;
         }
 

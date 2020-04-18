@@ -8,7 +8,7 @@ namespace Actor.Util
     public class ReceiveActor<T> : BaseActor
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public async Task<IMessageParam<IActor, T>> Wait(IActor target, T question)
+        public async Task<IMessageParam<IActor, T>> WaitAsync(IActor target, T question)
         {
             target.SendMessage((IActor)this, question);
             Task<object> r = ReceiveAsync(t => t is IMessageParam<IActor, T>);
@@ -16,7 +16,7 @@ namespace Actor.Util
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public async Task<IMessageParam<IActor, T>> Wait(IActor target, T question, int timeOutMS)
+        public async Task<IMessageParam<IActor, T>> WaitAsync(IActor target, T question, int timeOutMS)
         {
             target.SendMessage((IActor)this, question);
             Task<object> r = ReceiveAsync(t => t is IMessageParam<IActor, T>, timeOutMS);
@@ -29,7 +29,7 @@ namespace Actor.Util
     public class ReceiveActor<TQuestion, TAnswer> : BaseActor
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public async Task<IMessageParam<IActor, TAnswer>> Wait(IActor target, TQuestion question)
+        public async Task<IMessageParam<IActor, TAnswer>> WaitAsync(IActor target, TQuestion question)
         {
             target.SendMessage((IActor)this, question);
             Task<object> r = ReceiveAsync(t => t is IMessageParam<IActor, TAnswer>);
@@ -37,7 +37,7 @@ namespace Actor.Util
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public async Task<IMessageParam<IActor, TAnswer>> Wait(IActor target, TQuestion question, int timeOutMS)
+        public async Task<IMessageParam<IActor, TAnswer>> WaitAsync(IActor target, TQuestion question, int timeOutMS)
         {
             target.SendMessage((IActor)this, question);
             Task<object> r = ReceiveAsync(t => t is IMessageParam<IActor, TAnswer>, timeOutMS);

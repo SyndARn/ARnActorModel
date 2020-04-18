@@ -1,11 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Actor.Server.Tests
 {
     [TestClass()]
@@ -21,6 +14,5 @@ namespace Actor.Server.Tests
             var actor = addressFactory.GetActor(address);
             Assert.IsNotNull(actor);
         }
-
     }
 }

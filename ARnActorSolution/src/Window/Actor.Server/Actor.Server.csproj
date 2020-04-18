@@ -100,6 +100,8 @@
     <Compile Include="Admin\EchoClientActor.cs" />
     <Compile Include="Admin\EchoClientBehavior.cs" />
     <Compile Include="Admin\EchoServerBehavior.cs" />
+    <Compile Include="ClientServer\ServerMessage`1.cs" />
+    <Compile Include="ClientServer\ServerRequest.cs" />
     <Compile Include="Directory\HostService.cs" />
     <Compile Include="ActorServer\ShardDirectoryActor.cs" />
     <Compile Include="Admin\ActorAdminServer.cs" />
@@ -116,6 +118,8 @@
     <Compile Include="Directory\HostDirectoryActor.cs" />
     <Compile Include="Directory\SendByName.cs" />
     <Compile Include="Factory\ActorAddressFactory.cs" />
+    <Compile Include="Factory\ActorFactory.cs" />
+    <Compile Include="Factory\IActorFactory.cs" />
     <Compile Include="Properties\ARnActorModelVersion.cs" />
     <Compile Include="RemoteServer\HttpListener\HttpContextComm.cs" />
     <Compile Include="RemoteServer\HttpListener\HttpListenerService.cs" />

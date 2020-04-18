@@ -81,7 +81,7 @@ namespace MoreThanOneMillionActor
 
         public int  WaitForResult()
         {
-            var res = fWait.Wait(this, "Start").Result;
+            var res = fWait.WaitAsync(this, "Start").Result;
             return fSum;
         }
     }
