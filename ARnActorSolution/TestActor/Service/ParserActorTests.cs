@@ -68,9 +68,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
            {
-               ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
-               ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
-               ActorServer.Start("localhost", 80, new HostRelayActor());
+               ActorServer.Start(ActorConfigManager.CastForTest());
                var parserTest = new ParserTest();
                var receiver = new TestReceiver();
                parserTest.SendMessage((IActor)receiver);

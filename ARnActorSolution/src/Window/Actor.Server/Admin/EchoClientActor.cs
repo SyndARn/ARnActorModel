@@ -21,12 +21,10 @@
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
 
-using System.Diagnostics;
 using Actor.Base;
 
 namespace Actor.Server
 {
-
     public class EchoClientActor : BaseActor
     {
         private readonly EchoClientBehavior aClient;

@@ -10,9 +10,10 @@ namespace Actor.Server
         public ISerializeService SerializeService { get; private set; }
         public IListenerService ListenerService { get; private set; }
         public IHostService HostService { get; private set; }
+        public IServerCommandService ServerCommandService { get; private set; }
         private string _fullHost = "" ;
         private HostRelayActor _actHostRelay;
-        private ConfigManager _configManager;
+        private ActorConfigManager _configManager;
 
         public string FullHost { get
         {
@@ -29,31 +30,22 @@ namespace Actor.Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static ActorServer GetInstance() => _serverInstance;
 
-        public static void Start(ConfigManager configManager)
+        public static void Start(ActorConfigManager configManager)
         {
+            ActorTagHelper.FullHost = configManager.Host().Host;
+
             _serverInstance = new ActorServer
             {
                 _configManager = configManager ?? throw new ActorException("ConfigManager can't be null"),
                 Name = configManager.Host().Host,
-                Port = configManager.Host().Port,
-                ListenerService = configManager.GetListenerService(),
-                SerializeService = configManager.GetSerializeService(),
-                HostService = configManager.GetHostService()
+                Port = configManager.Host().Port
             };
-            ActorTagHelper.FullHost = configManager.Host().Host;
+
+            _serverInstance.ListenerService = configManager.GetListenerService();
+            _serverInstance.SerializeService = configManager.GetSerializeService();
+            _serverInstance.HostService = configManager.GetHostService();
+            _serverInstance.ServerCommandService = configManager.GetServerCommandService();
             _serverInstance.DoInit(new HostRelayActor(_serverInstance.ListenerService));
-        }
-
-        public static void Start(string lName, int lPort, HostRelayActor hostRelayActor)
-        {
-            _serverInstance = new ActorServer(lName,lPort) ;
-            _serverInstance.DoInit(hostRelayActor);
-        }
-
-        public static void Start(Uri uri, HostRelayActor hostRelayActor)
-        {
-            _serverInstance = new ActorServer(uri.Host,uri.Port);
-            _serverInstance.DoInit(hostRelayActor);
         }
 
         private ActorServer()
@@ -61,11 +53,11 @@ namespace Actor.Server
 
         public ActorServer(string lName, int lPort)
         {
-            _configManager = new ConfigManager();
+            _configManager = new ActorConfigManager();
             Name = lName;
             Port = lPort;
             SerializeService = _configManager.GetSerializeService();
-            ActorTagHelper.FullHost = _configManager.Host().Host;
+            ActorTagHelper.FullHost = _configManager.Host().AbsoluteUri;
         }
 
         private void DoInit(HostRelayActor hostRelayActor)
@@ -74,7 +66,13 @@ namespace Actor.Server
             ActorConsole.Register(); // Start console
             // should work now
             SendByName<string>.Send("Actor Server Start", "Console");
-            Become(new NullBehavior());
+            if (ServerCommandService == null)
+            {
+                ServerCommandService = new ServerCommandService();
+                ServerCommandService.RegisterCommand(new DiscoServerCommand());
+                ServerCommandService.RegisterCommand(new StatServerCommand());
+            }
+            Become(ServerCommandService);
             if (hostRelayActor == null)
             {
                 return;
@@ -104,6 +102,7 @@ namespace Actor.Server
                 _actHostRelay.Dispose();
                 _actHostRelay = null;
             }
+
             if (_configManager == null)
             {
                 return;

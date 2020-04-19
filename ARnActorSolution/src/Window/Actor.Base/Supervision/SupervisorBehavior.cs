@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Actor.Base
 {
-
     public class SupervisorBehavior : Behaviors
     {
         private readonly List<ISupervisedActor> _supervised = new List<ISupervisedActor>();

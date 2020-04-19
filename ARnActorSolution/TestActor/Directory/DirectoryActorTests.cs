@@ -5,7 +5,6 @@ using Actor.Server;
 
 namespace TestActor
 {
-
     internal class DiscoTestActor : BaseActor
     {
         private IActor fLauncher;
@@ -96,7 +95,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                ActorServer.Start("localhost", 80, null);
+                ActorServer.Start(ActorConfigManager.CastForTest());
                 var act = new DiscoTestActor(fLauncher);
                 DirectoryActor.GetDirectory().Disco(act);
             }

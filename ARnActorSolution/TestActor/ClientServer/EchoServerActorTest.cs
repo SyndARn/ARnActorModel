@@ -21,7 +21,7 @@ namespace TestActor
             GlobalContext.MessageTracerService = new MemoryMessageTracerService();
             TestLauncherActor.Test(() =>
             {
-                ActorServer.Start(ConfigManager.CastForTest());
+                ActorServer.Start(ActorConfigManager.CastForTest());
                 new EchoServerActor();
                 for (int i = 0; i < 5; i++)
                 {

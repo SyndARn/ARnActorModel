@@ -10,7 +10,7 @@ namespace Actor.TestApplication
 {
     internal class ActorMain : BaseActor
     {
-        private CollectionActor<string> collect;
+        private CollectionActor<string> _collect;
 
         public ActorMain() : base()
         {
@@ -25,15 +25,15 @@ namespace Actor.TestApplication
         {
             Console.WriteLine("Serv Start");
             long start = DateTime.UtcNow.Ticks;
-            collect = new CollectionActor<string>();
+            _collect = new CollectionActor<string>();
             List<string> list = new List<string>();
             for (int i = 0; i < 10; i++)
             {
-                collect.Add(i.ToString(CultureInfo.InvariantCulture));
+                _collect.Add(i.ToString(CultureInfo.InvariantCulture));
                 list.Add(i.ToString(CultureInfo.InvariantCulture));
             }
 
-            foreach (string item in collect)
+            foreach (string item in _collect)
             {
                 Console.WriteLine("Collect " + item);
             }

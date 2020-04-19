@@ -1,11 +1,7 @@
-﻿using Actor.Base;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using Actor.Base;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestActor
 {
@@ -20,8 +16,8 @@ namespace TestActor
         {
         }
 
-        public TestLauncherException(string message,Exception inner)
-            : base(message,inner)
+        public TestLauncherException(string message, Exception inner)
+            : base(message, inner)
         { }
 
         protected TestLauncherException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
@@ -31,9 +27,11 @@ namespace TestActor
 
     public class TestLauncherActor : ActionActor
     {
+        public TestContext TestContext { get; set; }
+
         public const int DefaultWait = 30000;
 
-        private Exception fLauncherException ;
+        private Exception fLauncherException;
 
         public TestLauncherActor()
             : base()
@@ -65,6 +63,11 @@ namespace TestActor
         public static void Test(TestContext testContext, Action action, int timeOutMS)
         {
             var launcher = new TestLauncherActor();
+            if (testContext == null)
+            {
+                testContext = launcher.TestContext;
+            }
+
             launcher.SendAction(
                 () =>
                 {

@@ -27,10 +27,9 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
-                ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
-                ActorServer.Start("localhost", 80, new HostRelayActor());
+                ActorServer.Start(ActorConfigManager.CastForTest());
                 var actor = new StateFullActor<string>();
+
                 HostDirectoryActor.Register(actor);
                 Task.Delay(5000).Wait();
                 var stat = HostDirectoryActor.GetInstance().GetEntries();
@@ -50,9 +49,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
-                ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
-                ActorServer.Start(new Uri("http://localhost:80"),new HostRelayActor());
+                ActorServer.Start(ActorConfigManager.CastForTest());
                 var actor = new StateFullActor<string>();
                 HostDirectoryActor.Register(actor);
                 SerialObject so = new SerialObject(new MessageParam<StateAction,string>(StateAction.Set,"Test"), actor.Tag);

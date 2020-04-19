@@ -4,7 +4,6 @@ using System.Threading;
 
 namespace Actor.Base
 {
-
     // 1 consumer
     // many producer
     // large ring buffer (1024)
@@ -12,7 +11,6 @@ namespace Actor.Base
 
     public class BufferQueue<T> : IMessageQueue<T>
     {
-
         private int _token;
         private T[] _list = new T[128];
         private int _read;

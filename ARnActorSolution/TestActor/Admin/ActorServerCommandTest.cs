@@ -5,45 +5,35 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestActor
 {
+    internal class ServiceActorTest : BaseActor
+    {
+        public ServiceActorTest(ServerCommandService service): base()
+        {
+            Become(service);
+        }
+    }
+
     [TestClass]
     public class ActorServerCommandTest
     {
         [TestMethod]
         public void DiscoServerCommandTest()
         {
+            var service = new ServerCommandService();
             var command = new DiscoServerCommand();
-            try
-            {
-                command.Run();
-            }
-            catch(Exception e)
-            {
-                Assert.IsTrue(e is ActorException);
-            }
-            try
-            {
-                command.Run("Test");
-            }
-            catch (Exception e)
-            {
-                Assert.IsTrue(e is ActorException);
-            }
-            command.Run("Test1", "Test2");
+            service.RegisterCommand(command);
+            var actor = new ServiceActorTest(service);
+            TestLauncherActor.Test(() => actor.SendMessage(command.Key, new string[] { }));
         }
 
         [TestMethod]
         public void StatServerCommandTest()
         {
+            var service = new ServerCommandService();
             var command = new StatServerCommand();
-            try
-            {
-                command.Run();
-            }
-            catch (Exception e)
-            {
-                Assert.IsTrue(e is ActorException);
-            }
-            command.Run("Test");
+            service.RegisterCommand(command);
+            var actor = new ServiceActorTest(service);
+            TestLauncherActor.Test(() => actor.SendMessage(command.Key, new string[] { }));
         }
     }
 }

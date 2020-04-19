@@ -66,7 +66,7 @@ namespace Actor.Base
         {
             CheckArg.Uri(uri);
             InitTag(uri);
-        }        
+        }
 
         private void InitTag(Uri uri)
         {

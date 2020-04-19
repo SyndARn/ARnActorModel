@@ -14,6 +14,7 @@ namespace TestActor
     {
         private IActor pong;
         private IActor ping;
+
         [TestMethod()]
         public void ProcessActorTest()
         {
@@ -21,10 +22,7 @@ namespace TestActor
             {
                 var futurePing = new Future<string>();
                 var futurePong = new Future<string>();
-                ping = new ProcessActor<string>(msg =>
-                {
-                    futurePing.SendMessage(msg);
-                });
+                ping = new ProcessActor<string>(msg => futurePing.SendMessage(msg));
                 pong = new ProcessActor<string>(msg =>
                 {
                     futurePong.SendMessage(msg);

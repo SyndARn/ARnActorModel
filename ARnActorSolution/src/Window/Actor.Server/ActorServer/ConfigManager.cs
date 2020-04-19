@@ -4,26 +4,26 @@ using System.Globalization;
 
 namespace Actor.Server
 {
-    public class ConfigManager : IDisposable
+    public class ActorConfigManager : IDisposable
     {
-        public static ConfigManager CastForTest()
+        public static ActorConfigManager CastForTest()
         {
             ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
             ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
-            return new ConfigManager();
+            return new ActorConfigManager();
         }
 
-        private Uri fHost;
-        private IHostService fHostService;
+        private Uri _host;
+        private IHostService _hostService;
 
         public IHostService GetHostService()
         {
-            if (fHostService == null)
+            if (_hostService == null)
             {
                 string r = ConfigurationManager.AppSettings["HostService"];
                 if (string.IsNullOrEmpty(r))
                 {
-                    fHostService = new HostService();
+                    _hostService = new HostService();
                 }
                 else
                 {
@@ -31,54 +31,55 @@ namespace Actor.Server
                     {
                         case "HostService":
                             {
-                                fHostService = new HostService();
+                                _hostService = new HostService();
                                 break;
                             }
                         default:
                             {
-                                fHostService = new HostService();
+                                _hostService = new HostService();
                                 break;
                             }
                     }
                 }
             }
-            return fHostService;
+
+            return _hostService;
         }
 
         public Uri Host()
         {
-            if (fHost == null)
+            if (_host == null)
             {
                 string hostService = ConfigurationManager.AppSettings["HostService"];
                 string hostName = ConfigurationManager.AppSettings["HostName"];
                 string hostPort = ConfigurationManager.AppSettings["HostPort"];
                 if (string.IsNullOrEmpty(hostName))
                 {
-                    hostName = "http://localhost";
+                    hostName = "localhost";
                 }
+
                 if (string.IsNullOrEmpty(hostPort))
                 {
                     hostPort = "80";
                 }
-                fHostService = GetHostService();
-                fHost = fHostService.GetHostUri(hostName, int.Parse(hostPort,CultureInfo.InvariantCulture));
+
+                _hostService = GetHostService();
+                _host = _hostService.GetHostUri(hostName, int.Parse(hostPort,CultureInfo.InvariantCulture));
             }
 
-            return fHost;
+            return _host;
         }
 
-        private IListenerService fListenerService;
+        private IListenerService _listenerService;
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         public IListenerService GetListenerService()
         {
-            if (fListenerService == null)
+            if (_listenerService == null)
             {
                 string r = ConfigurationManager.AppSettings["ListenerService"];
                 if (string.IsNullOrEmpty(r))
                 {
-                    fListenerService = new HttpListenerService();
+                    _listenerService = new HttpListenerService();
                 }
                 else
                 {
@@ -86,37 +87,46 @@ namespace Actor.Server
                     {
                         case "HttpListenerService":
                             {
-                                fListenerService = new HttpListenerService();
+                                _listenerService = new HttpListenerService();
                                 break;
                             }
                         case "MemoryListenerService":
                             {
-                                fListenerService = new MemoryListenerService();
+                                _listenerService = new MemoryListenerService();
                                 break;
                             }
                         default:
                             {
-                                fListenerService = new HttpListenerService();
+                                _listenerService = new HttpListenerService();
                                 break;
                             }
                     }
                 }
             }
-            return fListenerService;
+
+            return _listenerService;
         }
 
-        private ISerializeService fSerializeService;
+        public IServerCommandService GetServerCommandService()
+        {
+            ServerCommandService service = new ServerCommandService();
+            service.RegisterCommand(new DiscoServerCommand());
+            service.RegisterCommand(new StatServerCommand());
+            return service;
+        }
+
+        private ISerializeService _serializeService;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public ISerializeService GetSerializeService()
         {
-            if (fSerializeService == null)
+            if (_serializeService == null)
             {
                 string r = ConfigurationManager.AppSettings["SerializeService"];
                 // parse r to get a better thing than this with reflection
                 if (string.IsNullOrEmpty(r))
                 {
-                    fSerializeService = new NetDataContractSerializeService();
+                    _serializeService = new NetDataContractSerializeService();
                 }
                 else
                 {
@@ -124,42 +134,45 @@ namespace Actor.Server
                     {
                         case "NetDataContractSerializeService":
                             {
-                                fSerializeService = new NetDataContractSerializeService();
+                                _serializeService = new NetDataContractSerializeService();
                                 break;
                             }
                         default:
                             {
-                                fSerializeService = new NetDataContractSerializeService();
+                                _serializeService = new NetDataContractSerializeService();
                                 break;
                             }
                     }
                 }
             }
-            return fSerializeService;
+
+            return _serializeService;
         }
 
         #region IDisposable Support
-        private bool disposedValue = false; // Pour détecter les appels redondants
+        private bool _disposedValue = false; // Pour détecter les appels redondants
 
         protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
             {
-                if (disposing)
-                {
-                    // TODO: supprimer l'état managé (objets managés).
-                    if (fListenerService != null)
-                    {
-                        ((IDisposable)fListenerService).Dispose();
-                        fListenerService = null;
-                    }
-                }
-
-                // TODO: libérer les ressources non managées (objets non managés) et remplacer un finaliseur ci-dessous.
-                // TODO: définir les champs de grande taille avec la valeur Null.
-
-                disposedValue = true;
+            if (_disposedValue)
+            {
+                return;
             }
+
+            if (disposing)
+            {
+                // TODO: supprimer l'état managé (objets managés).
+                if (_listenerService != null)
+                {
+                    ((IDisposable)_listenerService).Dispose();
+                    _listenerService = null;
+                }
+            }
+
+            // TODO: libérer les ressources non managées (objets non managés) et remplacer un finaliseur ci-dessous.
+            // TODO: définir les champs de grande taille avec la valeur Null.
+
+            _disposedValue = true;
         }
 
         // TODO: remplacer un finaliseur seulement si la fonction Dispose(bool disposing) ci-dessus a du code pour libérer les ressources non managées.

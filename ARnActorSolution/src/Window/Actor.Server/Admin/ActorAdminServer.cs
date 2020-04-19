@@ -1,8 +1,5 @@
-﻿using Actor.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using Actor.Base;
 
 namespace Actor.Server
 {
@@ -44,7 +41,8 @@ namespace Actor.Server
                     }
                 case "Stat":
                     {
-                        (new StatServerCommand()).Run(asker);
+                        ActorServer.GetInstance().SendMessage(StatServerCommand.Name, asker);
+                        // (new StatServerCommand()).Run(asker);
                         break;
                     }
                 case "AddTask":
@@ -57,11 +55,11 @@ namespace Actor.Server
                         // have a disco
                         // find EchoServer
                         // send message
-                        char[] separ2 = {' '} ;
-                        string lHost = lData.Split(separ2)[0] ;
-                        string lService = lData.Split(separ2)[1] ;
+                        char[] separ2 = { ' ' };
+                        string lHost = lData.Split(separ2)[0];
+                        string lService = lData.Split(separ2)[1];
                         ConnectActor.Connect(this, lHost, lService);
-                        var data = ReceiveAsync(ans => ans is IMessageParam<string, ActorTag, IActor>) ;
+                        var data = ReceiveAsync(ans => ans is IMessageParam<string, ActorTag, IActor>);
                         var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                         // we got remote server adress
                         EchoClientActor aClient = new EchoClientActor();
@@ -72,7 +70,8 @@ namespace Actor.Server
                     }
                 case "Disco":
                     {
-                        (new DiscoServerCommand()).Run(asker, lData);
+                        ActorServer.GetInstance().SendMessage(DiscoServerCommand.Name, (IActor)asker, lData);
+                       // (new DiscoServerCommand()).Run(asker, lData);
                         break;
                     }
                 case "SendTo":

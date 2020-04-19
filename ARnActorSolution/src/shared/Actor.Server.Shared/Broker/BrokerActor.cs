@@ -10,7 +10,7 @@ namespace Actor.Server
         private readonly Dictionary<IActor, WorkerStatus> _workers = new Dictionary<IActor, WorkerStatus>();
         private readonly Dictionary<ActorTag, RequestStatus<T>> _requests = new Dictionary<ActorTag, RequestStatus<T>>();
         private int _lastWorkerUsed = 0;
-        private int _TTL = 0;
+        private int _ttl = 0;
         private int _requestProcessed = 0;
         public IActor Logger { get; set; } = new NullActor();
 
@@ -165,7 +165,7 @@ namespace Actor.Server
                          _requestProcessed++;
                          _requests.Remove(t);
                          _workers[a].State = WorkerReadyState.Idle;
-                         _workers[a].TimeToLive = _TTL;
+                         _workers[a].TimeToLive = _ttl;
                          LogString("Request {0} End on worker {1}", t.Key(), a.Tag.Key());
                          // find a request
                          RequestStatus<T> tagRequest = _requests.Values.FirstOrDefault(v => v.State == RequestState.Unprocessed);
@@ -186,12 +186,12 @@ namespace Actor.Server
                 (
                 (a, h) =>
                 {
-                    foreach (var worker in _workers.Where(w => w.Value.TimeToLive < _TTL))
+                    foreach (KeyValuePair<IActor, WorkerStatus> worker in _workers.Where(w => w.Value.TimeToLive < _ttl))
                     {
                         worker.Key.SendMessage((IActor)this, BrokerAction.Hearbeat);
                     }
 
-                    _TTL++;
+                    _ttl++;
                     LogString("Heart Beat Signal, Request Processed {0}", _requestProcessed);
                 }
                 ));
@@ -199,8 +199,8 @@ namespace Actor.Server
             AddBehavior(new Behavior<IActor, WorkerReadyState>(
                 (a, w) =>
                 {
-                    var workerState = _workers[a];
-                    workerState.TimeToLive = _TTL;
+                    WorkerStatus workerState = _workers[a];
+                    workerState.TimeToLive = _ttl;
                     LogString("Answer To HeartBeat from Worker {0}", a.Tag.Key());
                 }));
             // start heart beat

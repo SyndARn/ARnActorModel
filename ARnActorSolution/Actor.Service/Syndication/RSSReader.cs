@@ -1,11 +1,6 @@
-﻿using Actor.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel.Syndication;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ServiceModel.Syndication;
 using System.Xml;
+using Actor.Base;
 
 namespace Actor.Service
 {
@@ -13,6 +8,7 @@ namespace Actor.Service
     {
         public RssReaderActor(string url, IActor target)
         {
+            CheckArg.Address(url);
             Become(new Behavior<string, IActor>(DoSyndication));
             this.SendMessage(url, target);
         }

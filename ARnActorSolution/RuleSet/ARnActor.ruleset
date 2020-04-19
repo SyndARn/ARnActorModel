@@ -23,7 +23,6 @@
     <Rule Id="RCS1035" Action="Warning" />
     <Rule Id="RCS1045" Action="Warning" />
     <Rule Id="RCS1046" Action="Warning" />
-    <Rule Id="RCS1050" Action="Warning" />
     <Rule Id="RCS1051" Action="Warning" />
     <Rule Id="RCS1052" Action="Warning" />
     <Rule Id="RCS1056" Action="Warning" />
@@ -37,7 +36,6 @@
     <Rule Id="RCS1088" Action="Warning" />
     <Rule Id="RCS1092" Action="Warning" />
     <Rule Id="RCS1094" Action="Warning" />
-    <Rule Id="RCS1100" Action="Warning" />
     <Rule Id="RCS1101" Action="Warning" />
     <Rule Id="RCS1111" Action="Warning" />
     <Rule Id="RCS1126" Action="Warning" />
