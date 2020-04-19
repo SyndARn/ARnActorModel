@@ -97,11 +97,15 @@
     <Compile Include="ActorServer\ConfigManager.cs" />
     <Compile Include="ActorServer\ShardListActor.cs" />
     <Compile Include="ActorServer\ShardRequest.cs" />
+    <Compile Include="Admin\DiscoServerCommand.cs" />
     <Compile Include="Admin\EchoClientActor.cs" />
     <Compile Include="Admin\EchoClientBehavior.cs" />
     <Compile Include="Admin\EchoServerBehavior.cs" />
+    <Compile Include="Command\IActorServerCommand.cs" />
     <Compile Include="ClientServer\ServerMessage`1.cs" />
     <Compile Include="ClientServer\ServerRequest.cs" />
+    <Compile Include="Command\IServerCommandService.cs" />
+    <Compile Include="Command\ServerCommandService.cs" />
     <Compile Include="Directory\HostService.cs" />
     <Compile Include="ActorServer\ShardDirectoryActor.cs" />
     <Compile Include="Admin\ActorAdminServer.cs" />
@@ -144,6 +148,7 @@
     <Compile Include="Serializer\NetDataContract\NetDataActorSerializer.cs" />
     <Compile Include="Serializer\NetDataContract\SerializationHelper.cs" />
     <Compile Include="Serializer\NetDataContract\SerialObject.cs" />
+    <Compile Include="Command\ServerCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

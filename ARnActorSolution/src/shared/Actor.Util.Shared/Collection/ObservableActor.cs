@@ -30,11 +30,11 @@ namespace Actor.Util
 
     public class ObservableActor<T> : BaseActor
     {
-        private readonly List<IActor> fCollection;
+        private readonly List<IActor> _collection;
 
         public ObservableActor() : base()
         {
-            fCollection = new List<IActor>();
+            _collection = new List<IActor>();
             Become(new Behavior<ObservableAction, IActor>(DoRegister));
             AddBehavior(new Behavior<T>(DoPublishData));
         }
@@ -52,17 +52,17 @@ namespace Actor.Util
         {
             if (action.Equals(ObservableAction.Register))
             {
-                fCollection.Add(actor);
+                _collection.Add(actor);
             } else
             {
-                fCollection.Remove(actor);
+                _collection.Remove(actor);
             }
         }
 
         private void DoPublishData(T aT)
         {
             var bct = new BroadCastActor<T>();
-            var currentObservers = fCollection.ToList(); // clone before sending 
+            var currentObservers = _collection.ToList(); // clone before sending 
             bct.BroadCast(aT, currentObservers);
         }
     }

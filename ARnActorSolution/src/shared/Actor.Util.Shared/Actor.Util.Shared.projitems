@@ -51,12 +51,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerNewPeer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\PeerStoreNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Buffer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Chain.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Consumer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Producer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProducerConsumer\Work.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\ActorProxyModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\DataProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\IActorProxy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\RealActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workflow\WorkflowActor.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -89,6 +89,7 @@ namespace Actor.Util
     public class LinkedListBehaviors<T> : Behaviors
     {
         internal LinkedList<T> fList = new LinkedList<T>();
+
         public LinkedListBehaviors()
             : base()
         {

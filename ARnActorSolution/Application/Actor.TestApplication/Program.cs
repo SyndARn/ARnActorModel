@@ -1,28 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
-using Actor.Util;
-using Actor.RemoteLoading;
 using Actor.MonteCarlo;
-using Actor.Service;
+using Actor.RemoteLoading;
 using Actor.Server;
+using Actor.Service;
+using Actor.Util;
 
 namespace Actor.TestApplication
 {
     class Program
     {
         static actMillion fMillion;
+
         static void Main(string[] args)
         {
             string lName = "";
             string lPort = "";
             if (args.Length > 0)
             {
-                lName = args.FirstOrDefault(t => t.StartsWith("-n:"));
-                lPort = args.FirstOrDefault(t => t.StartsWith("-p:"));
+                lName = Array.Find(args, t => t.StartsWith("-n:"));
+                lPort = Array.Find(args, t => t.StartsWith("-p:"));
             }
             if (!string.IsNullOrEmpty(lName))
             {
@@ -42,7 +40,8 @@ namespace Actor.TestApplication
                 lPort = "80";
             }
 
-            ActorServer.Start(lName, int.Parse(lPort), new HostRelayActor());
+            // ActorServer.Start(lName, int.Parse(lPort), new HostRelayActor());
+            ActorServer.Start(new ActorConfigManager());
             IActor fMain = new ActorMain();
 
             // new actActionReceiver().ConsoleWrite("Welcome in an action world");
@@ -71,12 +70,12 @@ namespace Actor.TestApplication
                                         collect.Add(string.Format("Test {0}", i));
                                     if (collect.Count() != 100)
                                         throw new Exception("failed");
-                                // try to enum
-                                var enumerable = collect.ToList();
+                                    // try to enum
+                                    var enumerable = collect.ToList();
                                     if (enumerable.Count != 100)
                                         throw new ActorException("failed");
-                                // try a query
-                                var query = from col in collect
+                                    // try a query
+                                    var query = from col in collect
                                                 where col.Contains('1')
                                                 select col;
                                     if (query.Count() != 19)

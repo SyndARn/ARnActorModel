@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\IActorExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\IActorMailBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\IFuture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ActorBase\IRunningActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\SharingStruct.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\SimpleActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ActorBase\SimpleMailBox.cs" />

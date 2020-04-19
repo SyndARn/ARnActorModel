@@ -44,7 +44,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                ActorServer.Start("localhost", 80, new HostRelayActor());
+                ActorServer.Start(ActorConfigManager.CastForTest());
                 new ShardDirectoryClientTest(); 
             });
         }

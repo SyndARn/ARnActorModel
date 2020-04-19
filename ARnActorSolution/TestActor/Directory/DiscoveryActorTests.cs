@@ -21,11 +21,11 @@ namespace TestActor
 
         private void DoDiscoveryActorTest()
         {
-            var localHost = "http://localhost:80";
+            const string localHost = "http://localhost:80";
             var uri = new Uri(localHost);
-            ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
-            ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
-            ActorServer.Start(uri, new HostRelayActor());
+            //ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
+            //ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
+            ActorServer.Start(ActorConfigManager.CastForTest());
             var future = new Future<Dictionary<string, string>>();
             var disco = new DiscoveryActor(uri.AbsoluteUri, future);
             var result = future.Result(60000);

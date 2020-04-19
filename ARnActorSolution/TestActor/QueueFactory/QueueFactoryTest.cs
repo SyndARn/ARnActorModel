@@ -15,17 +15,17 @@ namespace TestActor
         [TestMethod]
         public void LockFreeCastingTest()
         {
-            var factory = new QueueFactory<string>
+            QueueFactory<string> factory = new QueueFactory<string>
             {
-                Style = QueueStyle.LockFree
+                Style = QueueFactory<string>.QueueStyle.LockFree
             };
-            var lockFree = factory.GetQueue();
+            IMessageQueue<string> lockFree = factory.GetQueue();
             Assert.IsNotNull(lockFree);
             Assert.IsTrue(lockFree is LockFreeQueue<string>);
             lockFree.Add("Test1");
             lockFree.Add("Test2");
             Assert.AreEqual(2, lockFree.Count());
-            var result = lockFree.TryTake(out string s);
+            bool result = lockFree.TryTake(out string s);
             Assert.IsTrue(result);
             Assert.AreEqual("Test1",s) ;
         }
@@ -33,17 +33,17 @@ namespace TestActor
         [TestMethod]
         public void LockingCastingTest()
         {
-            var factory = new QueueFactory<string>
+            QueueFactory<string> factory = new QueueFactory<string>
             {
-                Style = QueueStyle.Locking
+                Style = QueueFactory<string>.QueueStyle.Locking
             };
-            var locking = factory.GetQueue();
+            IMessageQueue<string> locking = factory.GetQueue();
             Assert.IsNotNull(locking);
             Assert.IsTrue(locking is LockQueue<string>);
             locking.Add("Test1");
             locking.Add("Test2");
             Assert.AreEqual(2, locking.Count());
-            var result = locking.TryTake(out string s);
+            bool result = locking.TryTake(out string s);
             Assert.IsTrue(result);
             Assert.AreEqual("Test1", s);
         }
@@ -53,7 +53,7 @@ namespace TestActor
         {
             var factory = new QueueFactory<string>
             {
-                Style = QueueStyle.Ring
+                Style = QueueFactory<string>.QueueStyle.Ring
             };
             IMessageQueue<string> messageQueue = factory.GetQueue();
             Assert.IsNotNull(messageQueue);

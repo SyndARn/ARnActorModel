@@ -25,8 +25,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Actor.Base
 {
@@ -56,7 +56,7 @@ namespace Actor.Base
 
         public Behaviors(IBehavior[] someBehaviors)
         {
-            CheckArg.BehaviorParam(someBehaviors);            
+            CheckArg.BehaviorParam(someBehaviors);
             foreach (IBehavior item in someBehaviors)
             {
                 AddBehavior(item);

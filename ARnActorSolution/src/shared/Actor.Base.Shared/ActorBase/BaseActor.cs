@@ -31,7 +31,6 @@ using System.Threading.Tasks;
 [assembly: CLSCompliant(true)]
 namespace Actor.Base
 {
-    [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class BaseActor : IActor
     {
         public ActorTag Tag
@@ -45,9 +44,6 @@ namespace Actor.Base
         private IActorMailBox<object> _mailBox = new ActorMailBox<object>(); // our mailbox
         private SharingStruct _sharedStruct = new SharingStruct();
         public IMessageTracerService MessageTracerService { get; set; }
-
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => ToString();
 
         public static void CompleteInitialize(BaseActor anActor)
         {

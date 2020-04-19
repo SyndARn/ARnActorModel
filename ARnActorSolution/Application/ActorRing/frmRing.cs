@@ -1,23 +1,14 @@
-﻿using Actor.Base;
-using Actor.Service;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
-using Actor.Util;
+using Actor.Base;
 using Actor.Server;
+using Actor.Service;
 using Actor.Windows;
 
 namespace ActorRing
 {
     public partial class frmRing : Form
     {
-
         public frmRing()
         {
             InitializeComponent();
@@ -25,7 +16,7 @@ namespace ActorRing
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ActorServer.Start("localhost", 80, null);
+            ActorServer.Start(new ActorConfigManager());
             catcher = new StringToEventCatcherActor();
         }
 
@@ -62,7 +53,7 @@ namespace ActorRing
                 {
                     rcvmess++; if (rcvmess >= qttMess)
                     {
-                        DateTimeOffset end = DateTimeOffset.UtcNow ;
+                        DateTimeOffset end = DateTimeOffset.UtcNow;
                         catcher.SendMessage(string.Format("start {0} end {1} Duration{2}",
                             start.ToString(), end.ToString(), end.Subtract(start).ToString()));
                     }
