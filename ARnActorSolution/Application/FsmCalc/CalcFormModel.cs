@@ -27,7 +27,7 @@ namespace FsmCalc
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public async Task<CalcState> GetCurrentState()
         {
-            return await CalcActor.GetCurrentState().ResultAsync();
+            return await CalcActor.GetCurrentState().ResultAsync().ConfigureAwait(false);
         }
 
         public async Task Process(string order)
@@ -55,7 +55,7 @@ namespace FsmCalc
                 case "Clear": CalcActor.Clear(); break;
                 case "+/-": CalcActor.Sign();break;
             }
-            var accumulators = await Observer.GetStateAsync();
+            var accumulators = await Observer.GetStateAsync().ConfigureAwait(false);
             Form.lblAccumulator.Text = accumulators.Accumulator.ToString();
             Form.lblPlusAcc.Text = accumulators.PlusAcc.ToString();
             Form.lblMoinsAcc.Text = accumulators.MoinsAcc.ToString();

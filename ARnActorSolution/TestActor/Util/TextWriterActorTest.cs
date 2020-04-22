@@ -17,14 +17,14 @@ namespace TestActor
         [TestMethod]
         public void TestTextWriter()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(TestContext.TestRunDirectory);
             sb.Append(@"\");
             sb.Append("testwritertestfile.txt");
             string fullPath = sb.ToString();
             TestLauncherActor.Test(() =>
             {
-                using (TextWriterActor textWriter = new TextWriterActor(fullPath))
+                using (var textWriter = new TextWriterActor(fullPath))
                 {
                     textWriter.SendMessage("1st line");
                     textWriter.SendMessage("2nd line");
@@ -32,9 +32,9 @@ namespace TestActor
                     textWriter.Flush();
                 }
 
-                using (FileStream stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    StreamReader reader = new StreamReader(stream);
+                    var reader = new StreamReader(stream);
                     try
                     {
                         Assert.AreEqual(reader.ReadLine(), "1st line");

@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IO\TextWriterActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MapReduce\MapReduceActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Monadic\MonadActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\StringParserActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\HashKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\IAgentBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\INodeBehavior.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\DataProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\IActorProxy.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProxyGenerator\RealActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workflow\WfwStatus.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Workflow\WfwTransition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Workflow\WorkflowActor.cs" />
   </ItemGroup>
   <ItemGroup>

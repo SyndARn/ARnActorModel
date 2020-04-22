@@ -19,15 +19,9 @@ namespace Actor.Base
             Apply = ApplySetData ;
         }
 
-        public void SetData(T aMessage)
-        {
-            LinkedActor.SendMessage((ITrait<T>)this, aMessage);
-        }
+        public void SetData(T aMessage) => LinkedActor.SendMessage((ITrait<T>)this, aMessage);
 
-        private void ApplySetData(ITrait<T> aTrait,T aT)
-        {
-            _data = aT;
-        }
+        private void ApplySetData(ITrait<T> aTrait, T aT) => _data = aT;
     }
 
     public class ActorWithTrait<T> : BaseActor, ITrait<T>
@@ -47,9 +41,6 @@ namespace Actor.Base
         {
         }
 
-        public void SetData(T aMessage)
-        {
-            TraitService.SetData(aMessage);
-        }
+        public void SetData(T aMessage) => TraitService.SetData(aMessage);
     }
 }

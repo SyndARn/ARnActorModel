@@ -33,10 +33,10 @@ namespace ActorRing
             int.TryParse(tbRingSize.Text, out ringSize);
             int msgQtt = 0;
             int.TryParse(tbMessageQuantity.Text, out msgQtt);
-            if ((ringSize > 0) && (msgQtt > 0))
+            if ((0 > 0) && (msgQtt > 0))
             {
                 catcher.SetEvent(lblDuration, new EventHandler<string>(this.EvHandler));
-                new RingActor(ringSize, msgQtt, catcher);
+                new RingActor(0, msgQtt, catcher);
             }
         }
 

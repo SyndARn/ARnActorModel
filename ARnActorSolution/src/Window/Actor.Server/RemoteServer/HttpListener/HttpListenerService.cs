@@ -7,36 +7,30 @@ namespace Actor.Server
 {
     public class HttpListenerService : IListenerService, IDisposable
     {
-        private HttpListener fListener;
+        private HttpListener _listener;
 
         public HttpListenerService()
         {
-            fListener = new HttpListener();
+            _listener = new HttpListener();
             StartServer();
         }
 
-        public IContextComm GetCommunicationContext()
-        {
-            return new HttpContextComm(fListener);
-        }
+        public IContextComm GetCommunicationContext() => new HttpContextComm(_listener);
 
-        public void Close()
-        {
-            fListener.Close();
-        }
+        public void Close() => _listener.Close();
 
         private void StartServer()
         {
-            var localhost = Dns.GetHostName();
-            var servername = ActorServer.GetInstance().Name;
+            string localhost = Dns.GetHostName();
+            string servername = ActorServer.GetInstance().Name;
             const string prefix = "http://";
-            var suffix = ":" + ActorServer.GetInstance().Port.ToString(CultureInfo.InvariantCulture);
-            fListener.Prefixes.Add(prefix + "localhost" + suffix + "/" + servername + "/");
-            fListener.Prefixes.Add(prefix + localhost + suffix + "/" + servername + "/");
-            fListener.Prefixes.Add(prefix + "127.0.0.1" + suffix + "/" + servername + "/");
+            string suffix = ":" + ActorServer.GetInstance().Port.ToString(CultureInfo.InvariantCulture);
+            _listener.Prefixes.Add(prefix + "localhost" + suffix + "/" + servername + "/");
+            _listener.Prefixes.Add(prefix + localhost + suffix + "/" + servername + "/");
+            _listener.Prefixes.Add(prefix + "127.0.0.1" + suffix + "/" + servername + "/");
             try
             {
-                fListener.Start();
+                _listener.Start();
             }
             catch (Exception e)
             {
@@ -53,10 +47,10 @@ namespace Actor.Server
             {
                 if (disposing)
                 {
-                    if (fListener != null)
+                    if (_listener != null)
                     {
-                        ((IDisposable)fListener).Dispose();
-                        fListener = null;
+                        ((IDisposable)_listener).Dispose();
+                        _listener = null;
                     }
                 }
 

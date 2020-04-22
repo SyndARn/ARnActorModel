@@ -1,5 +1,6 @@
 ﻿{
   "dependencies": {
+    "Microsoft.CodeAnalysis.FxCopAnalyzers": "2.9.8",
     "Microsoft.NETCore.UniversalWindowsPlatform": "6.2.10"
   },
   "frameworks": {

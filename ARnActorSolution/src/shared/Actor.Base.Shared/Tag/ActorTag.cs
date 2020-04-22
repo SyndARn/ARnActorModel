@@ -35,25 +35,25 @@ namespace Actor.Base
     public class ActorTag : IEquatable<ActorTag>
     {
         [DataMember]
-        private string fHost;
+        private string _host;
 
         [DataMember]
-        private bool fIsRemote;
+        private bool _isRemote;
 
         [DataMember]
-        private long fId;
+        private long _id;
 
         [DataMember]
-        private int fUriHash;
+        private int _uriHash;
 
-        public string Host => fHost;
+        public string Host => _host;
 
         public ActorTag()
         {
-            fId = ActorTagHelper.CastNewTagId();
-            fHost = ActorTagHelper.FullHost;
-            fIsRemote = false;
-            fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
+            _id = ActorTagHelper.CastNewTagId();
+            _host = ActorTagHelper.FullHost;
+            _isRemote = false;
+            _uriHash = (string.IsNullOrEmpty(_host)) ? 0 : _host.GetHashCode();
         }
 
         public ActorTag(string urlAddress)
@@ -70,13 +70,13 @@ namespace Actor.Base
 
         private void InitTag(Uri uri)
         {
-            fId = ActorTagHelper.CastNewTagId();
-            fHost = uri.AbsoluteUri;
-            fIsRemote = true;
-            fUriHash = string.IsNullOrEmpty(fHost) ? 0 : fHost.GetHashCode();
+            _id = ActorTagHelper.CastNewTagId();
+            _host = uri.AbsoluteUri;
+            _isRemote = true;
+            _uriHash = (string.IsNullOrEmpty(_host)) ? 0 : _host.GetHashCode();
         }
 
-        public string Key() => string.Format(CultureInfo.InvariantCulture, "{0}-{1}", fUriHash, fId);
+        public string Key() => string.Format(CultureInfo.InvariantCulture, "{0}-{1}", _uriHash, _id);
 
         public override int GetHashCode() => Key().GetHashCode();
 
@@ -95,6 +95,6 @@ namespace Actor.Base
             return Equals(other);
         }
 
-        public bool Equals(ActorTag other) => other == null ? false : fHost == other.fHost && fIsRemote == other.fIsRemote && fId == other.fId;
+        public bool Equals(ActorTag other) => (other == null) ? false : _host == other._host && _isRemote == other._isRemote && _id == other._id;
     }
 }

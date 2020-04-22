@@ -13,7 +13,7 @@ namespace Actor.Server
 
         private void DoRun(IActor actor)
         {
-            ActorStatServer sa = new ActorStatServer();
+            var sa = new ActorStatServer();
             sa.SendMessage(actor);
         }
 

@@ -12,7 +12,7 @@ namespace Actor.Server
         public static void SendString(string aMsg)
         {
             var actor = new RemoteNetActor();
-            var localhost = System.Net.Dns.GetHostName();
+            string localhost = System.Net.Dns.GetHostName();
 
             //actor.SendMessage(aMsg,new actTag(new Uri("http://"+localhost+"/ARnActorServer/",UriKind.Absolute),"1")) ;
         }

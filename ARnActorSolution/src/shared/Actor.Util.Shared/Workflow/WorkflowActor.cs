@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Actor.Base;
 
 namespace Actor.Util
@@ -28,7 +24,7 @@ namespace Actor.Util
     */
     public class WorkflowActor<T> : BaseActor
     {
-        private IWfwStatus<T> _current ;
+        private IWfwStatus<T> _current;
         public WorkflowActor(IWfwStatus<T> startWith)
             : base()
         {
@@ -39,41 +35,17 @@ namespace Actor.Util
         private void DoProcess(IWfwStatus<T> aStatus)
         {
             // find transition
-            foreach(var tr in aStatus.TransitionList)
+            foreach (var tr in aStatus.TransitionList)
             {
                 if (tr.Action.Pattern(aStatus))
                 {
                     tr.Action.Apply(aStatus);
                     // change status
                     _current = tr.Destination;
-                    break ;
+                    break;
                 }
             }
         }
-    }
-
-    public class WfwTransition<T> : IWfwTransition<T>
-    {
-        public IWfwStatus<T> Destination {get; set;}
-
-        public Behavior<IWfwStatus<T>> Action
-        {
-            get;
-            set;
-        }
-    }
-
-    public class WfwStatus<T> : IWfwStatus<T>
-    {
-        public List<IWfwTransition<T>> TransitionList { get; private set; }
-        public string Current { get; protected set; }
-        public WfwStatus()
-        {
-            TransitionList = new List<IWfwTransition<T>>() ;
-            Current = string.Empty;
-        }
-
-        public T Data { get; protected set; }
     }
 
     public interface IWfwTransition<T>
@@ -84,7 +56,7 @@ namespace Actor.Util
 
     public interface IWfwStatus<T>
     {
-        string Current {get ;}
+        string Current { get; }
         List<IWfwTransition<T>> TransitionList { get; }
         T Data { get; }
     }

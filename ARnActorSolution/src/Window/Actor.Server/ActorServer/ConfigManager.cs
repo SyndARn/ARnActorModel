@@ -109,7 +109,7 @@ namespace Actor.Server
 
         public IServerCommandService GetServerCommandService()
         {
-            ServerCommandService service = new ServerCommandService();
+            var service = new ServerCommandService();
             service.RegisterCommand(new DiscoServerCommand());
             service.RegisterCommand(new StatServerCommand());
             return service;

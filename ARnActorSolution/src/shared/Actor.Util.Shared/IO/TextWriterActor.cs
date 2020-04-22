@@ -6,9 +6,9 @@ namespace Actor.Util
 {
     public class TextWriterActor : BaseActor, IDisposable
     {
-        private StreamWriter fStream;
+        private StreamWriter _stream;
 #if !(NETFX_CORE) || WINDOWS_UWP
-        private string fFileName;
+        private string _fileName;
 #endif
         public TextWriterActor(string aFileName)
         {
@@ -33,13 +33,13 @@ namespace Actor.Util
 
         private void DoFlush(TextWriterActor actor, IFuture<bool> future)
         {
-            fStream.Flush();
+            _stream.Flush();
             future.SendMessage(true);
         }
 
         private void DoInit(Stream aStream)
         {
-            fStream = new StreamWriter(aStream)
+            _stream = new StreamWriter(aStream)
             {
                 AutoFlush = true
             };
@@ -51,8 +51,8 @@ namespace Actor.Util
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         private void DoInit(string aFilename)
         {
-            fFileName = aFilename;
-            fStream = new StreamWriter(new FileStream(fFileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
+            _fileName = aFilename;
+            _stream = new StreamWriter(new FileStream(_fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
             {
                 AutoFlush = true
             };
@@ -61,19 +61,18 @@ namespace Actor.Util
         }
 #endif
 
-        private void DoWrite(string msg)
-        {
-            fStream.WriteLine(msg);
-        }
+        private void DoWrite(string msg) => _stream.WriteLine(msg);
 
         protected virtual void Dispose(bool disposing)
-        {
-            if (disposing && (fStream != null))
             {
-                fStream.Flush();
-                fStream.Dispose();
-                fStream = null;
+            if (!disposing || (_stream == null))
+            {
+                return;
             }
+
+            _stream.Flush();
+            _stream.Dispose();
+            _stream = null;
         }
 
         public void Dispose()

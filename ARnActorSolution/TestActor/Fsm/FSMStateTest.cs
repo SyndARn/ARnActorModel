@@ -58,23 +58,23 @@ namespace TestActor
                   .AddRule("MidState",  i => i == 2, i => { },"EndState");
                 var fsmActor = new FsmActor<string, int>(behaviors);
 
-                var currentState1 = fsmActor.GetCurrentState();
+                Future<string> currentState1 = fsmActor.GetCurrentState();
                 Assert.IsTrue(currentState1.Result() == "StartState");
 
                 fsmActor.SendMessage(1);
 
-                var currentState2 = fsmActor.GetCurrentState();
+                Future<string> currentState2 = fsmActor.GetCurrentState();
                 Assert.IsTrue(currentState2.Result() == "MidState");
 
                 fsmActor.SendMessage(2);
 
-                var currentState3 = fsmActor.GetCurrentState();
+                Future<string> currentState3 = fsmActor.GetCurrentState();
                 Assert.IsTrue(currentState3.Result() == "EndState");
 
                 fsmActor.SendMessage(3);
 
                 // unchanged shoud be
-                var currentState4 = fsmActor.GetCurrentState();
+                Future<string> currentState4 = fsmActor.GetCurrentState();
                 Assert.IsTrue(currentState4.Result() == "EndState");
             });
         }

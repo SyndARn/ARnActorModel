@@ -38,5 +38,5 @@ namespace Actor.Util
         public static Identity<T> ToIdentity<T>(this T value) => new Identity<T>(value);
     }
 
-    interface IMayBe<T> { }
+    public interface IMayBe<T> { }
 }

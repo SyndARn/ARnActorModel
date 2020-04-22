@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Actor.Base;
 using System.Dynamic;
 using System.Reflection;
-using System.Linq.Expressions;
+using Actor.Base;
 
 namespace Actor.TestApplication
 {
@@ -14,51 +9,42 @@ namespace Actor.TestApplication
     {
         private class InternalDynamicActor : BaseActor
         {
-            private dynamic fDynamic;
+            private dynamic _dynamic;
 
             public InternalDynamicActor(dynamic dyn) : base()
             {
-                fDynamic = dyn;
+                _dynamic = dyn;
                 Become(new Behavior<Tuple<InvokeMemberBinder, object[]>>(DoDynamic));
             }
 
             public void DoDynamic(Tuple<InvokeMemberBinder, object[]> msg)
             {
-                fDynamic.GetType().InvokeMember(
+                _dynamic.GetType().InvokeMember(
                     msg.Item1.Name,
-                    BindingFlags.Public | BindingFlags.InvokeMethod, null, fDynamic,
+                    BindingFlags.Public | BindingFlags.InvokeMethod, null, _dynamic,
                     msg.Item2);
             }
         }
 
-        private IActor fActor;
-        private readonly dynamic fDynamic;
+        private IActor _actor;
+        private readonly dynamic _dynamic;
 
         public DynamicActor(dynamic dynamic)
         {
-            fDynamic = dynamic;
-            fActor = new InternalDynamicActor(dynamic);
+            _dynamic = dynamic;
+            _actor = new InternalDynamicActor(dynamic);
         }
 
-        ActorTag IActor.Tag
-        {
-            get
-            {
-                return fActor.Tag;
-            }
-        }
+        ActorTag IActor.Tag => _actor.Tag;
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
-            fActor.SendMessage(Tuple.Create(binder, args));
-                result = null;
-                return true;
+            _actor.SendMessage(Tuple.Create(binder, args));
+            result = null;
+            return true;
         }
 
-        void IActor.SendMessage(object msg)
-        {
-            fActor.SendMessage(Tuple.Create(msg));
-        }
+        void IActor.SendMessage(object msg) => _actor.SendMessage(Tuple.Create(msg));
     }
 
     public class TestDynActor
@@ -67,9 +53,6 @@ namespace Actor.TestApplication
         {
         }
 
-        public void DoPrintSomething(string s)
-        {
-            Console.WriteLine("print " + s);
-        }
+        public void DoPrintSomething(string s) => Console.WriteLine("print " + s);
     }
 }

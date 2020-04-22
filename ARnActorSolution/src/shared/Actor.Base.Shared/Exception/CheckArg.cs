@@ -10,6 +10,17 @@ namespace Actor.Base
 {
     public static class CheckArg
     {
+        private const string AddressShouldBeFilled = "Address should be filled";
+        private const string StreamCantBeNull = "Stream can't be null";
+        private const string BehaviorsCantBeNull = "behaviors can't be null";
+        private const string BehaviorCantBeNull = "behavior can't be null";
+        private const string NullBehaviors = "Null someBehaviors";
+        private const string NullEnumerables = "Null enumerables";
+        private const string UriCantBeNull = "Uri can't be null";
+        private const string FutureMustExist = "Future must exist !";
+        private const string NullPatternReceived = "Null pattern received";
+        private const string ActorMustExist = "actor must exist";
+
         public static void Stream([ValidatedNotNull]Stream aStream)
         {
             if (aStream != null)
@@ -17,7 +28,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Stream can't be null");
+            throw new ActorException(StreamCantBeNull);
         }
 
         public static void Address([ValidatedNotNull]string anAddress)
@@ -27,7 +38,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Address should be filled");
+            throw new ActorException(AddressShouldBeFilled);
         }
 
         public static void BehaviorEnumerable([ValidatedNotNull]IEnumerable<IBehavior> behaviors)
@@ -37,7 +48,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("behaviors can't be null");
+            throw new ActorException(BehaviorsCantBeNull);
         }
 
         public static void Behavior([ValidatedNotNull]IBehavior aBehavior)
@@ -47,7 +58,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("behavior can't be null");
+            throw new ActorException(BehaviorCantBeNull);
         }
 
         public static void BehaviorParam([ValidatedNotNull]params IBehavior[] someBehaviors)
@@ -57,7 +68,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null someBehaviors");
+            throw new ActorException(NullBehaviors);
         }
 
         public static void Behaviors([ValidatedNotNull]Behaviors someBehaviors)
@@ -67,7 +78,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null someBehaviors");
+            throw new ActorException(NullBehaviors);
         }
 
         public static void Behaviors([ValidatedNotNull]IBehaviors someBehaviors)
@@ -77,7 +88,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null someBehaviors");
+            throw new ActorException(NullBehaviors);
         }
 
         public static void IEnumerable([ValidatedNotNull] IEnumerable enumerables)
@@ -87,7 +98,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null enumerables");
+            throw new ActorException(NullEnumerables);
         }
 
         public static void Uri([ValidatedNotNull] Uri anUri)
@@ -97,7 +108,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Uri can't be null");
+            throw new ActorException(UriCantBeNull);
         }
 
         public static void Actor([ValidatedNotNull] IActor anActor)
@@ -107,7 +118,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("actor must exist");
+            throw new ActorException(ActorMustExist);
         }
 
         public static void Future([ValidatedNotNull] IFuture aFuture)
@@ -117,7 +128,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("future must exist");
+            throw new ActorException(FutureMustExist);
         }
 
         public static void Pattern([ValidatedNotNull]Func<object, bool> aPattern)
@@ -127,12 +138,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null pattern received");
+            throw new ActorException(NullPatternReceived);
         }
-
-        //[AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
-        //public sealed class ValidatedNotNullAttribute : Attribute
-        //{
-        //}
     }
 }

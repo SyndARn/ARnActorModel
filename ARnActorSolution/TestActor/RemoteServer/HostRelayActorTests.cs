@@ -1,13 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Actor.Base;
-using Actor.Util;
+﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using Actor.Base;
+using Actor.Server;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestActor
 {
@@ -26,7 +22,7 @@ namespace TestActor
                         f => f.SendMessage(_data.AsEnumerable())
                         ));
                 }
-                )) ;
+                ));
         }
     }
 
@@ -49,14 +45,14 @@ namespace TestActor
             ActorServer.Start(config);
             IActor actor1 = new TestHostRelayActor();
 
-            DiscoCommand disco = new DiscoCommand(actor1);
-            RemoteSenderActor remote = new RemoteSenderActor(actor1.Tag);
+            var disco = new DiscoCommand(actor1);
+            var remote = new RemoteSenderActor(actor1.Tag);
             remote.SendMessage(disco);
 
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
             actor1.SendMessage(future);
-            var result1 = future.Result();
-            Assert.IsTrue(result1.Count() >= 3, $"found {result1.Count()}");
+            IEnumerable<string> result1 = future.Result();
+            Assert.IsTrue(result1.Skip(3 - 1).Any(), $"found {result1.Count().ToString()}");
         }
     }
 }

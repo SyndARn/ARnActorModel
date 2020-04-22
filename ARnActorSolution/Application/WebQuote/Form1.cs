@@ -22,7 +22,7 @@ namespace WebQuote
         {
             var future = new Future<string>();
             var yahoo = new YahooQuote(tbCCY1.Text+tbCCY2.Text,future);
-            tbQuote.Text = await future.ResultAsync();
+            tbQuote.Text = await future.ResultAsync().ConfigureAwait(false);
         }
     }
 }

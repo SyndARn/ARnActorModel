@@ -30,7 +30,7 @@ namespace Amoeba
         {
             if (resultActor != null)
             {
-                IMessageParam<long, long> data = await resultActor.GetResult().ResultAsync();
+                IMessageParam<long, long> data = await resultActor.GetResult().ResultAsync().ConfigureAwait(false);
                 textBox1.AppendText(string.Format("Somme {0} Quantité {1} \n", data.Item1, data.Item2)) ;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Actor.Base;
 using Actor.MonteCarlo;
@@ -11,7 +12,7 @@ namespace Actor.TestApplication
 {
     class Program
     {
-        static actMillion fMillion;
+        static ActorMillion _million;
 
         static void Main(string[] args)
         {
@@ -22,16 +23,10 @@ namespace Actor.TestApplication
                 lName = Array.Find(args, t => t.StartsWith("-n:"));
                 lPort = Array.Find(args, t => t.StartsWith("-p:"));
             }
-            if (!string.IsNullOrEmpty(lName))
-            {
-                lName = lName.Replace("-n:", "");
-            }
-            else
-            {
-                lName = "ARnActorServer";
-            }
 
-            if (!String.IsNullOrEmpty(lPort))
+            lName = !string.IsNullOrEmpty(lName) ? lName.Replace("-n:", "") : "ARnActorServer";
+
+            if (!string.IsNullOrEmpty(lPort))
             {
                 lPort = lPort.Replace("-p:", "");
             }
@@ -57,32 +52,50 @@ namespace Actor.TestApplication
                 {
                     switch (s)
                     {
-                        case "Many": { fMillion = new actMillion(); break; }
-                        case "SendMany": { fMillion.Send(); break; }
+                        case "Many":
+                            {
+                                _million = new ActorMillion(); break;
+                            }
+
+                        case "SendMany":
+                            {
+                                _million.Send(); break;
+                            }
+
                         case "quit": break;
                         case "Col":
                             {
-                                var fLauncher = new TestLauncherActor();
-                                fLauncher.SendAction(() =>
+                                var launcher = new TestLauncherActor();
+                                launcher.SendAction(() =>
                                 {
                                     var collect = new CollectionActor<string>();
                                     for (int i = 0; i < 100; i++)
+                                    {
                                         collect.Add(string.Format("Test {0}", i));
+                                    }
+
                                     if (collect.Count() != 100)
+                                    {
                                         throw new Exception("failed");
+                                    }
                                     // try to enum
-                                    var enumerable = collect.ToList();
+                                    List<string> enumerable = collect.ToList();
                                     if (enumerable.Count != 100)
+                                    {
                                         throw new ActorException("failed");
+                                    }
                                     // try a query
                                     var query = from col in collect
                                                 where col.Contains('1')
                                                 select col;
                                     if (query.Count() != 19)
+                                    {
                                         throw new ActorException("failed");
-                                    fLauncher.Finish();
+                                    }
+
+                                    launcher.Finish();
                                 });
-                                fLauncher.Wait();
+                                launcher.Wait();
                                 break;
                             }
                         case "Ring":
@@ -93,9 +106,9 @@ namespace Actor.TestApplication
                         case "Rings":
                             {
                                 Console.Write("Enter ring size : ");
-                                var rs = Console.ReadLine();
+                                string rs = Console.ReadLine();
                                 Console.Write("Enter cycle : ");
-                                var cy = Console.ReadLine();
+                                string cy = Console.ReadLine();
                                 int.TryParse(rs, out int r);
                                 int.TryParse(cy, out int y);
                                 new RingActor(y, r); // 30 sec
@@ -103,17 +116,18 @@ namespace Actor.TestApplication
                             }
                         case "Clients":
                             {
-                                var start = DateTime.UtcNow.Ticks;
+                                long start = DateTime.UtcNow.Ticks;
                                 IActor aServer = new EchoServerActor();
                                 for (int i = 0; i < 1000; i++)
                                 {
-                                    EchoClientActor aClient = new EchoClientActor();// new actEchoClient(aServer);
+                                    var aClient = new EchoClientActor();// new actEchoClient(aServer);
                                                                                     // DirectoryRequest.SendRegister("client + " + i.ToString(), aClient);
                                     aClient.Connect("EchoServer");
                                     aClient.SendMessage("client-" + i.ToString());
                                     // aClient.Disconnect();
                                 }
-                                var end = DateTime.UtcNow.Ticks;
+
+                                long end = DateTime.UtcNow.Ticks;
                                 Console.WriteLine("All client allocated {0}", (double)(end - start) / 10000.0);
                                 break;
                             }
@@ -159,6 +173,7 @@ namespace Actor.TestApplication
                             }
                     }
                 }
+
             } while (s != "quit");
         }
     }

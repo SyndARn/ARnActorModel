@@ -6,14 +6,14 @@ using System.Globalization;
 namespace Actor.TestApplication
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actMillion : BaseActor
+    public class ActorMillion : BaseActor
     {
-        private readonly QueueActor<IActor> fQueue;
+        private readonly QueueActor<IActor> _queue;
         const int KSize = 10000 ;
 
-        public actMillion() : base()
+        public ActorMillion() : base()
         {
-            fQueue = new QueueActor<IActor>();
+            _queue = new QueueActor<IActor>();
             Become(new Behavior<string>(DoStart));
             SendMessage("DoStart");
         }
@@ -28,7 +28,7 @@ namespace Actor.TestApplication
         {
             for (int i = 0; i < KSize; i++)
             {
-                fQueue.Queue(new BaseActor());
+                _queue.Queue(new BaseActor());
             }
 
             Console.WriteLine("end start million");
@@ -37,11 +37,11 @@ namespace Actor.TestApplication
         private void DoSend(string msg)
         {
             int i = 0;
-            IMsgQueue<IActor> item = fQueue.TryDequeueAsync().Result;
+            IMsgQueue<IActor> item = _queue.TryDequeueAsync().Result;
             while(item.Result && (i<KSize))
             {
                 item.Data.SendMessage("Bop");
-                item = fQueue.TryDequeueAsync().Result;
+                item = _queue.TryDequeueAsync().Result;
                 Console.WriteLine("receive " + i.ToString(CultureInfo.InvariantCulture));
                 i++;
             }

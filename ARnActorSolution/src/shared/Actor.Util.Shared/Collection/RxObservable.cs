@@ -31,7 +31,7 @@ namespace Actor.Util
         {
             Task<object> res = ReceiveAsync(t => t is IMessageParam<IActor, IDisposable>);
             SendMessage(observer);
-            IMessageParam<IActor, IDisposable> resi = res.Result as IMessageParam<IActor, IDisposable>;
+            var resi = res.Result as IMessageParam<IActor, IDisposable>;
             return resi.Item2;
         }
 

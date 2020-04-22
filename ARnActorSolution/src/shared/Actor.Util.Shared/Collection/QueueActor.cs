@@ -28,7 +28,7 @@ namespace Actor.Util
 {
     public class QueueActor<T> : ActionActor<T>
     {
-        private readonly Queue<T> fQueue = new Queue<T>();
+        private readonly Queue<T> _queue = new Queue<T>();
 
         public QueueActor()
             : base()
@@ -42,16 +42,16 @@ namespace Actor.Util
         {
             Task<object> retVal = ReceiveAsync(t => t is IMsgQueue<T>);
             SendAction(DoDequeue);
-            return await retVal as IMsgQueue<T>;
+            return await retVal.ConfigureAwait(false) as IMsgQueue<T>;
         }
 
-        private void DoQueue(T at) => fQueue.Enqueue(at);
+        private void DoQueue(T at) => _queue.Enqueue(at);
 
         private void DoDequeue()
         {
-            if (fQueue.Count > 0)
+            if (_queue.Count > 0)
             {
-                SendMessage(new MsgQueue<T>(true, fQueue.Dequeue()));
+                SendMessage(new MsgQueue<T>(true, _queue.Dequeue()));
             }
             else
             {

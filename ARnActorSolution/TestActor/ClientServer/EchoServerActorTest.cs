@@ -25,7 +25,7 @@ namespace TestActor
                 new EchoServerActor();
                 for (int i = 0; i < 5; i++)
                 {
-                    EchoClientActor aClient = new EchoClientActor();
+                    var aClient = new EchoClientActor();
                     aClient.Connect("EchoServer");
                     aClient.SendMessage("client-" + i.ToString());
                 }

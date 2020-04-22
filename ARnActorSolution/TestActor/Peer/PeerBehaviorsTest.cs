@@ -14,10 +14,7 @@ namespace TestActor
     [TestClass]
     public class PeerBehaviorsTest
     {
-        public TestContext TestContext
-        {
-            get; set;
-        }
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void PeerInterfaceTest()
@@ -31,9 +28,9 @@ namespace TestActor
 
                 peerActor.StoreNode(key, value);
                 peerActor.FindPeer(key, finder);
-                var result = finder.Result();
+                IPeerActor<int, string> result = finder.Result();
                 Assert.IsTrue(result != null);
-                var future = result.GetNode(key);
+                IFuture<string> future = result.GetNode(key);
                 result.DeleteNode(key);
                 result.StoreNode(key, value);
                 future = result.GetNode(key);
@@ -54,7 +51,8 @@ namespace TestActor
             {
                 keyList.Add(string.Format(CultureInfo.InvariantCulture, "testKey{0}", i)) ;
             }
-            var keyTest = CenterKey<string>.Calc(keyList);
+
+            string keyTest = CenterKey<string>.Calc(keyList);
             Assert.AreEqual("testKey96", keyTest);
         }
 
@@ -63,10 +61,10 @@ namespace TestActor
         {
             TestLauncherActor.Test(TestContext, () =>
             {
-                PeerActor<int, string> node1 = new PeerActor<int, string>();
-                PeerActor<int, string> node2 = new PeerActor<int, string>();
-                PeerActor<int, string> node3 = new PeerActor<int, string>();
-                PeerActor<int, string> node4 = new PeerActor<int, string>();
+                var node1 = new PeerActor<int, string>();
+                var node2 = new PeerActor<int, string>();
+                var node3 = new PeerActor<int, string>();
+                var node4 = new PeerActor<int, string>();
                 node1.NewPeer(node2, node2.GetHashKey().Result());
                 node1.NewPeer(node3, node3.GetHashKey().Result());
                 node1.NewPeer(node4, node4.GetHashKey().Result());

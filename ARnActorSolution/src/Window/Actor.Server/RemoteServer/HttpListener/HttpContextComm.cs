@@ -25,20 +25,22 @@ namespace Actor.Server
         }
 
         public void Acknowledge()
-        {
-            if (_context != null)
             {
-                HttpListenerResponse response = _context.Response;
-                response.Close();
-                _context = null;
-                _listener = null;
+            if (_context == null)
+            {
+                return;
             }
+
+            HttpListenerResponse response = _context.Response;
+            response.Close();
+            _context = null;
+            _listener = null;
         }
 
         public void SendStream(string uri, Stream stream)
         {
             CheckArg.Stream(stream);
-            using (StreamReader srDebug = new StreamReader(stream))
+            using (var srDebug = new StreamReader(stream))
             {
                 while (!srDebug.EndOfStream)
                 {
@@ -46,9 +48,9 @@ namespace Actor.Server
                 }
 
                 stream.Seek(0, SeekOrigin.Begin);
-                using (HttpClient client = new HttpClient())
+                using (var client = new HttpClient())
                 {
-                    using (StreamContent hc = new StreamContent(stream))
+                    using (var hc = new StreamContent(stream))
                     {
                         client.PostAsync(uri, hc).Wait();
                     }

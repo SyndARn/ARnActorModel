@@ -133,6 +133,7 @@ namespace Actor.Base
             {
                 return false;
             }
+
             return Pattern(aT);
         }
     }
@@ -198,7 +199,7 @@ namespace Actor.Base
                 return;
             }
 
-            IMessageParam<T1, T2> MessageParamT = (IMessageParam<T1, T2>)aT;
+            var MessageParamT = (IMessageParam<T1, T2>)aT;
             Apply(MessageParamT.Item1, MessageParamT.Item2);
         }
     }
@@ -239,10 +240,7 @@ namespace Actor.Base
         {
         }
 
-        public Func<T1, T2, T3, bool> DefaultPattern()
-        {
-            return (t1, t2, t3) => t1 is T1 && t2 is T2 && t3 is T3;
-        }
+        public Func<T1, T2, T3, bool> DefaultPattern() => (t1, t2, t3) => t1 is T1 && t2 is T2 && t3 is T3;
 
         public Behavior(Action<T1, T2, T3> anApply)
         {
@@ -258,16 +256,18 @@ namespace Actor.Base
                 return false;
             }
 
-            return aT is IMessageParam<T1, T2, T3> MessageParamT ? Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3) : false;
+            return aT is IMessageParam<T1, T2, T3> MessageParamT && Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
         }
 
         public void StandardApply(object aT)
         {
-            if (Apply != null)
+            if (Apply == null)
             {
-                IMessageParam<T1, T2, T3> MessageParamT = (IMessageParam<T1, T2, T3>)aT;
-                Apply(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
+                return;
             }
+
+            var MessageParamT = (IMessageParam<T1, T2, T3>)aT;
+            Apply(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3);
         }
     }
 
@@ -323,18 +323,7 @@ namespace Actor.Base
             Completion = null;
         }
 
-        public bool StandardPattern(object aT)
-        {
-            if (Pattern == null)
-            {
-                return false;
-            }
-            if (aT is T t)
-            {
-                return Pattern(t);
-            }
-            return false;
-        }
+        public bool StandardPattern(object aT) => Pattern == null ? false : aT is T t && Pattern(t);
 
         public void StandardApply(object aT) => Apply?.Invoke((T)aT);
     }
@@ -390,21 +379,20 @@ namespace Actor.Base
             {
                 return false;
             }
-            if (aT is IMessageParam<T1, T2, T3, T4> MessageParamT)
-            {
-                return Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3, MessageParamT.Item4);
-            }
 
-            return false;
+            return aT is IMessageParam<T1, T2, T3, T4> MessageParamT
+                && Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3, MessageParamT.Item4);
         }
 
-        public void StandardApply(Object aT)
+        public void StandardApply(object aT)
         {
-            if (Apply != null)
+            if (Apply == null)
             {
-                IMessageParam<T1, T2, T3, T4> MessageParamT = (IMessageParam<T1, T2, T3, T4>)aT;
-                Apply(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3, MessageParamT.Item4);
+                return;
             }
+
+            var MessageParamT = (IMessageParam<T1, T2, T3, T4>)aT;
+            Apply(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3, MessageParamT.Item4);
         }
     }
 }

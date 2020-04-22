@@ -56,12 +56,12 @@ namespace TestActor
                 observableActor.RegisterObserver(observer1);
                 TestObserver observer2 = new TestObserver();
                 observableActor.RegisterObserver(observer2);
-                string testString = string.Format("Test {0}", observer1.Tag);
+                string testString = $"Test {observer1.Tag}";
                 observableActor.SendMessage(testString);
                 string result1 = observer1.GetData();
-                Assert.AreEqual(result1, string.Format("Test {0}", observer1.Tag));
+                Assert.AreEqual(result1, $"Test {observer1.Tag}");
                 string result2 = observer2.GetData();
-                Assert.AreEqual(result2, string.Format("Test {0}", observer2.Tag));
+                Assert.AreEqual(result2, $"Test {observer2.Tag}");
             });
         }
 

@@ -40,7 +40,7 @@ namespace Actor.Server
             Console.WriteLine("Dictionary starts and autoregisters");
             _dictionary.Add("Directory", this);
 
-            Behaviors bhvs = new Behaviors();
+            var bhvs = new Behaviors();
             bhvs.AddBehavior(new ActionBehavior<IActor>())
                 .AddBehavior(new ActionBehavior<IActor,string>());
             Become(bhvs);
@@ -66,14 +66,14 @@ namespace Actor.Server
 
         public IActor GetActorByName(string actorName)
         {
-            Future<DirectoryRequest, IActor> future = new Future<DirectoryRequest, IActor>();
+            var future = new Future<DirectoryRequest, IActor>();
             Find(future, actorName);
             return future.Result().Item2;
         }
 
         private void DoDisco(IActor anActor)
         {
-            Dictionary<string, string> directory = new Dictionary<string, string>();
+            var directory = new Dictionary<string, string>();
             // TODO replace with Host Service
             string fullhost = ActorServer.GetInstance().FullHost;
             // var fullhost = new ConfigManager().Host().Host;
@@ -82,15 +82,18 @@ namespace Actor.Server
                 IActor value = _dictionary[key];
                 directory.Add(key,fullhost + value.Tag.Key());
             }
+
             anActor.SendMessage(directory);
         }
 
         private void DoRegister(IActor anActor,string msg)
-        {
-            if (!_dictionary.Keys.Any(t => t == msg))
             {
-                _dictionary.Add(msg, anActor);
+            if (_dictionary.Keys.Any(t => t == msg))
+            {
+                return;
             }
+
+            _dictionary.Add(msg, anActor);
         }
 
         private void DoFind(IActor anActor,string msg)

@@ -52,7 +52,7 @@ namespace Actor.Server
                     if (ans.Item2 != null)
                     {
                         SendByName<string>.Send("Server found", "Console");
-                        ans.Item2.SendMessage(new ServerMessage<string>(this, ServerRequest.Connect, default(string)));
+                        ans.Item2.SendMessage(new ServerMessage<string>(this, ServerRequest.Connect, default));
                         ReceiveAsync(m =>
                             {
                                 ServerMessage<string> sm = m as ServerMessage<string> ;

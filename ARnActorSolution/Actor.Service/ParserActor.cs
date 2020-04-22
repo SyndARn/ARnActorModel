@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Actor.Base ;
+using Actor.Util;
 using Actor.Server ;
 
 namespace Actor.Service
@@ -18,25 +19,6 @@ namespace Actor.Service
                     IActor parser = new StringParserActor();
                     parser.SendMessage(a,s);
                 };
-        }
-    }
-
-    public class StringParserActor : BaseActor
-    {
-        public StringParserActor()
-            : base()
-        {
-            Become(new Behavior<IActor,string>(
-                (a,s) =>
-                    {
-                        char[] chr = {' '} ;
-                        var stringtoparse = s.Trim().Split(chr) ;
-                        foreach (string item in stringtoparse)
-                        {
-                            a.SendMessage(this,item);
-                        }
-                    }
-                )) ;
         }
     }
 

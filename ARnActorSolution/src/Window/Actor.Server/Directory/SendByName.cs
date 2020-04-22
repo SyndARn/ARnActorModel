@@ -28,7 +28,7 @@ namespace Actor.Server
     {
         public static void Send(T data, string actor)
         {
-            SendByNameActor<T> act = new SendByNameActor<T>();
+            var act = new SendByNameActor<T>();
             act.SendMessage(actor, data);
         }
     }

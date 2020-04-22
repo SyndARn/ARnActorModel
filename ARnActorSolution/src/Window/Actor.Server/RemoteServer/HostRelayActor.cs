@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Security.Permissions;
-using System.Globalization;
 using Actor.Base;
 
 namespace Actor.Server
@@ -19,29 +7,30 @@ namespace Actor.Server
     // http listener ...
     public class HostRelayActor : BaseActor, IDisposable
     {
-        private IListenerService fListener;
+        private IListenerService _listener;
 
-        public HostRelayActor() => Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
+        public HostRelayActor() => Become(new Behavior<string>(t => "Listen".Equals(t), DoListen));
 
         public HostRelayActor(IListenerService listenerService)
         {
-            fListener = listenerService;
-            Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
+            _listener = listenerService;
+            Become(new Behavior<string>(t => "Listen".Equals(t), DoListen));
         }
 
         private void DoListen(object aMsg)
         {
             try
             {
-                if (fListener == null)
+                if (_listener == null)
                 {
-                    fListener = ActorServer.GetInstance().ListenerService;
+                    _listener = ActorServer.GetInstance().ListenerService;
                 }
-                IContextComm context = fListener.GetCommunicationContext();
+
+                IContextComm context = _listener.GetCommunicationContext();
                 RemoteReceiverActor.Cast(context);
                 SendMessage("Listen");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("Can't listen " + e);
                 Become(new NullBehavior());
@@ -56,10 +45,11 @@ namespace Actor.Server
 
         protected virtual void Dispose(bool disposing)
         {
-                if (disposing)
-                {
-                }
-                fListener?.Close();
+            if (disposing)
+            {
+            }
+
+            _listener?.Close();
         }
 
         ~HostRelayActor()

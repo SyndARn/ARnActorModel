@@ -5,14 +5,14 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public class MapReduceActor<TData,TKeyMap, TValueMap, TKeyReduce, TValueReduce> : BaseActor
+    public class MapReduceActor<TData, TKeyMap, TValueMap, TKeyReduce, TValueReduce> : BaseActor
     {
-        private readonly Dictionary<TKeyReduce, List<TValueReduce>> fDict = new Dictionary<TKeyReduce, List<TValueReduce>>();
-        private int fActiveMap;
+        private readonly Dictionary<TKeyReduce, List<TValueReduce>> _dict = new Dictionary<TKeyReduce, List<TValueReduce>>();
+        private int _activeMap;
 
         public MapReduceActor
             (
-                Action<IActor,TData> senderKV,
+                Action<IActor, TData> senderKV,
                 MapAction<TKeyMap, TValueMap> mapKV,
                 ReduceFunction<TKeyReduce, TValueReduce> reduceKV,
                 IActor outputActor
@@ -21,34 +21,35 @@ namespace Actor.Util
             // start reduce
             var bhvStart = new Behavior<TData>(d =>
             {
-                fActiveMap++;
+                _activeMap++;
                 senderKV(this, d);
             });
 
             // receive data to process
-            var bhvInput = new Behavior<TKeyMap,TValueMap>(
-                (k,v) =>
+            var bhvInput = new Behavior<TKeyMap, TValueMap>(
+                (k, v) =>
                 {
                     // parse data
-                        var map = new MapActor<TKeyMap, TValueMap>(this, mapKV);
-                        fActiveMap++;
-                        map.SendMessage((IActor)this, k, v);
+                    var map = new MapActor<TKeyMap, TValueMap>(this, mapKV);
+                    _activeMap++;
+                    map.SendMessage((IActor)this, k, v);
                 }
                 );
 
             // end parse
-            var bhvEndParse = new Behavior<TData, IActor>((d, a) => fActiveMap--);
+            var bhvEndParse = new Behavior<TData, IActor>((d, a) => _activeMap--);
 
             // receive from Map, index
             var bhvMap2Index = new Behavior<TKeyReduce, TValueReduce>
                 (
                 (k, v) =>
                 {
-                    if (!fDict.TryGetValue(k, out List<TValueReduce> someValue))
+                    if (!_dict.TryGetValue(k, out List<TValueReduce> someValue))
                     {
-                        fDict[k] = new List<TValueReduce>();
+                        _dict[k] = new List<TValueReduce>();
                     }
-                    fDict[k].Add(v);
+
+                    _dict[k].Add(v);
                 }
                 );
 
@@ -56,18 +57,19 @@ namespace Actor.Util
             var bhvMap2EndOfJov = new Behavior<MapActor<TKeyMap, TValueMap>>
                 (
                 (a) =>
-                {
-                    fActiveMap--;
-                    if (fActiveMap <= 0)
                     {
+                        _activeMap--;
+                        if (_activeMap > 0)
+                        {
+                            return;
+                        }
                         // launch reduce
-                        foreach (var item in fDict)
+                        foreach (var item in _dict)
                         {
                             var red = new ReduceActor<TKeyReduce, TValueReduce>(this, reduceKV);
                             red.SendMessage(item.Key, item.Value.AsEnumerable());
                         }
                     }
-                }
                 );
 
             // receive from Reduce, send to output
@@ -76,7 +78,7 @@ namespace Actor.Util
                 (r, k, v) => outputActor.SendMessage(k, v)
                 );
 
-            Behaviors bhvs = new Behaviors();
+            var bhvs = new Behaviors();
             bhvs.AddBehavior(bhvStart);
             bhvs.AddBehavior(bhvEndParse);
             bhvs.AddBehavior(bhvInput);
@@ -87,25 +89,25 @@ namespace Actor.Util
         }
     }
 
-    public delegate void MapAction<TKeyMap,TValueMap>(IActor actor, TKeyMap keyMap, TValueMap valueMap) ;
+    public delegate void MapAction<TKeyMap, TValueMap>(IActor actor, TKeyMap keyMap, TValueMap valueMap);
 
     public class MapActor<TKeyMap, TValueMap> : BaseActor
     {
-        private readonly IActor fSender;
-        private readonly MapAction<TKeyMap, TValueMap> fMapAction;
+        private readonly IActor _sender;
+        private readonly MapAction<TKeyMap, TValueMap> _mapAction;
 
         public MapActor(IActor sender, MapAction<TKeyMap, TValueMap> mapAction) : base()
         {
-            fSender = sender;
-            fMapAction = mapAction;
+            _sender = sender;
+            _mapAction = mapAction;
             Become(new Behavior<IActor, TKeyMap, TValueMap>(DoMapAction));
         }
 
         private void DoMapAction(IActor act, TKeyMap key, TValueMap value)
         {
-            fMapAction(fSender, key, value);
+            _mapAction(_sender, key, value);
             // end of job
-            fSender.SendMessage(this);
+            _sender.SendMessage(this);
         }
     }
 
@@ -113,20 +115,20 @@ namespace Actor.Util
 
     public class ReduceActor<TKey, TValue> : BaseActor
     {
-        private readonly IActor fSender;
-        private readonly ReduceFunction<TKey, TValue> fReduceFunction;
+        private readonly IActor _sender;
+        private readonly ReduceFunction<TKey, TValue> _reduceFunction;
 
         public ReduceActor(IActor sender, ReduceFunction<TKey, TValue> reduceFunction) : base()
         {
-            fReduceFunction = reduceFunction;
-            fSender = sender;
+            _reduceFunction = reduceFunction;
+            _sender = sender;
             Become(new Behavior<TKey, IEnumerable<TValue>>(DoReduceFunction));
         }
 
         private void DoReduceFunction(TKey key, IEnumerable<TValue> someValues)
         {
-            TValue value = fReduceFunction(key, someValues);
-            fSender.SendMessage(this, key, value);
+            TValue value = _reduceFunction(key, someValues);
+            _sender.SendMessage(this, key, value);
         }
     }
 }

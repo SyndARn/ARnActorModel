@@ -26,7 +26,7 @@ namespace Actor.TestApplication
             Console.WriteLine("Serv Start");
             long start = DateTime.UtcNow.Ticks;
             _collect = new CollectionActor<string>();
-            List<string> list = new List<string>();
+            var list = new List<string>();
             for (int i = 0; i < 10; i++)
             {
                 _collect.Add(i.ToString(CultureInfo.InvariantCulture));
@@ -38,13 +38,13 @@ namespace Actor.TestApplication
                 Console.WriteLine("Collect " + item);
             }
 
-            BaseActor actForeach = new BaseActor(new ForEachBehavior<string>());
-            actForeach.SendMessage<IEnumerable<string>, Action<String>>(list,
+            var actForeach = new BaseActor(new ForEachBehavior<string>());
+            actForeach.SendMessage<IEnumerable<string>, Action<string>>(list,
                 t => Console.WriteLine("list " + t));
 
             Console.WriteLine("Should have work");
 
-            LinkedListActor<string> linkedlist = new LinkedListActor<string>();
+            var linkedlist = new LinkedListActor<string>();
             for (int i = 0; i < 100; i++)
             {
                 linkedlist.SendMessage(LinkedListOperation.Add, i.ToString());
@@ -60,13 +60,14 @@ namespace Actor.TestApplication
             _clientList = new List<IActor>();
             for (int i = 0; i < 100; i++)
             {
-                EchoClientActor aClient = new EchoClientActor();// new actEchoClient(aServer);
+                var aClient = new EchoClientActor();// new actEchoClient(aServer);
                 // DirectoryRequest.SendRegister("client + " + i.ToString(), aClient);
                 aClient.Connect("EchoServer");
                 aClient.SendMessage("client-" + i.ToString(CultureInfo.InvariantCulture));
                 _clientList.Add(aClient);
                 // aClient.Disconnect();
             }
+
             long end = DateTime.UtcNow.Ticks;
             Console.WriteLine("All client allocated {0}", (end - start) / 10000.0);
 

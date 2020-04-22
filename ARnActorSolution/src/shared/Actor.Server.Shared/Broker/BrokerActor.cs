@@ -46,7 +46,7 @@ namespace Actor.Server
                 s => s == BrokerAction.Start,
                 s =>
                 {
-                    HeartBeatActor actor = new HeartBeatActor(30000);
+                    var actor = new HeartBeatActor(30000);
                     actor.SendMessage((IActor)this);
                     Logger.SendMessage("HeartBeat start");
                 });
@@ -59,7 +59,7 @@ namespace Actor.Server
                 (b, a) => b == BrokerAction.RegisterWorker,
                  (b, a) =>
                  {
-                     WorkerStatus workerStatus = new WorkerStatus
+                     var workerStatus = new WorkerStatus
                      {
                          TimeToLive = 0,
                          State = WorkerReadyState.Idle
@@ -96,7 +96,7 @@ namespace Actor.Server
             return new Behavior<T>(
                 (t) =>
                 {
-                    RequestStatus<T> requestStatus = new RequestStatus<T>
+                    var requestStatus = new RequestStatus<T>
                     {
                         Data = t,
                         State = RequestState.Unprocessed,

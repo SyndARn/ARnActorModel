@@ -12,25 +12,22 @@ namespace TestActor
     internal class ParserTest : BaseActor
     {
         public ParserTest()
-            : base()
-        {
-            Become(new Behavior<IActor>(DoParser));
-        }
+            : base() => Become(new Behavior<IActor>(DoParser));
 
         private void DoParser(IActor anActor)
         {
-            List<String> aList = new List<String>
+            var aList = new List<string>
             {
                 ActorTask.Stat()
             };
             var lParser = new ParserActor();
-            lParser.SendMessage(aList.AsEnumerable<String>(), anActor);
+            lParser.SendMessage(aList.AsEnumerable(), anActor);
         }
     }
 
     internal class TestReceiver : BaseActor
     {
-        private readonly List<string> fList = new List<string>();
+        private readonly List<string> _list = new List<string>();
 
         public TestReceiver()
         {
@@ -45,18 +42,9 @@ namespace TestActor
             return future;
         }
 
-        private void Result(IActor aFuture)
-        {
-            aFuture.SendMessage(fList.AsEnumerable());
-        }
+        private void Result(IActor future) => future.SendMessage(_list.AsEnumerable());
 
-        private void Receive(IEnumerable<string> list)
-        {
-            foreach (var item in list)
-            {
-                fList.Add(item);
-            }
-        }
+        private void Receive(IEnumerable<string> list) => _list.AddRange(list);
     }
 
     [TestClass()]
@@ -72,7 +60,7 @@ namespace TestActor
                var parserTest = new ParserTest();
                var receiver = new TestReceiver();
                parserTest.SendMessage((IActor)receiver);
-               var future = receiver.GetResult().Result();
+               IEnumerable<string> future = receiver.GetResult().Result();
                Assert.IsTrue(future.Any());
                Assert.IsTrue(future.Contains("Max"));
            });

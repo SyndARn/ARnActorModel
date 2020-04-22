@@ -55,7 +55,7 @@ namespace TestActor
                 SerialObject so = new SerialObject(new MessageParam<StateAction,string>(StateAction.Set,"Test"), actor.Tag);
                 HostDirectoryActor.GetInstance().SendMessage(so);
                 var result = actor.GetStateAsync(10000).Result;
-                Assert.AreEqual(result, "Test");
+                Assert.AreEqual("Test",result);
 
                 HostDirectoryActor.Unregister(actor);
                 SerialObject so2 = new SerialObject(new MessageParam<StateAction,string>(StateAction.Set, "Test2"), actor.Tag);

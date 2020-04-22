@@ -3,9 +3,6 @@ using Actor.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
 using Actor.Base;
 
 namespace TestActor
@@ -14,10 +11,7 @@ namespace TestActor
     public class DiscoveryActorTests
     {
         [TestMethod()]
-        public void DiscoveryActorTest()
-        {
-            TestLauncherActor.Test(DoDiscoveryActorTest);
-        }
+        public void DiscoveryActorTest() => TestLauncherActor.Test(DoDiscoveryActorTest);
 
         private void DoDiscoveryActorTest()
         {
@@ -28,9 +22,9 @@ namespace TestActor
             ActorServer.Start(ActorConfigManager.CastForTest());
             var future = new Future<Dictionary<string, string>>();
             var disco = new DiscoveryActor(uri.AbsoluteUri, future);
-            var result = future.Result(60000);
+            Dictionary<string, string> result = future.Result(60000);
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Count >= 3,$"result is {result.Count}");
+            Assert.IsTrue(result.Count >= 3,$"result is {result.Count.ToString()}");
             Assert.IsTrue(result.Keys.Contains("KnownShards"));
         }
     }

@@ -40,7 +40,7 @@ namespace Actor.Server
             {
                 fActorList.Add(aMessage.Client);
             }
-            aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Accept, default(T)));
+            aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Accept, default));
         }
 
         protected void DoDisconnect(ServerMessage<T> aMessage)

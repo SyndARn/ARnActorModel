@@ -18,10 +18,10 @@ namespace TestActor
             IActor iBaseActor = new BaseActor();
             Assert.IsTrue(bhv.StandardPattern(iBaseActor));
 
-            BaseActor baseActor = new BaseActor();
+            var baseActor = new BaseActor();
             Assert.IsTrue(bhv.StandardPattern(baseActor));
 
-            ActionActor actionActor = new ActionActor();
+            var actionActor = new ActionActor();
             Assert.IsTrue(bhv.StandardPattern(actionActor));
 
             IFuture future = new Future<string>();
@@ -34,14 +34,14 @@ namespace TestActor
         [TestMethod]
         public void BehaviorsSimpleTest()
         {
-            BaseActor actor = new BaseActor();
-            Behaviors behaviors = new Behaviors();
+            var actor = new BaseActor();
+            var behaviors = new Behaviors();
 
             behaviors.LinkToActor(actor);
             Assert.AreEqual(actor, behaviors.LinkedActor);
 
-            Behavior<string> behavior1 = new Behavior<string>();
-            Behavior<int> behavior2 = new Behavior<int>();
+            var behavior1 = new Behavior<string>();
+            var behavior2 = new Behavior<int>();
             behaviors.AddBehavior(behavior1);
             behaviors.AddBehavior(behavior2);
             IEnumerable<IBehavior> allBehaviors = behaviors.AllBehaviors();
@@ -51,7 +51,7 @@ namespace TestActor
 
             Assert.IsTrue(behaviors.FindBehavior(behavior1));
             Assert.IsTrue(behaviors.FindBehavior(behavior2));
-            Behavior<object> behavior3 = new Behavior<object>();
+            var behavior3 = new Behavior<object>();
             Assert.IsFalse(behaviors.FindBehavior(behavior3));
 
             Assert.IsTrue(behavior1.LinkedTo == behaviors);
@@ -69,21 +69,21 @@ namespace TestActor
         [TestMethod]
         public void BehaviorsTest()
         {
-            Behaviors behaviors = new Behaviors();
+            var behaviors = new Behaviors();
             Assert.IsFalse(behaviors.AllBehaviors().Any());
 
-            Behavior bhv1 = new Behavior(a => a != null, a => { });
+            var bhv1 = new Behavior(a => a != null, a => { });
             behaviors = new Behaviors(new IBehavior[] { bhv1 });
             Assert.IsTrue(behaviors.AllBehaviors().Count() == 1);
             Assert.IsTrue(behaviors.FindBehavior(bhv1));
             Assert.IsTrue(bhv1.LinkedTo == behaviors);
 
-            Behavior<string> bhv2 = new Behavior<string>();
+            var bhv2 = new Behavior<string>();
             behaviors.AddBehavior(bhv2);
             Assert.IsTrue(behaviors.AllBehaviors().Count() == 2);
             Assert.IsTrue(behaviors.FindBehavior(bhv2));
 
-            BaseActor actor = new BaseActor(behaviors);
+            var actor = new BaseActor(behaviors);
             Assert.IsTrue(behaviors.LinkedActor == actor);
         }
 

@@ -45,15 +45,9 @@ namespace Actor.Util
                 .AddBehavior(new Behavior<IFuture<IEnumerable<Tuple<HashKey, IActor>>>>()); // AskNodes();
         }
 
-        public void DeleteNode(TKey key)
-        {
-            LinkedActor.SendMessage(PeerOrder.PeerDeleteNode, key);
-        }
+        public void DeleteNode(TKey key) => LinkedActor.SendMessage(PeerOrder.PeerDeleteNode, key);
 
-        public void GetNode(TKey key, IActor actor)
-        {
-            LinkedActor.SendMessage(PeerOrder.PeerGetNode, key, actor);
-        }
+        public void GetNode(TKey key, IActor actor) => LinkedActor.SendMessage(PeerOrder.PeerGetNode, key, actor);
 
         public IFuture<TValue> GetNode(TKey key)
         {
@@ -98,15 +92,9 @@ namespace Actor.Util
             Become(bhv);
         }
 
-        public void FindPeer(TKey key, IFuture<IPeerActor<TKey,TValue>> actor)
-        {
-            this.SendMessage(PeerOrder.PeerFindPeer, key, actor);
-        }
+        public void FindPeer(TKey key, IFuture<IPeerActor<TKey, TValue>> actor) => this.SendMessage(PeerOrder.PeerFindPeer, key, actor);
 
-        public void NewPeer(IPeerActor<TKey,TValue> actor, HashKey hash)
-        {
-            this.SendMessage(PeerOrder.PeerNewPeer, actor, hash);
-        }
+        public void NewPeer(IPeerActor<TKey, TValue> actor, HashKey hash) => this.SendMessage(PeerOrder.PeerNewPeer, actor, hash);
 
         public IFuture<IEnumerable<TKey>> AskKeys()
         {
@@ -127,25 +115,13 @@ namespace Actor.Util
             _nodeBehaviorService.StoreNode(key, value);
         }
 
-        public IFuture<TValue> GetNode(TKey key)
-        {
-            return _nodeBehaviorService.GetNode(key);
-        }
+        public IFuture<TValue> GetNode(TKey key) => _nodeBehaviorService.GetNode(key);
 
-        public void DeleteNode(TKey key)
-        {
-            _nodeBehaviorService.DeleteNode(key);
-        }
+        public void DeleteNode(TKey key) => _nodeBehaviorService.DeleteNode(key);
 
-        public IFuture<HashKey> GetHashKey()
-        {
-            return _nodeBehaviorService.GetHashKey();
-        }
+        public IFuture<HashKey> GetHashKey() => _nodeBehaviorService.GetHashKey();
 
-        IFuture<HashKey> IPeerActor<TKey>.GetPeerHashKey()
-        {
-            return _nodeBehaviorService.GetHashKey();
-        }
+        IFuture<HashKey> IPeerActor<TKey>.GetPeerHashKey() => _nodeBehaviorService.GetHashKey();
         // searchK
         // delete kv
         // nodelist

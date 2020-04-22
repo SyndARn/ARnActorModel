@@ -2,23 +2,24 @@
 using Actor.Base;
 using System.Collections.Generic;
 using Actor.Server;
+using System.Threading.Tasks;
 
 namespace TestActor
 {
     internal class DiscoTestActor : BaseActor
     {
-        private IActor fLauncher;
+        private readonly IActor _launcher;
 
         public DiscoTestActor(IActor aLauncher)
         {
-            fLauncher = aLauncher;
+            _launcher = aLauncher;
             Become(new Behavior<Dictionary<string, string>>(ReceiveDisco));
         }
 
         private void ReceiveDisco(Dictionary<string, string> msg)
         {
             Assert.IsNotNull(msg);
-            fLauncher.SendMessage(true);
+            _launcher.SendMessage(true);
         }
     }
 
@@ -32,7 +33,7 @@ namespace TestActor
         private void DoIt(IActor caller, IActor lookup, string name)
         {
             DirectoryActor.GetDirectory().Find(this, name);
-            var task = ReceiveAsync(ask => ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>);
+            Task<object> task = ReceiveAsync(ask => ask is IMessageParam<DirectoryActor.DirectoryRequest, IActor>);
             if ((task.Result as IMessageParam<DirectoryActor.DirectoryRequest, IActor>)?.Item2 == lookup)
             {
                 caller.SendMessage(true);
@@ -60,7 +61,7 @@ namespace TestActor
             {
                 var dirtest = new BaseActor();
                 DirectoryActor.GetDirectory().Register(dirtest, dirtest.Tag.Key());
-                var result = DirectoryActor.GetDirectory().FindActor(dirtest.Tag.Key()).Result(5000);
+                IMessageParam<DirectoryActor.DirectoryRequest, IActor> result = DirectoryActor.GetDirectory().FindActor(dirtest.Tag.Key()).Result(5000);
                 Assert.IsTrue(result.Item1 == DirectoryActor.DirectoryRequest.Find);
                 Assert.IsNotNull(result.Item2);
                 Assert.AreEqual(dirtest, result.Item2);

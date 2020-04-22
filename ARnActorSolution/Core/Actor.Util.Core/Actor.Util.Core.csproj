@@ -9,6 +9,13 @@
   <Import Project="..\..\src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems" Label="Shared" />
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Actor.Base.Core\Actor.Base.Core.csproj" />
   </ItemGroup>
 

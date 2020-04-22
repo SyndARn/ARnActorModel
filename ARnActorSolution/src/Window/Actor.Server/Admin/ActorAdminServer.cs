@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Actor.Base;
 
 namespace Actor.Server
@@ -14,9 +15,9 @@ namespace Actor.Server
         private void Behavior(IActor asker, string Data)
         {
             char[] separ = { ' ' };
-            var lStrings = Data.Split(separ, StringSplitOptions.RemoveEmptyEntries);
-            var lOrder = lStrings[0];
-            var lData = Data.Replace(lOrder, "").TrimStart();
+            string[] lStrings = Data.Split(separ, StringSplitOptions.RemoveEmptyEntries);
+            string lOrder = lStrings[0];
+            string lData = Data.Replace(lOrder, "").TrimStart();
             switch (lOrder)
             {
                 case "Shard":
@@ -37,6 +38,7 @@ namespace Actor.Server
                                     res.Item3.SendMessage(req);
                                 });
                         }
+
                         break;
                     }
                 case "Stat":
@@ -45,11 +47,13 @@ namespace Actor.Server
                         // (new StatServerCommand()).Run(asker);
                         break;
                     }
+
                 case "AddTask":
                     {
                         // add a task
                         break;
                     }
+
                 case "RemoteEcho":
                     {
                         // have a disco
@@ -59,10 +63,10 @@ namespace Actor.Server
                         string lHost = lData.Split(separ2)[0];
                         string lService = lData.Split(separ2)[1];
                         ConnectActor.Connect(this, lHost, lService);
-                        var data = ReceiveAsync(ans => ans is IMessageParam<string, ActorTag, IActor>);
+                        Task<object> data = ReceiveAsync(ans => ans is IMessageParam<string, ActorTag, IActor>);
                         var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                         // we got remote server adress
-                        EchoClientActor aClient = new EchoClientActor();
+                        var aClient = new EchoClientActor();
                         aClient.Connect(res.Item1);
                         aClient.SendMessage("KooKoo");
                         // res.Item3.SendMessage("call from " + this.Tag.Id);
@@ -85,7 +89,7 @@ namespace Actor.Server
                         string lHost = lData.Split(separ2)[0];
                         string lMsg = lData.Split(separ2)[1];
                         ConnectActor.Connect(this, lHost, "RPrint");
-                        var data = ReceiveAsync(ans => ans is IMessageParam<string, ActorTag, IActor>);
+                        Task<object> data = ReceiveAsync(ans => ans is IMessageParam<string, ActorTag, IActor>);
                         var res = data.Result as IMessageParam<string, ActorTag, IActor>;
                         res.Item3.SendMessage("call  from " + this.Tag.Key());
                         // SendMessageTo("call from " + this.Tag.Id,res.Item3);

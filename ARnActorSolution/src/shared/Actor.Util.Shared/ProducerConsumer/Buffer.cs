@@ -17,7 +17,7 @@ namespace Actor.Util
                 item.Buffer = this;
             }
 
-            FsmBehaviors<string, Work<T>> bhv = new FsmBehaviors<string, Work<T>>();
+            var bhv = new FsmBehaviors<string, Work<T>>();
 
             bhv
                 .AddRule("BufferEmpty", null,

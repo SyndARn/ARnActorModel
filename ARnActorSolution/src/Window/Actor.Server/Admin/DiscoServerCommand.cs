@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Actor.Base;
+﻿using Actor.Base;
 
 namespace Actor.Server
 {
     public class DiscoServerCommand : Behavior<string, IActor, string>, IActorServerCommand
     {
-        public  string Key =>  Name ;
+        public string Key => Name;
 
         public static string Name = "Disco";
 
@@ -26,7 +23,7 @@ namespace Actor.Server
         public DiscoServerCommand() : base()
         {
             Pattern = (k, a, d) => k == Name;
-            Apply = (k,a, d) => DoRun(a,d);
+            Apply = (k, a, d) => DoRun(a, d);
         }
     }
 }

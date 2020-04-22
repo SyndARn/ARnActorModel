@@ -38,7 +38,7 @@ namespace Actor.Server
     public class RemoteSenderActor : BaseActor
     {
 
-        private ISerializeService fSerializeService;
+        private ISerializeService _serializeService;
 
         // Don't touch !
         public ActorTag fRemoteTag;
@@ -46,7 +46,7 @@ namespace Actor.Server
         public static void CompleteInitialize(RemoteSenderActor anActor)
         {
             CheckArg.Actor(anActor);
-            anActor.fSerializeService = ActorServer.GetInstance().SerializeService;
+            anActor._serializeService = ActorServer.GetInstance().SerializeService;
             anActor.Become(new Behavior<object>(anActor.DoRouting));
         }
 
@@ -54,7 +54,7 @@ namespace Actor.Server
             : base()
         {
             fRemoteTag = aTag;
-            fSerializeService = ActorServer.GetInstance().SerializeService;
+            _serializeService = ActorServer.GetInstance().SerializeService;
             Become(new Behavior<object>(DoRouting));
         }
 
@@ -67,7 +67,7 @@ namespace Actor.Server
             {
                 ms = new MemoryStream();
 
-                fSerializeService.Serialize(aMsg,fRemoteTag, ms);                
+                _serializeService.Serialize(aMsg,fRemoteTag, ms);                
 
                 ms.Seek(0, SeekOrigin.Begin);
 

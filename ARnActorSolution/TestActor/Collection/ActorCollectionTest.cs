@@ -13,7 +13,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
                 {
-                    CollectionActor<string> collect = new CollectionActor<string>();
+                    var collect = new CollectionActor<string>();
                     collect.Add("Test1");
                     collect.Add("Test2");
                     collect.Add("Test3");
@@ -35,7 +35,7 @@ namespace TestActor
         {
             TestLauncherActor.Test(() =>
             {
-                CollectionActor<string> collect = new CollectionActor<string>();
+                var collect = new CollectionActor<string>();
                 for (int i = 0; i < 100; i++)
                 {
                     collect.Add($"Test {i.ToString()}");

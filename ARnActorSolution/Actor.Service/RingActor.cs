@@ -11,7 +11,7 @@ namespace Actor.Service
     {
         internal static DateTimeOffset start;
         internal static DateTimeOffset end;
-        internal static TimeSpan Delta { get { return end.Subtract(start) ; } }
+        internal static TimeSpan Delta => end.Subtract(start);
     }
 
     internal enum State { Start, Running }
@@ -55,7 +55,7 @@ namespace Actor.Service
                 if (fTestRun >= RingTest.fTest)
                 {
                     TestResult.end = DateTimeOffset.UtcNow ;
-                    StringBuilder sb = new StringBuilder();
+                    var sb = new StringBuilder();
                     sb.AppendLine("End Test " + fTestRun.ToString() + " " + TestResult.end.ToString());
                     sb.AppendLine("Elapsed " + fTestRun.ToString() + " " + TestResult.Delta.ToString()); // .ToString("N5"));
                     Console.WriteLine(sb.ToString());

@@ -76,7 +76,7 @@ public class HashKey : IComparable
             {
                 return 0;
             }
-            if (object.ReferenceEquals(left, null))
+            if (left is null)
             {
                 return -1;
             }
@@ -85,9 +85,9 @@ public class HashKey : IComparable
 
         public static bool operator ==(HashKey left, HashKey right)
         {
-            if (object.ReferenceEquals(left,null))
+            if (left is null)
             {
-                return object.ReferenceEquals(right, null);
+                return right is null;
             }
             return left.Equals(right);
         }
@@ -106,8 +106,8 @@ public class HashKey : IComparable
         
         public override bool Equals(object obj)
         {
-            HashKey other = obj as HashKey; //avoid double casting
-            if (object.ReferenceEquals(other, null))
+            //avoid double casting
+            if (!(obj is HashKey other))
             {
                 return false;
             }

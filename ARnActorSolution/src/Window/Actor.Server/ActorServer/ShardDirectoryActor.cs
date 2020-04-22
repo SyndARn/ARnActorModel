@@ -42,7 +42,8 @@ namespace Actor.Server
 
                         break;
                     }
-                default: break;
+                default:
+                    break;
             }
         }
     }

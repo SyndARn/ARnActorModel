@@ -70,14 +70,14 @@ namespace Procurios.Public
 		/// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
         public static string JsonEncode(object json)
         {
-            StringBuilder builder = new StringBuilder(BUILDER_CAPACITY);
+            var builder = new StringBuilder(BUILDER_CAPACITY);
             bool success = SerializeValue(json, builder);
-            return success ? builder.ToString() : null;
+            return (success) ? builder.ToString() : null;
         }
 
         protected static Hashtable ParseObject(char[] json, ref int index, ref bool success)
         {
-            Hashtable table = new Hashtable();
+            var table = new Hashtable();
             int token;
 
             // {
@@ -125,7 +125,7 @@ namespace Procurios.Public
 
         protected static ArrayList ParseArray(char[] json, ref int index, ref bool success)
         {
-            ArrayList array = new ArrayList();
+            var array = new ArrayList();
 
             // [
             NextToken(json, ref index);
@@ -184,7 +184,7 @@ namespace Procurios.Public
 
         protected static string ParseString(char[] json, ref int index, ref bool success)
         {
-            StringBuilder s = new StringBuilder(BUILDER_CAPACITY);
+            var s = new StringBuilder(BUILDER_CAPACITY);
             char c;
 
             EatWhitespace(json, ref index);
@@ -206,6 +206,7 @@ namespace Procurios.Public
                     if (index == json.Length) {
                         break;
                     }
+
                     c = json[index++];
                     if (c == '"') {
                         s.Append('"');
@@ -228,11 +229,11 @@ namespace Procurios.Public
                         if (remainingLength >= 4) {
                             // parse the 32 bit hex into an integer codepoint
                             uint codePoint;
-                            if (!(success = UInt32.TryParse(new string(json, index, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out codePoint))) {
+                            if (!(success = uint.TryParse(new string(json, index, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out codePoint))) {
                                 return "";
                             }
                             // convert the integer codepoint to a unicode char and add to string
-                            s.Append(Char.ConvertFromUtf32((int)codePoint));
+                            s.Append(char.ConvertFromUtf32((int)codePoint));
                             // skip 4 chars
                             index += 4;
                         } else {
@@ -259,7 +260,7 @@ namespace Procurios.Public
             int lastIndex = GetLastIndexOfNumber(json, index);
             int charLength = (lastIndex - index) + 1;
 
-            success = Double.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out double number);
+            success = double.TryParse(new string(json, index, charLength), NumberStyles.Any, CultureInfo.InvariantCulture, out double number);
 
             index = lastIndex + 1;
             return number;
@@ -373,9 +374,9 @@ namespace Procurios.Public
                 success = SerializeObject((Hashtable)value, builder);
             } else if (value is ArrayList) {
                 success = SerializeArray((ArrayList)value, builder);
-            } else if ((value is Boolean) && ((Boolean)value)) {
+            } else if ((value is bool) && ((bool)value)) {
                 builder.Append("true");
-            } else if ((value is Boolean) && (!(Boolean)value)) {
+            } else if ((value is bool) && (!(bool)value)) {
                 builder.Append("false");
             } else if (value is ValueType) {
                 // thanks to ritchie for pointing out ValueType to me

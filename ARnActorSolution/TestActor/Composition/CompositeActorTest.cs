@@ -6,14 +6,14 @@ namespace TestActor
 {
     internal class NumberActor : BaseActor
     {
-        private readonly int Number;
-        private readonly IActor Oper;
+        private readonly int _number;
+        private readonly IActor _oper;
 
         public NumberActor(IActor oper,int number)
         {
-            Number = number;
-            Oper = oper;
-            Become(new Behavior<string>(s => oper.SendMessage((IActor)this, Number)));
+            _number = number;
+            _oper = oper;
+            Become(new Behavior<string>(s => oper.SendMessage((IActor)this, _number)));
         }
     }
 

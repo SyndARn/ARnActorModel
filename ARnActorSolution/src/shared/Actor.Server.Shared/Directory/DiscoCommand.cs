@@ -12,9 +12,7 @@ namespace Actor.Server
     {
         public IActor Sender { get; set; }
         public DiscoCommand() { }
-        public DiscoCommand(IActor anActor)
-        {
-            Sender = anActor;
-        }
+
+        public DiscoCommand(IActor actor) => Sender = actor;
     }
 }

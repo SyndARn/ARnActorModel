@@ -85,6 +85,7 @@ namespace TestActor
                             testContext.WriteLine(e.Message);
                             testContext.WriteLine(e.StackTrace);
                         }
+
                         throw;
                     }
                 });
@@ -94,6 +95,7 @@ namespace TestActor
             {
                 throw new TestLauncherException(launcher.fLauncherException.Message, launcher.fLauncherException);
             }
+
             Assert.IsTrue(testResult.Result, "Test Time Out");
         }
     }

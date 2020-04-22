@@ -37,7 +37,7 @@ namespace Actor.Server
         private void DoRestReceive(WebAnswer webAnswer)
         {
             Debug.WriteLine("Receive {0}", webAnswer.Answer);
-            BehaviorsRestReader reader = LinkedTo as BehaviorsRestReader;
+            var reader = LinkedTo as BehaviorsRestReader;
             reader.Answer.SendMessage(webAnswer.Answer);
         }
     }

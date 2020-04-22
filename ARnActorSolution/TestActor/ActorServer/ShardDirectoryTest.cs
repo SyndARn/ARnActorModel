@@ -4,13 +4,13 @@ using Actor.Base;
 using System.Linq;
 using Actor.Util;
 using Actor.Server;
+using System.Threading.Tasks;
 
 namespace TestActor
 {
     [TestClass]
     public class ShardDirectoryTest
     {
-
         class ShardDirectoryClientTest : BaseActor
         {
             public ShardDirectoryClientTest() : base()
@@ -22,10 +22,10 @@ namespace TestActor
             private void DoStart(string msg)
             {
                 // find shard in directory
-                ConnectActor connect = new ConnectActor(this, ActorServer.GetInstance().FullHost, "KnownShards");
-                var data = ReceiveAsync(ans => { return ans is IMessageParam<string, ActorTag, IActor>; }) ;
+                var connect = new ConnectActor(this, ActorServer.GetInstance().FullHost, "KnownShards");
+                Task<object> data = ReceiveAsync(ans => ans is IMessageParam<string, ActorTag, IActor>) ;
                 var res = data.Result as IMessageParam<string, ActorTag, IActor>;
-                var shardDir = res.Item3 ;
+                IActor shardDir = res.Item3 ;
                 Assert.IsNotNull(shardDir) ;
                 ShardRequest req = ShardRequest.CastRequest(this,this) ;
                 shardDir.SendMessage(req);
@@ -45,7 +45,7 @@ namespace TestActor
             TestLauncherActor.Test(() =>
             {
                 ActorServer.Start(ActorConfigManager.CastForTest());
-                new ShardDirectoryClientTest(); 
+                new ShardDirectoryClientTest();
             });
         }
     }
