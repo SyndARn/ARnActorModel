@@ -12,7 +12,7 @@
         }
 
         public QueueStyle Style { get; set; } = QueueStyle.LockFree;
-        public static QueueFactory<T> Current = new QueueFactory<T>();
+        public static QueueFactory<T> Current { get; set; } = new QueueFactory<T>();
 
         public IMessageQueue<T> GetQueue()
         {

@@ -19,7 +19,7 @@ namespace TreeApplication
             InitializeComponent();
         }
 
-        StringToEventCatcherActor catcher = new StringToEventCatcherActor();
+        readonly StringToEventCatcherActor catcher = new StringToEventCatcherActor();
 
         protected void EvHandler(object sender, string i)
         {

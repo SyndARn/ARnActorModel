@@ -25788,20 +25788,25 @@
     "UAP,Version=v10.0.10240": []
   },
   "packageFolders": {
-    "C:\\Users\\ARn\\.nuget\\packages\\": {}
+    "C:\\Users\\ARn\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj",
+      "projectUniqueName": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj",
       "projectName": "Actor.Base.Universal",
-      "projectPath": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj",
-      "projectJsonPath": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\project.json",
+      "projectPath": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj",
+      "projectJsonPath": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\project.json",
       "packagesPath": "C:\\Users\\ARn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\obj\\",
+      "outputPath": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\obj\\",
       "projectStyle": "ProjectJson",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
         "C:\\Users\\ARn\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},

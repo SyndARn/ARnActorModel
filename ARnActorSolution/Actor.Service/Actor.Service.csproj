@@ -108,6 +108,8 @@
     <Compile Include="Logger\LogHeartBeatBehavior.cs" />
     <Compile Include="ParserActor.cs" />
     <Compile Include="ActorService.cs" />
+    <Compile Include="Persistent\PersistentLoadBehavior.cs" />
+    <Compile Include="Persistent\PersistentWriteBehavior.cs" />
     <Compile Include="RingActor.cs" />
     <Compile Include="Logger\TraceActor.cs" />
     <Compile Include="Logger\LoggerBehavior.cs" />

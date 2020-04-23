@@ -37,6 +37,7 @@ namespace Actor.Base
     {
         private static long numAddTask = 0; // qtt of task launched
         private static long numCloseTask = 0; // qtt of task finished, numAddTask - numCloseTask = 2 on actorserver at rest
+        private static CancellationToken token = new CancellationToken();
 
         public static string Stat()
         {
@@ -67,17 +68,19 @@ namespace Actor.Base
                 numAddTask++; // Interlocked.Increment(ref numAddTask);
                 messageLoop();
                 numCloseTask++; //Interlocked.Increment(ref numCloseTask);
-            }, taskCreationOptions)
+            }, token, taskCreationOptions, TaskScheduler.Default)
             .ContinueWith((t) =>
             {
-                foreach(Exception item in t.Exception.InnerExceptions)
+                foreach (Exception item in t.Exception.InnerExceptions)
                 {
                     Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, "Task fault on {0}", item.Message), "[Task Actor Fault]");
                 }
 
                 throw t.Exception;
             },
-            TaskContinuationOptions.OnlyOnFaulted);
+            token,
+            TaskContinuationOptions.OnlyOnFaulted,
+            TaskScheduler.Default) ;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -94,7 +97,7 @@ namespace Actor.Base
                 numAddTask++; // Interlocked.Increment(ref numAddTask);
                 messageLoop();
                 numCloseTask++; //Interlocked.Increment(ref numCloseTask);
-            })
+            },token)
             .ContinueWith((t) =>
             {
                 foreach (Exception item in t.Exception.InnerExceptions)
@@ -104,7 +107,9 @@ namespace Actor.Base
 
                 throw t.Exception;
             },
-            TaskContinuationOptions.OnlyOnFaulted);
+            token,
+            TaskContinuationOptions.OnlyOnFaulted,
+            TaskScheduler.Default);
         }
     }
 }

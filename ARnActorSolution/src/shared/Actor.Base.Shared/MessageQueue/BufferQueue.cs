@@ -36,7 +36,7 @@ namespace Actor.Base
                 item =  _list[_read];
                 return true;
             }
-            item = default(T);
+            item = default;
             return false;
         }
     }
