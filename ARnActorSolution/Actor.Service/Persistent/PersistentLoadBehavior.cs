@@ -1,7 +1,7 @@
 ﻿/*****************************************************************************
 		               ARnActor Actor Model Library .Net
      
-	 Copyright (C) {2015}  {ARn/SyndARn} 
+	 Copyright (C) {2016}  {ARn/SyndARn} 
  
  
      This program is free software; you can redistribute it and/or modify 
@@ -20,43 +20,31 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
+
 using Actor.Base;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Actor.Util
+namespace Actor.Service
 {
-    public class QueueActor<T> : ActionActor<T>
+    public class PersistentLoadBehavior<T> : Behavior<PersistentCommand, IActor>
     {
-        private readonly Queue<T> _queue = new Queue<T>();
-
-        public QueueActor()
-            : base()
+        private readonly IPersistentService<T> _service;
+        public PersistentLoadBehavior(IPersistentService<T> service) : base()
         {
+            _service = service;
+            Apply = DoApply;
+            Pattern = DoPattern;
         }
 
-        public void Queue(T at) => SendAction(DoQueue, at);
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures")]
-        public async Task<IMsgQueue<T>> TryDequeueAsync()
+        private bool DoPattern(PersistentCommand command, IActor sender)
         {
-            Task<object> retVal = ReceiveAsync(t => t is IMsgQueue<T>);
-            SendAction(DoDequeue);
-            return await retVal.ConfigureAwait(false) as IMsgQueue<T>;
+            return command == PersistentCommand.Load;
         }
 
-        private void DoQueue(T at) => _queue.Enqueue(at);
-
-        private void DoDequeue()
+        private void DoApply(PersistentCommand command, IActor sender)
         {
-            if (_queue.Count > 0)
-            {
-                SendMessage(new MsgQueue<T>(true, _queue.Dequeue()));
-            }
-            else
-            {
-                SendMessage(new MsgQueue<T>(false, default));
-            }
+            var load = _service.Load();
+            sender.SendMessage(load);
         }
     }
+
 }

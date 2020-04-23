@@ -25842,20 +25842,25 @@
     "UAP,Version=v10.0.10240": []
   },
   "packageFolders": {
-    "C:\\Users\\ARn\\.nuget\\packages\\": {}
+    "C:\\Users\\ARn\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Util.Universal\\Actor.Util.Universal.csproj",
+      "projectUniqueName": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Util.Universal\\Actor.Util.Universal.csproj",
       "projectName": "Actor.Util.Universal",
-      "projectPath": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Util.Universal\\Actor.Util.Universal.csproj",
-      "projectJsonPath": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Util.Universal\\project.json",
+      "projectPath": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Util.Universal\\Actor.Util.Universal.csproj",
+      "projectJsonPath": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Util.Universal\\project.json",
       "packagesPath": "C:\\Users\\ARn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Util.Universal\\obj\\",
+      "outputPath": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Util.Universal\\obj\\",
       "projectStyle": "ProjectJson",
+      "fallbackFolders": [
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
         "C:\\Users\\ARn\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -25865,8 +25870,8 @@
       "frameworks": {
         "uap10.0.10240": {
           "projectReferences": {
-            "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj": {
-              "projectPath": "C:\\Users\\ARn\\Source\\Repos\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj"
+            "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj": {
+              "projectPath": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj"
             }
           }
         }

@@ -18,7 +18,8 @@ namespace Actor.Server
         {
             if (info == null)
             {
-                throw new ArgumentNullException(nameof(info), "SerializationInfo was null");
+                const string Message = "SerializationInfo was null";
+                throw new ArgumentNullException(nameof(info), Message);
             }
 
             IActor act = (IActor)obj;

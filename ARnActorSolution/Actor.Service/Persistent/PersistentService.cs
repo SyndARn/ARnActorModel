@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Collections.Generic;
 
 namespace Actor.Service
 {
-
     public interface IPersistentService<T>
     {
         void Write(IEventSource<T> aT);
@@ -18,14 +11,14 @@ namespace Actor.Service
 
     public class MemoizePersistentService<T> : IPersistentService<T>
     {
-        private List<IEventSource<T>> fList = new List<IEventSource<T>>();
+        private readonly List<IEventSource<T>> _eventSources = new List<IEventSource<T>>();
         public void Write(IEventSource<T> aT)
         {
-            fList.Add(aT);
+            _eventSources.Add(aT);
         }
         public IEnumerable<IEventSource<T>> Load()
         {
-            foreach (var item in fList)
+            foreach (var item in _eventSources)
             {
                 yield return item;
             }

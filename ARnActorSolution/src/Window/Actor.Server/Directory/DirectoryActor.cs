@@ -33,12 +33,14 @@ namespace Actor.Server
         public enum DirectoryRequest { Find } ;
         private readonly Dictionary<string, IActor> _dictionary = new Dictionary<string, IActor>();
         private static readonly Lazy<DirectoryActor> _directory = new Lazy<DirectoryActor>(() => new DirectoryActor(), true);
+        public static readonly string Name = "Directory";
 
         public DirectoryActor()
             : base()
         {
-            Console.WriteLine("Dictionary starts and autoregisters");
-            _dictionary.Add("Directory", this);
+            const string Value = "Dictionary starts and autoregisters";
+            Console.WriteLine(Value);
+            _dictionary.Add(Name, this);
 
             Behaviors bhvs = new Behaviors();
             bhvs.AddBehavior(new ActionBehavior<IActor>())

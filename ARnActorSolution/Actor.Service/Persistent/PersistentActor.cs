@@ -92,47 +92,4 @@ namespace Actor.Service
 
     public enum PersistentCommand { Write, Load, GetCurrent} 
 
-    public class PersistentLoadBehavior<T> : Behavior<PersistentCommand, IActor>
-    {
-        IPersistentService<T> fService;
-        public PersistentLoadBehavior(IPersistentService<T> service) : base()
-        {
-            fService = service;
-            Apply = DoApply;
-            Pattern = DoPattern;
-        }
-
-        private bool DoPattern(PersistentCommand command, IActor sender)
-        {
-            return command == PersistentCommand.Load;
-        }
-
-        private void DoApply(PersistentCommand command, IActor sender)
-        {
-            var load = fService.Load();
-            sender.SendMessage(load);
-        }
-    }
-
-    public class PersistentWriteBehavior<T> : Behavior<PersistentCommand,IEventSource<T>>
-    {
-        IPersistentService<T> fService;
-        public PersistentWriteBehavior(IPersistentService<T> service) : base()
-        {
-            fService = service;
-            Apply = DoApply;
-            Pattern = DoPattern;
-        }
-
-        private bool DoPattern(PersistentCommand command, IEventSource<T> aT)
-        {
-            return command == PersistentCommand.Write;
-        }
-
-        private void DoApply(PersistentCommand command, IEventSource<T> aT)
-        {
-            fService.Write(aT);
-        }
-    }
-
 }

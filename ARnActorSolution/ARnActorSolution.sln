@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.Service", "Actor.Service\Actor.Service.csproj", "{7FED180B-B123-4668-9C2D-7F3F0C692E1E}"
 EndProject
@@ -119,10 +119,14 @@ Global
 		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{505366af-6ecb-4675-93c9-75d55d829f2d}*SharedItemsImports = 4
 		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{6ca2469f-3839-4404-bbfd-a959ad2fd95e}*SharedItemsImports = 4
 		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{73609681-bce2-42ea-88f2-b377225453ec}*SharedItemsImports = 13
+		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{91e2f9be-84bb-4db4-8e8f-08ddb4af33ec}*SharedItemsImports = 5
 		src\shared\Actor.Server.Shared\Actor.Server.Shared.projitems*{a8790901-c29f-42ce-b968-18e299b41357}*SharedItemsImports = 13
 		Application\Pcl\HelloPclActor\HelloPclActor.Shared\HelloPclActor.Shared.projitems*{aeae49ec-d5f6-448d-a098-f479bbdc69d2}*SharedItemsImports = 13
+		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{d2b9e9b9-0918-41eb-9f4e-f6c663d05fb3}*SharedItemsImports = 5
+		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{d4107919-f095-496f-a0e6-8b4414e44d15}*SharedItemsImports = 5
 		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{e107486f-a9b7-429c-81ac-e6ccee4177b2}*SharedItemsImports = 13
 		src\shared\Actor.Util.Shared\Actor.Util.Shared.projitems*{ed9f44af-4154-4f52-8b71-7c2148b631ab}*SharedItemsImports = 4
+		src\shared\Actor.Base.Shared\Actor.Base.Shared.projitems*{fadbc51f-89bf-48fc-a5ab-710f22bb362e}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppVeyor|Any CPU = AppVeyor|Any CPU

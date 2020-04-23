@@ -76,7 +76,7 @@ public class HashKey : IComparable
             {
                 return 0;
             }
-            if (object.ReferenceEquals(left, null))
+            if (left is null)
             {
                 return -1;
             }
@@ -103,21 +103,10 @@ public class HashKey : IComparable
         {
             return (Compare(left, right) > 0);
         }
-        
-        public override bool Equals(object obj)
-        {
-            HashKey other = obj as HashKey; //avoid double casting
-            if (object.ReferenceEquals(other, null))
-            {
-                return false;
-            }
-            return this.CompareTo(other) == 0;
-        }
 
-        public override int GetHashCode()
-        {
-            return this.ToString().GetHashCode();
-        }
+        public override bool Equals(object obj) => !(obj is HashKey other) ? false : this.CompareTo(other) == 0;
+
+        public override int GetHashCode() => this.ToString().GetHashCode();
     }
 
 }

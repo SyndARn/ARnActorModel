@@ -5,6 +5,9 @@ namespace Actor.Server
 {
     public abstract class ServerBehavior<T> : Behavior<ServerMessage<T>>
     {
+        private const string MessageServerBehaviorNullMessage = "Server Behavior, null message encounters";
+        private const string MessageNullMessageReceiveInServerApply = "Null message receive in ServerApply";
+        private const string MessageNullClientEncountered = "Null client encountered";
         private readonly List<IActor> fActorList = new List<IActor>();
 
         protected ServerBehavior() : base()
@@ -19,7 +22,7 @@ namespace Actor.Server
         {
             if (aMessage == null)
             {
-                throw new ActorException("Null message receive in ServerApply");
+                throw new ActorException(MessageNullMessageReceiveInServerApply);
             }
             switch (aMessage.Request)
             {
@@ -34,20 +37,20 @@ namespace Actor.Server
         {
             if (aMessage == null)
             {
-                throw new ActorException("Server Behavior, null message encounters");
+                throw new ActorException(MessageServerBehaviorNullMessage);
             }
             if (!fActorList.Contains(aMessage.Client))
             {
                 fActorList.Add(aMessage.Client);
             }
-            aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Accept, default(T)));
+            aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Accept, default));
         }
 
         protected void DoDisconnect(ServerMessage<T> aMessage)
         {
             if (aMessage == null)
             {
-                throw new ActorException("Server Behavior, null message encounters");
+                throw new ActorException(MessageServerBehaviorNullMessage);
             }
             if (fActorList.Contains(aMessage.Client))
             {
@@ -61,11 +64,11 @@ namespace Actor.Server
         {
             if (aMessage == null)
             {
-                throw new ActorException("Server Behavior, null message encounters");
+                throw new ActorException(MessageServerBehaviorNullMessage);
             }
             if (aMessage.Client == null)
             {
-                throw new ActorException("Null client encountered");
+                throw new ActorException(MessageNullClientEncountered);
             }
             aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Answer, data));
         }
