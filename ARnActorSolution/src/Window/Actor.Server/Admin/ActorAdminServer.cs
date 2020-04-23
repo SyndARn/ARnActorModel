@@ -70,8 +70,8 @@ namespace Actor.Server
                     }
                 case "Disco":
                     {
-                        ActorServer.GetInstance().SendMessage(DiscoServerCommand.Name, (IActor)asker, lData);
-                       // (new DiscoServerCommand()).Run(asker, lData);
+                       ActorServer.GetInstance().SendMessage(DiscoServerCommand.Name, (IActor)asker, lData);
+                       // new DiscoServerCommand() Run(asker, lData);
                         break;
                     }
                 case "SendTo":

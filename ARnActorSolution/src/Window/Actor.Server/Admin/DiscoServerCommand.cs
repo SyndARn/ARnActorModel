@@ -9,7 +9,7 @@ namespace Actor.Server
     {
         public  string Key =>  Name ;
 
-        public static string Name = "Disco";
+        public const string Name = "Disco";
 
         private void DoRun(IActor actor, string data)
         {

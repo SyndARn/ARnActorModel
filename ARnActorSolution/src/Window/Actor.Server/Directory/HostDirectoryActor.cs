@@ -68,8 +68,8 @@ namespace Actor.Server
 
             GetInstance().SendMessage((Action<IActor>) GetInstance().DoStat, sender);
 
-            var task = await HostDirectoryActor.GetInstance()
-                .ReceiveAsync(ans => ans is IActor actor && (sender.Equals(actor))) ;
+            var task = await GetInstance()
+                .ReceiveAsync(ans => ans is IActor actor && (sender.Equals(actor))).ConfigureAwait(false);
             return task as string ;
         }
 

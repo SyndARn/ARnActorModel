@@ -10,6 +10,9 @@ namespace Actor.Base
 {
     public static class CheckArg
     {
+        private const string MessageNullSomeBehaviors = "Null someBehaviors";
+        private const string MessageBehaviorCantBeNull = "behavior can't be null";
+
         public static void Stream([ValidatedNotNull]Stream aStream)
         {
             if (aStream != null)
@@ -47,7 +50,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("behavior can't be null");
+            throw new ActorException(MessageBehaviorCantBeNull);
         }
 
         public static void BehaviorParam([ValidatedNotNull]params IBehavior[] someBehaviors)
@@ -57,7 +60,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null someBehaviors");
+            throw new ActorException(MessageNullSomeBehaviors);
         }
 
         public static void Behaviors([ValidatedNotNull]Behaviors someBehaviors)
@@ -67,7 +70,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null someBehaviors");
+            throw new ActorException(MessageNullSomeBehaviors);
         }
 
         public static void Behaviors([ValidatedNotNull]IBehaviors someBehaviors)
@@ -77,7 +80,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null someBehaviors");
+            throw new ActorException(MessageNullSomeBehaviors);
         }
 
         public static void IEnumerable([ValidatedNotNull] IEnumerable enumerables)
@@ -117,7 +120,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("future must exist");
+            throw new ActorException("future must exist !");
         }
 
         public static void Pattern([ValidatedNotNull]Func<object, bool> aPattern)

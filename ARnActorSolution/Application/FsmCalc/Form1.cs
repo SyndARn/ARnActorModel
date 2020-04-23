@@ -13,7 +13,7 @@ namespace FsmCalc
 {
     public partial class Form1 : Form
     {
-        private CalcFormModel FormModel;
+        private readonly CalcFormModel FormModel;
         public Form1()
         {
             InitializeComponent();

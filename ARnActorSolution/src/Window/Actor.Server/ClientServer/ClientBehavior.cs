@@ -22,7 +22,8 @@ namespace Actor.Server
         {
             if (aMessage == null)
             {
-                throw new ActorException("Null message receive in ServerBehavior");
+                const string Message = "Null message receive in ServerBehavior";
+                throw new ActorException(Message);
             }
             switch (aMessage.Request)
             {
@@ -43,7 +44,8 @@ namespace Actor.Server
         {
             if (aMessage == null)
             {
-                throw new ActorException("Null message receive in SendRequest");
+                const string Message = "Null message receive in SendRequest";
+                throw new ActorException(Message);
             }
             fServer.SendMessage(new ServerMessage<T>(LinkedTo.LinkedActor, ServerRequest.Request, aMessage.Data));
         }
