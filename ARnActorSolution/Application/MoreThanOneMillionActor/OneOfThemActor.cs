@@ -62,26 +62,26 @@ namespace MoreThanOneMillionActor
     {
         private int fSum  ;
         private int fCount;
-        private ReceiveActor<string> fWait;
+        private readonly ReceiveActor<string> _wait;
 
         public ReduceActor(int qtt) : base()
         {
             fSum = 0;
-            fWait = new ReceiveActor<string>();
+            _wait = new ReceiveActor<string>();
             Become(new Behavior<int>(t =>
             {
                 fSum += t;
                 fCount++;
                 if (fCount >= qtt)
                 {
-                    fWait.SendMessage(this,"Finish") ;
+                    _wait.SendMessage(this,"Finish") ;
                 }
             }));
         }
 
         public int  WaitForResult()
         {
-            var res = fWait.WaitAsync(this, "Start").Result;
+            var res = _wait.WaitAsync(this, "Start").Result;
             return fSum;
         }
     }

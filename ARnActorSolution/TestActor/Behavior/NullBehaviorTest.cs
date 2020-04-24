@@ -2,8 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
 using System.Linq;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Base.Test
 {
     [TestClass]
     public class NullBehaviorTest

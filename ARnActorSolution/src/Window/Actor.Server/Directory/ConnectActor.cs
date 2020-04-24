@@ -32,9 +32,9 @@ namespace Actor.Server
     [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ConnectActor : BaseActor
     {
-        private string fServiceName;
-        private string fUri;
-        private IActor fSender;
+        private readonly string fServiceName;
+        private readonly string fUri;
+        private readonly IActor fSender;
         public ConnectActor(IActor lSender, string hostAddress, string serviceName)
             : base()
         {

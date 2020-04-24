@@ -21,7 +21,7 @@ namespace Actor.Server
     {
         private IListenerService fListener;
 
-        public HostRelayActor() => Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
+        public HostRelayActor() => Become(new Behavior<string>(t => "Listen".Equals(t), DoListen));
 
         public HostRelayActor(IListenerService listenerService)
         {

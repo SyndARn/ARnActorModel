@@ -199,7 +199,9 @@ namespace Actor.Base
             }
 
             IMessageParam<T1, T2> MessageParamT = (IMessageParam<T1, T2>)aT;
+#pragma warning disable CA1062 // Valider les arguments de méthodes publiques
             Apply(MessageParamT.Item1, MessageParamT.Item2);
+#pragma warning restore CA1062 // Valider les arguments de méthodes publiques
         }
     }
 
@@ -239,10 +241,7 @@ namespace Actor.Base
         {
         }
 
-        public Func<T1, T2, T3, bool> DefaultPattern()
-        {
-            return (t1, t2, t3) => t1 is T1 && t2 is T2 && t3 is T3;
-        }
+        public Func<T1, T2, T3, bool> DefaultPattern() => (t1, t2, t3) => t1 is T1 && t2 is T2 && t3 is T3;
 
         public Behavior(Action<T1, T2, T3> anApply)
         {
@@ -261,6 +260,7 @@ namespace Actor.Base
             return aT is IMessageParam<T1, T2, T3> MessageParamT ? Pattern(MessageParamT.Item1, MessageParamT.Item2, MessageParamT.Item3) : false;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Valider les arguments de méthodes publiques", Justification = "<En attente>")]
         public void StandardApply(object aT)
         {
             if (Apply != null)
@@ -398,6 +398,7 @@ namespace Actor.Base
             return false;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Valider les arguments de méthodes publiques", Justification = "<En attente>")]
         public void StandardApply(Object aT)
         {
             if (Apply != null)

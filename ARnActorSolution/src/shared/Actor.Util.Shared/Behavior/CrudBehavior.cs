@@ -31,12 +31,12 @@ namespace Actor.Util
 
     public class CrudBehavior<TKey,TValue> : Behavior<CrudMessage<TKey,TValue>>
     {
-         private Dictionary<TKey,TValue> fKV;
+         private readonly Dictionary<TKey,TValue> _keyValue;
 
          public CrudBehavior()
             : base()
         {
-            fKV = new Dictionary<TKey, TValue>();
+            _keyValue = new Dictionary<TKey, TValue>();
 
             Pattern = o => true ;
 
@@ -56,22 +56,22 @@ namespace Actor.Util
         public void Get(TKey key, IActor sender)
         {
             CheckArg.Actor(sender);
-            sender.SendMessage(fKV[key]);
+            sender.SendMessage(_keyValue[key]);
         }
 
         public void Set(TKey key, TValue value)
         {
-            fKV[key] = value ;
+            _keyValue[key] = value ;
         }
 
         public void Update(TKey key, TValue value)
         {
-            fKV[key] = value;
+            _keyValue[key] = value;
         }
 
         public void Delete(TKey key)
         {
-            fKV.Remove(key);
+            _keyValue.Remove(key);
         }
 
     }

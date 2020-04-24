@@ -2,8 +2,9 @@
 using Actor.Server;
 using System.Threading.Tasks;
 using Actor.Base;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Server.Tests
 {
 
     internal class TestHeartBeatActor : BaseActor

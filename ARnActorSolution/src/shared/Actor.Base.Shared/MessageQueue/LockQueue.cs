@@ -27,7 +27,7 @@ namespace Actor.Base
             {
                 if (fQueue.Count == 0)
                 {
-                    item = default(T);
+                    item = default;
                     return false;
                 }
                 item = fQueue.Dequeue();

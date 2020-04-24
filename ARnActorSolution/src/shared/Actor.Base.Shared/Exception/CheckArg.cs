@@ -11,8 +11,17 @@ namespace Actor.Base
     public static class CheckArg
     {
         private const string MessageNullSomeBehaviors = "Null someBehaviors";
-        private const string MessageBehaviorCantBeNull = "behavior can't be null";
+        private const string MessageBehaviorCantBeNull = "Behavior can't be null";
+        private const string MessageNullEnumerables = "Null enumerables";
+        private const string MessageUriCantBeNull = "Uri can't be null";
+        private const string MessageAddressShouldBeFilled = "Address should be filled";
+        private const string MessageFutureMustExist = "Future must exist !";
+        private const string MessageStreamCantBeNull = "Stream can't be null";
+        private const string MessageBehaviorsCantBeNull = "Behaviors can't be null";
+        private const string MessageActorMustExit = "Actor must exist";
+        private const string MessageNullPatternReceived = "Null pattern received";
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Stream([ValidatedNotNull]Stream aStream)
         {
             if (aStream != null)
@@ -20,9 +29,10 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Stream can't be null");
+            throw new ActorException(MessageStreamCantBeNull);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Address([ValidatedNotNull]string anAddress)
         {
             if (!string.IsNullOrEmpty(anAddress))
@@ -30,9 +40,10 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Address should be filled");
+            throw new ActorException(MessageAddressShouldBeFilled);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void BehaviorEnumerable([ValidatedNotNull]IEnumerable<IBehavior> behaviors)
         {
             if (behaviors != null)
@@ -40,9 +51,10 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("behaviors can't be null");
+            throw new ActorException(MessageBehaviorsCantBeNull);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Behavior([ValidatedNotNull]IBehavior aBehavior)
         {
             if (aBehavior != null)
@@ -53,6 +65,7 @@ namespace Actor.Base
             throw new ActorException(MessageBehaviorCantBeNull);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void BehaviorParam([ValidatedNotNull]params IBehavior[] someBehaviors)
         {
             if (someBehaviors != null || someBehaviors != null)
@@ -63,6 +76,7 @@ namespace Actor.Base
             throw new ActorException(MessageNullSomeBehaviors);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Behaviors([ValidatedNotNull]Behaviors someBehaviors)
         {
             if (someBehaviors != null)
@@ -73,6 +87,7 @@ namespace Actor.Base
             throw new ActorException(MessageNullSomeBehaviors);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Behaviors([ValidatedNotNull]IBehaviors someBehaviors)
         {
             if (someBehaviors != null)
@@ -83,6 +98,7 @@ namespace Actor.Base
             throw new ActorException(MessageNullSomeBehaviors);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void IEnumerable([ValidatedNotNull] IEnumerable enumerables)
         {
             if (enumerables != null)
@@ -90,9 +106,10 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null enumerables");
+            throw new ActorException(MessageNullEnumerables);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Uri([ValidatedNotNull] Uri anUri)
         {
             if (anUri != null)
@@ -100,9 +117,10 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Uri can't be null");
+            throw new ActorException(MessageUriCantBeNull);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Actor([ValidatedNotNull] IActor anActor)
         {
             if (anActor != null)
@@ -110,9 +128,10 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("actor must exist");
+            throw new ActorException(MessageActorMustExit);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Future([ValidatedNotNull] IFuture aFuture)
         {
             if (aFuture != null)
@@ -120,9 +139,10 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("future must exist !");
+            throw new ActorException(MessageFutureMustExist);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Pattern([ValidatedNotNull]Func<object, bool> aPattern)
         {
             if (aPattern != null)
@@ -130,7 +150,7 @@ namespace Actor.Base
                 return;
             }
 
-            throw new ActorException("Null pattern received");
+            throw new ActorException(MessageNullPatternReceived);
         }
 
         //[AttributeUsage(AttributeTargets.All, AllowMultiple = false)]

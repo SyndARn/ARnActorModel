@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Actor.Base ;
-using Actor.Server ;
+using Actor.Base;
+using Actor.Server;
+using Actor.Util;
 
 namespace Actor.Service
 {
@@ -21,25 +19,6 @@ namespace Actor.Service
         }
     }
 
-    public class StringParserActor : BaseActor
-    {
-        public StringParserActor()
-            : base()
-        {
-            Become(new Behavior<IActor,string>(
-                (a,s) =>
-                    {
-                        char[] chr = {' '} ;
-                        var stringtoparse = s.Trim().Split(chr) ;
-                        foreach (string item in stringtoparse)
-                        {
-                            a.SendMessage(this,item);
-                        }
-                    }
-                )) ;
-        }
-    }
-
     public class ParserServer : BaseActor
     {
         public ParserServer() : base() => Become(new BehaviorReceiveLine());
@@ -47,7 +26,7 @@ namespace Actor.Service
 
     public class ParserActor : BaseActor
     {
-        private List<string> _list = new List<string>();
+        private readonly List<string> _list = new List<string>();
         private ActorTag _parserServer ;
 
         public ParserActor()

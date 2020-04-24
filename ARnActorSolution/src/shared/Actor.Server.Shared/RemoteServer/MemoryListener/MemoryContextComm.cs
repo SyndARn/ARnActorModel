@@ -10,7 +10,7 @@ namespace Actor.Server
 {
     public class MemoryContextComm : IContextComm
     {
-        private Future<Stream> future = new Future<Stream>();
+        private readonly Future<Stream> _future = new Future<Stream>();
 
         public void Acknowledge()
         {
@@ -18,7 +18,7 @@ namespace Actor.Server
 
         public Stream ReceiveStream()
         {
-            return future.Result();
+            return _future.Result();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]        
@@ -29,7 +29,7 @@ namespace Actor.Server
             MemoryStream clone = new MemoryStream();
             stream.CopyTo(clone);
             clone.Seek(0, SeekOrigin.Begin);
-            future.SendMessage((Stream)clone);
+            _future.SendMessage((Stream)clone);
         }
     }
 }

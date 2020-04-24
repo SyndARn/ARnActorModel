@@ -44,7 +44,7 @@ namespace Actor.Server
             _serverInstance.ListenerService = configManager.GetListenerService();
             _serverInstance.SerializeService = configManager.GetSerializeService();
             _serverInstance.HostService = configManager.GetHostService();
-            _serverInstance.ServerCommandService = configManager.GetServerCommandService();
+            _serverInstance.ServerCommandService = ActorConfigManager.GetServerCommandService();
             _serverInstance.DoInit(new HostRelayActor(_serverInstance.ListenerService));
         }
 

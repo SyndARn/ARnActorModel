@@ -73,9 +73,9 @@ namespace Actor.Service
 
     public class RingActor : BaseActor
     {
-        int fNode ;
+        readonly int fNode ;
         readonly IActor firstNode = null;
-        IActor lastNode;
+        readonly IActor lastNode;
         public RingActor(int aTest,int aNode, IActor answer = null)
         {
             RingTest.fTest = aTest;

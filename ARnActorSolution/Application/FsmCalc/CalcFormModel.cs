@@ -11,15 +11,15 @@ namespace FsmCalc
     public class CalcFormModel
     {
         private CalcActor CalcActor;
-        private StateFullActor<Accumulators> Observer;
+        private readonly StateFullActor<Accumulators> _observer;
         private Form1 Form;
 
         public CalcFormModel(Form1 aForm)
         {
             Form = aForm;
             CalcActor = new CalcActor();
-            Observer = new StateFullActor<Accumulators>();
-            CalcActor.Register(Observer);
+            _observer = new StateFullActor<Accumulators>();
+            CalcActor.Register(_observer);
         }
 
         public string Enter { get; set; }
@@ -55,7 +55,7 @@ namespace FsmCalc
                 case "Clear": CalcActor.Clear(); break;
                 case "+/-": CalcActor.Sign();break;
             }
-            var accumulators = await Observer.GetStateAsync();
+            var accumulators = await _observer.GetStateAsync();
             Form.lblAccumulator.Text = accumulators.Accumulator.ToString();
             Form.lblPlusAcc.Text = accumulators.PlusAcc.ToString();
             Form.lblMoinsAcc.Text = accumulators.MoinsAcc.ToString();

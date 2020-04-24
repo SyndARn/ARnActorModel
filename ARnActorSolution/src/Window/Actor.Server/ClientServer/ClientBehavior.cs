@@ -1,15 +1,13 @@
 ﻿using Actor.Base;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Actor.Server
 {
     public abstract class ClientBehavior<T> : Behavior<ServerMessage<T>>
     {
+        const string MessageNullInServerBehavior = "Null message receive in ServerBehavior";
+        const string MessageNullInSendRequest = "Null message receive in SendRequest";
+
         private IActor fServer = null;
 
         protected ClientBehavior() : base()
@@ -18,12 +16,12 @@ namespace Actor.Server
             Apply = DispatchAnswer;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         protected void DispatchAnswer(ServerMessage<T> aMessage)
         {
             if (aMessage == null)
             {
-                const string Message = "Null message receive in ServerBehavior";
-                throw new ActorException(Message);
+                throw new ActorException(MessageNullInServerBehavior);
             }
             switch (aMessage.Request)
             {
@@ -40,12 +38,12 @@ namespace Actor.Server
             fServer = aServer;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         protected void SendRequest(ServerMessage<T> aMessage)
         {
             if (aMessage == null)
             {
-                const string Message = "Null message receive in SendRequest";
-                throw new ActorException(Message);
+                throw new ActorException(MessageNullInSendRequest);
             }
             fServer.SendMessage(new ServerMessage<T>(LinkedTo.LinkedActor, ServerRequest.Request, aMessage.Data));
         }

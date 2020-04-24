@@ -3,8 +3,9 @@ using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Base.Test
 {
     /// <summary>
     /// Description résumée pour QueueFactoryTest

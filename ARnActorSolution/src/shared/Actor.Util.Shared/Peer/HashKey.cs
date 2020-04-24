@@ -85,7 +85,7 @@ public class HashKey : IComparable
 
         public static bool operator ==(HashKey left, HashKey right)
         {
-            if (object.ReferenceEquals(left,null))
+            if (left is null)
             {
                 return object.ReferenceEquals(right, null);
             }

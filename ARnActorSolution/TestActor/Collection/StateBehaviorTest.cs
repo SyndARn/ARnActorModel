@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Util;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Util.Test
 {
     [TestClass]
     public class StateBehaviorTest

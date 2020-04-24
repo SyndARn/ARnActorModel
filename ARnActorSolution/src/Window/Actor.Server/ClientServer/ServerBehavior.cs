@@ -8,7 +8,7 @@ namespace Actor.Server
         private const string MessageServerBehaviorNullMessage = "Server Behavior, null message encounters";
         private const string MessageNullMessageReceiveInServerApply = "Null message receive in ServerApply";
         private const string MessageNullClientEncountered = "Null client encountered";
-        private readonly List<IActor> fActorList = new List<IActor>();
+        private readonly List<IActor> _actorList = new List<IActor>();
 
         protected ServerBehavior() : base()
         {
@@ -18,6 +18,7 @@ namespace Actor.Server
 
         public bool ServerPattern(ServerMessage<T> aMessage) => true;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public void ServerApply(ServerMessage<T> aMessage)
         {
             if (aMessage == null)
@@ -33,33 +34,36 @@ namespace Actor.Server
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         protected void DoConnect(ServerMessage<T> aMessage)
         {
             if (aMessage == null)
             {
                 throw new ActorException(MessageServerBehaviorNullMessage);
             }
-            if (!fActorList.Contains(aMessage.Client))
+            if (!_actorList.Contains(aMessage.Client))
             {
-                fActorList.Add(aMessage.Client);
+                _actorList.Add(aMessage.Client);
             }
             aMessage.Client.SendMessage(new ServerMessage<T>(aMessage.Client, ServerRequest.Accept, default));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         protected void DoDisconnect(ServerMessage<T> aMessage)
         {
             if (aMessage == null)
             {
                 throw new ActorException(MessageServerBehaviorNullMessage);
             }
-            if (fActorList.Contains(aMessage.Client))
+            if (_actorList.Contains(aMessage.Client))
             {
-                fActorList.Remove(aMessage.Client);
+                _actorList.Remove(aMessage.Client);
             }
         }
 
         protected abstract void DoRequest(ServerMessage<T> aMessage);
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public void SendAnswer(ServerMessage<T> aMessage, T data)
         {
             if (aMessage == null)

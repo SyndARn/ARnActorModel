@@ -10,7 +10,7 @@ namespace Amoeba
 {
     class PiActor : BaseActor
     {
-        List<Tuple<double, double>> results = new List<Tuple<double, double>>();
+        readonly List<Tuple<double, double>> results = new List<Tuple<double, double>>();
 
         public PiActor()
         {

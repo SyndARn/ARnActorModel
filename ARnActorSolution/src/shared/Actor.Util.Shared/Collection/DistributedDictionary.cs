@@ -29,6 +29,14 @@ namespace Actor.Util
         {
             SendMessage(key);
         }
+
+        public IFuture<IEnumerable<KeyValuePair<TKey, TValue>>> AsEnumerable()
+        {
+            var future = new Future<IEnumerable<KeyValuePair<TKey, TValue>>>();
+            this.SendMessage(future);
+            return future;
+        }
+
     }
 
     public class DistributedDictionaryBehaviors<TKey, TValue> : Behaviors

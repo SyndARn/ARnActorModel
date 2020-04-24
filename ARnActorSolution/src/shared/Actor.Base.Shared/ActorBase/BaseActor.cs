@@ -242,9 +242,9 @@ namespace Actor.Base
 
         private void MessageLoop()
         {
-            object msg = null;
             IBehavior behavior = null;
             int oldReceive = Interlocked.Exchange(ref _sharedStruct.fReceive, _sharedStruct.fReceive);
+            object msg;
             while (ReceiveMessage(out msg))
             {
                 behavior = MatchByPattern(msg);

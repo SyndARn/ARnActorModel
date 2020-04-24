@@ -1,14 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
 using Actor.Base;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Server.Tests
 {
     [TestClass()]
     public class DiscoveryActorTests
@@ -23,8 +21,8 @@ namespace TestActor
         {
             const string localHost = "http://localhost:80";
             var uri = new Uri(localHost);
-            //ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
-            //ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
+            ConfigurationManager.AppSettings["ListenerService"] = "MemoryListenerService";
+            ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
             ActorServer.Start(ActorConfigManager.CastForTest());
             var future = new Future<Dictionary<string, string>>();
             var disco = new DiscoveryActor(uri.AbsoluteUri, future);

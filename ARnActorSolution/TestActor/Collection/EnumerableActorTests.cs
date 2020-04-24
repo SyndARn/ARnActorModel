@@ -7,8 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Actor.Base;
 using System.Globalization;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Util.Test
 {
     [TestClass()]
     public class EnumerableActorTests
