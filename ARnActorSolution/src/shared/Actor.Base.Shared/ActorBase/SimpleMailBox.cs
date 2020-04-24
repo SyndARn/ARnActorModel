@@ -8,7 +8,7 @@ namespace Actor.Base
         private readonly IMessageQueue<T> _queue; // all actors may push here, only this one may dequeue
         private readonly Queue<T> _missed; // only this one use it in run mode
 
-        private static QueueFactory<T> _factory = new QueueFactory<T>();
+        private static readonly QueueFactory<T> _factory = new QueueFactory<T>();
 
         public SimpleMailBox()
         {

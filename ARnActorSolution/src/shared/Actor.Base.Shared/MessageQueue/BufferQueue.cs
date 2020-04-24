@@ -12,7 +12,7 @@ namespace Actor.Base
     public class BufferQueue<T> : IMessageQueue<T>
     {
         private int _token;
-        private T[] _list = new T[128];
+        private readonly T[] _list = new T[128];
         private int _read;
 
         public void Add(T item)

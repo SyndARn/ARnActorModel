@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using Actor.Base;
 
 namespace Actor.Util
@@ -31,15 +29,63 @@ namespace Actor.Util
 #endif
                 if (deco != null)
                 {
-                    // add behavior if we can read this method
                     var parameters = ((MethodInfo)mi).GetParameters();
-                    if (parameters.Length == 1)
+                    switch (parameters.Length)
                     {
-                        if (parameters[0].ParameterType == typeof(string))
-                        {
-                            Behavior<string> bhv = new Behavior<string>(s => ((MethodInfo)mi).Invoke(this, new[] { s }));
-                            bhvs.AddBehavior(bhv);
-                        }
+                        case 0:
+                            {
+                                throw new ActorException("Can't use Decorated Actor on null message");
+                            }
+                        case 1:
+                            {
+                                Behavior bhv = new Behavior(
+                                   s => parameters[0].ParameterType == s.GetType(),
+                                   s => ((MethodInfo)mi).Invoke(this, new[] { s }));
+                                bhvs.AddBehavior(bhv);
+                                break;
+                            }
+                        case 2:
+                            {
+                                Behavior bhv = new Behavior(
+                                   s =>
+                                   {
+                                       var ts = s.GetType();
+                                       return ts.Name == typeof(MessageParam<,>).Name;
+                                   },
+                                   s =>
+                                   {
+                                       var ts = s.GetType();
+                                       var arg1 = ts.GetProperty("Item1").GetValue(s);
+                                       var arg2 = ts.GetProperty("Item2").GetValue(s);
+                                       ((MethodInfo)mi).Invoke(this, new[] { arg1, arg2 });
+                                   });
+                                bhvs.AddBehavior(bhv);
+                                break;
+                            }
+                        case 3:
+                            {
+                                Behavior bhv = new Behavior(
+                                   s =>
+                                   {
+                                       var ts = s.GetType();
+                                       var mp = typeof(MessageParam<,,>);
+                                       return ts.Name == typeof(MessageParam<,,>).Name;
+                                   },
+                                   s =>
+                                   {
+                                       var ts = s.GetType();
+                                       var arg1 = ts.GetProperty("Item1").GetValue(s);
+                                       var arg2 = ts.GetProperty("Item2").GetValue(s);
+                                       var arg3 = ts.GetProperty("Item3").GetValue(s);
+                                       ((MethodInfo)mi).Invoke(this, new[] { arg1, arg2, arg3 });
+                                   });
+                                bhvs.AddBehavior(bhv);
+                                break;
+                            }
+                        default:
+                            {
+                                throw new ActorException("Can't use Decorated Actor on too much arguments");
+                            }
                     }
                 }
             }
@@ -47,4 +93,4 @@ namespace Actor.Util
         }
     }
 #endif
-            }
+}

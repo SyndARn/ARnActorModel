@@ -20,6 +20,7 @@
      with this program; if not, write to the Free Software Foundation, Inc., 
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
+
 using System;
 using System.Threading.Tasks;
 using System.Net.Sockets;
@@ -31,24 +32,23 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
     public class ActorTcpServer : BaseActor
     {
-        TcpListener fTcpListener;
-        IPEndPoint fEndPoint;
+        private readonly TcpListener _tcpListener;
+        private readonly IPEndPoint _endPoint;
 
         public ActorTcpServer()
         {
-            fEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80);
-            fTcpListener = new TcpListener(fEndPoint);
+            _endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80);
+            _tcpListener = new TcpListener(_endPoint);
             Become(new Behavior<string>(DoStartListen));
-            fTcpListener.Start();
+            _tcpListener.Start();
             SendMessage("Start Listen");
         }
 
         private void DoStartListen(string msg)
         {
-            Task<TcpClient> client = fTcpListener.AcceptTcpClientAsync();
+            Task<TcpClient> client = _tcpListener.AcceptTcpClientAsync();
             IActor entryConnection = new actEntryConnection();
             entryConnection.SendMessage(client.Result);
             SendMessage("Continue Listen");
@@ -69,11 +69,13 @@ namespace Actor.Server
             using (MemoryStream memStream = new MemoryStream())
             {
                 stream.CopyTo(memStream);
-                StreamReader sr = new StreamReader(memStream);
-                while (!sr.EndOfStream)
+                using (StreamReader sr = new StreamReader(memStream))
                 {
-                    var req = sr.ReadLine();
-                    Debug.Print("receive " + req);
+                    while (!sr.EndOfStream)
+                    {
+                        var req = sr.ReadLine();
+                        Debug.Print("receive " + req);
+                    }
                 }
 
                 memStream.Seek(0, SeekOrigin.Begin);

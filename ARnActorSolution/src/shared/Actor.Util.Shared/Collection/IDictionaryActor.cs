@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Actor.Base;
 
 namespace Actor.Util
@@ -8,5 +9,6 @@ namespace Actor.Util
         void AddKeyValue(TKey key, TValue value);
         IFuture<bool, TKey, TValue> GetKeyValue(TKey key);
         void RemoveKey(TKey key);
+        IFuture<IEnumerable<KeyValuePair<TKey, TValue>>> AsEnumerable();
     }
 }

@@ -9,7 +9,7 @@ namespace Actor.Server
 {
     public class MemoryListenerService : IListenerService
     {
-        private MemoryContextComm  memoryContext = new MemoryContextComm();
+        private readonly MemoryContextComm  _memoryContext = new MemoryContextComm();
 
         public void Close()
         {
@@ -19,7 +19,7 @@ namespace Actor.Server
 
         public IContextComm GetCommunicationContext()
         {
-            return memoryContext;
+            return _memoryContext;
         }
     }
 }

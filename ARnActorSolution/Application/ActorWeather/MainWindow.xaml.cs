@@ -30,7 +30,7 @@ namespace ActorWeather
 
         private StateFullStringCatcher fCatcher = new StateFullStringCatcher();
 
-        private RestReaderActor fReader = new RestReaderActor();
+        private readonly RestReaderActor fReader = new RestReaderActor();
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {

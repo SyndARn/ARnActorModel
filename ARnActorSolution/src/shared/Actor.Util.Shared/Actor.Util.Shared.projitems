@@ -39,6 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IO\TextWriterActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MapReduce\MapReduceActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Monadic\MonadActor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parser\StringParserActor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\HashKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\IAgentBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Peer\INodeBehavior.cs" />

@@ -34,11 +34,13 @@ namespace Actor.Server
         private readonly Dictionary<string, IActor> _dictionary = new Dictionary<string, IActor>();
         private static readonly Lazy<DirectoryActor> _directory = new Lazy<DirectoryActor>(() => new DirectoryActor(), true);
         public static readonly string Name = "Directory";
+        private const string Value = "Dictionary starts and autoregisters";
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public DirectoryActor()
             : base()
         {
-            const string Value = "Dictionary starts and autoregisters";
+
             Console.WriteLine(Value);
             _dictionary.Add(Name, this);
 
@@ -48,7 +50,6 @@ namespace Actor.Server
             Become(bhvs);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static DirectoryActor GetDirectory() => _directory.Value;
 
         public string Stat() => "Directory entries " + _dictionary.Count.ToString(CultureInfo.InvariantCulture);
@@ -76,9 +77,7 @@ namespace Actor.Server
         private void DoDisco(IActor anActor)
         {
             Dictionary<string, string> directory = new Dictionary<string, string>();
-            // TODO replace with Host Service
             string fullhost = ActorServer.GetInstance().FullHost;
-            // var fullhost = new ConfigManager().Host().Host;
             foreach (string key in _dictionary.Keys)
             {
                 IActor value = _dictionary[key];

@@ -26,9 +26,11 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-
     public class EchoServerBehavior : ServerBehavior<string>
     {
+        private const string MessageBhvEchoServer = "bhvEchoServer : null message received";
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         protected override void DoRequest(ServerMessage<string> aMessage)
         {
             if (aMessage != null)
@@ -45,7 +47,7 @@ namespace Actor.Server
             }
             else
             {
-                throw new ActorException("bhvEchoServer : null message received") ;
+                throw new ActorException(MessageBhvEchoServer);
             }
         }
     }

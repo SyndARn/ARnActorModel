@@ -82,7 +82,7 @@ namespace Actor.Service
         {
             var future = new Future<IEnumerable<IEventSource<T>>>();
             this.SendMessage(PersistentCommand.Load, (IActor)future);
-            fCurrentState = default(T);
+            fCurrentState = default;
             foreach(var item in future.Result())
             {
                 fCurrentState = item.Apply(fCurrentState);

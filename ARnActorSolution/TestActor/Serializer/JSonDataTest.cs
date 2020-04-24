@@ -9,7 +9,7 @@ namespace TestActor
     [TestClass]
     public class JSonDataTest
     {
-        private string TestData =
+        private readonly string TestData =
             @"{""apiVersion"":""1.0"", ""data"":{ ""location"":""Paris, FRA"", ""temperature"":""54"", ""skytext"":""Sprinkles"", ""humidity"":""94"", ""wind"":""16"", ""date"":""2015-03-29"", ""day"":""Sunday"" } }: Receive {0}" ;
 
         [TestMethod]

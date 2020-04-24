@@ -6,7 +6,7 @@ namespace Actor.Server
 {
     internal class RemoteReceiverActor : BaseActor
     {
-        private readonly ISerializeService fSerializeService;
+        private readonly ISerializeService _serializeService;
 
         public static void Cast(IContextComm contextComm)
         {
@@ -17,7 +17,7 @@ namespace Actor.Server
 
         public RemoteReceiverActor()
         {
-            fSerializeService = ActorServer.GetInstance().SerializeService;
+            _serializeService = ActorServer.GetInstance().SerializeService;
             Become(new Behavior<IContextComm,Stream>((i, t) => true, DoContext));
         }
 
@@ -28,23 +28,25 @@ namespace Actor.Server
             {
                 streamMessage.CopyTo(ms);
                 ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                while (!sr.EndOfStream)
+                using (StreamReader sr = new StreamReader(ms))
                 {
-                    var req = sr.ReadLine();
-                    Debug.Print("receive " + req);
+                    while (!sr.EndOfStream)
+                    {
+                        var req = sr.ReadLine();
+                        Debug.Print("receive " + req);
+                    }
+
+                    ms.Seek(0, SeekOrigin.Begin);
+
+                    object so = _serializeService.Deserialize(ms);
+                    // send an ack
+                    contextComm.Acknowledge();
+
+                    // find hosted actor directory
+                    // forward msg to hostedactordirectory
+                    Become(new Behavior<object>(t => true, ProcessMessage));
+                    SendMessage(so);
                 }
-
-                ms.Seek(0, SeekOrigin.Begin);
-
-                object so = fSerializeService.Deserialize(ms);
-                // send an ack
-                contextComm.Acknowledge();
-
-                // find hosted actor directory
-                // forward msg to hostedactordirectory
-                Become(new Behavior<object>(t => true, ProcessMessage));
-                SendMessage(so);
             }
         }
 

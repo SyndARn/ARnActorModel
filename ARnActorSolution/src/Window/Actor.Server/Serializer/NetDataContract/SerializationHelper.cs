@@ -29,11 +29,14 @@ namespace Actor.Server
 
     public class ActorSurrogatorSelector : SurrogateSelector
     {
+        private const string MessageNullInGetSurrogate = "Null type found in GetSurrogate";
+
         public ActorSurrogatorSelector()
             : base()
         {
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public override ISerializationSurrogate GetSurrogate(
             Type type,
             StreamingContext context,
@@ -42,7 +45,7 @@ namespace Actor.Server
         {
             if (type == null)
             {
-                throw new ActorException("Null type found in GetSurrogate");
+                throw new ActorException(MessageNullInGetSurrogate);
             }
             if (type.IsSubclassOf(typeof(BaseActor)))
             {

@@ -7,22 +7,27 @@ using Actor.Base;
 
 namespace Actor.Util
 {
-    public class DictionaryBehavior<TKey,TValue> : Behaviors, IDictionaryActor<TKey,TValue>
+    public class DictionaryBehavior<TKey, TValue> : Behaviors, IDictionaryActor<TKey, TValue>
     {
         private readonly Dictionary<TKey, TValue> _dico = new Dictionary<TKey, TValue>();
 
         public DictionaryBehavior()
         {
-            Behavior<TKey, TValue> bhv1 = new Behavior<TKey, TValue>( (k, v) => _dico[k] = v);
+            Behavior<TKey, TValue> bhv1 = new Behavior<TKey, TValue>((k, v) => _dico[k] = v);
             Behavior<IActor, TKey> bhv2 = new Behavior<IActor, TKey>((a, k) =>
                 {
                     bool result = _dico.TryGetValue(k, out TValue v);
                     a.SendMessage(result, k, v);
                 });
             Behavior<TKey> bhv3 = new Behavior<TKey>(k => _dico.Remove(k));
+            Behavior<IActor> bhv4 = new Behavior<IActor>(a =>
+            {
+                a.SendMessage(_dico.AsEnumerable<KeyValuePair<TKey, TValue>>());
+            });
             AddBehavior(bhv1);
             AddBehavior(bhv2);
             AddBehavior(bhv3);
+            AddBehavior(bhv4);
         }
 
         public void AddKeyValue(TKey key, TValue value)
@@ -32,8 +37,15 @@ namespace Actor.Util
 
         public IFuture<bool, TKey, TValue> GetKeyValue(TKey key)
         {
-            Future<bool, TKey, TValue> future = new Future<bool, TKey, TValue>();
+            IFuture<bool, TKey, TValue> future = new Future<bool, TKey, TValue>();
             LinkedActor.SendMessage((IActor)future, key);
+            return future;
+        }
+
+        public IFuture<IEnumerable<KeyValuePair<TKey, TValue>>> AsEnumerable()
+        {
+            IFuture<IEnumerable<KeyValuePair<TKey, TValue>>> future = new Future<IEnumerable<KeyValuePair<TKey, TValue>>>();
+            LinkedActor.SendMessage(future);
             return future;
         }
 
@@ -43,7 +55,7 @@ namespace Actor.Util
         }
     }
 
-    public class DictionaryActor<TKey,TValue> : BaseActor, IDictionaryActor<TKey, TValue>
+    public class DictionaryActor<TKey, TValue> : BaseActor, IDictionaryActor<TKey, TValue>
     {
         private readonly IDictionaryActor<TKey, TValue> _serviceDictionary;
 
@@ -67,6 +79,11 @@ namespace Actor.Util
         public void RemoveKey(TKey key)
         {
             _serviceDictionary.RemoveKey(key);
+        }
+
+        public IFuture<IEnumerable<KeyValuePair<TKey,TValue>>> AsEnumerable()
+        {
+            return _serviceDictionary.AsEnumerable();
         }
     }
 }

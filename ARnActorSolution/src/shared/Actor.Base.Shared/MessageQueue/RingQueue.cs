@@ -60,7 +60,7 @@ namespace Actor.Base
             if (fHead > fTail)
             {
                 item = fList[fTail];
-                fList[fTail] = default(T);
+                fList[fTail] = default;
                 fTail++;
                 if (fTail == fHead)
                 {
@@ -69,7 +69,7 @@ namespace Actor.Base
                 }
                 return true;
             }
-            item = default(T);
+            item = default;
             return false;
         }
     }

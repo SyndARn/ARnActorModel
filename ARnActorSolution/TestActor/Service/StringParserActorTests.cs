@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TestActor;
 using Actor.Base;
+using Actor.Util;
 
 namespace Actor.Service.Tests
 {

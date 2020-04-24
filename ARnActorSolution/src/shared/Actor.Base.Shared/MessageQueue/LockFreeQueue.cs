@@ -21,7 +21,6 @@ namespace Actor.Base
 
         public bool TryTake(out T item)
         {
-            item = default(T);
             return _queue.TryDequeue(out item);
         }
     }

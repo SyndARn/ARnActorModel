@@ -39,6 +39,7 @@ namespace Actor.Server
             Become(new ConsoleBehavior());
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Register()
         {
             var console = new ActorConsole();

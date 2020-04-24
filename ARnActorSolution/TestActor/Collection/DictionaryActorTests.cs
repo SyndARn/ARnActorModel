@@ -49,7 +49,7 @@ namespace TestActor
                 var f2 = r2.Result();
                 Assert.IsTrue(f1.Item1);
                 Assert.IsTrue(f2.Item1);
-                Assert.AreEqual("2",f2.Item2) ;
+                Assert.AreEqual("2", f2.Item2);
                 Assert.AreEqual(2, f2.Item3);
                 Assert.IsFalse(r3.Result().Item1);
             });
@@ -67,6 +67,24 @@ namespace TestActor
                 act.RemoveKey("1");
                 var r1 = act.GetKeyValue("2");
                 Assert.AreEqual(2, r1.Result().Item3);
+            });
+        }
+
+        [TestMethod()]
+        public void AsEnumerableTest()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var act = new DictionaryActor<string, int>();
+                Assert.IsNotNull(act);
+                act.AddKeyValue("1", 1);
+                act.AddKeyValue("2", 2);
+                act.AddKeyValue("3", 3);
+                act.AddKeyValue("4", 4);
+                var future = act.AsEnumerable();
+                var result = future.Result();
+                var first = result.First();
+                Assert.AreEqual("[1, 1]", first.ToString());
             });
         }
     }

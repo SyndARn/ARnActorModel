@@ -10,23 +10,14 @@ namespace Actor.Util
         public Future<TValue> Get(TKey key)
         {
             Future<TValue> future = new Future<TValue>();
-            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Get, key, default(TValue), (IActor)future));
+            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Get, key, default, (IActor)future));
             return future;
         }
 
-        public void Set(TKey key, TValue value)
-        {
-            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Set, key, value, null));
-        }
+        public void Set(TKey key, TValue value) => SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Set, key, value, null));
 
-        public void Delete(TKey key)
-        {
-            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Delete, key, default(TValue), null));
-        }
+        public void Delete(TKey key) => SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Delete, key, default, null));
 
-        public void Update(TKey key, TValue value)
-        {
-            SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Update, key, value, null));
-        }
+        public void Update(TKey key, TValue value) => SendMessage(new CrudMessage<TKey, TValue>(CrudAction.Update, key, value, null));
     }
 }

@@ -50,7 +50,6 @@ namespace Actor.Server
         {
             if (_host == null)
             {
-                string hostService = ConfigurationManager.AppSettings["HostService"];
                 string hostName = ConfigurationManager.AppSettings["HostName"];
                 string hostPort = ConfigurationManager.AppSettings["HostPort"];
                 if (string.IsNullOrEmpty(hostName))
@@ -107,12 +106,12 @@ namespace Actor.Server
             return _listenerService;
         }
 
-        public IServerCommandService GetServerCommandService()
+        public static IServerCommandService GetServerCommandService()
         {
-            ServerCommandService service = new ServerCommandService();
-            service.RegisterCommand(new DiscoServerCommand());
-            service.RegisterCommand(new StatServerCommand());
-            return service;
+            ServerCommandService serverCommandService = new ServerCommandService();
+            serverCommandService.RegisterCommand(new DiscoServerCommand());
+            serverCommandService.RegisterCommand(new StatServerCommand());
+            return serverCommandService;
         }
 
         private ISerializeService _serializeService;

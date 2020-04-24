@@ -41,7 +41,7 @@ namespace Amoeba
 
     public class AmoebaActor
     {
-        MonteCarloActor<long> fMonteCarlo = new MonteCarloActor<long>();
+        readonly MonteCarloActor<long> fMonteCarlo = new MonteCarloActor<long>();
 
         public AmoebaActor()
         {

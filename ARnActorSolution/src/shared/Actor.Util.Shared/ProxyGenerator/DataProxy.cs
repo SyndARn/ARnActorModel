@@ -10,12 +10,12 @@ namespace Actor.Util
 
     public class DataProxy : BaseActor, IData
     {
-        private DataObject fObject;
+        private readonly DataObject _object;
         public DataProxy() : base()
         {
-            fObject = new DataObject();
-            var behaviorStore = new Behavior<string>(t => fObject.Store(t));
-            var behaviorRetrieve = new Behavior<IFuture<string>>((IFuture<string> t) => t.SendMessage(fObject.Retrieve()));
+            _object = new DataObject();
+            var behaviorStore = new Behavior<string>(t => _object.Store(t));
+            var behaviorRetrieve = new Behavior<IFuture<string>>((IFuture<string> t) => t.SendMessage(_object.Retrieve()));
             Become(behaviorStore, behaviorRetrieve);
         }
         public void Store(string aData)
@@ -38,17 +38,17 @@ namespace Actor.Util
 
     public class DataObject : IData
     {
-        private string fData;
+        private string _data;
         public DataObject()
         {
         }
         public void Store(string aData)
         {
-            fData = aData;
+            _data = aData;
         }
         public string Retrieve()
         {
-            return fData;
+            return _data;
         }
     }
 }
