@@ -19,12 +19,11 @@ namespace Actor.Server
 
         private void DoRemove(string aShardName) => fShardList.Remove(aShardName);
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
-        public Task<IEnumerable<string>> GetAllAsync()
+        public IFuture<IEnumerable<string>> GetAllAsync()
         {
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
             SendMessage(future);
-            return future.ResultAsync();
+            return future;
         }
 
         private void DoGetAll(IFuture future)

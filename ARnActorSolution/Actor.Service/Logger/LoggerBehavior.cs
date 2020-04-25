@@ -7,14 +7,10 @@ using Actor.Server;
 
 namespace Actor.Service
 {
-    [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class LoggerBehaviors : Behaviors
     {
         public string FileName { get; private set; }
         public List<object> MessageList { get; } = new List<object>();
-
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => ToString();
 
         public LoggerBehaviors() : base() => DoInit(ActorServer.GetInstance().Name);
 

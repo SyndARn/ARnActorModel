@@ -37,7 +37,7 @@ namespace Actor.Base
     {
         private static long numAddTask = 0; // qtt of task launched
         private static long numCloseTask = 0; // qtt of task finished, numAddTask - numCloseTask = 2 on actorserver at rest
-        private static CancellationToken token = new CancellationToken();
+        private static readonly CancellationToken token = new CancellationToken();
 
         public static string Stat()
         {

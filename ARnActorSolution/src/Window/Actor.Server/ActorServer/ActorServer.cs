@@ -32,6 +32,7 @@ namespace Actor.Server
 
         public static void Start(ActorConfigManager configManager)
         {
+            CheckArg.ActorConfigManager(configManager);
             ActorTagHelper.FullHost = configManager.Host().Host;
 
             _serverInstance = new ActorServer

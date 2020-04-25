@@ -41,7 +41,7 @@ namespace Actor.Util.Test
 
         public void PostAnswer(IActor a, string s, int i)
         {
-            this.SendMessage(a, s, 1);
+            this.SendMessage(a, s, i);
         }
     }
 
