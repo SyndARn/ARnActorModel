@@ -25,5 +25,6 @@
     <PkgMicrosoft_Net_Native_SharedLibrary-x64 Condition=" '$(PkgMicrosoft_Net_Native_SharedLibrary-x64)' == '' ">C:\Users\ARn\.nuget\packages\microsoft.net.native.sharedlibrary-x64\1.7.3</PkgMicrosoft_Net_Native_SharedLibrary-x64>
     <PkgMicrosoft_Net_Native_SharedLibrary-arm Condition=" '$(PkgMicrosoft_Net_Native_SharedLibrary-arm)' == '' ">C:\Users\ARn\.nuget\packages\microsoft.net.native.sharedlibrary-arm\1.7.3</PkgMicrosoft_Net_Native_SharedLibrary-arm>
     <PkgMicrosoft_Net_Native_Compiler Condition=" '$(PkgMicrosoft_Net_Native_Compiler)' == '' ">C:\Users\ARn\.nuget\packages\microsoft.net.native.compiler\1.7.6</PkgMicrosoft_Net_Native_Compiler>
+    <Pkgcoveralls_io Condition=" '$(Pkgcoveralls_io)' == '' ">C:\Users\ARn\.nuget\packages\coveralls.io\1.4.2</Pkgcoveralls_io>
   </PropertyGroup>
 </Project>

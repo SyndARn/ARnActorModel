@@ -2,6 +2,9 @@
   "version": 3,
   "targets": {
     "UAP,Version=v10.0.10240": {
+      "coveralls.io/1.4.2": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -2232,6 +2235,9 @@
       }
     },
     "UAP,Version=v10.0.10240/win10-arm": {
+      "coveralls.io/1.4.2": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -4536,6 +4542,9 @@
       }
     },
     "UAP,Version=v10.0.10240/win10-arm-aot": {
+      "coveralls.io/1.4.2": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -6876,6 +6885,9 @@
       }
     },
     "UAP,Version=v10.0.10240/win10-x64": {
+      "coveralls.io/1.4.2": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -9189,6 +9201,9 @@
       }
     },
     "UAP,Version=v10.0.10240/win10-x64-aot": {
+      "coveralls.io/1.4.2": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -11538,6 +11553,9 @@
       }
     },
     "UAP,Version=v10.0.10240/win10-x86": {
+      "coveralls.io/1.4.2": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -13851,6 +13869,9 @@
       }
     },
     "UAP,Version=v10.0.10240/win10-x86-aot": {
+      "coveralls.io/1.4.2": {
+        "type": "package"
+      },
       "Microsoft.CSharp/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -16201,6 +16222,33 @@
     }
   },
   "libraries": {
+    "coveralls.io/1.4.2": {
+      "sha512": "V8id+G8NdmmFKXbbxk/zqVGXZnuSrzOkcF9GhOLhNOHCG9kC4qiQLvod+kGrtpQyzyzySIyLdI18H5eGA08ZDA==",
+      "type": "package",
+      "path": "coveralls.io/1.4.2",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "coveralls.io.1.4.2.nupkg.sha512",
+        "coveralls.io.nuspec",
+        "tools/CommandLine.dll",
+        "tools/CommandLine.xml",
+        "tools/Coveralls.dll",
+        "tools/Coveralls.pdb",
+        "tools/LibGit2Sharp.dll",
+        "tools/LibGit2Sharp.xml",
+        "tools/NativeBinaries/amd64/git2-e0902fb.dll",
+        "tools/NativeBinaries/amd64/git2-e0902fb.pdb",
+        "tools/NativeBinaries/x86/git2-e0902fb.dll",
+        "tools/NativeBinaries/x86/git2-e0902fb.pdb",
+        "tools/Newtonsoft.Json.dll",
+        "tools/Newtonsoft.Json.xml",
+        "tools/coveralls.net.exe",
+        "tools/coveralls.net.exe.config",
+        "tools/coveralls.net.pdb"
+      ]
+    },
     "Microsoft.CSharp/4.0.1": {
       "sha512": "17h8b5mXa87XYKrrVqdgZ38JefSUqLChUQpXgSnpzsM0nDOhE40FTeNWOJ/YmySGV6tG6T8+hjz6vxbknHJr6A==",
       "type": "package",
@@ -25863,7 +25911,8 @@
   "projectFileDependencyGroups": {
     "": [
       "Microsoft.NETCore.UniversalWindowsPlatform >= 6.2.10",
-      "OpenCover >= 4.7.922"
+      "OpenCover >= 4.7.922",
+      "coveralls.io >= 1.4.2"
     ],
     "UAP,Version=v10.0.10240": []
   },
@@ -25897,7 +25946,11 @@
     },
     "dependencies": {
       "Microsoft.NETCore.UniversalWindowsPlatform": "[6.2.10, )",
-      "OpenCover": "[4.7.922, )"
+      "OpenCover": "[4.7.922, )",
+      "coveralls.io": {
+        "target": "Package",
+        "version": "[1.4.2, )"
+      }
     },
     "frameworks": {
       "uap10.0.10240": {}
