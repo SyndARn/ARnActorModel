@@ -25,7 +25,7 @@ namespace Actor.Util
             foreach (var mi in memberInfo)
             {
 #if NETCOREAPP1_1
-                BehaviorAttribute deco = (BehaviorAttribute)mi.GetType().GetTypeInfo().GetCustomAttribute(typeof(BehaviorAttribute));
+                BehaviorAttribute deco = mi.GetCustomAttribute<BehaviorAttribute>();
 #else
                 BehaviorAttribute deco = (BehaviorAttribute)Attribute.GetCustomAttribute(mi, typeof(BehaviorAttribute));
 #endif
