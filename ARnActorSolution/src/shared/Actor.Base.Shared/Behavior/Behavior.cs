@@ -65,7 +65,7 @@ namespace Actor.Base
 
         public IEnumerable<IBehavior> AllBehaviors() => _behaviors.ToList(); // force clone
 
-        public virtual void LinkToActor(IActor anActor) => LinkedActor = anActor;
+        public void LinkToActor(IActor anActor) => LinkedActor = anActor;
 
         public bool FindBehavior(IBehavior aBehavior) => _behaviors.Contains(aBehavior);
 

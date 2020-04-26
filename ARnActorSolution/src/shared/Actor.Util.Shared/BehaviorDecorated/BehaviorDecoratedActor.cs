@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Actor.Base;
 
@@ -7,6 +8,8 @@ namespace Actor.Util
 #if !(NETFX_CORE) 
     public class BehaviorDecoratedActor : BaseActor
     {
+        private const string MessageCantUseDecoratedActporOnNullMessage = "Can't use Decorated Actor on null message";
+
         public BehaviorDecoratedActor() : base()
         {
             // start with empty behaviors
@@ -23,7 +26,7 @@ namespace Actor.Util
             foreach (var mi in memberInfo)
             {
 #if NETCOREAPP1_1
-                BehaviorAttribute deco = (BehaviorAttribute)mi.GetType().GetTypeInfo().GetCustomAttribute(typeof(BehaviorAttribute));
+                BehaviorAttribute deco = mi.GetCustomAttribute<BehaviorAttribute>();
 #else
                 BehaviorAttribute deco = (BehaviorAttribute)Attribute.GetCustomAttribute(mi, typeof(BehaviorAttribute));
 #endif
@@ -34,7 +37,7 @@ namespace Actor.Util
                     {
                         case 0:
                             {
-                                throw new ActorException("Can't use Decorated Actor on null message");
+                                throw new ActorException(MessageCantUseDecoratedActporOnNullMessage);
                             }
                         case 1:
                             {
@@ -93,27 +96,21 @@ namespace Actor.Util
         }
     }
 
-    public class BehaviorAttributeBuilder : Behaviors
+    public class BehaviorAttributeBuilder 
     {
         private const string MessageNullMessageOnDecoratedActor = "Can't use Decorated Actor on null message";
         private const string MessageTooMuchArgumentsOnDecoratedActor = "Can't use Decorated Actor on too much arguments";
 
-        public override void LinkToActor(IActor anActor)
-        {
-            base.LinkToActor(anActor);
-            BuildFromAttributes();
-        }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
-        private  void BuildFromAttributes()
+        public IEnumerable<IBehavior> BuildFromAttributes(IActor LinkedActor)
         {
-            Behaviors bhvs = new Behaviors();
+            var bhvs = new List<IBehavior>();
             // Launch reflexion
             MemberInfo[] memberInfo = LinkedActor.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var mi in memberInfo)
             {
 #if NETCOREAPP1_1
-                BehaviorAttribute deco = (BehaviorAttribute)mi.GetType().GetTypeInfo().GetCustomAttribute(typeof(BehaviorAttribute));
+                BehaviorAttribute deco = mi.GetCustomAttribute<BehaviorAttribute>();
 #else
                 BehaviorAttribute deco = (BehaviorAttribute)Attribute.GetCustomAttribute(mi, typeof(BehaviorAttribute));
 #endif
@@ -129,9 +126,9 @@ namespace Actor.Util
                         case 1:
                             {
                                 Behavior bhv = new Behavior(
-                                   s => parameters[0].ParameterType == s.GetType(),
+                                   s => parameters[0].ParameterType.IsAssignableFrom(s.GetType()),
                                    s => ((MethodInfo)mi).Invoke(LinkedActor, new[] { s }));
-                                bhvs.AddBehavior(bhv);
+                                bhvs.Add(bhv);
                                 break;
                             }
                         case 2:
@@ -139,8 +136,7 @@ namespace Actor.Util
                                 Behavior bhv = new Behavior(
                                    s =>
                                    {
-                                       var ts = s.GetType();
-                                       return ts.Name == typeof(MessageParam<,>).Name;
+                                       return s.GetType().Name == typeof(MessageParam<,>).Name;
                                    },
                                    s =>
                                    {
@@ -149,7 +145,7 @@ namespace Actor.Util
                                        var arg2 = ts.GetProperty("Item2").GetValue(s);
                                        ((MethodInfo)mi).Invoke(LinkedActor, new[] { arg1, arg2 });
                                    });
-                                bhvs.AddBehavior(bhv);
+                                bhvs.Add(bhv);
                                 break;
                             }
                         case 3:
@@ -157,9 +153,7 @@ namespace Actor.Util
                                 Behavior bhv = new Behavior(
                                    s =>
                                    {
-                                       var ts = s.GetType();
-                                       var mp = typeof(MessageParam<,,>);
-                                       return ts.Name == typeof(MessageParam<,,>).Name;
+                                       return s.GetType().Name == typeof(MessageParam<,,>).Name;
                                    },
                                    s =>
                                    {
@@ -169,7 +163,7 @@ namespace Actor.Util
                                        var arg3 = ts.GetProperty("Item3").GetValue(s);
                                        ((MethodInfo)mi).Invoke(LinkedActor, new[] { arg1, arg2, arg3 });
                                    });
-                                bhvs.AddBehavior(bhv);
+                                bhvs.Add(bhv);
                                 break;
                             }
                         default:
@@ -179,10 +173,7 @@ namespace Actor.Util
                     }
                 }
             }
-            foreach (IBehavior item in bhvs.AllBehaviors())
-            {
-                AddBehavior(item);
-            }
+            return bhvs;
         }
     }
 #endif

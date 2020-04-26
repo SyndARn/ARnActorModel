@@ -2,6 +2,7 @@
 using Actor.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestActor;
+using System.Linq;
 
 namespace Actor.Util.Test
 {
@@ -11,7 +12,7 @@ namespace Actor.Util.Test
 
         public TestActorBehaviorDecorated() : base()
         {
-            Become(new BehaviorAttributeBuilder());
+            Become(new BehaviorAttributeBuilder().BuildFromAttributes(this).ToArray());
         }
 
         [Behavior]
