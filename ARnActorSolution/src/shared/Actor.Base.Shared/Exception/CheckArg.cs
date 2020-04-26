@@ -20,6 +20,7 @@ namespace Actor.Base
         private const string MessageBehaviorsCantBeNull = "Behaviors can't be null";
         private const string MessageActorMustExit = "Actor must exist";
         private const string MessageNullPatternReceived = "Null pattern received";
+        private const string MessageConfigManagerMustExist = "Config Manager must exist";
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Stream([ValidatedNotNull]Stream aStream)
@@ -119,6 +120,18 @@ namespace Actor.Base
 
             throw new ActorException(MessageUriCantBeNull);
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
+        public static void ActorConfigManager([ValidatedNotNull] Object actorConfigManager)
+        {
+            if (actorConfigManager != null)
+            {
+                return;
+            }
+
+            throw new ActorException(MessageConfigManagerMustExist);
+        }
+
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Actor([ValidatedNotNull] IActor anActor)

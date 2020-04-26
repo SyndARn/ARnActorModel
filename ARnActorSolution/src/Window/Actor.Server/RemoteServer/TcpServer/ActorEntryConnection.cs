@@ -22,9 +22,7 @@
 *****************************************************************************/
 
 using System;
-using System.Threading.Tasks;
 using System.Net.Sockets;
-using System.Net;
 using System.IO;
 using System.Diagnostics;
 using System.Runtime.Serialization;
@@ -32,33 +30,9 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    public class ActorTcpServer : BaseActor
+    public class ActorEntryConnection : BaseActor
     {
-        private readonly TcpListener _tcpListener;
-        private readonly IPEndPoint _endPoint;
-
-        public ActorTcpServer()
-        {
-            _endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80);
-            _tcpListener = new TcpListener(_endPoint);
-            Become(new Behavior<string>(DoStartListen));
-            _tcpListener.Start();
-            SendMessage("Start Listen");
-        }
-
-        private void DoStartListen(string msg)
-        {
-            Task<TcpClient> client = _tcpListener.AcceptTcpClientAsync();
-            IActor entryConnection = new actEntryConnection();
-            entryConnection.SendMessage(client.Result);
-            SendMessage("Continue Listen");
-        }
-    }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "act")]
-    public class actEntryConnection : BaseActor
-    {
-        public actEntryConnection() : base()
+        public ActorEntryConnection() : base()
         {
             Become(new Behavior<TcpClient>(DoListen));
         }
@@ -79,9 +53,11 @@ namespace Actor.Server
                 }
 
                 memStream.Seek(0, SeekOrigin.Begin);
-                NetDataContractSerializer dcs = new NetDataContractSerializer();
-                dcs.SurrogateSelector = new ActorSurrogatorSelector();
-                dcs.Binder = new ActorBinder();
+                NetDataContractSerializer dcs = new NetDataContractSerializer
+                {
+                    SurrogateSelector = new ActorSurrogatorSelector(),
+                    Binder = new ActorBinder()
+                };
                 Object obj = dcs.ReadObject(memStream);
                 SerialObject so = (SerialObject)obj;
 

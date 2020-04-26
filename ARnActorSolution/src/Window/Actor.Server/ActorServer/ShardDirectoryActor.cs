@@ -12,6 +12,7 @@ namespace Actor.Server
         public ShardDirectoryActor(ActorServer actorServer)
             : base()
         {
+            CheckArg.Actor(actorServer);
             _shardList = new Dictionary<string, string>
             {
                 { "LocalHost",actorServer.FullHost }

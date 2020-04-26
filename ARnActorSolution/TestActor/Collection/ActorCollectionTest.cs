@@ -38,7 +38,7 @@ namespace TestActor
                 CollectionActor<string> collect = new CollectionActor<string>();
                 for (int i = 0; i < 100; i++)
                 {
-                    collect.Add($"Test {i.ToString()}");
+                    collect.Add($"Test {i}");
                 }
 
                 Assert.AreEqual(100,collect.Count());
