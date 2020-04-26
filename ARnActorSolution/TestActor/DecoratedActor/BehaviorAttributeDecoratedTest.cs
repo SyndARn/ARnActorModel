@@ -5,9 +5,14 @@ using TestActor;
 
 namespace Actor.Util.Test
 {
-    internal class TestActor : BehaviorDecoratedActor
+    internal class TestActorBehaviorDecorated : BaseActor
     {
         private IFuture<string> future;
+
+        public TestActorBehaviorDecorated() : base()
+        {
+            Become(new BehaviorAttributeBuilder());
+        }
 
         [Behavior]
         internal void DecoratedMessage(string s)
@@ -16,7 +21,7 @@ namespace Actor.Util.Test
         }
 
         [Behavior]
-        internal void DecoratedMessage(IActor a,string s)
+        internal void DecoratedMessage(IActor a, string s)
         {
             a.SendMessage(s);
         }
@@ -24,7 +29,7 @@ namespace Actor.Util.Test
         [Behavior]
         internal void DecoratedMessage(IActor a, string s, int i)
         {
-            a.SendMessage(s,i);
+            a.SendMessage(s, i);
         }
 
 
@@ -46,14 +51,16 @@ namespace Actor.Util.Test
     }
 
     [TestClass()]
-    public class DecoratedActorTest
+    public class BehaviorAttributeDecoratedTest
     {
+        public TestContext TestContext { get; set; }
+
         [TestMethod()]
         public void TestADecoratedActor()
         {
             TestLauncherActor.Test(() =>
             {
-                var actor = new TestActor();
+                var actor = new TestActorBehaviorDecorated();
                 var future = actor.GetAnswer();
                 actor.SendMessage("Test Decorated");
                 Assert.AreEqual("Test Decorated", future.Result());
@@ -65,8 +72,8 @@ namespace Actor.Util.Test
         {
             TestLauncherActor.Test(() =>
             {
-                var actor = new TestActor();
-                var future = new Future<string>(); 
+                var actor = new TestActorBehaviorDecorated();
+                var future = new Future<string>();
                 actor.PostAnswer(future, "Test Decorated");
                 Assert.AreEqual("Test Decorated", future.Result());
             });
@@ -77,7 +84,7 @@ namespace Actor.Util.Test
         {
             TestLauncherActor.Test(() =>
             {
-                var actor = new TestActor();
+                var actor = new TestActorBehaviorDecorated();
                 var future = new Future<string, int>();
                 actor.PostAnswer(future, "Test Decorated", 1);
                 var result = future.Result();

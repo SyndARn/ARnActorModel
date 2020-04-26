@@ -19,7 +19,7 @@ namespace Actor.Util
         {
             Behaviors bhvs = new Behaviors();
             // Launch reflexion
-            MemberInfo[] memberInfo = GetType().GetMethods();
+            MemberInfo[] memberInfo = GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var mi in memberInfo)
             {
 #if NETCOREAPP1_1
@@ -90,6 +90,99 @@ namespace Actor.Util
                 }
             }
             Become(bhvs);
+        }
+    }
+
+    public class BehaviorAttributeBuilder : Behaviors
+    {
+        private const string MessageNullMessageOnDecoratedActor = "Can't use Decorated Actor on null message";
+        private const string MessageTooMuchArgumentsOnDecoratedActor = "Can't use Decorated Actor on too much arguments";
+
+        public override void LinkToActor(IActor anActor)
+        {
+            base.LinkToActor(anActor);
+            BuildFromAttributes();
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
+        private  void BuildFromAttributes()
+        {
+            Behaviors bhvs = new Behaviors();
+            // Launch reflexion
+            MemberInfo[] memberInfo = LinkedActor.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance);
+            foreach (var mi in memberInfo)
+            {
+#if NETCOREAPP1_1
+                BehaviorAttribute deco = (BehaviorAttribute)mi.GetType().GetTypeInfo().GetCustomAttribute(typeof(BehaviorAttribute));
+#else
+                BehaviorAttribute deco = (BehaviorAttribute)Attribute.GetCustomAttribute(mi, typeof(BehaviorAttribute));
+#endif
+                if (deco != null)
+                {
+                    var parameters = ((MethodInfo)mi).GetParameters();
+                    switch (parameters.Length)
+                    {
+                        case 0:
+                            {
+                                throw new ActorException(MessageNullMessageOnDecoratedActor);
+                            }
+                        case 1:
+                            {
+                                Behavior bhv = new Behavior(
+                                   s => parameters[0].ParameterType == s.GetType(),
+                                   s => ((MethodInfo)mi).Invoke(LinkedActor, new[] { s }));
+                                bhvs.AddBehavior(bhv);
+                                break;
+                            }
+                        case 2:
+                            {
+                                Behavior bhv = new Behavior(
+                                   s =>
+                                   {
+                                       var ts = s.GetType();
+                                       return ts.Name == typeof(MessageParam<,>).Name;
+                                   },
+                                   s =>
+                                   {
+                                       var ts = s.GetType();
+                                       var arg1 = ts.GetProperty("Item1").GetValue(s);
+                                       var arg2 = ts.GetProperty("Item2").GetValue(s);
+                                       ((MethodInfo)mi).Invoke(LinkedActor, new[] { arg1, arg2 });
+                                   });
+                                bhvs.AddBehavior(bhv);
+                                break;
+                            }
+                        case 3:
+                            {
+                                Behavior bhv = new Behavior(
+                                   s =>
+                                   {
+                                       var ts = s.GetType();
+                                       var mp = typeof(MessageParam<,,>);
+                                       return ts.Name == typeof(MessageParam<,,>).Name;
+                                   },
+                                   s =>
+                                   {
+                                       var ts = s.GetType();
+                                       var arg1 = ts.GetProperty("Item1").GetValue(s);
+                                       var arg2 = ts.GetProperty("Item2").GetValue(s);
+                                       var arg3 = ts.GetProperty("Item3").GetValue(s);
+                                       ((MethodInfo)mi).Invoke(LinkedActor, new[] { arg1, arg2, arg3 });
+                                   });
+                                bhvs.AddBehavior(bhv);
+                                break;
+                            }
+                        default:
+                            {
+                                throw new ActorException(MessageTooMuchArgumentsOnDecoratedActor);
+                            }
+                    }
+                }
+            }
+            foreach (IBehavior item in bhvs.AllBehaviors())
+            {
+                AddBehavior(item);
+            }
         }
     }
 #endif

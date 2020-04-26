@@ -11,6 +11,7 @@ namespace Actor.Server
 
         public const string Name = "Disco";
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1806:Ne pas ignorer les résultats des méthodes", Justification = "<En attente>")]
         private void DoRun(IActor actor, string data)
         {
             if (string.IsNullOrEmpty(data))

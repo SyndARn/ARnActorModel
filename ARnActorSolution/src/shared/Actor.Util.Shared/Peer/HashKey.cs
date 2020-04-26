@@ -87,7 +87,7 @@ public class HashKey : IComparable
         {
             if (left is null)
             {
-                return object.ReferenceEquals(right, null);
+                return right is null;
             }
             return left.Equals(right);
         }

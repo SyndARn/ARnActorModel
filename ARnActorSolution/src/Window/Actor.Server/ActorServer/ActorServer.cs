@@ -11,6 +11,8 @@ namespace Actor.Server
         public IListenerService ListenerService { get; private set; }
         public IHostService HostService { get; private set; }
         public IServerCommandService ServerCommandService { get; private set; }
+
+        private const string MessageNullConfigManager = "ConfigManager can't be null";
         private string _fullHost = "" ;
         private HostRelayActor _actHostRelay;
         private ActorConfigManager _configManager;
@@ -37,7 +39,7 @@ namespace Actor.Server
 
             _serverInstance = new ActorServer
             {
-                _configManager = configManager ?? throw new ActorException("ConfigManager can't be null"),
+                _configManager = configManager ?? throw new ActorException(MessageNullConfigManager),
                 Name = configManager.Host().Host,
                 Port = configManager.Host().Port
             };
