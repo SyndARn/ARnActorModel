@@ -7,6 +7,8 @@ namespace Actor.Util
 #if !(NETFX_CORE) 
     public class BehaviorDecoratedActor : BaseActor
     {
+        private const string MessageCantUseDecoratedActporOnNullMessage = "Can't use Decorated Actor on null message";
+
         public BehaviorDecoratedActor() : base()
         {
             // start with empty behaviors
@@ -34,7 +36,7 @@ namespace Actor.Util
                     {
                         case 0:
                             {
-                                throw new ActorException("Can't use Decorated Actor on null message");
+                                throw new ActorException(MessageCantUseDecoratedActporOnNullMessage);
                             }
                         case 1:
                             {
@@ -105,7 +107,7 @@ namespace Actor.Util
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
-        private  void BuildFromAttributes()
+        private void BuildFromAttributes()
         {
             Behaviors bhvs = new Behaviors();
             // Launch reflexion
@@ -113,7 +115,6 @@ namespace Actor.Util
             foreach (var mi in memberInfo)
             {
 #if NETCOREAPP1_1
-                // BehaviorAttribute deco = (BehaviorAttribute)mi.GetType().GetTypeInfo().GetCustomAttribute(typeof(BehaviorAttribute));
                 BehaviorAttribute deco = mi.GetCustomAttribute<BehaviorAttribute>();
 #else
                 BehaviorAttribute deco = (BehaviorAttribute)Attribute.GetCustomAttribute(mi, typeof(BehaviorAttribute));
@@ -140,8 +141,7 @@ namespace Actor.Util
                                 Behavior bhv = new Behavior(
                                    s =>
                                    {
-                                       var ts = s.GetType();
-                                       return ts.Name == typeof(MessageParam<,>).Name;
+                                       return s.GetType().Name == typeof(MessageParam<,>).Name;
                                    },
                                    s =>
                                    {
@@ -158,9 +158,7 @@ namespace Actor.Util
                                 Behavior bhv = new Behavior(
                                    s =>
                                    {
-                                       var ts = s.GetType();
-                                       var mp = typeof(MessageParam<,,>);
-                                       return ts.Name == typeof(MessageParam<,,>).Name;
+                                       return s.GetType().Name == typeof(MessageParam<,,>).Name;
                                    },
                                    s =>
                                    {
