@@ -113,7 +113,8 @@ namespace Actor.Util
             foreach (var mi in memberInfo)
             {
 #if NETCOREAPP1_1
-                BehaviorAttribute deco = (BehaviorAttribute)mi.GetType().GetTypeInfo().GetCustomAttribute(typeof(BehaviorAttribute));
+                // BehaviorAttribute deco = (BehaviorAttribute)mi.GetType().GetTypeInfo().GetCustomAttribute(typeof(BehaviorAttribute));
+                BehaviorAttribute deco = mi.GetCustomAttribute<BehaviorAttribute>();
 #else
                 BehaviorAttribute deco = (BehaviorAttribute)Attribute.GetCustomAttribute(mi, typeof(BehaviorAttribute));
 #endif
@@ -129,7 +130,7 @@ namespace Actor.Util
                         case 1:
                             {
                                 Behavior bhv = new Behavior(
-                                   s => parameters[0].ParameterType == s.GetType(),
+                                   s => parameters[0].ParameterType.IsAssignableFrom(s.GetType()),
                                    s => ((MethodInfo)mi).Invoke(LinkedActor, new[] { s }));
                                 bhvs.AddBehavior(bhv);
                                 break;
