@@ -25,7 +25,7 @@ I was looking for an actor model thing with some requirements :
 -  actor can send messages across servers, you just need to hold a reference (an IActor interface) to another actor on a server ...
 -  some actors can behave as public services, or be supervised
 -  ARnActorModel could also be used as a basis for active object, defining an object and casting an async interface around it as a facility. 
--  You need VS2017 to compile ARnActorModel
+-  You need VS2019 to compile ARnActorModel
 
 [![GitHub version](https://badge.fury.io/gh/syndarn%2Farnactormodel.svg)](https://badge.fury.io/gh/syndarn%2Farnactormodel)
 
@@ -38,7 +38,7 @@ I used the excellent [OpenCover](https://github.com/OpenCover/opencover) to give
 
 #### Supported Framework [![Nuget](https://buildstats.info/nuget/ARnActorModel)](http://nuget.org/packages/ARnActorModel) 
 - .Net 4.6 (Actor.Base, Actor.Util, Actor.Server, Actor.Service)
-- Netcore 2.0 (Actor.Base, Actor.Util)
+- Netcore 2.1 (Actor.Base, Actor.Util)
 - Netstandard 2.0 (Actor.Base, Actor.Util)
 
 #### Current works
