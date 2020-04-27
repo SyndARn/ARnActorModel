@@ -24,7 +24,7 @@ namespace Actor.Service.Tests
                 var trace = new TraceActor();
                 trace.Start();
                 trace.Stop("Test End Trace");
-                Task.Delay(1000).Wait();
+                Task.Delay(5000).Wait();
             });
             var filename = Path.Combine(Environment.CurrentDirectory,"TraceLogger");
             List<string> strings = new List<string>();
