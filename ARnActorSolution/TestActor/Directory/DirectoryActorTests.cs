@@ -7,7 +7,7 @@ namespace TestActor
 {
     internal class DiscoTestActor : BaseActor
     {
-        private IActor fLauncher;
+        private readonly IActor fLauncher;
 
         public DiscoTestActor(IActor aLauncher)
         {

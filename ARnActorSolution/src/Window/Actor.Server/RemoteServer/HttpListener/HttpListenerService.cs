@@ -38,7 +38,7 @@ namespace Actor.Server
             {
                 fListener.Start();
             }
-            catch (Exception e)
+            catch (HttpListenerException e)
             {
                 Debug.WriteLine("Can't start http " + e);
             }

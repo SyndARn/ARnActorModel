@@ -42,7 +42,7 @@ namespace Actor.MonteCarlo
             Console.WriteLine("receive "+ct);
             if (ct >= 1000-1)
             {
-                SendByName<string>.Send("Done", "Console");
+                SendByName.Send("Done", "Console");
             }
         }
 

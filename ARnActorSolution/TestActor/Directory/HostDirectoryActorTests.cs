@@ -1,14 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Server;
-using System;
 using Actor.Util;
-using System.Configuration;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Globalization;
 using Actor.Base;
+using Actor.Server;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Server.Tests
 {
     [TestClass()]
     public class HostDirectoryActorTests
@@ -38,7 +37,7 @@ namespace TestActor
                 HostDirectoryActor.Unregister(actor);
                 Task.Delay(5000).Wait();
                 var stat2 = HostDirectoryActor.GetInstance().GetEntries();
-                Assert.IsTrue(stat2.Count(t => t == actor.Tag.Key()) == 0);
+                Assert.IsTrue(! stat2.Any(t => t == actor.Tag.Key()));
             });
         }
 

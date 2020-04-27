@@ -29,7 +29,6 @@ namespace Actor.Server
     /// <summary>
     /// Connect to a shard Service
     /// </summary>
-    [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ConnectActor : BaseActor
     {
         private readonly string fServiceName;
@@ -44,9 +43,6 @@ namespace Actor.Server
             Become(new Behavior<string>(DoDisco));
             SendMessage("DoConnect");
         }
-
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => ToString();
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1806:DoNotIgnoreMethodResults", MessageId = "Actor.Server.ConnectActor")]
         public static void Connect(IActor lSender, string hostAddress, string serviceName) => new ConnectActor(lSender, hostAddress, serviceName);

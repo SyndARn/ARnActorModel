@@ -21,8 +21,8 @@ namespace BrokerDemoApplication
             InitializeComponent();
         }
 
-        private CollectionActor<string> fMemLogger = new CollectionActor<string>();
-        private BrokerActor<int> fBroker = new BrokerActor<int>() ;
+        private readonly CollectionActor<string> fMemLogger = new CollectionActor<string>();
+        private readonly BrokerActor<int> fBroker = new BrokerActor<int>() ;
 
         private void button1_Click(object sender, EventArgs e)
         {

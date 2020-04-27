@@ -29,8 +29,7 @@ namespace ActorRing
 
         private void btStartStop_Click(object sender, EventArgs e)
         {
-            int ringSize = 0;
-            int.TryParse(tbRingSize.Text, out ringSize);
+            int.TryParse(tbRingSize.Text, out int ringSize);
             int msgQtt = 0;
             int.TryParse(tbMessageQuantity.Text, out msgQtt);
             if ((ringSize > 0) && (msgQtt > 0))

@@ -29,7 +29,7 @@ namespace Actor.Service.Tests
         {
             IFuture<IEnumerable<string>> future = new Future<IEnumerable<string>>();
             SendMessage((IActor)future);
-            return await future.ResultAsync();
+            return await future.ResultAsync().ConfigureAwait(false);
         }
     }
 

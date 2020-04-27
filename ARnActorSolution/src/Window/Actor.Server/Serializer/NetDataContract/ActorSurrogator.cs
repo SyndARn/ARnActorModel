@@ -1,25 +1,21 @@
-﻿using Actor.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
-using System.CodeDom;
-using System.Collections.ObjectModel;
-using System.Reflection;
 
 namespace Actor.Server
 {
-     public class ActorSurrogator : ISerializationSurrogate
+    public class ActorSurrogator : ISerializationSurrogate
     {
+        private const string MessageReceivingNullSerializationInfo = "Receiving null SerializationInfo";
+        private const string MessageNullSerializationInfo = "SerializationInfo was null";
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
         {
             if (info == null)
             {
-                const string Message = "SerializationInfo was null";
-                throw new ArgumentNullException(nameof(info), Message);
+
+                throw new ArgumentNullException(nameof(info), MessageNullSerializationInfo);
             }
 
             IActor act = (IActor)obj;
@@ -30,6 +26,7 @@ namespace Actor.Server
             info.AddValue("RemoteTag", remoteTag, typeof(ActorTag));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
         {
             // Reset the property value using the GetValue method.
@@ -39,7 +36,7 @@ namespace Actor.Server
             {
                 if (info == null)
                 {
-                    throw new ActorException("Receiving null SerializationInfo");
+                    throw new ActorException(MessageReceivingNullSerializationInfo);
                 }
 
                 BaseActor.CompleteInitialize(remoteActor);

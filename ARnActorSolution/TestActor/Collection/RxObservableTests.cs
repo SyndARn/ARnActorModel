@@ -29,7 +29,7 @@ namespace TestActor
             {
                 var future = new Future<string>();
                 SendMessage((IActor)future);
-                return await future.ResultAsync();
+                return await future.ResultAsync().ConfigureAwait(false);
             }
 
             private string Data { get; set; }
