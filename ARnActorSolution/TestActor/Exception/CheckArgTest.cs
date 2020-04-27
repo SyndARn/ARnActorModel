@@ -1,9 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Base;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 
-namespace TestActor
+namespace Actor.Base.Test
 {
     [TestClass]
     public class CheckArgTest

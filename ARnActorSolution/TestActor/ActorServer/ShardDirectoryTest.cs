@@ -1,11 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
 using System.Linq;
-using Actor.Util;
-using Actor.Server;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Server.Tests
 {
     [TestClass]
     public class ShardDirectoryTest

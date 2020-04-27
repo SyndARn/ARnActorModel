@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Actor.Base;
 
 namespace Actor.Server
@@ -35,7 +36,7 @@ namespace Actor.Server
                                     var res = ans.Result as IMessageParam<string, ActorTag, IActor>;
                                     ShardRequest req = ShardRequest.CastRequest(this, asker);
                                     res.Item3.SendMessage(req);
-                                });
+                                }, TaskScheduler.Default);
                         }
                         break;
                     }

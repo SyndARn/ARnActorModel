@@ -11,16 +11,16 @@ namespace Actor.Service.Tests
 
     class TestParserActor : BaseActor
     {
-        List<string> fList = new List<string>();
+        private readonly List<string> _list = new List<string>();
         public TestParserActor()
         {
             Become(new Behavior<IActor, string>((a, s) =>
              {
-                 fList.Add(s);
+                 _list.Add(s);
              }));
             AddBehavior(new Behavior<IActor>(a =>
             {
-                IEnumerable<string> enumerable = fList.AsEnumerable();
+                IEnumerable<string> enumerable = _list.AsEnumerable();
                 a.SendMessage(enumerable);
             }
             ));

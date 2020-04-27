@@ -1,11 +1,8 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Base;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestActor;
 using System.Threading.Tasks;
 
-namespace TestActor
+namespace Actor.Base.Test
 {
     internal class FutureAsyncActorTest : BaseActor
     {

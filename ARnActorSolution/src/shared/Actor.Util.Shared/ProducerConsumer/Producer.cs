@@ -15,9 +15,9 @@ namespace Actor.Util
             Become(new Behavior<T>(DoProduce));
         }
 
-        protected void DoProduce(T t)
+        protected void DoProduce(T item)
         {
-            var work = new Work<T>(t);
+            var work = new Work<T>(item);
             _buffer.SendMessage(work);
         }
     }

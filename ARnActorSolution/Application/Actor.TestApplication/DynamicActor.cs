@@ -14,7 +14,7 @@ namespace Actor.TestApplication
     {
         private class InternalDynamicActor : BaseActor
         {
-            private dynamic fDynamic;
+            private readonly dynamic fDynamic;
 
             public InternalDynamicActor(dynamic dyn) : base()
             {
@@ -31,7 +31,7 @@ namespace Actor.TestApplication
             }
         }
 
-        private IActor fActor;
+        private readonly IActor fActor;
         private readonly dynamic fDynamic;
 
         public DynamicActor(dynamic dynamic)

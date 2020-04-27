@@ -1,10 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Base;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace TestActor
+namespace Actor.Base.Test
 {
     [TestClass]
     public class BasicBehaviorsTest

@@ -1,23 +1,21 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Util;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Actor.Base;
 using System.Collections.Generic;
 using System.Linq;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Util.Test
 {
-
-    class ExtensionTestActor : BaseActor
+        internal class ExtensionTestActor : BaseActor
     {
-        private List<string> fList = new List<string>();
+        private readonly List<string> _list = new List<string>();
         public ExtensionTestActor() : base()
         {
-            Become(new Behavior<string>(s => fList.Add(s)));
-            AddBehavior(new Behavior<string,string>((s1,s2) => fList.Add(s2)));
-            AddBehavior(new Behavior<string, string,string>((s1, s2, s3) => fList.Add(s3)));
-            AddBehavior(new Behavior<string, string, string, string>((s1, s2, s3, s4) => fList.Add(s4)));
-            AddBehavior(new Behavior<IActor>(a => a.SendMessage(fList.AsEnumerable())));
+            Become(new Behavior<string>(s => _list.Add(s)));
+            AddBehavior(new Behavior<string,string>((s1,s2) => _list.Add(s2)));
+            AddBehavior(new Behavior<string, string,string>((s1, s2, s3) => _list.Add(s3)));
+            AddBehavior(new Behavior<string, string, string, string>((s1, s2, s3, s4) => _list.Add(s4)));
+            AddBehavior(new Behavior<IActor>(a => a.SendMessage(_list.AsEnumerable())));
         }
     }
 

@@ -13,7 +13,7 @@ namespace BrokerDemoApplication
 {
     public class DemoWorker : WorkerActor<string>
     {
-        CollectionActor<string> fMemLogger;
+        readonly CollectionActor<string> fMemLogger;
         public DemoWorker(CollectionActor<string> memLogger) : base()
         {
             fMemLogger = memLogger;
