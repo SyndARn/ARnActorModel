@@ -6,16 +6,12 @@ using Actor.Base;
 namespace Actor.Server
 {
     [Serializable]
-    [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ShardRequest
     {
         public string RequestType { get; private set; } // Ask or Answer
         public IActor Sender { get; private set; }
         public IActor Target { get; private set; }
         public IEnumerable<string> Data { get; private set; }
-
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => ToString();
 
         public ShardRequest() { }
 

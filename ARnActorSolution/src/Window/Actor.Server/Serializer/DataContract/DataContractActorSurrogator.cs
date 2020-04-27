@@ -37,7 +37,7 @@ namespace Actor.Server
             if (obj is IActor act)
             {
                 HostDirectoryActor.Register(act);
-                ActorTag remoteTag = act.Tag;
+                ActorTag remoteTag = act.Tag; // dont touch this
                 return act;
             }
             return obj;

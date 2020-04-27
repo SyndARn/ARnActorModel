@@ -21,12 +21,10 @@
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
 
-using System.Diagnostics;
 using Actor.Base;
 
 namespace Actor.Server
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class EchoServerActor : BaseActor
     {
         public EchoServerActor()
@@ -35,15 +33,6 @@ namespace Actor.Server
             HostDirectoryActor.Register(this);
             DirectoryActor.GetDirectory().Register(this, "EchoServer");
             Become(new EchoServerBehavior());
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get
-            {
-                return ToString();
-            }
         }
     }
 }

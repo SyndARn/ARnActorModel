@@ -122,9 +122,9 @@ namespace Actor.Base
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
-        public static void ActorConfigManager([ValidatedNotNull] Object actorConfigManager)
+        public static void ActorConfigManager([ValidatedNotNull] Object configManager)
         {
-            if (actorConfigManager != null)
+            if (configManager != null)
             {
                 return;
             }

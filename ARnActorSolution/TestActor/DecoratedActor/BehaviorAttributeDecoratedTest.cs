@@ -12,7 +12,7 @@ namespace Actor.Util.Test
 
         public TestActorBehaviorDecorated() : base()
         {
-            Become(new BehaviorAttributeBuilder().BuildFromAttributes(this).ToArray());
+            Become(BehaviorAttributeBuilder.BuildFromAttributes(this).ToArray());
         }
 
         [Behavior]

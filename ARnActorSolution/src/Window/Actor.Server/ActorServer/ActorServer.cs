@@ -32,6 +32,7 @@ namespace Actor.Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static ActorServer GetInstance() => _serverInstance;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static void Start(ActorConfigManager configManager)
         {
             CheckArg.ActorConfigManager(configManager);
@@ -68,7 +69,7 @@ namespace Actor.Server
             DirectoryActor.GetDirectory(); // Start directory
             ActorConsole.Register(); // Start console
             // should work now
-            SendByName<string>.Send("Actor Server Start", "Console");
+            SendByName.Send("Actor Server Start", "Console");
             if (ServerCommandService == null)
             {
                 ServerCommandService = new ServerCommandService();
@@ -82,9 +83,9 @@ namespace Actor.Server
             }
 
             ListenerService = _configManager.GetListenerService();
-            new ShardDirectoryActor(this); // start shard directory
+            ShardDirectoryActor.AttachShardDirectoryActor(this);
             _actHostRelay = hostRelayActor;
-            _actHostRelay.SendMessage("Listen");
+            _actHostRelay.SendMessage(HostRelayActor.ListenOrder);
         }
 
         public void Dispose()

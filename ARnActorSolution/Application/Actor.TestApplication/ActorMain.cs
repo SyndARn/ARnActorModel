@@ -10,6 +10,7 @@ namespace Actor.TestApplication
 {
     internal class ActorMain : BaseActor
     {
+        private const string ServerStart = "Server Start";
         private CollectionActor<string> _collect;
 
         public ActorMain() : base()
@@ -21,9 +22,10 @@ namespace Actor.TestApplication
 
         private List<IActor> _clientList;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         private void DoBehavior(string msg)
         {
-            Console.WriteLine("Serv Start");
+            Console.WriteLine(ServerStart);
             long start = DateTime.UtcNow.Ticks;
             _collect = new CollectionActor<string>();
             List<string> list = new List<string>();

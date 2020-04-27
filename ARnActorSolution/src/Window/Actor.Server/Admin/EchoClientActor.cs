@@ -21,6 +21,7 @@
      51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
 *****************************************************************************/
 
+using System.Threading.Tasks;
 using Actor.Base;
 
 namespace Actor.Server
@@ -51,8 +52,8 @@ namespace Actor.Server
                     IMessageParam<DirectoryActor.DirectoryRequest, IActor> ans = (IMessageParam<DirectoryActor.DirectoryRequest, IActor>)(r.Result);
                     if (ans.Item2 != null)
                     {
-                        SendByName<string>.Send("Server found", "Console");
-                        ans.Item2.SendMessage(new ServerMessage<string>(this, ServerRequest.Connect, default(string)));
+                        SendByName.Send("Server found", "Console");
+                        ans.Item2.SendMessage(new ServerMessage<string>(this, ServerRequest.Connect, default));
                         ReceiveAsync(m =>
                             {
                                 ServerMessage<string> sm = m as ServerMessage<string> ;
@@ -60,10 +61,10 @@ namespace Actor.Server
                             }).ContinueWith(
                             (c) =>
                             {
-                                SendByName<string>.Send("Client connected", "Console");
+                                SendByName.Send("Client connected", "Console");
                                 aClient.Connect(ans.Item2);
                                 Become(aClient);
-                            });
+                            }, TaskScheduler.Default);
                     }
                     else
                     {
@@ -71,7 +72,7 @@ namespace Actor.Server
                         this.SendMessage(order,host);
                         // Become(null);
                     }
-                });
+                }, TaskScheduler.Default);
             // repeat message
         }
 

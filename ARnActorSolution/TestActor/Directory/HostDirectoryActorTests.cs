@@ -1,14 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Server;
-using System;
 using Actor.Util;
-using System.Configuration;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Globalization;
 using Actor.Base;
+using Actor.Server;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Server.Tests
 {
     [TestClass()]
     public class HostDirectoryActorTests
@@ -38,13 +37,12 @@ namespace TestActor
                 HostDirectoryActor.Unregister(actor);
                 Task.Delay(5000).Wait();
                 var stat2 = HostDirectoryActor.GetInstance().GetEntries();
-                Assert.IsTrue(stat2.Count(t => t == actor.Tag.Key()) == 0);
+                Assert.IsTrue(stat2.Count(t => t == actor.Tag.Key())== 0);
             });
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Supprimer les objets avant la mise hors de portée")]
         [TestMethod()]
-        //[Ignore]
         public void RegisterUnregisterTest()
         {
             TestLauncherActor.Test(() =>
@@ -54,13 +52,15 @@ namespace TestActor
                 HostDirectoryActor.Register(actor);
                 SerialObject so = new SerialObject(new MessageParam<StateAction,string>(StateAction.Set,"Test"), actor.Tag);
                 HostDirectoryActor.GetInstance().SendMessage(so);
-                var result = actor.GetStateAsync(10000).Result;
+                Task.Delay(5000).Wait();
+                var result = actor.GetStateAsync(5000).Result;
                 Assert.AreEqual(result, "Test");
 
                 HostDirectoryActor.Unregister(actor);
                 SerialObject so2 = new SerialObject(new MessageParam<StateAction,string>(StateAction.Set, "Test2"), actor.Tag);
                 HostDirectoryActor.GetInstance().SendMessage(so2);
-                var result2 = actor.GetStateAsync(10000).Result;
+                Task.Delay(5000).Wait();
+                var result2 = actor.GetStateAsync(5000).Result;
                 Assert.AreEqual("Test",result2,string.Format(CultureInfo.InvariantCulture,"Expected {0} Found {1}","Test",result2));
             });
         }

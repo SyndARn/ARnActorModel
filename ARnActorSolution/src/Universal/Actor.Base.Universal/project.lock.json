@@ -25841,7 +25841,6 @@
     "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
-    "version": "1.0.0",
     "restore": {
       "projectUniqueName": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\src\\Universal\\Actor.Base.Universal\\Actor.Base.Universal.csproj",
       "projectName": "Actor.Base.Universal",
@@ -25866,10 +25865,7 @@
     },
     "dependencies": {
       "Microsoft.NETCore.UniversalWindowsPlatform": "[6.2.10, )",
-      "coveralls.io": {
-        "target": "Package",
-        "version": "[1.4.2, )"
-      }
+      "coveralls.io": "[1.4.2, )"
     },
     "frameworks": {
       "uap10.0.10240": {}

@@ -9,6 +9,17 @@ namespace Actor.Server
     {
         private readonly Dictionary<string, string> _shardList;
 
+        public static ShardDirectoryActor AttachShardDirectoryActor(ActorServer actorServer)
+        {
+            CheckArg.Actor(actorServer);
+            IActor shardFound = DirectoryActor.GetDirectory().GetActorByName("KnownShards");
+            if (shardFound != null)
+            {
+                return (ShardDirectoryActor)shardFound;
+            }
+            return new ShardDirectoryActor(actorServer);
+        }
+
         public ShardDirectoryActor(ActorServer actorServer)
             : base()
         {

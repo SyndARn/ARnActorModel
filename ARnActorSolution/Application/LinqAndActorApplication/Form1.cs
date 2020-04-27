@@ -20,7 +20,7 @@ namespace LinqAndActorApplication
 
         public class TextBoxActor : BaseActor
         {
-            private AddText myDelegate;
+            private readonly AddText myDelegate;
 
             public TextBoxActor(TextBox textBox) : base()
             {

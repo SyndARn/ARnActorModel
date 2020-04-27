@@ -24,7 +24,7 @@ namespace Actor.Server
                         if (string.IsNullOrEmpty(lData))
                         {
                             ShardRequest req = ShardRequest.CastRequest(this, asker);
-                            SendByName<ShardRequest>.Send(req, "KnownShards");
+                            SendByName.Send(req, "KnownShards");
                         }
                         else
                         {

@@ -24,7 +24,6 @@ using System.Runtime.CompilerServices;
 
 namespace Actor.Base
 {
-    [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ActorMailBox<T> : IActorMailBox<T>
     {
         private readonly IMessageQueue<T> _queue; // all actors may push here, only this one may dequeue
@@ -39,9 +38,6 @@ namespace Actor.Base
         }
 
         public bool IsEmpty => _queue.Count() == 0;
-
-        [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => ToString();
 
         public void AddMiss(T aMessage) => _missed.Add(aMessage);
 

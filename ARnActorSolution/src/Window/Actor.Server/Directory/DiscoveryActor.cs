@@ -32,6 +32,8 @@ namespace Actor.Server
     /// </summary>
     public class DiscoveryActor : BaseActor
     {
+        private const string DiscoFound = "Disco found:";
+
         public DiscoveryActor(string hostAddress)
             : base()
         {
@@ -63,9 +65,10 @@ namespace Actor.Server
             rem.SendMessage(new DiscoCommand(this));
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         private void Found(Dictionary<string,string> dico)
         {
-            Console.WriteLine("Disco found:");
+            Console.WriteLine(DiscoFound);
             foreach (string s in dico.Keys)
             {
                 Console.WriteLine(string.Format(CultureInfo.InvariantCulture,"{0} - {1}",s, dico[s]));

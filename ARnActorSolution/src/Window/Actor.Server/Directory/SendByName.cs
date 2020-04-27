@@ -24,9 +24,9 @@ using Actor.Base;
 
 namespace Actor.Server
 {
-    public static class SendByName<T>
+    public static class SendByName
     {
-        public static void Send(T data, string actor)
+        public static void Send<T>(T data, string actor)
         {
             SendByNameActor<T> act = new SendByNameActor<T>();
             act.SendMessage(actor, data);

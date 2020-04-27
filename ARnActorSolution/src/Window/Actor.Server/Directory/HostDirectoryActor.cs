@@ -10,7 +10,7 @@ namespace Actor.Server
     public class HostDirectoryActor : BaseActor
     {
         private readonly Dictionary<string, IActor> _uri2Actor = new Dictionary<string, IActor>(); // actor hosted
-        private static readonly Lazy<HostDirectoryActor> _hostDirectory = new Lazy<HostDirectoryActor>();
+        private static Lazy<HostDirectoryActor> _hostDirectory = new Lazy<HostDirectoryActor>();
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         public static HostDirectoryActor GetInstance() => _hostDirectory.Value;

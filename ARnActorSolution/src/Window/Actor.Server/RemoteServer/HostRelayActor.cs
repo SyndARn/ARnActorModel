@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Security.Permissions;
-using System.Globalization;
 using Actor.Base;
 
 namespace Actor.Server
@@ -20,13 +8,14 @@ namespace Actor.Server
     public class HostRelayActor : BaseActor, IDisposable
     {
         private IListenerService fListener;
+        public const string ListenOrder = "Listen";
 
-        public HostRelayActor() => Become(new Behavior<string>(t => "Listen".Equals(t), DoListen));
+        public HostRelayActor() => Become(new Behavior<string>(t => ListenOrder.Equals(t,StringComparison.InvariantCulture), DoListen));
 
         public HostRelayActor(IListenerService listenerService)
         {
             fListener = listenerService;
-            Become(new Behavior<String>(t => "Listen".Equals(t), DoListen));
+            Become(new Behavior<String>(t => ListenOrder.Equals(t, StringComparison.InvariantCulture), DoListen));
         }
 
         private void DoListen(object aMsg)
@@ -39,7 +28,7 @@ namespace Actor.Server
                 }
                 IContextComm context = fListener.GetCommunicationContext();
                 RemoteReceiverActor.Cast(context);
-                SendMessage("Listen");
+                SendMessage(ListenOrder);
             }
             catch(Exception e)
             {

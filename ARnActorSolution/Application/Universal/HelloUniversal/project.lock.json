@@ -25921,7 +25921,6 @@
     "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
-    "version": "1.0.0",
     "restore": {
       "projectUniqueName": "D:\\ARnRepo2019\\ARnActorModel\\ARnActorSolution\\Application\\Universal\\HelloUniversal\\HelloUniversal.csproj",
       "projectName": "HelloUniversal",
@@ -25947,10 +25946,7 @@
     "dependencies": {
       "Microsoft.NETCore.UniversalWindowsPlatform": "[6.2.10, )",
       "OpenCover": "[4.7.922, )",
-      "coveralls.io": {
-        "target": "Package",
-        "version": "[1.4.2, )"
-      }
+      "coveralls.io": "[1.4.2, )"
     },
     "frameworks": {
       "uap10.0.10240": {}

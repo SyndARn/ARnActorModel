@@ -34,7 +34,7 @@ namespace Actor.Server
             // echo to console
             if (aMessage != null)
             {
-                SendByName<string>.Send(
+                SendByName.Send(
                     "client receive " + aMessage.Data, "Console");
             }
         }
