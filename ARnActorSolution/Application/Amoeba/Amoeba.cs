@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.MonteCarlo;
 using Actor.Base;
-using System.Windows.Forms;
 
 namespace Amoeba
 {
     public class ResultActor : BaseActor
     {
-        private List<long> results = new List<long>();
+        private readonly List<long> _results = new List<long>();
         public ResultActor()
         {
             Become(new Behavior<long>(ResultMessage));
@@ -20,13 +17,13 @@ namespace Amoeba
 
         private void ResultMessage(long s)
         {
-            results.Add(s);
+            _results.Add(s);
         }
 
         private void FutureMessage(IActor aFuture)
         {
-            long total = results.Count(r => r <= 0);
-            long qtt = results.Count();
+            long total = _results.Count(r => r <= 0);
+            long qtt = _results.Count();
             aFuture.SendMessage(total, qtt);
         }
 

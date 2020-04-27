@@ -7,11 +7,11 @@ namespace Actor.Util
 {
     public class Work<T> : BaseActor
     {
-        private readonly T _t;
+        private readonly T _item;
 
-        public Work(T t)
+        public Work(T item)
         {
-            _t = t;
+            _item = item;
             Become(new Behavior<IActor>(DoIt));
         }
 

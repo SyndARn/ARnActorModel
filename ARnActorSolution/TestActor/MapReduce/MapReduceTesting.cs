@@ -22,7 +22,7 @@ namespace TestActor
                 (a, d) =>
                 {
                     for (int i = 0; i < 10; i++)
-                        a.SendMessage(d,i.ToString()+" "+i.ToString());
+                        a.SendMessage(d,$"{i} {i}");
                 },
                 // map
                 (a, k, v) =>

@@ -87,7 +87,7 @@ namespace TestActor
         [TestMethod()]
         public void StatTest()
         {
-            Assert.IsTrue(DirectoryActor.GetDirectory().Stat().StartsWith("Directory entries "));
+            Assert.IsTrue(DirectoryActor.GetDirectory().Stat().StartsWith("Directory entries ",System.StringComparison.InvariantCulture));
         }
 
         [TestMethod()]

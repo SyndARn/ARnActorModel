@@ -18,7 +18,7 @@ namespace TestActor
                     var dic = new DistributedDictionaryActor<int, string>();
                     foreach(var i in Enumerable.Range(1,1000))
                     {
-                        dic.AddKeyValue(i, i.ToString() + " Test");
+                        dic.AddKeyValue(i, $"{i} Test");
                     }
                     // find key 3
                     var future = dic.GetKeyValue(3);

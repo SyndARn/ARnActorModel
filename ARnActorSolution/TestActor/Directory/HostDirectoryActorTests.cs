@@ -37,7 +37,9 @@ namespace Actor.Server.Tests
                 HostDirectoryActor.Unregister(actor);
                 Task.Delay(5000).Wait();
                 var stat2 = HostDirectoryActor.GetInstance().GetEntries();
-                Assert.IsTrue(stat2.Count(t => t == actor.Tag.Key())== 0);
+#pragma warning disable CA1827 // Do not use Count() or LongCount() when Any() can be used
+                Assert.IsTrue(stat2.Count(t => t == actor.Tag.Key())== 0); // don't touch
+#pragma warning restore CA1827 // Do not use Count() or LongCount() when Any() can be used
             });
         }
 

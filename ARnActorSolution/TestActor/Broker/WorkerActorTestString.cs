@@ -10,7 +10,7 @@ namespace Actor.Server.Tests
 {
     class WorkerActorTestString : WorkerActor<string>
     {
-        EnumerableActor<string> fActorReport;
+        readonly EnumerableActor<string> fActorReport;
         public WorkerActorTestString(EnumerableActor<string> actor)
         {
             fActorReport = actor;
