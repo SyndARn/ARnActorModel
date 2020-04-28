@@ -87,5 +87,26 @@ namespace TestActor
                 Assert.AreEqual("[1, 1]", first.ToString());
             });
         }
+
+        [TestMethod()]
+        public void ClearTest()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var act = new DictionaryActor<string, int>();
+                Assert.IsNotNull(act);
+                act.AddKeyValue("1", 1);
+                act.AddKeyValue("2", 2);
+                act.AddKeyValue("3", 3);
+                act.AddKeyValue("4", 4);
+                var future = act.GetKeyValue("1");
+                var result = future.Result();
+                Assert.IsTrue(result.Item1);
+                Assert.AreEqual(1, result.Item3);
+                act.Clear();
+                var nofuture = act.GetKeyValue("1");
+                Assert.IsFalse(nofuture.Result().Item1);
+            });
+        }
     }
 }
