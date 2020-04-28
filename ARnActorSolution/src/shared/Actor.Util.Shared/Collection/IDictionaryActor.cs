@@ -10,5 +10,6 @@ namespace Actor.Util
         IFuture<bool, TKey, TValue> GetKeyValue(TKey key);
         void RemoveKey(TKey key);
         IFuture<IEnumerable<KeyValuePair<TKey, TValue>>> AsEnumerable();
+        void Clear();
     }
 }

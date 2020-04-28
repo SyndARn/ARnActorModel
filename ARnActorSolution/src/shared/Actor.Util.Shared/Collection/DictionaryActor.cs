@@ -10,6 +10,7 @@ namespace Actor.Util
     public class DictionaryBehavior<TKey, TValue> : Behaviors, IDictionaryActor<TKey, TValue>
     {
         private readonly Dictionary<TKey, TValue> _dico = new Dictionary<TKey, TValue>();
+        public enum DictionaryBehaviorOrder {clear };
 
         public DictionaryBehavior()
         {
@@ -24,10 +25,17 @@ namespace Actor.Util
             {
                 a.SendMessage(_dico.AsEnumerable<KeyValuePair<TKey, TValue>>());
             });
+            Behavior<DictionaryBehaviorOrder> bhv5 = new Behavior<DictionaryBehaviorOrder>
+                (
+                    o => o == DictionaryBehaviorOrder.clear,
+                    o => _dico.Clear() 
+                ) ;
+                
             AddBehavior(bhv1);
             AddBehavior(bhv2);
             AddBehavior(bhv3);
             AddBehavior(bhv4);
+            AddBehavior(bhv5);
         }
 
         public void AddKeyValue(TKey key, TValue value)
@@ -52,6 +60,11 @@ namespace Actor.Util
         public void RemoveKey(TKey key)
         {
             LinkedActor.SendMessage(key);
+        }
+
+        public void Clear()
+        {
+            LinkedActor.SendMessage(DictionaryBehaviorOrder.clear);
         }
     }
 
@@ -84,6 +97,11 @@ namespace Actor.Util
         public IFuture<IEnumerable<KeyValuePair<TKey,TValue>>> AsEnumerable()
         {
             return _serviceDictionary.AsEnumerable();
+        }
+
+        public void Clear()
+        {
+            _serviceDictionary.Clear();
         }
     }
 }

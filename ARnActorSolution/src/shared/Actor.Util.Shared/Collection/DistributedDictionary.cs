@@ -37,6 +37,10 @@ namespace Actor.Util
             return future;
         }
 
+        public void Clear()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class DistributedDictionaryBehaviors<TKey, TValue> : Behaviors

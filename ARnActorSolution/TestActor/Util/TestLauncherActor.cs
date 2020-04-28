@@ -79,13 +79,13 @@ namespace TestActor
                     catch (Exception e)
                     {
                         launcher.fLauncherException = e;
-                        launcher.Fail();
                         if (testContext != null)
                         {
                             testContext.WriteLine(e.Message);
                             testContext.WriteLine(e.StackTrace);
                         }
-                        throw;
+                        launcher.Fail();
+                        // throw;
                     }
                 });
 
