@@ -22,9 +22,9 @@ namespace Actor.Util
 
     // calc at least 2 key value, peer / 4 for redundancy with different hash seeding
 
-    public static class CenterKey<TKey>
+    public static class CenterKey
     {
-        public static TKey Calc(IEnumerable<TKey> keys)
+        public static TKey Calc<TKey>(IEnumerable<TKey> keys)
         {
             CheckArg.IEnumerable(keys);
             Dictionary<HashKey, TKey> dic = new Dictionary<HashKey, TKey>();
@@ -49,7 +49,7 @@ namespace Actor.Util
                 IFuture<IEnumerable<TKey>> keys = a.AskKeys();
                 IFuture<IEnumerable<IPeerActor<TKey>>> peers = a.AskPeers();
                 // peek key out of centroid
-                TKey key = CenterKey<TKey>.Calc(keys.Result());
+                TKey key = CenterKey.Calc(keys.Result());
                 // calc nearest peer
                 IOrderedEnumerable<IPeerActor<TKey>> orderedPeers = peers.Result().OrderBy(n => n.GetPeerHashKey().ToString());
                 HashKey hashKey = HashKey.ComputeHash(key.ToString());

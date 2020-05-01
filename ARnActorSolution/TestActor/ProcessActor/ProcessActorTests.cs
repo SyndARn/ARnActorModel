@@ -1,13 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
+using TestActor;
 
-namespace TestActor
+
+namespace Actor.Base.Test 
 {
     [TestClass()]
     public class ProcessActorTests

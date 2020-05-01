@@ -109,7 +109,7 @@ namespace Actor.Service
         protected void Test(bool msg)
         {
             TestResult.start = DateTimeOffset.UtcNow ;
-            Console.WriteLine("Start at " + TestResult.start.ToString());
+            Console.WriteLine($"Start at {TestResult.start}");
             for (int i = 0; i < RingTest.fTest; i++)
             {
                 firstNode.SendMessage(new ActorTag(/*i*/));

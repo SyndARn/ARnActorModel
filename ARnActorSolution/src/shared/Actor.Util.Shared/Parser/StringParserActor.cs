@@ -31,9 +31,9 @@ namespace Actor.Util
                 }
                 ));
         }
-        public void ParseString(IActor actor, string s)
+        public void ParseString(IActor actor, string stringToParse)
         {
-            this.SendMessage(actor, s);
+            this.SendMessage(actor, stringToParse);
         }
 
         public void ParseString(IActor actor, string s, IFuture<IActor> notify)

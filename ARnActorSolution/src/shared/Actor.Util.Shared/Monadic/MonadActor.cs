@@ -25,11 +25,14 @@ namespace Actor.Util
 
     public static class IdentityHelper
     {
+        private const string MessageFuncCantBeNull = "Func can't be null";
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
         public static Identity<B> Bind<A, B>(this Identity<A> a, Func<A, Identity<B>> func)
         {
             if (func == null)
             {
-                throw new ActorException("func can't be null");
+                throw new ActorException(MessageFuncCantBeNull);
             }
 
             return func(a.Value);

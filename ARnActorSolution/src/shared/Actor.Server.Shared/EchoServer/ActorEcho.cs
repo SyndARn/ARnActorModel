@@ -20,5 +20,11 @@ namespace Actor.Server
             Become(new ConsoleBehavior());
             dest.SendMessage(this,value);
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1806:Ne pas ignorer les résultats des méthodes", Justification = "<En attente>")]
+        public static void Echo(IActor dest, string value)
+        {
+            new EchoActor(dest, value);
+        }
     }
 }

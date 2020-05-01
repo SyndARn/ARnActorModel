@@ -17,6 +17,7 @@ namespace Actor.Server.Tests
             TestLauncherActor.Test(DoDiscoveryActorTest);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1806:Ne pas ignorer les résultats des méthodes", Justification = "<En attente>")]
         private void DoDiscoveryActorTest()
         {
             const string localHost = "http://localhost:80";
@@ -25,7 +26,7 @@ namespace Actor.Server.Tests
             ConfigurationManager.AppSettings["SerializeService"] = "NetDataContractSerializeService";
             ActorServer.Start(ActorConfigManager.CastForTest());
             var future = new Future<Dictionary<string, string>>();
-            var disco = new DiscoveryActor(uri.AbsoluteUri, future);
+            new DiscoveryActor(uri.AbsoluteUri, future);
             var result = future.Result(60000);
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Count >= 3,$"result is {result.Count}");

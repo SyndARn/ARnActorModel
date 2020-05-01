@@ -42,9 +42,8 @@ namespace ActorRing
         private void button1_Click(object sender, EventArgs e)
         {
             DateTimeOffset start = DateTimeOffset.UtcNow;
-            int qttMess = 0;
             int rcvmess = 0;
-            int.TryParse(tbQtt.Text, out qttMess);
+            int.TryParse(tbQtt.Text, out int qttMess);
             if (qttMess > 0)
             {
                 catcher.SetEvent(lblDuration, new EventHandler<string>(this.EvHandler));

@@ -31,7 +31,7 @@ namespace Actor.Server.Tests
             TestLauncherActor.Test(() =>
             {
                 var actor = new EchoTest();
-                new EchoActor(actor, "Test Echo");
+                EchoActor.Echo(actor, "Test Echo");
                 IFuture<string> future = new Future<string>();
                 actor.SendMessage(future);
                 Assert.AreEqual("Test Echo", future.ResultAsync().Result);
@@ -39,6 +39,7 @@ namespace Actor.Server.Tests
         }
 
         [TestMethod()]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1806:Ne pas ignorer les résultats des méthodes", Justification = "<En attente>")]
         public void EchoActorTest2()
         {
             TestLauncherActor.Test(() =>

@@ -13,14 +13,15 @@ namespace Actor.TestApplication
     {
         static actMillion fMillion;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1806:Ne pas ignorer les résultats des méthodes", Justification = "<En attente>")]
         static void Main(string[] args)
         {
             string lName = "";
             string lPort = "";
             if (args.Length > 0)
             {
-                lName = Array.Find(args, t => t.StartsWith("-n:"));
-                lPort = Array.Find(args, t => t.StartsWith("-p:"));
+                lName = Array.Find(args, t => t.StartsWith("-n:", StringComparison.InvariantCulture));
+                lPort = Array.Find(args, t => t.StartsWith("-p:",StringComparison.InvariantCulture));
             }
             if (!string.IsNullOrEmpty(lName))
             {
@@ -67,9 +68,14 @@ namespace Actor.TestApplication
                                 {
                                     var collect = new CollectionActor<string>();
                                     for (int i = 0; i < 100; i++)
-                                        collect.Add(string.Format("Test {0}", i));
+                                    {
+                                        collect.Add($"Test {i}");
+                                    }
+
                                     if (collect.Count() != 100)
+                                    {
                                         throw new Exception("failed");
+                                    }
                                     // try to enum
                                     var enumerable = collect.ToList();
                                     if (enumerable.Count != 100)
@@ -110,7 +116,7 @@ namespace Actor.TestApplication
                                     EchoClientActor aClient = new EchoClientActor();// new actEchoClient(aServer);
                                                                                     // DirectoryRequest.SendRegister("client + " + i.ToString(), aClient);
                                     aClient.Connect("EchoServer");
-                                    aClient.SendMessage("client-" + i.ToString());
+                                    aClient.SendMessage($"client-{i}");
                                     // aClient.Disconnect();
                                 }
                                 var end = DateTime.UtcNow.Ticks;
@@ -149,12 +155,12 @@ namespace Actor.TestApplication
                             }
                         case "ParserTest":
                             {
-                                new EchoActor(new ParserTest(), "");
+                                EchoActor.Echo(new ParserTest(), "");
                                 break;
                             }
                         default:
                             {
-                                new EchoActor(new ActorAdminServer(), s);
+                                EchoActor.Echo(new ActorAdminServer(), s);
                                 break;
                             }
                     }

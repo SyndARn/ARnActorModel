@@ -104,12 +104,12 @@ namespace Actor.Util.Test
 
                 foreach (var item in Enumerable.Range(0, 100))
                 {
-                    act.Add(item.ToString());
+                    act.Add($"{item}");
                 }
                 Assert.AreEqual(100, act.Count());
                 var query =
                     from s in act
-                    where s.StartsWith("1")
+                    where s.StartsWith("1",StringComparison.InvariantCulture)
                     select s;
                 Assert.AreEqual(11, query.Count());
                 Assert.IsTrue(query.Contains("11"));

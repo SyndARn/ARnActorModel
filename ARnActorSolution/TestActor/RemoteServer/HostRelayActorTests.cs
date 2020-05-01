@@ -1,15 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.Server;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Actor.Base;
-using Actor.Util;
 using System.Configuration;
+using TestActor;
 
-namespace TestActor
+namespace Actor.Server.Tests
 {
     internal class TestHostRelayActor : BaseActor
     {
@@ -26,7 +22,7 @@ namespace TestActor
                         f => f.SendMessage(_data.AsEnumerable())
                         ));
                 }
-                )) ;
+                ));
         }
     }
 
