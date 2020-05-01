@@ -141,6 +141,7 @@
     <Compile Include="Logger\LoggerActorTests.cs" />
     <Compile Include="Logger\TraceActorTests.cs" />
     <Compile Include="Peer\PeerBehaviorsTest.cs" />
+    <Compile Include="SequencingBehavior\SequencingActorTest.cs" />
     <Compile Include="Serializer\DataContractObjectTests.cs" />
     <Compile Include="Service\ParserActorTests.cs" />
     <Compile Include="Admin\ActorStatServerTests.cs" />

@@ -45,4 +45,15 @@ namespace Actor.Base
         T4 Item4 { get; }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
+    public interface IMessageParam<out T1, out T2, out T3, out T4, out T5>
+    {
+        T1 Item1 { get; }
+        T2 Item2 { get; }
+        T3 Item3 { get; }
+        T4 Item4 { get; }
+
+        T5 Item5 { get; }
+    }
+
 }

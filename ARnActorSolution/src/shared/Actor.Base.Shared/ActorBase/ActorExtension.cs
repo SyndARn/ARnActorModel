@@ -46,6 +46,12 @@ namespace Actor.Base
             anActor.SendMessage(new MessageParam<T1, T2, T3, T4>(t1, t2, t3, t4));
         }
 
+        public static void SendMessage<T1, T2, T3, T4, T5>(this BaseActor anActor, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5)
+        {
+            CheckArg.Actor(anActor);
+            anActor.SendMessage(new MessageParam<T1, T2, T3, T4, T5>(t1, t2, t3, t4, t5));
+        }
+
         public static Task<object> ReceiveAsync<T1, T2>(this BaseActor anActor, Func<T1, T2, bool> aPattern)
         {
             CheckArg.Actor(anActor);

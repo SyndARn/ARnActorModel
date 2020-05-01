@@ -22,7 +22,7 @@ namespace Actor.Server.Tests
             using (var stream = new MemoryStream())
             {
                 // write
-                var writer = new StreamWriter(stream);
+                StreamWriter writer = new StreamWriter(stream);
                 writer.WriteLine(testString);
                 writer.Flush();
 

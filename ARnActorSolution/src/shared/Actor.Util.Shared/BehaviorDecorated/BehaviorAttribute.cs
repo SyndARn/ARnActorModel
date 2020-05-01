@@ -9,5 +9,10 @@ namespace Actor.Util
     public sealed class BehaviorAttribute : Attribute
     {
     }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    public sealed class ActionBehaviorAttribute : Attribute
+    {
+    }
 #endif
 }

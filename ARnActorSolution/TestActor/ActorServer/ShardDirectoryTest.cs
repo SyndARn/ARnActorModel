@@ -38,6 +38,7 @@ namespace Actor.Server.Tests
         }
 
         [TestMethod]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1806:Ne pas ignorer les résultats des méthodes", Justification = "<En attente>")]
         public void TestShardRun()
         {
             TestLauncherActor.Test(() =>

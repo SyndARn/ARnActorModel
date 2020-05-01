@@ -8,7 +8,7 @@ namespace TestActor
     [TestClass]
     public class InjectionActorTest
     {
-        public class StringBehaviors : Behaviors
+        internal class StringBehaviors : Behaviors
         {
             private string _data;
 

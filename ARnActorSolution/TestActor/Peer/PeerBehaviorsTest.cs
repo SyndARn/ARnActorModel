@@ -54,7 +54,7 @@ namespace TestActor
             {
                 keyList.Add(string.Format(CultureInfo.InvariantCulture, "testKey{0}", i)) ;
             }
-            var keyTest = CenterKey<string>.Calc(keyList);
+            var keyTest = CenterKey.Calc(keyList);
             Assert.AreEqual("testKey96", keyTest);
         }
 

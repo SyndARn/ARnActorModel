@@ -23,6 +23,7 @@ namespace Actor.TestApplication
         private List<IActor> _clientList;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Ne pas passer de littéraux en paramètres localisés", Justification = "<En attente>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1806:Ne pas ignorer les résultats des méthodes", Justification = "<En attente>")]
         private void DoBehavior(string msg)
         {
             Console.WriteLine(ServerStart);
