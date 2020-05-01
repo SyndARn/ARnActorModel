@@ -110,7 +110,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actor.Base.NetStandard", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actor.Util.NetStandard", "src\NetStandard\Actor.Util.NetStandard\Actor.Util.NetStandard.csproj", "{D2B9E9B9-0918-41EB-9F4E-F6C663D05FB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.DbService.Core", "Core\Actor.DbService.Core\Actor.DbService.Core.csproj", "{2C11B358-0FF1-4BE7-84F7-B849042A34C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actor.DbService.Core", "Core\Actor.DbService.Core\Actor.DbService.Core.csproj", "{2C11B358-0FF1-4BE7-84F7-B849042A34C1}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -1519,7 +1519,6 @@ Global
 		{D2B9E9B9-0918-41EB-9F4E-F6C663D05FB3}.x64|x86.ActiveCfg = Debug|Any CPU
 		{D2B9E9B9-0918-41EB-9F4E-F6C663D05FB3}.x64|x86.Build.0 = Debug|Any CPU
 		{2C11B358-0FF1-4BE7-84F7-B849042A34C1}.AppVeyor|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C11B358-0FF1-4BE7-84F7-B849042A34C1}.AppVeyor|Any CPU.Build.0 = Debug|Any CPU
 		{2C11B358-0FF1-4BE7-84F7-B849042A34C1}.AppVeyor|ARM.ActiveCfg = Debug|Any CPU
 		{2C11B358-0FF1-4BE7-84F7-B849042A34C1}.AppVeyor|ARM.Build.0 = Debug|Any CPU
 		{2C11B358-0FF1-4BE7-84F7-B849042A34C1}.AppVeyor|Mixed Platforms.ActiveCfg = Debug|Any CPU
