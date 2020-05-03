@@ -116,7 +116,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{6CC23D88-E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{5C4B2CFA-B2E9-4CD2-89E5-C7A59730E79F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Actor.DbService.CoreTests", "Core\Actor.DbService.CoreTests\Actor.DbService.CoreTests.csproj", "{91CCB7DB-0DBD-4C19-BA73-3264DC976F62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Actor.DbService.CoreTests", "Core\Actor.DbService.CoreTests\Actor.DbService.CoreTests.csproj", "{91CCB7DB-0DBD-4C19-BA73-3264DC976F62}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -1564,7 +1564,6 @@ Global
 		{2C11B358-0FF1-4BE7-84F7-B849042A34C1}.x64|x86.ActiveCfg = Debug|Any CPU
 		{2C11B358-0FF1-4BE7-84F7-B849042A34C1}.x64|x86.Build.0 = Debug|Any CPU
 		{91CCB7DB-0DBD-4C19-BA73-3264DC976F62}.AppVeyor|Any CPU.ActiveCfg = Debug|Any CPU
-		{91CCB7DB-0DBD-4C19-BA73-3264DC976F62}.AppVeyor|Any CPU.Build.0 = Debug|Any CPU
 		{91CCB7DB-0DBD-4C19-BA73-3264DC976F62}.AppVeyor|ARM.ActiveCfg = Debug|Any CPU
 		{91CCB7DB-0DBD-4C19-BA73-3264DC976F62}.AppVeyor|ARM.Build.0 = Debug|Any CPU
 		{91CCB7DB-0DBD-4C19-BA73-3264DC976F62}.AppVeyor|Mixed Platforms.ActiveCfg = Debug|Any CPU
