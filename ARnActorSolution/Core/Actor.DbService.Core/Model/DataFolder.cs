@@ -3,6 +3,7 @@ using Actor.Base;
 using Actor.Util;
 using System;
 using System.Linq;
+using System.IO;
 
 namespace Actor.DbService.Core.Model
 {
@@ -15,8 +16,8 @@ namespace Actor.DbService.Core.Model
         }
         public DataFolder DataFolder
         {
-            get ;
-            set ; 
+            get;
+            set;
         }
         public string Uuid { get { return DataFolder.Uuid; } }
     }
@@ -27,7 +28,7 @@ namespace Actor.DbService.Core.Model
         public string Source { get; private set; }
         private readonly List<Field> _fields = new List<Field>();
         public DataFolder(string source) : base()
-        {            
+        {
             Source = source;
             Become(BehaviorAttributeBuilder.BuildFromAttributes(this).ToArray());
         }
@@ -48,21 +49,41 @@ namespace Actor.DbService.Core.Model
             return source.Split(' ');
         }
 
-        public void Parse(IndexRouter indexRouter)
+        public void Parse(IndexRouter indexRouter, Func<string, DataFolder, IEnumerable<Field>> fieldProducer)
         {
-            foreach(var s in DoParse(Source))
+            foreach (var s in DoParse(Source))
             {
-                        Field fieldName = new Field { DataFolder = this, Name = "Word", Value = s };
-                        Field fieldSyllabe = new Field { DataFolder = this, Name = "Syllabe", Value = "1" };
-                        Field fieldRime = new Field { DataFolder = this, Name = "Rime", Value = s };
-                        Field fieldRich = new Field { DataFolder = this, Name = "Rich", Value = "1" };
-                        _fields.AddRange(new[] { fieldName, fieldSyllabe, fieldRime, fieldRich });
-                        indexRouter.AddField(fieldName);
-                        indexRouter.AddField(fieldSyllabe);
-                        indexRouter.AddField(fieldRime);
-                        indexRouter.AddField(fieldRich);
+                foreach (var field in fieldProducer(s, this))
+                {
+                    _fields.Add(field);
+                    indexRouter.AddField(field);
+                }
             }
         }
+    }
+
+    public static class Functer
+    {
+        public static readonly Func<string, DataFolder, IEnumerable<Field>> RimeFuncter = (s, folder) =>
+        {
+            List<Field> fields = new List<Field>
+            {
+            new Field { DataFolder = folder, Name = "Word", Value = s },
+            new Field { DataFolder = folder, Name = "Syllabe", Value = "1" },
+            new Field { DataFolder = folder, Name = "Rime", Value = s },
+            new Field { DataFolder = folder, Name = "Rich", Value = "1" },
+            };
+            return fields;
+        };
+        public static readonly Func<string, DataFolder, IEnumerable<Field>> WordFuncter = (s, folder) =>
+        {
+            List<Field> fields = new List<Field>
+            {
+            new Field { DataFolder = folder, Name = "Word", Value = s },
+            new Field { DataFolder = folder, Name = "Syllabe", Value = "1" },
+            };
+            return fields;
+        };
     }
 
     public class IndexRouter : BaseActor
@@ -84,10 +105,35 @@ namespace Actor.DbService.Core.Model
             this.SendMessage(response);
         }
 
+        public void SaveToStream(Stream stream)
+        {
+            SendMessage(stream);
+        }
+
+        public void LoadFromStream()
+        {
+            SendMessage
+        }
+
+        [Behavior]
+        private void DoSaveToStream(StreamWriter streamwriter)
+        {
+            foreach(var index in _nameIndexes.Values)
+            {
+
+            }
+        }
+
+        [Behavior]
+        private void DoLoadFromStream(Stream stream)
+        {
+
+        }
+
         [Behavior]
         private void DoProcessQuery(Response response)
         {
-            foreach(var index in _nameIndexes.Values)
+            foreach (var index in _nameIndexes.Values)
             {
                 if (response.Query.FilterIndex(index))
                 {
@@ -132,7 +178,6 @@ namespace Actor.DbService.Core.Model
             SendMessage(field);
         }
 
-
         [Behavior]
         private void StreamAllValue(IActor actor)
         {
@@ -144,7 +189,6 @@ namespace Actor.DbService.Core.Model
                 }
             }
         }
-
 
         [Behavior]
         protected void DoProcessQuery(Response response)
@@ -169,7 +213,6 @@ namespace Actor.DbService.Core.Model
     public interface IQuery
     {
         void Launch(IActor asker, IndexRouter router);
-        Dictionary<string, string> Parameters { get; }
         bool FilterIndex(Index index);
         IEnumerable<Field> FilterValue(Dictionary<string, List<Field>> dico);
         string Uuid { get; }
@@ -178,7 +221,6 @@ namespace Actor.DbService.Core.Model
     public abstract class Query : IQuery
     {
         protected string QueryName { get; private set; }
-        public Dictionary<string, string> Parameters { get; private set; } = new Dictionary<string, string>();
         public string Uuid { get; } = Guid.NewGuid().ToString();
 
         public Query()
@@ -200,21 +242,22 @@ namespace Actor.DbService.Core.Model
 
     public class QueryByIndexEqualValue : Query
     {
+        internal string Index { get; private set; }
+        internal string Value { get; private set; }
         public QueryByIndexEqualValue(string index, string value) : base()
         {
-            Parameters["Index"] = index;
-            Parameters["Value"] = value;
-            Parameters["Op"] = "Equal";
+            Index = index;
+            Value = value;
         }
 
         public override bool FilterIndex(Index index)
         {
-            return index.Name == Parameters["Index"] ;
+            return index.Name == Index;
         }
 
         public override IEnumerable<Field> FilterValue(Dictionary<string, List<Field>> dico)
         {
-            if (dico.TryGetValue(Parameters["Value"], out List<Field> fields))
+            if (dico.TryGetValue(Value, out List<Field> fields))
             {
                 return fields;
             }
@@ -224,11 +267,13 @@ namespace Actor.DbService.Core.Model
 
     public class QueryByIndexContainsValue : Query
     {
+        internal string Index { get; private set; }
+        internal string Value { get; private set; }
+
         public QueryByIndexContainsValue(string index, string value) : base()
         {
-            Parameters["Index"] = index;
-            Parameters["Value"] = value;
-            Parameters["Op"] = "Contains";
+            Index = index;
+            Value = value;
         }
 
         public override bool FilterIndex(Index index)
@@ -250,7 +295,7 @@ namespace Actor.DbService.Core.Model
             Asker = asker;
             Query = query;
         }
-        public IndexRouter Router { get; private set;}
+        public IndexRouter Router { get; private set; }
         public IActor Asker { get; private set; }
         public IQuery Query { get; private set; }
     }

@@ -23,10 +23,10 @@ namespace Actor.DbService.Core.Model.Tests
             {
                 var indexRouter = new IndexRouter();
                 var folder = new DataFolder(source);
-                folder.Parse(indexRouter);
+                folder.Parse(indexRouter, Functer.RimeFuncter);
 
                 var folder2 = new DataFolder("A B C D");
-                folder2.Parse(indexRouter);
+                folder2.Parse(indexRouter, Functer.RimeFuncter);
                 var asker = new Future<string,IEnumerable<Field>>();
                 var query = new QueryByIndexEqualValue("Rime", "Trois");
                 query.Launch(asker,indexRouter);

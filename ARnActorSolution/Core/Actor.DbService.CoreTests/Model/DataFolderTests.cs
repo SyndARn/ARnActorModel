@@ -38,7 +38,7 @@ namespace Actor.DbService.Core.Model.Tests
             {
                 var router = new IndexRouter();
                 var folder = new DataFolder(source);
-                folder.Parse(router);
+                folder.Parse(router,Functer.RimeFuncter);
                 var future = new Future<IEnumerable<string>>();
                 folder.GetIndexNames(future);
                 Assert.AreEqual("Word", future.Result().FirstOrDefault());
