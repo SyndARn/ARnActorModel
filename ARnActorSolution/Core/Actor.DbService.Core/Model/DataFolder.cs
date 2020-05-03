@@ -2,15 +2,10 @@
 using Actor.Base;
 using Actor.Util;
 using System;
+using System.Linq;
 
 namespace Actor.DbService.Core.Model
 {
-    // document : list of fields
-    // index : list of document from a field
-    // parsing create fields
-    // index each fields
-    // store index in document
-
     public class Field
     {
         public string Name { get; set; }
@@ -18,43 +13,55 @@ namespace Actor.DbService.Core.Model
         {
             get; set;
         }
-        public Document Doc
+        public DataFolder DataFolder
         {
-            get; set;
+            get ;
+            set ; 
         }
+        public string Uuid { get { return DataFolder.Uuid; } }
     }
 
-    public class Document : BaseActor
+    public class DataFolder : BaseActor
     {
-        private readonly string _uuid;
-        private string _source;
-        private readonly List<Field> _fields;
-        // Field
-        public Document() : base()
-        {
+        public string Uuid { get; private set; } = Guid.NewGuid().ToString();
+        public string Source { get; private set; }
+        private readonly List<Field> _fields = new List<Field>();
+        public DataFolder(string source) : base()
+        {            
+            Source = source;
+            Become(BehaviorAttributeBuilder.BuildFromAttributes(this).ToArray());
+        }
 
+        public void GetIndexNames(IActor actor)
+        {
+            this.SendMessage(actor);
         }
 
         [Behavior]
-        public void Parse(string source, IndexRouter indexRouter)
+        protected void DoGetIndexNames(IActor actor)
         {
-            _source = source;
-            StringParserActor parser = new StringParserActor();
-            parser.ParseString(this, _source);
-            Become(new Behavior<IActor, string>
-                (
-                (a, s) =>
-                {
-                    Field fieldName = new Field { Doc = this, Name = "Word", Value = s };
-                    Field fieldSyllabe = new Field { Doc = this, Name = "Syllabe", Value = "1" };
-                    Field fieldRime = new Field { Doc = this, Name = "Rime", Value = s };
-                    Field fieldRich = new Field { Doc = this, Name = "Rich", Value = "1" };
-                    indexRouter.SendMessage(fieldName);
-                    indexRouter.SendMessage(fieldSyllabe);
-                    indexRouter.SendMessage(fieldRime);
-                    indexRouter.SendMessage(fieldRich);
-                }
-                ));
+            actor.SendMessage(_fields.Select(f => f.Name));
+        }
+
+        private IEnumerable<string> DoParse(string source)
+        {
+            return source.Split(' ');
+        }
+
+        public void Parse(IndexRouter indexRouter)
+        {
+            foreach(var s in DoParse(Source))
+            {
+                        Field fieldName = new Field { DataFolder = this, Name = "Word", Value = s };
+                        Field fieldSyllabe = new Field { DataFolder = this, Name = "Syllabe", Value = "1" };
+                        Field fieldRime = new Field { DataFolder = this, Name = "Rime", Value = s };
+                        Field fieldRich = new Field { DataFolder = this, Name = "Rich", Value = "1" };
+                        _fields.AddRange(new[] { fieldName, fieldSyllabe, fieldRime, fieldRich });
+                        indexRouter.AddField(fieldName);
+                        indexRouter.AddField(fieldSyllabe);
+                        indexRouter.AddField(fieldRime);
+                        indexRouter.AddField(fieldRich);
+            }
         }
     }
 
@@ -64,28 +71,29 @@ namespace Actor.DbService.Core.Model
 
         public IndexRouter() : base()
         {
-            Become(new ActionBehavior<Field>());
-            Become(new ActionBehavior<IActor, string, string>());
+            Become(BehaviorAttributeBuilder.BuildFromAttributes(this).ToArray()); ;
         }
 
         public void AddField(Field field)
         {
-            this.SendMessage<Action<Field>,Field>(AddFieldBehavior, field);
+            this.SendMessage(field);
         }
 
-        public void QueryByName(IActor asker, string queryType, string name)
+        public void ProcessQuery(Response response)
         {
-            this.SendMessage<Action<IActor,string,string>,IActor,string,string>(QueryByNameBehavior, asker, queryType, name);
+            this.SendMessage(response);
         }
 
-        public void QueryByNameValue(IActor asker, string queryType, string name, string value)
+        [Behavior]
+        private void DoProcessQuery(Response response)
         {
-            this.SendMessage<Action<IActor,string,string,string>, IActor, string, string, string>(QueryByNameValueBehavior, asker, queryType, name, value);
-        }
-
-        public void QueryByValue(IActor asker, string value)
-        {
-            this.SendMessage<Action<IActor,string>,IActor,string>(QueryByValueBehavior, asker, value);
+            foreach(var index in _nameIndexes.Values)
+            {
+                if (response.Query.FilterIndex(index))
+                {
+                    index.ProcessQuery(response);
+                }
+            }
         }
 
         [Behavior]
@@ -100,35 +108,6 @@ namespace Actor.DbService.Core.Model
             _nameIndexes.Add(field.Name, newIndex);
             newIndex.SendMessage(field);
         }
-
-        [Behavior]
-        private void QueryByNameBehavior(IActor asker, string queryType, string name)
-        {
-            if (_nameIndexes.TryGetValue(name, out Index index))
-            {
-                index.SendMessage("StreamAllValue", asker);
-            }
-        }
-
-        [Behavior]
-        private void QueryByNameValueBehavior(IActor asker, string queryType, string name, string value)
-        {
-            if (_nameIndexes.TryGetValue(name, out Index index))
-            {
-                index.SendMessage("EqualValue", value, asker);
-            }
-        }
-
-        [Behavior]
-        private void QueryByValueBehavior(IActor asker, string value)
-        {
-            foreach (Index index in _nameIndexes.Values)
-            {
-                index.SendMessage(asker, "EqualValue", value);
-            }
-        }
-
-
     }
 
     public class Index : BaseActor
@@ -136,11 +115,23 @@ namespace Actor.DbService.Core.Model
 
         public Index(string name) : base()
         {
-            _name = name;
+            Name = name;
+            Become(BehaviorAttributeBuilder.BuildFromAttributes(this).ToArray());
         }
 
-        private string _name { get; set; }
+        public string Name { get; private set; }
         private readonly Dictionary<string, List<Field>> _valueFields = new Dictionary<string, List<Field>>();
+
+        public void ProcessQuery(Response response)
+        {
+            SendMessage(response);
+        }
+
+        public void AddField(Field field)
+        {
+            SendMessage(field);
+        }
+
 
         [Behavior]
         private void StreamAllValue(IActor actor)
@@ -156,76 +147,111 @@ namespace Actor.DbService.Core.Model
 
 
         [Behavior]
-        private void EqualValue(IActor asker, string value)
+        protected void DoProcessQuery(Response response)
         {
-            if (_valueFields.TryGetValue(value, out List<Field> fields))
-            {
-                foreach (Field field in fields)
-                {
-                    asker.SendMessage(field.Doc);
-
-                }
-            }
+            var fields = response.Query.FilterValue(_valueFields);
+            response.Asker.SendMessage(response.Query.Uuid, fields);
         }
 
         [Behavior]
-        private void AddField(Field field)
+        protected void DoAddField(Field field)
         {
-            if (_valueFields.TryGetValue(field.Name, out List<Field> fields))
+            if (_valueFields.TryGetValue(field.Value, out List<Field> fields))
             {
                 fields.Add(field);
                 return;
             }
-            _valueFields[field.Name] = new List<Field> { field };
+            _valueFields[field.Value] = new List<Field> { field };
         }
 
     }
 
-    public class Query : BaseActor
+    public interface IQuery
     {
-        private readonly IndexRouter _indexRouter;
+        void Launch(IActor asker, IndexRouter router);
+        Dictionary<string, string> Parameters { get; }
+        bool FilterIndex(Index index);
+        IEnumerable<Field> FilterValue(Dictionary<string, List<Field>> dico);
+        string Uuid { get; }
+    }
 
-        public Query(IndexRouter indexRouter) : base()
+    public abstract class Query : IQuery
+    {
+        protected string QueryName { get; private set; }
+        public Dictionary<string, string> Parameters { get; private set; } = new Dictionary<string, string>();
+        public string Uuid { get; } = Guid.NewGuid().ToString();
+
+        public Query()
         {
-            _indexRouter = indexRouter;
+            QueryName = ToString();
         }
 
-        public void QueryByFieldValueNameValue(IActor asker, string name, string value)
+        public void Launch(IActor asker, IndexRouter router)
         {
-            this.SendMessage(nameof(QueryByFieldNameValueBehavior),asker, name, value);
+            CheckArg.Actor(router);
+            var response = new Response(router, asker, this);
+            router.ProcessQuery(response);
         }
 
-        public void QueryByName(IActor asker, string name)
+        public abstract IEnumerable<Field> FilterValue(Dictionary<string, List<Field>> dico);
+        public abstract bool FilterIndex(Index index);
+
+    }
+
+    public class QueryByIndexEqualValue : Query
+    {
+        public QueryByIndexEqualValue(string index, string value) : base()
         {
-            this.SendMessage(nameof(QueryByName), asker, name);
+            Parameters["Index"] = index;
+            Parameters["Value"] = value;
+            Parameters["Op"] = "Equal";
         }
 
-        public void QueryByValue(IActor asker, string value)
+        public override bool FilterIndex(Index index)
         {
-            this.SendMessage(nameof(QueryByValue), asker, value);
+            return index.Name == Parameters["Index"] ;
         }
 
-        [Behavior]
-        private void QueryByFieldNameValueBehavior(string name, string value, IActor asker)
+        public override IEnumerable<Field> FilterValue(Dictionary<string, List<Field>> dico)
         {
-            _indexRouter.SendMessage("EqualValue", name, value, asker);
-        }
-
-        [Behavior]
-        private void QueryByName(string name, IActor asker)
-        {
-            _indexRouter.SendMessage("StreamAllValue", name, asker);
-        }
-
-        [Behavior]
-        private void QueryByValue(string value, IActor asker)
-        {
-            _indexRouter.SendMessage("StreamAllName", value, asker);
+            if (dico.TryGetValue(Parameters["Value"], out List<Field> fields))
+            {
+                return fields;
+            }
+            return null;
         }
     }
-    // read a document
-    // source
-    // field name value document
-    // add them to index Field
 
+    public class QueryByIndexContainsValue : Query
+    {
+        public QueryByIndexContainsValue(string index, string value) : base()
+        {
+            Parameters["Index"] = index;
+            Parameters["Value"] = value;
+            Parameters["Op"] = "Contains";
+        }
+
+        public override bool FilterIndex(Index index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<Field> FilterValue(Dictionary<string, List<Field>> dico)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class Response
+    {
+        public Response(IndexRouter router, IActor asker, IQuery query)
+        {
+            Router = router;
+            Asker = asker;
+            Query = query;
+        }
+        public IndexRouter Router { get; private set;}
+        public IActor Asker { get; private set; }
+        public IQuery Query { get; private set; }
+    }
 }
