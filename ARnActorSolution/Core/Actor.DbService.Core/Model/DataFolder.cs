@@ -4,6 +4,7 @@ using Actor.Util;
 using System;
 using System.Linq;
 using System.IO;
+using System.Globalization;
 
 namespace Actor.DbService.Core.Model
 {
@@ -14,39 +15,30 @@ namespace Actor.DbService.Core.Model
         {
             get; set;
         }
+
+        private DataFolder _dataFolder;
         public DataFolder DataFolder
         {
-            get;
-            set;
+            get { return _dataFolder; }
+            set { _dataFolder = value; Uuid = _dataFolder.Uuid; }
         }
-        public string Uuid { get { return DataFolder.Uuid; } }
+        public string Uuid { get; set; }
     }
 
     public class DataFolder : BaseActor
     {
         public string Uuid { get; private set; } = Guid.NewGuid().ToString();
         public string Source { get; private set; }
-        private readonly List<Field> _fields = new List<Field>();
+        // private readonly List<Field> _fields = new List<Field>();
         public DataFolder(string source) : base()
         {
             Source = source;
             Become(BehaviorAttributeBuilder.BuildFromAttributes(this).ToArray());
         }
 
-        public void GetIndexNames(IActor actor)
-        {
-            this.SendMessage(actor);
-        }
-
-        [Behavior]
-        protected void DoGetIndexNames(IActor actor)
-        {
-            actor.SendMessage(_fields.Select(f => f.Name));
-        }
-
         private IEnumerable<string> DoParse(string source)
         {
-            return source.Split(' ');
+            return source.Split(Array.Empty<char>(), StringSplitOptions.RemoveEmptyEntries) ;
         }
 
         public void Parse(IndexRouter indexRouter, Func<string, DataFolder, IEnumerable<Field>> fieldProducer)
@@ -55,7 +47,6 @@ namespace Actor.DbService.Core.Model
             {
                 foreach (var field in fieldProducer(s, this))
                 {
-                    _fields.Add(field);
                     indexRouter.AddField(field);
                 }
             }
@@ -72,6 +63,7 @@ namespace Actor.DbService.Core.Model
             new Field { DataFolder = folder, Name = "Syllabe", Value = "1" },
             new Field { DataFolder = folder, Name = "Rime", Value = s },
             new Field { DataFolder = folder, Name = "Rich", Value = "1" },
+            new Field { DataFolder = folder, Name = "TimeStamp", Value = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff",CultureInfo.InvariantCulture) },
             };
             return fields;
         };
@@ -81,6 +73,7 @@ namespace Actor.DbService.Core.Model
             {
             new Field { DataFolder = folder, Name = "Word", Value = s },
             new Field { DataFolder = folder, Name = "Syllabe", Value = "1" },
+            new Field { DataFolder = folder, Name = "TimeStamp", Value = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff",CultureInfo.InvariantCulture) },
             };
             return fields;
         };
@@ -105,28 +98,43 @@ namespace Actor.DbService.Core.Model
             this.SendMessage(response);
         }
 
-        public void SaveToStream(Stream stream)
+        public void SaveToStream(StreamWriter stream)
         {
             SendMessage(stream);
         }
 
-        public void LoadFromStream()
+        public void LoadFromStream(StreamReader stream)
         {
-            SendMessage
+            SendMessage(stream);
         }
 
         [Behavior]
-        private void DoSaveToStream(StreamWriter streamwriter)
+        private void DoSaveToStream(StreamWriter stream)
         {
             foreach(var index in _nameIndexes.Values)
             {
-
+                if (!index.SaveToStream(stream))
+                {
+                    break;
+                }
             }
         }
 
         [Behavior]
-        private void DoLoadFromStream(Stream stream)
+        private void DoLoadFromStream(StreamReader stream)
         {
+            // read name
+            // read value
+            // read folder
+            while (!stream.EndOfStream)
+            {
+                var name = stream.ReadLine();
+                var value = stream.ReadLine();
+                var folder = stream.ReadLine();
+                // process index
+                Field field = new Field() { Name = name.Split('=').Last(), Uuid = folder.Split('=').Last(), Value = value.Split('=').Last() };
+                AddFieldBehavior(field);
+            }
 
         }
 
@@ -178,6 +186,40 @@ namespace Actor.DbService.Core.Model
             SendMessage(field);
         }
 
+        public bool SaveToStream(StreamWriter writer)
+        {
+            var future = new Future<bool>();
+            this.SendMessage(writer,future);
+            return future.Result();
+        }
+
+        public bool LoadFromStream(StreamReader reader)
+        {
+            SendMessage(reader);
+            return true;
+        }
+
+        [Behavior]
+        private void DoLoadStream(StreamReader stream)
+        {
+        }
+
+        [Behavior]
+        private void DoSaveStream(StreamWriter stream, IActor future)
+        {
+            // stream.WriteLine($"FieldName = {Name}");
+            foreach (var fields in _valueFields)
+            {
+                foreach (var field in fields.Value)
+                {
+                    stream.WriteLine($"Name={field.Name}");
+                    stream.WriteLine($"Value={field.Value}");
+                    stream.WriteLine($"Folder={field.Uuid}");
+                }
+            }
+            future.SendMessage(true);
+        }
+
         [Behavior]
         private void StreamAllValue(IActor actor)
         {
@@ -202,7 +244,10 @@ namespace Actor.DbService.Core.Model
         {
             if (_valueFields.TryGetValue(field.Value, out List<Field> fields))
             {
-                fields.Add(field);
+                if (!fields.Any(f => f.Uuid == field.Uuid))
+                {
+                    fields.Add(field);
+                }
                 return;
             }
             _valueFields[field.Value] = new List<Field> { field };
@@ -265,6 +310,30 @@ namespace Actor.DbService.Core.Model
         }
     }
 
+    public class QueryByIndex : Query
+    {
+        internal string Index { get; private set; }
+        public QueryByIndex(string index) : base()
+        {
+            Index = index;
+        }
+
+        public override bool FilterIndex(Index index)
+        {
+            return index.Name == Index;
+        }
+
+        public override IEnumerable<Field> FilterValue(Dictionary<string, List<Field>> dico)
+        {
+            foreach(var value in dico.Values)
+            {
+                foreach(var v in value)
+                    yield return v;
+            }
+        }
+
+    }
+
     public class QueryByIndexContainsValue : Query
     {
         internal string Index { get; private set; }
@@ -278,12 +347,16 @@ namespace Actor.DbService.Core.Model
 
         public override bool FilterIndex(Index index)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public override IEnumerable<Field> FilterValue(Dictionary<string, List<Field>> dico)
         {
-            throw new NotImplementedException();
+            if (dico.TryGetValue(Value, out List<Field> fields))
+            {
+                return fields;
+            }
+            return null;
         }
     }
 
