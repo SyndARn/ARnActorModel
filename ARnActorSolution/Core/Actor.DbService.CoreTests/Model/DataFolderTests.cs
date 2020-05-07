@@ -32,12 +32,30 @@ namespace Actor.DbService.Core.Model.Tests
                 var router = new IndexRouter();
                 var folder = new DataFolder(source);
                 folder.Parse(router, Functer.RimeFuncter);
-                var future = new Future<string,IEnumerable<Field>>();
                 var query = new QueryByIndex("Word");
+                var future = new Future<string, IEnumerable<Field>>();
                 query.Launch(future, router);
-                Task.Delay(15000).Wait();
+                Task.Delay(5000).Wait();
                 var result = future.Result();
-                Assert.AreEqual(3, result.Item2.Count());
+                Assert.AreEqual(1, result.Item2.Count());
+            });
+        }
+
+        [TestMethod()]
+        public void LaunchWithReturnValueTest()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var router = new IndexRouter();
+                var folder = new DataFolder(source);
+                folder.Parse(router, Functer.RimeFuncter);
+                var query = new QueryByIndex("Word");
+                var results = query.Launch(router);
+                Task.Delay(5000).Wait();
+                foreach (var item in results)
+                {
+                    Assert.AreEqual("Word", item.Name);
+                }
             });
         }
     }

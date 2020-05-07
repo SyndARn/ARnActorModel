@@ -24,11 +24,13 @@ namespace Actor.DbService.Core.Model.Tests
                 var indexRouter = new IndexRouter();
                 var folder = new DataFolder(source);
                 folder.Parse(indexRouter, Functer.RimeFuncter);
-
                 var folder2 = new DataFolder("A B C D");
                 folder2.Parse(indexRouter, Functer.RimeFuncter);
+
+                Task.Delay(5000).Wait();
+
                 var asker = new Future<string,IEnumerable<Field>>();
-                var query = new QueryByIndexEqualValue("Rime", "Trois");
+                var query = new QueryByIndexEqualValue("Rime", "troi");
                 query.Launch(asker,indexRouter);
                 var result = asker.Result();
                 Assert.AreEqual(query.Uuid, result.Item1);

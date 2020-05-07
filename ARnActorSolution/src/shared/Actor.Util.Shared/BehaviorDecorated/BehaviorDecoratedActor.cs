@@ -211,6 +211,7 @@ namespace Actor.Util
                                     (a) => a.GetType() == mi.GetType(),
                                     (a) => a()
                                     ) ;
+                                bhvs.Add(bhv);
                                 break;
                             }
                         case 1:
@@ -218,7 +219,8 @@ namespace Actor.Util
                                 IBehavior bhv = new ActionBehavior<object>(
                                     (a, o) => a.GetType() == mi.GetType(),
                                     (a, o) => a(o)
-                                    ); 
+                                    );
+                                bhvs.Add(bhv);
                                 break;
                             }
                         case 2:
@@ -227,6 +229,7 @@ namespace Actor.Util
                                     (a, o1, o2) => a.GetType() == mi.GetType(),
                                     (a, o1, o2) => a(o1,o2)
                                     );
+                                bhvs.Add(bhv);
                                 break;
                             }
                         case 3:
