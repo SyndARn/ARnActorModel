@@ -4,38 +4,48 @@ using Actor.Util;
 using System;
 using System.Linq;
 using System.IO;
-using System.Globalization;
 using System.Collections.Concurrent;
 using System.Xml.Schema;
 using System.Threading.Tasks;
 using System.Net;
+using System.Threading;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Actor.DbService.Core.Model
 {
-    public class Field
+    public class Field : IEquatable<Field>
     {
-        public string Name { get; set; }
+        public string FieldName { get; set; }
+        public string Keyword
+        {
+            get; set;
+        }
         public string Value
         {
             get; set;
         }
 
-        public string Keyword
-        {
-            get; set;
-        }
-
-        private DataFolder _dataFolder;
-        public DataFolder DataFolder
-        {
-            get { return _dataFolder; }
-            set { _dataFolder = value; Uuid = _dataFolder.Uuid; }
-        }
         public string Uuid { get; set; }
+
+        public bool Equals(Field other)
+        {
+            if (other == null) return false;
+            return (other.FieldName == FieldName) && (other.Keyword == Keyword) && (other.Uuid == Uuid) && (other.Value == Value);
+        }
 
         public override string ToString()
         {
-            return $"Field : Name {Name} Keyword {Keyword} Value {Value} Uuid {Uuid}";
+            return $"Field : Name {FieldName} Keyword {Keyword} Value {Value} Uuid {Uuid}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Field);
+        }
+
+        public override int GetHashCode()
+        {
+            return Uuid.GetHashCode(StringComparison.InvariantCulture);
         }
     }
 
@@ -67,89 +77,9 @@ namespace Actor.DbService.Core.Model
         }
     }
 
-    public static class Functer
-    {
-        static char[] voyels = new[] { 'a', 'e', 'i', 'o', 'u' };
-        static CultureInfo frenchCulture = new CultureInfo("fr-FR");
-
-        static public List<string> voyelPatterns = new List<String>
-        {
-            "a","e","i","o","u",
-            "an","en","in","on","un",
-            "au","ai",
-            "eu",
-            "ou",
-            "oui",
-            "bru",
-            "ti",
-            "deu",
-            "qua",
-            "tre","troi",
-            "roi"
-
-        };
-
-        static public string voyel = "aeiou";
-
-        static public bool IsVoyel(char c)
-        {
-            return voyel.Contains(c);
-        }
-
-
-
-
-        public static readonly Func<string, DataFolder, IEnumerable<Field>> RimeFuncter = (s, folder) =>
-        {
-            var word = s.Trim().Trim(new char[] { ',', ';', ':' });
-            var lowerWord = word.ToLower(frenchCulture);
-            var parse = lowerWord;
-            var syllabeCount = 0;
-            var rime = "";
-
-            while (parse != "")
-            {
-                // find a first pattern
-                var patts = voyelPatterns.Select(v => parse.StartsWith(v) ? v : "").OrderByDescending(v => v.Length).FirstOrDefault();
-                if ((patts != null) && (patts != ""))
-                {
-                    rime = rime + patts;
-                    syllabeCount++;
-                    parse = parse.Substring(patts.Length,parse.Length-patts.Length);
-                }
-                else
-                {
-                    break;
-                }
-            }
-            
-           
-
-            List<Field> fields = new List<Field>
-            {
-            new Field { DataFolder = folder, Name = "Word", Value = word, Keyword = word },
-            new Field { DataFolder = folder, Name = "Syllabe", Value =$"{syllabeCount}", Keyword = word },
-            new Field { DataFolder = folder, Name = "Rime", Value = rime, Keyword = word  },
-            new Field { DataFolder = folder, Name = "Rich", Value = $"{syllabeCount}", Keyword = word },
-            new Field { DataFolder = folder, Name = "TimeStamp", Value = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff",CultureInfo.InvariantCulture), Keyword = word },
-            };
-            return fields;
-        };
-        public static readonly Func<string, DataFolder, IEnumerable<Field>> WordFuncter = (s, folder) =>
-        {
-            List<Field> fields = new List<Field>
-            {
-            new Field { DataFolder = folder, Name = "Word", Value = s },
-            new Field { DataFolder = folder, Name = "Syllabe", Value = "1" },
-            new Field { DataFolder = folder, Name = "TimeStamp", Value = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff",CultureInfo.InvariantCulture) },
-            };
-            return fields;
-        };
-    }
-
     public class IndexRouter : BaseActor
     {
-        private readonly Dictionary<string, Index> _nameIndexes = new Dictionary<string, Index>();
+        private readonly HashSet<Index> _nameIndexes = new HashSet<Index>();
 
         public IndexRouter() : base()
         {
@@ -167,9 +97,9 @@ namespace Actor.DbService.Core.Model
         }
 
 
-        public void ProcessQuery(Response response)
+        public void ProcessQuery(Response response, Func<Index, bool> evaluator)
         {
-            this.SendMessage(response);
+            this.SendMessage(response, evaluator);
         }
 
         public void SaveToStream(StreamWriter stream)
@@ -185,7 +115,7 @@ namespace Actor.DbService.Core.Model
         [Behavior]
         private void DoSaveToStream(StreamWriter stream)
         {
-            foreach (var index in _nameIndexes.Values)
+            foreach (var index in _nameIndexes)
             {
                 if (!index.SaveToStream(stream))
                 {
@@ -197,38 +127,46 @@ namespace Actor.DbService.Core.Model
         [Behavior]
         private void DoLoadFromStream(StreamReader stream)
         {
-            // read name
-            // read value
-            // read folder
             while (!stream.EndOfStream)
             {
-                var name = stream.ReadLine();
-                var value = stream.ReadLine();
-                var folder = stream.ReadLine();
-                // process index
-                Field field = new Field() { Name = name.Split('=').Last(), Uuid = folder.Split('=').Last(), Value = value.Split('=').Last() };
+                var s = stream.ReadLine();
+                var sp = s.Split("|",4);
+                string name="";
+                string value="";
+                string keyword="";
+                string uuid="";
+                foreach(var ikv in sp)
+                {
+                    var kv = ikv.Split("=",2);
+                    switch (kv[0])
+                    {
+                        case "Name": name = kv[1]; break;
+                        case "Value": value = kv[1]; break;
+                        case "Keyword": keyword = kv[1]; break;
+                        case "Uuid": uuid = kv[1]; break;
+                    }
+                }
+                Field field = new Field() { FieldName = name, Uuid = uuid, Value = value, Keyword = keyword };
                 AddFieldBehavior(field);
             }
-
         }
 
         [Behavior]
-        private void DoProcessQuery(Response response)
+        private void DoProcessQuery(Response response, Func<Index, bool> evaluator)
         {
-            response.Query.SendMessage(response, (IEnumerable<Index>)_nameIndexes.Values);
+            response.Query.SendMessage(response, _nameIndexes.Where(k => evaluator(k)));
         }
 
         [Behavior]
         private void AddFieldBehavior(Field field)
         {
-            if (_nameIndexes.TryGetValue(field.Name, out Index index))
+            var index = _nameIndexes.FirstOrDefault(f => f.Name == field.FieldName);
+            if (index == null)
             {
-                index.SendMessage(field);
-                return;
+                index = new Index(field.FieldName);
+                _nameIndexes.Add(index);
             }
-            Index newIndex = new Index(field.Name);
-            _nameIndexes.Add(field.Name, newIndex);
-            newIndex.SendMessage(field);
+            index.SendMessage(field);
         }
 
         [Behavior]
@@ -236,14 +174,7 @@ namespace Actor.DbService.Core.Model
         {
             foreach (var field in fields)
             {
-                if (_nameIndexes.TryGetValue(field.Name, out Index index))
-                {
-                    index.SendMessage(field);
-                    return;
-                }
-                Index newIndex = new Index(field.Name);
-                _nameIndexes.Add(field.Name, newIndex);
-                newIndex.SendMessage(field);
+                AddFieldBehavior(field);
             }
         }
     }
@@ -258,11 +189,12 @@ namespace Actor.DbService.Core.Model
         }
 
         public string Name { get; private set; }
-        private readonly Dictionary<string, List<Field>> _valueFields = new Dictionary<string, List<Field>>();
+        private readonly HashSet<Field> _valueFields = new HashSet<Field>();
 
-        public void ProcessQuery(Response response)
+
+        public void ProcessQuery(Response response, Func<Field, bool> evaluator)
         {
-            SendMessage(response);
+            this.SendMessage(response, evaluator, true); // don't touch
         }
 
         public void AddField(Field field)
@@ -280,15 +212,9 @@ namespace Actor.DbService.Core.Model
         [Behavior]
         private void DoSaveStream(StreamWriter stream, IActor future)
         {
-            // stream.WriteLine($"FieldName = {Name}");
-            foreach (var fields in _valueFields)
+            foreach (var field in _valueFields)
             {
-                foreach (var field in fields.Value)
-                {
-                    stream.WriteLine($"Name={field.Name}");
-                    stream.WriteLine($"Value={field.Value}");
-                    stream.WriteLine($"Folder={field.Uuid}");
-                }
+                stream.WriteLine($"Name={field.FieldName}|Value={field.Value}|Keyword={field.Keyword}|Uuid={field.Uuid}");
             }
             future.SendMessage(true);
         }
@@ -296,36 +222,25 @@ namespace Actor.DbService.Core.Model
         [Behavior]
         private void StreamAllValue(IActor actor)
         {
-            foreach (List<Field> value in _valueFields.Values)
-            {
-                foreach (Field field in value)
-                {
-                    actor.SendMessage(field.Value);
-                }
-            }
+            actor.SendMessage(_valueFields.ToList().AsEnumerable());
         }
 
         [Behavior]
-        protected void DoProcessQuery(Response response)
+        protected void DoProcessQuery(Response response, Func<Field, bool> evaluator, bool value)
         {
-            foreach (var value in _valueFields.Values)
-            {
-                response.Query.SendMessage(response, value.AsEnumerable());
-            }
+            response.Query.SendMessage(response, _valueFields.Where(f => evaluator(f)));
         }
 
         [Behavior]
         protected void DoAddField(Field field)
         {
-            if (_valueFields.TryGetValue(field.Value, out List<Field> fields))
+            if (!_valueFields.TryGetValue(field, out _))
             {
-                if (!fields.Any(f => f.Uuid == field.Uuid && f.Keyword == field.Keyword))
-                {
-                    fields.Add(field);
-                }
-                return;
+                _valueFields.Add(field);
+            } else
+            {
+                Console.WriteLine($"found duplicate {field}");
             }
-            _valueFields[field.Value] = new List<Field> { field };
         }
 
     }
@@ -342,11 +257,22 @@ namespace Actor.DbService.Core.Model
     {
         protected string QueryName { get; private set; }
         public string Uuid { get; } = Guid.NewGuid().ToString();
+
         protected int TotalMsg { get; set; }
+        protected int ReceivedMsg { get; set; }
+
+        private int streamStart = 0;
+        private int streamEnd = 0;
 
         public Query()
         {
             QueryName = ToString();
+        }
+
+        public void StopQuery()
+        {
+            Interlocked.Increment(ref streamStart);
+            Interlocked.Increment(ref streamEnd);
         }
 
         public void Launch(IActor asker, IndexRouter router)
@@ -360,21 +286,44 @@ namespace Actor.DbService.Core.Model
         public IEnumerable<Field> Launch(IndexRouter router)
         {
             CheckArg.Actor(router);
-            var collector = new CollectionActor<Field>();
+            ConcurrentQueue<Field> bc = new ConcurrentQueue<Field>();
+            var spin = new SpinWait();
             var asker = new BaseActor(new Behavior<string, IEnumerable<Field>>
                 (
                 (s, fs) =>
                 {
                     foreach (var item in fs)
                     {
-                        collector.Add(item);
+                        bc.Enqueue(item);
+                    }
+                    ReceivedMsg++;
+                    if (ReceivedMsg == 1)
+                    {
+                        Interlocked.Increment(ref streamStart);
+                    }
+                    if (ReceivedMsg >= TotalMsg)
+                    {
+                        Interlocked.Increment(ref streamEnd);
                     }
                 }
                 ));
             var response = new Response(router, asker, this);
             Become(new Behavior<Response>(r => DoProcessQuery(r)));
             SendMessage(response);
-            return collector.AsEnumerable();
+            while (Interlocked.CompareExchange(ref streamStart, streamStart, 0) == 0)
+            {
+                spin.SpinOnce();
+            }
+
+            do
+            {
+                while (bc.TryDequeue(out Field field))
+                {
+                    yield return field;
+                };
+                spin.SpinOnce();
+            }
+            while (Interlocked.CompareExchange(ref streamEnd, streamEnd, 0) == 0);
         }
 
         protected abstract void DoProcessQuery(Response response);
@@ -392,26 +341,25 @@ namespace Actor.DbService.Core.Model
 
         protected override void DoProcessQuery(Response response)
         {
-            Become(new Behavior<Response, IEnumerable<Index>>(
+            AddBehavior(new Behavior<Response, IEnumerable<Index>>(
                 (r, idxs) =>
                 {
-                    foreach (var i in idxs)
+                    TotalMsg = idxs.Count();
+                    if (TotalMsg == 0)
                     {
-                        if (i.Name == Index)
-                        {
-                            i.SendMessage(r);
-                        }
+                        StopQuery();
+                    }
+                    foreach (var idx in idxs)
+                    {
+                        idx.ProcessQuery(r, f => f.Value == Value);
                     }
                 }));
             AddBehavior(new Behavior<Response, IEnumerable<Field>>(
                 (r, fields) =>
                 {
-                    if (fields.Any(f => f.Value == Value))
-                    {
-                        r.Asker.SendMessage(Uuid, fields.Where(f => f.Value == Value));
-                    }
+                    r.Asker.SendMessage(Uuid, fields);
                 }));
-            response.Router.SendMessage(response);
+            response.Router.ProcessQuery(response, i => i.Name == Index);
         }
     }
 
@@ -422,18 +370,20 @@ namespace Actor.DbService.Core.Model
         {
             Index = index;
         }
-        
+
         protected override void DoProcessQuery(Response response)
         {
-            Become(new Behavior<Response, IEnumerable<Index>>(
+            AddBehavior(new Behavior<Response, IEnumerable<Index>>(
                 (r, idxs) =>
                 {
+                    TotalMsg = idxs.Count();
+                    if (TotalMsg == 0)
+                    {
+                        StopQuery();
+                    }
                     foreach (var idx in idxs)
                     {
-                        if (idx.Name == Index)
-                        {
-                            idx.SendMessage(r);
-                        }
+                        idx.ProcessQuery(r, f => true);
                     }
                 }));
             AddBehavior(new Behavior<Response, IEnumerable<Field>>(
@@ -441,7 +391,7 @@ namespace Actor.DbService.Core.Model
                 {
                     r.Asker.SendMessage(Uuid, fields);
                 }));
-            response.Router.SendMessage(response);
+            response.Router.ProcessQuery(response, i => i.Name == Index);
         }
 
     }
@@ -459,15 +409,17 @@ namespace Actor.DbService.Core.Model
 
         protected override void DoProcessQuery(Response response)
         {
-            Become(new Behavior<Response, IEnumerable<Index>>(
+            AddBehavior(new Behavior<Response, IEnumerable<Index>>(
                 (r, idxs) =>
                 {
-                    foreach (var idx in idxs)
+                    TotalMsg = idxs.Count(i => i.Name == Index);
+                    if (TotalMsg == 0)
                     {
-                        if (idx.Name == Index)
-                        {
-                            idx.SendMessage(r);
-                        }
+                        StopQuery();
+                    }
+                    foreach (var idx in idxs.Where(i => i.Name == Index))
+                    {
+                        idx.SendMessage(r);
                     }
                 }));
             AddBehavior(new Behavior<Response, IEnumerable<Field>>(

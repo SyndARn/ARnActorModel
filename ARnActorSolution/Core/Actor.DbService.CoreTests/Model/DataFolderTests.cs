@@ -25,7 +25,7 @@ namespace Actor.DbService.Core.Model.Tests
             ";
 
         [TestMethod()]
-        public void ParseTest()
+        public void ParseAndCountIndexTest()
         {
             TestLauncherActor.Test(() =>
             {
@@ -37,7 +37,7 @@ namespace Actor.DbService.Core.Model.Tests
                 query.Launch(future, router);
                 Task.Delay(5000).Wait();
                 var result = future.Result();
-                Assert.AreEqual(1, result.Item2.Count());
+                Assert.AreEqual(3, result.Item2.Count());
             });
         }
 
@@ -54,7 +54,7 @@ namespace Actor.DbService.Core.Model.Tests
                 Task.Delay(5000).Wait();
                 foreach (var item in results)
                 {
-                    Assert.AreEqual("Word", item.Name);
+                    Assert.AreEqual("Word", item.FieldName);
                 }
             });
         }

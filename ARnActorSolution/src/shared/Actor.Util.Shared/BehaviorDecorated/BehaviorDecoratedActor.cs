@@ -216,7 +216,7 @@ namespace Actor.Util
                             }
                         case 1:
                             {
-                                IBehavior bhv = new ActionBehavior<object>(
+                                IBehavior bhv = new Behavior<Action<object>,object>(
                                     (a, o) => a.GetType() == mi.GetType(),
                                     (a, o) => a(o)
                                     );

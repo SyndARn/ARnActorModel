@@ -10,6 +10,12 @@ namespace Actor.DbService.Core.Model.Tests
     [TestClass()]
     public class FuncterTests
     {
+        [TestInitialize]
+        public void Setup()
+        {
+            Functer.InitDico("CsvData\\wordSyllabe.csv", "CsvData\\wordRime.csv");
+        }
+
         [TestMethod]
         [DataRow("Un","1")]
         [DataRow("Deux", "1")]
@@ -20,25 +26,23 @@ namespace Actor.DbService.Core.Model.Tests
             var func = Functer.RimeFuncter;
             var folder = new DataFolder("Test");
             var fields = func(word, folder).ToList();
-            Assert.AreEqual(5, fields.Count);
-            var field = fields.First(f => f.Name == "Syllabe");
+            var field = fields.First(f => f.FieldName == "Syllabe");
             Assert.AreEqual(syllabeCount, field.Value);
         }
 
         [TestMethod]
         [DataRow("Un", "un")]
-        [DataRow("Deux", "deu")]
+        [DataRow("Deux", "de")]
         [DataRow("Quatre", "quatre")]
-        [DataRow("abruti", "abruti")]
+        [DataRow("abruti", "outil")]
         [DataRow("Rois", "roi")]
-        public void RimeTest(string word, string syllabeCount)
+        public void RimeTest(string word, string rime)
         {
             var func = Functer.RimeFuncter;
             var folder = new DataFolder("Test");
             var fields = func(word, folder).ToList();
-            Assert.AreEqual(5, fields.Count);
-            var field = fields.First(f => f.Name == "Rime");
-            Assert.AreEqual(syllabeCount, field.Value);
+            var field = fields.First(f => (f.FieldName == "Rime") && (f.Value == rime));
+            Assert.AreEqual(rime, field.Value);
         }
     }
 }
