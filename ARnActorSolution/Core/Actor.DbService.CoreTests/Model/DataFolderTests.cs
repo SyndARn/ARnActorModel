@@ -13,13 +13,6 @@ namespace Actor.DbService.Core.Model.Tests
     [TestClass()]
     public class DataFolderTests
     {
-        [TestMethod()]
-        public void DataFolderTest()
-        {
-            var folder = new DataFolder("bla");
-
-        }
-
         public TestContext TestContext { get; set; }
 
 
@@ -32,16 +25,37 @@ namespace Actor.DbService.Core.Model.Tests
             ";
 
         [TestMethod()]
-        public void ParseTest()
+        public void ParseAndCountIndexTest()
         {
             TestLauncherActor.Test(() =>
             {
                 var router = new IndexRouter();
                 var folder = new DataFolder(source);
-                folder.Parse(router);
-                var future = new Future<IEnumerable<string>>();
-                folder.GetIndexNames(future);
-                Assert.AreEqual("Word", future.Result().FirstOrDefault());
+                folder.Parse(router, Functer.RimeFuncter);
+                var query = new QueryByIndex("Word");
+                var future = new Future<string, IEnumerable<Field>>();
+                query.Launch(future, router);
+                Task.Delay(5000).Wait();
+                var result = future.Result();
+                Assert.AreEqual(3, result.Item2.Count());
+            });
+        }
+
+        [TestMethod()]
+        public void LaunchWithReturnValueTest()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var router = new IndexRouter();
+                var folder = new DataFolder(source);
+                folder.Parse(router, Functer.RimeFuncter);
+                var query = new QueryByIndex("Word");
+                var results = query.Launch(router);
+                Task.Delay(5000).Wait();
+                foreach (var item in results)
+                {
+                    Assert.AreEqual("Word", item.FieldName);
+                }
             });
         }
     }

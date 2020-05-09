@@ -20,4 +20,13 @@
     <ProjectReference Include="..\Actor.Util.Core\Actor.Util.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="CsvData\wordRime.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CsvData\wordSyllabe.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

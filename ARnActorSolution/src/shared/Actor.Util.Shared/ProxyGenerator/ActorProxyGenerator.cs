@@ -8,7 +8,7 @@ using System.Text;
 namespace Actor.Util
 {
     // proxy generator
-#if !(NETFX_CORE) && !(NETCOREAPP1_1) && !(NETCOREAPP2_0) && !(NETSTANDARD2_0)
+#if !(NETFX_CORE) && !(NETCOREAPP1_1) && !(NETCOREAPP2_0) && !(NETSTANDARD2_0) && !(NETCOREAPP3_1)
     public static class ActorProxyGenerator<T, I>
     where T : class // real object
         where I : class // interface ...

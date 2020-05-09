@@ -17,4 +17,10 @@
     <ProjectReference Include="..\Actor.DbService.Core\Actor.DbService.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Model\CsvData\SyllabeTestData.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

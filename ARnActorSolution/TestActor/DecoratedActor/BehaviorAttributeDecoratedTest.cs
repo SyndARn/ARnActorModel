@@ -3,6 +3,7 @@ using Actor.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestActor;
 using System.Linq;
+using System;
 
 namespace Actor.Util.Test
 {
@@ -94,4 +95,48 @@ namespace Actor.Util.Test
             });
         }
     }
+
+
+    internal class TestActorActionBehaviorDecorated : BaseActor
+    {
+        private IFuture<string> future;
+
+        public TestActorActionBehaviorDecorated() : base()
+        {
+            Become(ActionBehaviorAttributeBuilder.BuildFromAttributes(this).ToArray());
+        }
+
+        [ActionBehavior]
+        internal void DecoratedMessage1(string s)
+        {
+            future.SendMessage(s);
+        }
+
+        public void SendDecoratedMessage(IFuture<string> afuture, string s)
+        {
+            future = afuture;
+            this.SendMessage((Action<string>) DecoratedMessage1, s);
+        }
+
+    }
+
+    [TestClass()]
+    [Ignore]
+    public class ActionBehaviorAttributeDecoratedTest
+    {
+        public TestContext TestContext { get; set; }
+
+        [TestMethod()]
+        public void TestADecoratedActor()
+        {
+            TestLauncherActor.Test(() =>
+            {
+                var actor = new TestActorActionBehaviorDecorated();
+                var future = new Future<string>();
+                actor.SendDecoratedMessage(future, "Test Decorated");
+                Assert.AreEqual("Test Decorated", future.Result());
+            });
+        }
+    }
+
 }

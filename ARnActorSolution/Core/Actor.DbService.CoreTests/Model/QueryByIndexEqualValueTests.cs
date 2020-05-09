@@ -15,6 +15,12 @@ namespace Actor.DbService.Core.Model.Tests
     {
         public TestContext TestContext { get; set; }
 
+        [TestInitialize]
+        public void Setup()
+        {
+            Functer.InitDico("CsvData\\wordSyllabe.csv", "CsvData\\wordRime.csv");
+        }
+
         [TestMethod()]
         public void ReceiveAnswerTest()
         {
@@ -23,12 +29,14 @@ namespace Actor.DbService.Core.Model.Tests
             {
                 var indexRouter = new IndexRouter();
                 var folder = new DataFolder(source);
-                folder.Parse(indexRouter);
+                folder.Parse(indexRouter, Functer.RimeFuncter);
+                var folder2 = new DataFolder("a on un en");
+                folder2.Parse(indexRouter, Functer.RimeFuncter);
 
-                var folder2 = new DataFolder("A B C D");
-                folder2.Parse(indexRouter);
+                Task.Delay(5000).Wait();
+
                 var asker = new Future<string,IEnumerable<Field>>();
-                var query = new QueryByIndexEqualValue("Rime", "Trois");
+                var query = new QueryByIndexEqualValue("Rime", "roi");
                 query.Launch(asker,indexRouter);
                 var result = asker.Result();
                 Assert.AreEqual(query.Uuid, result.Item1);
