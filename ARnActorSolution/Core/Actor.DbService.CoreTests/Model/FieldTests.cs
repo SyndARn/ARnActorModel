@@ -1,8 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Actor.DbService.Core.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Actor.DbService.Core.Model.Tests
 {

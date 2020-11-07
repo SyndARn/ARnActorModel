@@ -26,6 +26,8 @@
                     return new RingQueue<T>();
                 case QueueStyle.Buffer:
                     return new BufferQueue<T>();
+                case QueueStyle.None:
+                    return new LockFreeQueue<T>();
                 default:
                     return new LockFreeQueue<T>();
             }
