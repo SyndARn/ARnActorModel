@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using Actor.Base;
 
 namespace Actor.Util
@@ -179,7 +180,6 @@ namespace Actor.Util
     }
 #endif
 
-
 #if !(NETFX_CORE) 
     public static class ActionBehaviorAttributeBuilder
     {
@@ -216,11 +216,11 @@ namespace Actor.Util
                             }
                         case 1:
                             {
-                                IBehavior bhv = new Behavior<Action<object>,object>(
-                                    (a, o) => a.GetType() == mi.GetType(),
-                                    (a, o) => a(o)
-                                    );
-                                bhvs.Add(bhv);
+                                var genericArg = parameters[0].ParameterType;
+                                var genericType = typeof(ActionBehavior<>).MakeGenericType(new Type[] { genericArg });
+                                ConstructorInfo ci = genericType.GetConstructor(Type.EmptyTypes);
+                                object o = ci.Invoke(new object[] { });
+                                bhvs.Add(o as IBehavior);
                                 break;
                             }
                         case 2:
