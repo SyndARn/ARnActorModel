@@ -121,7 +121,7 @@ namespace Actor.Util.Test
     }
 
     [TestClass()]
-    [Ignore]
+    //[Ignore]
     public class ActionBehaviorAttributeDecoratedTest
     {
         public TestContext TestContext { get; set; }
